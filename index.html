@@ -281,14 +281,20 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3" data-i18n="products.fortune.name">AI 智能算命</h3>
-                    <p class="text-gray-400 mb-6" data-i18n="products.fortune.desc">
+                    <p class="text-gray-400 mb-4" data-i18n="products.fortune.desc">
                         結合傳統命理學與現代 AI 技術，提供個人化的命理分析與人生建議，為用戶帶來全新的命理體驗。
                     </p>
-                    <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                    <!-- Screenshot -->
+                    <div class="relative group/img cursor-pointer mb-4" onclick="openLightbox('images/fortune/report.jpg')">
+                        <img src="images/fortune/report.jpg" alt="AI Fortune Report" class="rounded-xl w-full h-40 object-cover object-top border border-gray-700 hover:border-primary transition">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                            <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.fortune.img1">命理報告</span>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 mb-4 text-sm text-gray-300">
                         <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f1">八字命盤分析</span></li>
                         <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f2">AI 個人化解讀</span></li>
                         <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f3">運勢預測建議</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f4">互動式諮詢</span></li>
                     </ul>
                     <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
                         <span data-i18n="products.learnmore">了解更多</span>
