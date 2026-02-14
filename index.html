@@ -284,11 +284,19 @@
                     <p class="text-gray-400 mb-4" data-i18n="products.fortune.desc">
                         結合傳統命理學與現代 AI 技術，提供個人化的命理分析與人生建議，為用戶帶來全新的命理體驗。
                     </p>
-                    <!-- Screenshot -->
-                    <div class="relative group/img cursor-pointer mb-4" onclick="openLightbox('images/fortune/report.jpg')">
-                        <img src="images/fortune/report.jpg" alt="AI Fortune Report" class="rounded-xl w-full h-40 object-cover object-top border border-gray-700 hover:border-primary transition">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                            <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.fortune.img1">命理報告</span>
+                    <!-- Screenshots -->
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/fortune/features.jpg')">
+                            <img src="images/fortune/features.jpg" alt="Features" class="rounded-xl w-full h-28 object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                <span class="text-xs bg-black/50 px-2 py-1 rounded-full" data-i18n="products.fortune.img2">產品特色</span>
+                            </div>
+                        </div>
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/fortune/report.jpg')">
+                            <img src="images/fortune/report.jpg" alt="Report" class="rounded-xl w-full h-28 object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                <span class="text-xs bg-black/50 px-2 py-1 rounded-full" data-i18n="products.fortune.img1">命理報告</span>
+                            </div>
                         </div>
                     </div>
                     <ul class="space-y-2 mb-4 text-sm text-gray-300">
