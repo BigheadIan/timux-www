@@ -153,29 +153,71 @@
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Product 1: SmartCourt -->
-                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group">
+                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-3">
                     <div class="absolute top-0 right-0 gradient-bg text-xs px-3 py-1 rounded-bl-xl font-semibold" data-i18n="products.featured">主推</div>
-                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
+                    
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <!-- Left: Product Info -->
+                        <div>
+                            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3" data-i18n="products.smartcourt.name">SmartCourt 智慧場館</h3>
+                            <p class="text-gray-400 mb-6" data-i18n="products.smartcourt.desc">
+                                台灣第一個無人運動場館解決方案。整合 SaaS 管理平台與 IoT 智慧硬體，實現 24 小時自動營運，大幅節省人力成本。
+                            </p>
+                            <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f1">智慧門鎖 + 電源自動控制</span></li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f2">線上預約 + 動態定價</span></li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f3">會員管理 + 行銷裂變</span></li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f4">數據分析 + 營收報表</span></li>
+                            </ul>
+                            <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
+                                <span data-i18n="products.learnmore">了解更多</span>
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        
+                        <!-- Right: Screenshots Gallery -->
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/dashboard.png')">
+                                    <img src="images/smartcourt/dashboard.png" alt="Dashboard" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                        <span class="text-xs" data-i18n="products.smartcourt.img1">數據看板</span>
+                                    </div>
+                                </div>
+                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/schedule.png')">
+                                    <img src="images/smartcourt/schedule.png" alt="Schedule" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                        <span class="text-xs" data-i18n="products.smartcourt.img2">時段管理</span>
+                                    </div>
+                                </div>
+                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/booking.png')">
+                                    <img src="images/smartcourt/booking.png" alt="Booking" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                        <span class="text-xs" data-i18n="products.smartcourt.img3">預約管理</span>
+                                    </div>
+                                </div>
+                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/lottery.png')">
+                                    <img src="images/smartcourt/lottery.png" alt="Marketing" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                        <span class="text-xs" data-i18n="products.smartcourt.img4">行銷工具</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/mobile.png')">
+                                <img src="images/smartcourt/mobile.png" alt="Mobile App" class="rounded-xl w-full h-40 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                    <span class="text-sm" data-i18n="products.smartcourt.img5">用戶端 APP</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3" data-i18n="products.smartcourt.name">SmartCourt 智慧場館</h3>
-                    <p class="text-gray-400 mb-6" data-i18n="products.smartcourt.desc">
-                        台灣第一個無人運動場館解決方案。整合 SaaS 管理平台與 IoT 智慧硬體，實現 24 小時自動營運，大幅節省人力成本。
-                    </p>
-                    <ul class="space-y-2 mb-6 text-sm text-gray-300">
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f1">智慧門鎖 + 電源自動控制</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f2">線上預約 + 動態定價</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f3">會員管理 + 行銷裂變</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f4">數據分析 + 營收報表</span></li>
-                    </ul>
-                    <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
-                        <span data-i18n="products.learnmore">了解更多</span>
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
                 </div>
 
                 <!-- Product 2: AI Customer Service -->
@@ -350,6 +392,35 @@
             </div>
         </div>
     </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300" onclick="closeLightbox()">&times;</button>
+        <img id="lightbox-img" src="" alt="" class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl">
+    </div>
+
+    <script>
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
 
     <!-- i18n Script -->
     <script src="js/i18n.js"></script>
