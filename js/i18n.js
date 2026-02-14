@@ -190,17 +190,44 @@ function detectLanguage() {
         return savedLang;
     }
 
-    // Get browser language
-    const browserLang = navigator.language || navigator.userLanguage;
+    // Get all browser languages
+    const languages = navigator.languages || [navigator.language || navigator.userLanguage];
     
-    // Check for Chinese regions
-    if (browserLang.startsWith('zh')) {
-        // Taiwan, Hong Kong, Macau -> Traditional Chinese
-        if (browserLang === 'zh-TW' || browserLang === 'zh-HK' || browserLang === 'zh-MO') {
+    // Check timezone for better region detection
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    
+    // Taiwan/HK/Macau timezones -> Traditional Chinese
+    const twTimezones = ['Asia/Taipei', 'Asia/Hong_Kong', 'Asia/Macau'];
+    if (twTimezones.some(tz => timezone.includes(tz.split('/')[1]))) {
+        return 'zh-TW';
+    }
+    
+    // China timezones -> Simplified Chinese
+    const cnTimezones = ['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Harbin', 'Asia/Urumqi'];
+    if (cnTimezones.some(tz => timezone.includes(tz.split('/')[1]))) {
+        return 'zh-CN';
+    }
+
+    // Check browser language settings
+    for (const lang of languages) {
+        const lowerLang = lang.toLowerCase();
+        
+        // Traditional Chinese regions
+        if (lowerLang === 'zh-tw' || lowerLang === 'zh-hk' || lowerLang === 'zh-mo' ||
+            lowerLang === 'zh-hant' || lowerLang === 'zh-cht') {
             return 'zh-TW';
         }
-        // Mainland China -> Simplified Chinese
-        return 'zh-CN';
+        
+        // Simplified Chinese
+        if (lowerLang === 'zh-cn' || lowerLang === 'zh-sg' || 
+            lowerLang === 'zh-hans' || lowerLang === 'zh-chs') {
+            return 'zh-CN';
+        }
+        
+        // Generic Chinese - default to Traditional (more conservative choice for Taiwan)
+        if (lowerLang === 'zh') {
+            return 'zh-TW';
+        }
     }
     
     // All other regions -> English
