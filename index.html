@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時光智造 Timux - AI 智能解決方案</title>
+    <meta name="description" content="時光智造 - 專注於 AI 智能解決方案，包括智能運營場館系統、AI 智能客服、AI 智能算命等產品。">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+        .ai-glow {
+            box-shadow: 0 0 60px rgba(99, 102, 241, 0.4);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.8); }
+        }
+    </style>
+</head>
+<body class="bg-dark text-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold gradient-text">⚡ Timux</span>
+                    <span class="ml-2 text-sm text-gray-400" data-i18n="brand">時光智造</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#products" class="text-gray-300 hover:text-white transition" data-i18n="nav.products">產品</a>
+                    <a href="#about" class="text-gray-300 hover:text-white transition" data-i18n="nav.about">關於我們</a>
+                    <a href="#contact" class="text-gray-300 hover:text-white transition" data-i18n="nav.contact">聯繫我們</a>
+                    <select id="lang-selector" class="bg-transparent border border-gray-600 rounded px-2 py-1 text-sm">
+                        <option value="zh-TW">繁體中文</option>
+                        <option value="zh-CN">简体中文</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass">
+            <div class="px-4 py-4 space-y-4">
+                <a href="#products" class="block text-gray-300 hover:text-white" data-i18n="nav.products">產品</a>
+                <a href="#about" class="block text-gray-300 hover:text-white" data-i18n="nav.about">關於我們</a>
+                <a href="#contact" class="block text-gray-300 hover:text-white" data-i18n="nav.contact">聯繫我們</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-accent/20 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="floating mb-8">
+                <div class="inline-flex items-center px-4 py-2 rounded-full glass text-sm">
+                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    <span data-i18n="hero.badge">AI 驅動的智能解決方案</span>
+                </div>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                <span data-i18n="hero.title1">用 AI 重新定義</span><br>
+                <span class="gradient-text" data-i18n="hero.title2">商業智能</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto" data-i18n="hero.subtitle">
+                時光智造專注於開發 AI 智能解決方案，幫助企業實現數位轉型，提升營運效率，創造更大價值。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#products" class="gradient-bg px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition pulse-glow">
+                    <span data-i18n="hero.cta1">探索產品</span> →
+                </a>
+                <a href="#contact" class="glass px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/10 transition">
+                    <span data-i18n="hero.cta2">聯繫我們</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="products.title">我們的產品</h2>
+                <p class="text-xl text-gray-400" data-i18n="products.subtitle">AI 賦能，智慧未來</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1: SmartCourt -->
+                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 gradient-bg text-xs px-3 py-1 rounded-bl-xl font-semibold" data-i18n="products.featured">主推</div>
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3" data-i18n="products.smartcourt.name">SmartCourt 智慧場館</h3>
+                    <p class="text-gray-400 mb-6" data-i18n="products.smartcourt.desc">
+                        台灣第一個無人運動場館解決方案。整合 SaaS 管理平台與 IoT 智慧硬體，實現 24 小時自動營運，大幅節省人力成本。
+                    </p>
+                    <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f1">智慧門鎖 + 電源自動控制</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f2">線上預約 + 動態定價</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f3">會員管理 + 行銷裂變</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f4">數據分析 + 營收報表</span></li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
+                        <span data-i18n="products.learnmore">了解更多</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Product 2: AI Customer Service -->
+                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 gradient-bg text-xs px-3 py-1 rounded-bl-xl font-semibold" data-i18n="products.featured">主推</div>
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3" data-i18n="products.aics.name">AI 智能客服</h3>
+                    <p class="text-gray-400 mb-6" data-i18n="products.aics.desc">
+                        基於大型語言模型的智能客服系統，7×24 小時自動回覆客戶諮詢，大幅提升客戶滿意度與服務效率。
+                    </p>
+                    <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f1">自然語言理解</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f2">多輪對話能力</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f3">知識庫自動學習</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f4">無縫轉接人工</span></li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
+                        <span data-i18n="products.learnmore">了解更多</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Product 3: AI Fortune Telling -->
+                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-gray-600 text-xs px-3 py-1 rounded-bl-xl font-semibold" data-i18n="products.beta">Beta</div>
+                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3" data-i18n="products.fortune.name">AI 智能算命</h3>
+                    <p class="text-gray-400 mb-6" data-i18n="products.fortune.desc">
+                        結合傳統命理學與現代 AI 技術，提供個人化的命理分析與人生建議，為用戶帶來全新的命理體驗。
+                    </p>
+                    <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f1">八字命盤分析</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f2">AI 個人化解讀</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f3">運勢預測建議</span></li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.fortune.f4">互動式諮詢</span></li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
+                        <span data-i18n="products.learnmore">了解更多</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative">
+        <div class="absolute inset-0">
+            <div class="absolute top-1/2 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6" data-i18n="about.title">關於時光智造</h2>
+                    <p class="text-xl text-gray-400 mb-6" data-i18n="about.p1">
+                        時光智造成立於台灣，是一家專注於 AI 智能解決方案的科技公司。我們相信 AI 技術能夠改變傳統行業的運作方式，幫助企業實現數位轉型。
+                    </p>
+                    <p class="text-gray-400 mb-8" data-i18n="about.p2">
+                        我們的團隊由資深軟體工程師和 AI 專家組成，擁有豐富的產品開發經驗。從智慧場館管理到 AI 客服，我們致力於打造實用、可靠、創新的解決方案。
+                    </p>
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold gradient-text">3+</div>
+                            <div class="text-sm text-gray-400" data-i18n="about.stat1">產品線</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold gradient-text">24/7</div>
+                            <div class="text-sm text-gray-400" data-i18n="about.stat2">智能服務</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold gradient-text">100%</div>
+                            <div class="text-sm text-gray-400" data-i18n="about.stat3">AI 驅動</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="glass rounded-3xl p-8 ai-glow">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="glass rounded-xl p-4 text-center">
+                                <div class="text-3xl mb-2">🤖</div>
+                                <div class="text-sm" data-i18n="about.tech1">AI 技術</div>
+                            </div>
+                            <div class="glass rounded-xl p-4 text-center">
+                                <div class="text-3xl mb-2">☁️</div>
+                                <div class="text-sm" data-i18n="about.tech2">雲端服務</div>
+                            </div>
+                            <div class="glass rounded-xl p-4 text-center">
+                                <div class="text-3xl mb-2">🔗</div>
+                                <div class="text-sm" data-i18n="about.tech3">IoT 整合</div>
+                            </div>
+                            <div class="glass rounded-xl p-4 text-center">
+                                <div class="text-3xl mb-2">📊</div>
+                                <div class="text-sm" data-i18n="about.tech4">數據分析</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative">
+        <div class="absolute inset-0">
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="contact.title">聯繫我們</h2>
+                <p class="text-xl text-gray-400" data-i18n="contact.subtitle">有任何問題或合作需求？歡迎與我們聯繫</p>
+            </div>
+
+            <form id="contact-form" class="glass rounded-2xl p-8">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="contact.name">姓名</label>
+                        <input type="text" name="name" required class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" placeholder="">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="contact.email">電子郵件</label>
+                        <input type="email" name="email" required class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" placeholder="">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2" data-i18n="contact.company">公司名稱（選填）</label>
+                    <input type="text" name="company" class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" placeholder="">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2" data-i18n="contact.product">感興趣的產品</label>
+                    <select name="product" class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition">
+                        <option value="smartcourt" data-i18n="contact.opt1">SmartCourt 智慧場館</option>
+                        <option value="aics" data-i18n="contact.opt2">AI 智能客服</option>
+                        <option value="fortune" data-i18n="contact.opt3">AI 智能算命</option>
+                        <option value="other" data-i18n="contact.opt4">其他 / 合作洽談</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2" data-i18n="contact.message">訊息內容</label>
+                    <textarea name="message" rows="4" required class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition resize-none" placeholder=""></textarea>
+                </div>
+                <button type="submit" class="w-full gradient-bg py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition">
+                    <span data-i18n="contact.submit">發送訊息</span>
+                </button>
+                <p id="form-status" class="mt-4 text-center text-sm hidden"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <span class="text-2xl font-bold gradient-text">⚡ Timux</span>
+                    <span class="ml-2 text-sm text-gray-400" data-i18n="brand">時光智造</span>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2026 Timux. <span data-i18n="footer.rights">All rights reserved.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- i18n Script -->
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
