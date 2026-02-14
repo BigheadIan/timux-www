@@ -221,29 +221,39 @@
                 </div>
 
                 <!-- Product 2: AI Customer Service -->
-                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group">
+                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-2">
                     <div class="absolute top-0 right-0 gradient-bg text-xs px-3 py-1 rounded-bl-xl font-semibold" data-i18n="products.featured">主推</div>
-                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                        </svg>
+                    <div class="grid lg:grid-cols-5 gap-6">
+                        <div class="lg:col-span-2">
+                            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3" data-i18n="products.aics.name">AI 智能客服</h3>
+                            <p class="text-gray-400 mb-6" data-i18n="products.aics.desc">
+                                基於大型語言模型的智能客服系統，7×24 小時自動回覆客戶諮詢，大幅提升客戶滿意度與服務效率。
+                            </p>
+                            <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f1">自然語言理解</span></li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f2">多輪對話能力</span></li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f3">知識庫自動學習</span></li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f4">無縫轉接人工</span></li>
+                            </ul>
+                            <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
+                                <span data-i18n="products.learnmore">了解更多</span>
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="lg:col-span-3 relative group/img cursor-pointer" onclick="openLightbox('images/aics/workspace.jpg')">
+                            <img src="images/aics/workspace.jpg" alt="AI Customer Service Workspace" class="rounded-xl w-full h-full object-cover border border-gray-700 hover:border-primary transition">
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
+                                <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.aics.img1">客服工作台</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3" data-i18n="products.aics.name">AI 智能客服</h3>
-                    <p class="text-gray-400 mb-6" data-i18n="products.aics.desc">
-                        基於大型語言模型的智能客服系統，7×24 小時自動回覆客戶諮詢，大幅提升客戶滿意度與服務效率。
-                    </p>
-                    <ul class="space-y-2 mb-6 text-sm text-gray-300">
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f1">自然語言理解</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f2">多輪對話能力</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f3">知識庫自動學習</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f4">無縫轉接人工</span></li>
-                    </ul>
-                    <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
-                        <span data-i18n="products.learnmore">了解更多</span>
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
                 </div>
 
                 <!-- Product 3: AI Fortune Telling -->
