@@ -403,6 +403,55 @@
         </div>
     </section>
 
+    <!-- Clients Section -->
+    <section id="clients" class="py-24 relative border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="clients.title">合作夥伴</h2>
+                <p class="text-xl text-gray-400" data-i18n="clients.subtitle">感謝這些企業的信任與支持</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- SmartCourt Clients -->
+                <div class="glass rounded-2xl p-8">
+                    <h3 class="text-lg font-semibold mb-6 text-primary" data-i18n="clients.smartcourt">智慧場館客戶</h3>
+                    <div class="flex flex-wrap items-center justify-center gap-8">
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
+                                <img src="images/clients/rechuunion.png" alt="熱楚聯盟匹克球" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span class="text-2xl hidden">🏸</span>
+                            </div>
+                            <p class="text-sm text-gray-400">熱楚聯盟匹克球</p>
+                            <p class="text-xs text-gray-500">洪山文體中心店</p>
+                            <p class="text-xs text-gray-500">羅莎文創園店</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Customer Service Clients -->
+                <div class="glass rounded-2xl p-8">
+                    <h3 class="text-lg font-semibold mb-6 text-primary" data-i18n="clients.aics">智能客服客戶</h3>
+                    <div class="flex flex-wrap items-center justify-center gap-8">
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
+                                <img src="images/clients/bianlibag.png" alt="便利袋" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span class="text-2xl hidden">📦</span>
+                            </div>
+                            <p class="text-sm text-gray-400">便利袋</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
+                                <img src="images/clients/dragontr.png" alt="金龍旅行社" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span class="text-2xl hidden">✈️</span>
+                            </div>
+                            <p class="text-sm text-gray-400">金龍旅行社</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
     <section id="about" class="py-24 relative">
         <div class="absolute inset-0">
@@ -434,23 +483,34 @@
                     </div>
                 </div>
                 <div class="relative">
+                    <!-- Founder Card -->
                     <div class="glass rounded-3xl p-8 ai-glow">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="glass rounded-xl p-4 text-center">
-                                <div class="text-3xl mb-2">🤖</div>
-                                <div class="text-sm" data-i18n="about.tech1">AI 技術</div>
+                        <div class="text-center mb-6">
+                            <div class="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/50">
+                                <img src="images/team/founder.jpg" alt="黃昱仁" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl\'>👨‍💼</div>';">
                             </div>
-                            <div class="glass rounded-xl p-4 text-center">
-                                <div class="text-3xl mb-2">☁️</div>
-                                <div class="text-sm" data-i18n="about.tech2">雲端服務</div>
+                            <h3 class="text-xl font-bold" data-i18n="founder.name">黃昱仁</h3>
+                            <p class="text-primary text-sm" data-i18n="founder.role">創辦人 & CEO</p>
+                        </div>
+                        <p class="text-gray-400 text-sm text-center mb-6" data-i18n="founder.bio">
+                            擁有多年軟體開發與 AI 產品經驗，致力於以科技改善傳統產業效率，讓人們有更多時間專注於真正重要的事。
+                        </p>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-xl mb-1">🤖</div>
+                                <div class="text-xs text-gray-400" data-i18n="about.tech1">AI 技術</div>
                             </div>
-                            <div class="glass rounded-xl p-4 text-center">
-                                <div class="text-3xl mb-2">🔗</div>
-                                <div class="text-sm" data-i18n="about.tech3">IoT 整合</div>
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-xl mb-1">☁️</div>
+                                <div class="text-xs text-gray-400" data-i18n="about.tech2">雲端服務</div>
                             </div>
-                            <div class="glass rounded-xl p-4 text-center">
-                                <div class="text-3xl mb-2">📊</div>
-                                <div class="text-sm" data-i18n="about.tech4">數據分析</div>
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-xl mb-1">🔗</div>
+                                <div class="text-xs text-gray-400" data-i18n="about.tech3">IoT 整合</div>
+                            </div>
+                            <div class="glass rounded-xl p-3 text-center">
+                                <div class="text-xl mb-1">📊</div>
+                                <div class="text-xs text-gray-400" data-i18n="about.tech4">數據分析</div>
                             </div>
                         </div>
                     </div>

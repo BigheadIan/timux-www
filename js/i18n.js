@@ -69,7 +69,15 @@ const translations = {
         'contact.submit': '發送訊息',
         'contact.success': '訊息已發送成功！我們會盡快回覆您。',
         'contact.error': '發送失敗，請稍後再試或直接聯繫我們的郵箱。',
-        'footer.rights': 'All rights reserved.'
+        'footer.rights': 'All rights reserved.',
+        'clients.title': '合作夥伴',
+        'clients.subtitle': '感謝這些企業的信任與支持',
+        'clients.smartcourt': '智慧場館客戶',
+        'clients.aics': '智能客服客戶',
+        'founder.title': '創辦人',
+        'founder.name': '黃昱仁',
+        'founder.role': '創辦人 & CEO',
+        'founder.bio': '擁有多年軟體開發與 AI 產品經驗，致力於以科技改善傳統產業效率，讓人們有更多時間專注於真正重要的事。'
     },
     'zh-CN': {
         brand: '时光智造',
@@ -140,7 +148,15 @@ const translations = {
         'contact.submit': '发送消息',
         'contact.success': '消息已发送成功！我们会尽快回复您。',
         'contact.error': '发送失败，请稍后再试或直接联系我们的邮箱。',
-        'footer.rights': 'All rights reserved.'
+        'footer.rights': 'All rights reserved.',
+        'clients.title': '合作伙伴',
+        'clients.subtitle': '感谢这些企业的信任与支持',
+        'clients.smartcourt': '智慧场馆客户',
+        'clients.aics': '智能客服客户',
+        'founder.title': '创办人',
+        'founder.name': '黄昱仁',
+        'founder.role': '创办人 & CEO',
+        'founder.bio': '拥有多年软件开发与 AI 产品经验，致力于以科技改善传统产业效率，让人们有更多时间专注于真正重要的事。'
     },
     'en': {
         brand: 'Timux',
@@ -211,7 +227,15 @@ const translations = {
         'contact.submit': 'Send Message',
         'contact.success': 'Message sent successfully! We will get back to you soon.',
         'contact.error': 'Failed to send. Please try again later or contact us directly.',
-        'footer.rights': 'All rights reserved.'
+        'footer.rights': 'All rights reserved.',
+        'clients.title': 'Our Clients',
+        'clients.subtitle': 'Trusted by leading businesses',
+        'clients.smartcourt': 'SmartCourt Clients',
+        'clients.aics': 'AI Customer Service Clients',
+        'founder.title': 'Founder',
+        'founder.name': 'Ian Huang',
+        'founder.role': 'Founder & CEO',
+        'founder.bio': 'With years of software development and AI product experience, dedicated to improving traditional industry efficiency through technology, giving people more time to focus on what truly matters.'
     }
 };
 
