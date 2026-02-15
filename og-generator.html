@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>OG Image Generator - Timux</title>
+    <style>
+        body { margin: 20px; font-family: sans-serif; background: #1a1a2e; color: white; }
+        h1 { margin-bottom: 20px; }
+        .instructions { background: #16213e; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .og-preview {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        .circle1 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            top: -50px;
+            left: -50px;
+            filter: blur(60px);
+        }
+        .circle2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 50%;
+            bottom: -150px;
+            right: -100px;
+            filter: blur(80px);
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 60px 80px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .logo-icon {
+            font-size: 42px;
+            margin-right: 12px;
+        }
+        .logo-text {
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-brand {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-left: 16px;
+        }
+        .title1 {
+            font-size: 72px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .title2 {
+            font-size: 72px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+        }
+        .desc {
+            font-size: 26px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+        .url {
+            font-size: 22px;
+            color: #6366f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>OG 图片生成器</h1>
+    <div class="instructions">
+        <p><strong>步骤：</strong></p>
+        <ol>
+            <li>下方是 1200×630 的预览图</li>
+            <li>用浏览器截图工具截取下方区域</li>
+            <li>保存为 <code>og-image.png</code></li>
+            <li>放到 <code>images/</code> 文件夹</li>
+        </ol>
+    </div>
+    
+    <div class="og-preview" id="og">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="content">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Timux</span>
+                <span class="logo-brand">時光智造</span>
+            </div>
+            <div class="title1">智造交給 AI</div>
+            <div class="title2">時光留給所愛</div>
+            <div class="desc">AI 驅動的智能解決方案 | 智慧場館 · AI 客服</div>
+            <div class="url">www.timux.site</div>
+        </div>
+    </div>
+</body>
+</html>
