@@ -497,7 +497,8 @@
                         <p class="text-gray-400 mb-6 max-w-2xl mx-auto text-sm">
                             場館營運、揪人排程、客服應答 — 全部交給 AI。場館主省下管理時間，球友省下揪人麻煩，把時光花在真正重要的事：享受運動、陪伴所愛。
                         </p>
-                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                        <!-- Desktop: horizontal -->
+                        <div class="hidden md:flex items-center justify-center gap-4">
                             <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2">
                                 <span class="text-lg">🏟️</span>
                                 <span>SmartCourt<br><span class="text-xs text-gray-400">場館端 · 營運管理</span></span>
@@ -515,6 +516,29 @@
                                 <span class="text-xs text-gray-500">AI 賦能</span>
                             </div>
                             <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2">
+                                <span class="text-lg">🤖</span>
+                                <span>AI 客服<br><span class="text-xs text-gray-400">服務端 · 智能應答</span></span>
+                            </div>
+                        </div>
+                        <!-- Mobile: vertical -->
+                        <div class="flex md:hidden flex-col items-center gap-2">
+                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2 w-56">
+                                <span class="text-lg">🏟️</span>
+                                <span>SmartCourt<br><span class="text-xs text-gray-400">場館端 · 營運管理</span></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-primary text-lg">↕</span>
+                                <span class="text-xs text-gray-500">數據互通</span>
+                            </div>
+                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2 w-56">
+                                <span class="text-lg">⚡</span>
+                                <span>PlayTime<br><span class="text-xs text-gray-400">用戶端 · 揪團比賽</span></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-primary text-lg">↕</span>
+                                <span class="text-xs text-gray-500">AI 賦能</span>
+                            </div>
+                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2 w-56">
                                 <span class="text-lg">🤖</span>
                                 <span>AI 客服<br><span class="text-xs text-gray-400">服務端 · 智能應答</span></span>
                             </div>
