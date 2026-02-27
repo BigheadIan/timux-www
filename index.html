@@ -153,6 +153,30 @@
         ]
     }
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "PlayTime 運動揪團平台",
+        "applicationCategory": "SportsApplication",
+        "operatingSystem": "Web, LINE LIFF",
+        "description": "LINE LIFF 原生運動社群平台，一鍵開團揪人、對抗分組、即時記分，支援匹克球、羽球、排球等多種運動。",
+        "url": "https://playtime.timux.site",
+        "offers": {
+            "@type": "Offer",
+            "category": "運動社群"
+        },
+        "featureList": [
+            "LINE 一鍵開團",
+            "快速報名",
+            "俱樂部管理",
+            "對抗分組（循環賽、淘汰賽）",
+            "即時記分",
+            "海報生成",
+            "LINE 分享裂變"
+        ]
+    }
+    </script>
 </head>
 <body class="bg-dark text-white">
     <!-- Navigation -->
@@ -400,6 +424,66 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
+                </div>
+
+                <!-- Product 4: PlayTime -->
+                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-2">
+                    <div class="absolute top-0 right-0 bg-green-500 text-xs px-3 py-1 rounded-bl-xl font-semibold">NEW</div>
+                    <div class="grid lg:grid-cols-5 gap-6">
+                        <div class="lg:col-span-2">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                                <span class="text-3xl">⚡</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3">PlayTime 運動揪團</h3>
+                            <p class="text-gray-400 mb-6">
+                                LINE LIFF 原生運動社群平台，一鍵開團、揪人打球、對抗分組、即時記分。讓揪團打球像訂外賣一樣簡單。
+                            </p>
+                            <ul class="space-y-2 mb-6 text-sm text-gray-300">
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> LINE 一鍵開團 + 快速報名</li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> 俱樂部管理 + 成員社群</li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> 對抗分組（循環賽 / 淘汰賽）</li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> 即時記分 + 個人戰績追蹤</li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> 海報生成 + LINE 分享裂變</li>
+                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> 支援匹克球、羽球、排球等 10+ 運動</li>
+                            </ul>
+                            <a href="https://playtime.timux.site" target="_blank" class="inline-flex items-center text-green-400 hover:text-green-300 transition font-semibold">
+                                <span>立即體驗</span>
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="lg:col-span-3">
+                            <!-- Mobile screenshots in phone mockup style -->
+                            <div class="flex gap-4 overflow-x-auto pb-2" style="scrollbar-width: thin;">
+                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/home.png')">
+                                    <img src="images/playtime/home.png" alt="PlayTime 首頁" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-green-400 transition shadow-lg">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
+                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full">首頁</span>
+                                    </div>
+                                </div>
+                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/event-detail.png')">
+                                    <img src="images/playtime/event-detail.png" alt="活動詳情" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-green-400 transition shadow-lg">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
+                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full">活動詳情</span>
+                                    </div>
+                                </div>
+                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/create-event.png')">
+                                    <img src="images/playtime/create-event.png" alt="開團頁面" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-green-400 transition shadow-lg">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
+                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full">一鍵開團</span>
+                                    </div>
+                                </div>
+                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/match-create.png')">
+                                    <img src="images/playtime/match-create.png" alt="對抗分組" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-green-400 transition shadow-lg">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
+                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full">對抗分組</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3 text-center">← 左右滑動查看更多截圖</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
