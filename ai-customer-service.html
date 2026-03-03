@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時光智造 AI 智慧客服系統</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --accent: #f59e0b;
+  --bg: #0f172a;
+  --bg-light: #1e293b;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --success: #22c55e;
+  --gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Slide container */
+.slides { position: relative; width: 100vw; height: 100vh; }
+.slide {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 60px 80px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.slide.active { opacity: 1; pointer-events: all; }
+
+/* Typography */
+h1 { font-size: 3.2rem; font-weight: 900; margin-bottom: 16px; }
+h2 { font-size: 2.4rem; font-weight: 700; margin-bottom: 24px; }
+h3 { font-size: 1.6rem; font-weight: 500; color: var(--text-muted); }
+p, li { font-size: 1.3rem; line-height: 1.8; }
+.subtitle { color: var(--accent); font-size: 1.5rem; font-weight: 500; }
+.small { font-size: 1rem; color: var(--text-muted); }
+.highlight { color: var(--accent); font-weight: 700; }
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cards grid */
+.card-grid {
+  display: grid;
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+}
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+.card {
+  background: var(--bg-light);
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.2s;
+}
+.card:hover { transform: translateY(-2px); }
+.card-icon { font-size: 2.2rem; margin-bottom: 12px; }
+.card h4 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+.card p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; }
+
+/* Architecture diagram */
+.arch-container {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.arch-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+.arch-box {
+  border-radius: 12px;
+  padding: 14px 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  min-width: 130px;
+  position: relative;
+}
+.arch-box.user { background: #059669; color: white; }
+.arch-box.channel { background: #2563eb; color: white; }
+.arch-box.server { background: #7c3aed; color: white; }
+.arch-box.ai { background: #f59e0b; color: #1e293b; }
+.arch-box.db { background: #dc2626; color: white; }
+.arch-box.admin { background: #0891b2; color: white; }
+.arch-box.iot { background: #84cc16; color: #1e293b; }
+
+.arch-arrow {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  padding: 4px 0;
+  line-height: 1;
+}
+.arch-arrow.horizontal {
+  font-size: 1.4rem;
+  padding: 0 4px;
+}
+.arch-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: -2px;
+}
+.arch-section {
+  border: 1px dashed rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 16px 20px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.arch-section-label {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: var(--bg);
+  padding: 0 8px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* List */
+ul { list-style: none; padding: 0; }
+ul li { padding: 8px 0; display: flex; align-items: flex-start; gap: 12px; }
+ul li::before { content: ''; }
+.check { color: var(--success); font-weight: bold; }
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 40px; justify-content: center;
+  flex-wrap: wrap; margin: 20px 0;
+}
+.stat { text-align: center; }
+.stat-num { font-size: 3rem; font-weight: 900; }
+.stat-label { font-size: 1rem; color: var(--text-muted); }
+
+/* Zoom */
+.slides-wrapper {
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+  width: 100vw; height: 100vh;
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  display: flex;
+  gap: 12px;
+  z-index: 100;
+}
+.nav button {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.nav button:hover { background: rgba(255,255,255,0.2); }
+.zoom-controls {
+  position: fixed; top: 20px; right: 20px;
+  display: flex; gap: 8px; z-index: 100;
+}
+.zoom-controls button {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; width: 36px; height: 36px; border-radius: 8px;
+  font-size: 1.1rem; cursor: pointer; font-weight: 700;
+}
+.zoom-controls button:hover { background: rgba(255,255,255,0.25); }
+.zoom-label { color: var(--text-muted); font-size: 0.75rem; line-height: 36px; margin: 0 4px; }
+
+.progress {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: var(--gradient);
+  transition: width 0.4s ease;
+}
+
+.slide-num {
+  position: fixed;
+  bottom: 36px; left: 40px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* Layout helpers */
+.full-width { width: 100%; max-width: 1100px; }
+.text-center { text-align: center; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+.mt-16 { margin-top: 16px; }
+.gap-row { display: flex; align-items: center; gap: 32px; }
+
+/* Two column layout */
+.two-col {
+  display: flex;
+  gap: 48px;
+  width: 100%;
+  max-width: 1100px;
+  align-items: flex-start;
+}
+.two-col > div { flex: 1; }
+
+/* Pain points */
+.pain {
+  background: rgba(239,68,68,0.1);
+  border-left: 3px solid #ef4444;
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 12px;
+}
+.solution {
+  background: rgba(34,197,94,0.1);
+  border-left: 3px solid #22c55e;
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 12px;
+}
+
+/* Tag */
+.tag {
+  display: inline-block;
+  background: rgba(37,99,235,0.2);
+  border: 1px solid rgba(37,99,235,0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #93c5fd;
+  margin: 4px;
+}
+
+/* Pricing table */
+.pricing {
+  display: flex; gap: 24px;
+  width: 100%; max-width: 1000px;
+}
+.price-card {
+  flex: 1;
+  background: var(--bg-light);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.price-card.featured {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(245,158,11,0.15);
+}
+.price-card h4 { font-size: 1.3rem; margin-bottom: 8px; }
+.price-amount { font-size: 2.4rem; font-weight: 900; margin: 16px 0; }
+.price-unit { font-size: 1rem; color: var(--text-muted); }
+.price-features { text-align: left; margin-top: 16px; }
+.price-features li { font-size: 0.95rem; padding: 6px 0; }
+
+/* Timeline */
+.timeline { width: 100%; max-width: 900px; }
+.timeline-item {
+  display: flex; gap: 24px; margin-bottom: 20px;
+}
+.timeline-week {
+  min-width: 80px;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.1rem;
+  padding-top: 4px;
+}
+.timeline-content {
+  background: var(--bg-light);
+  border-radius: 12px;
+  padding: 16px 20px;
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.timeline-content h4 { margin-bottom: 4px; }
+.timeline-content p { font-size: 0.95rem; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div class="slides">
+
+<!-- Slide 1: Cover -->
+<div class="slide active" data-slide="0">
+  <div style="font-size: 4rem; margin-bottom: 20px;">🤖</div>
+  <h1 class="gradient-text">AI 智慧客服系統</h1>
+  <h3 style="margin-bottom: 32px;">降低 70% 客服成本，提升 3 倍回覆效率</h3>
+  <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+    <div style="width: 40px; height: 40px; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900;">T</div>
+    <div>
+      <div style="font-weight: 700;">時光智造科技有限公司</div>
+      <div class="small">智造交給 AI，時光留給所愛</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: Pain Points -->
+<div class="slide" data-slide="1">
+  <h2 class="text-center mb-32">😩 客戶服務的痛點</h2>
+  <div class="two-col">
+    <div>
+      <div class="pain">
+        <div style="font-weight:700;">⏰ 人力成本高</div>
+        <p class="small">24 小時排班、培訓成本、人員流動頻繁</p>
+      </div>
+      <div class="pain">
+        <div style="font-weight:700;">😤 回覆品質不一</div>
+        <p class="small">不同客服人員回答同一問題答案不同</p>
+      </div>
+      <div class="pain">
+        <div style="font-weight:700;">📈 尖峰應接不暇</div>
+        <p class="small">促銷活動時客服量暴增，排隊等待流失客戶</p>
+      </div>
+      <div class="pain">
+        <div style="font-weight:700;">📊 缺乏數據洞察</div>
+        <p class="small">無法追蹤問題趨勢，決策缺乏依據</p>
+      </div>
+    </div>
+    <div>
+      <div class="solution">
+        <div style="font-weight:700;">✅ AI 全天候即時回覆</div>
+        <p class="small">0 等待、0 排班、永不離職</p>
+      </div>
+      <div class="solution">
+        <div style="font-weight:700;">✅ 統一標準答案</div>
+        <p class="small">訓練一次，全渠道一致的專業回覆</p>
+      </div>
+      <div class="solution">
+        <div style="font-weight:700;">✅ 無限併發處理</div>
+        <p class="small">同時服務上千人，零壓力</p>
+      </div>
+      <div class="solution">
+        <div style="font-weight:700;">✅ 即時分析儀表板</div>
+        <p class="small">對話分析、意圖統計、客戶洞察</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Architecture (MAIN SLIDE) -->
+<div class="slide" data-slide="2">
+  <h2 class="text-center mb-24">🏗️ 系統流程架構圖</h2>
+  <div class="arch-container">
+
+    <!-- Layer 1: Customers -->
+    <div class="arch-row">
+      <div class="arch-box user">👤 終端客戶</div>
+    </div>
+    <div class="arch-arrow">▼</div>
+    <div class="arch-label">客戶透過 LINE / Web 發送訊息</div>
+
+    <!-- Layer 2: Channels -->
+    <div style="height: 8px;"></div>
+    <div class="arch-section" style="width: 70%;">
+      <div class="arch-section-label">多渠道接入層</div>
+      <div class="arch-box channel">💬 LINE<br><span style="font-size:0.75rem;">Messaging API</span></div>
+      <div class="arch-box channel">🌐 Web Chat<br><span style="font-size:0.75rem;">WebSocket</span></div>
+      <div class="arch-box channel" style="opacity:0.5;">📱 Facebook<br><span style="font-size:0.75rem;">Coming Soon</span></div>
+    </div>
+    <div class="arch-arrow">▼</div>
+    <div class="arch-label">Webhook / WebSocket 即時推送</div>
+
+    <!-- Layer 3: Core Server -->
+    <div style="height: 8px;"></div>
+    <div class="arch-section" style="width: 90%;">
+      <div class="arch-section-label">AI 核心引擎</div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+        <div class="arch-box server">🔀 意圖路由器<br><span style="font-size:0.75rem;">NLU 分類</span></div>
+        <div class="arch-box ai">🧠 Gemini 2.0<br><span style="font-size:0.75rem;">LLM 生成回覆</span></div>
+        <div class="arch-box server">📚 知識庫<br><span style="font-size:0.75rem;">RAG 檢索</span></div>
+        <div class="arch-box server">🎯 意圖匹配<br><span style="font-size:0.75rem;">訓練資料比對</span></div>
+      </div>
+      <div style="width: 100%; display: flex; justify-content: center; gap: 12px; margin-top: 12px;">
+        <div class="arch-box server" style="font-size:0.85rem;">🔄 對話管理</div>
+        <div class="arch-box server" style="font-size:0.85rem;">👥 多租戶隔離</div>
+        <div class="arch-box server" style="font-size:0.85rem;">📊 數據分析</div>
+      </div>
+    </div>
+
+    <!-- Branches -->
+    <div style="height: 8px;"></div>
+    <div class="arch-row" style="gap: 40px;">
+      <!-- Left: AI Auto Reply -->
+      <div style="text-align: center;">
+        <div class="arch-arrow">↙</div>
+        <div class="arch-box ai" style="min-width: 160px;">🤖 AI 自動回覆<br><span style="font-size:0.75rem;">80%+ 問題即時解決</span></div>
+      </div>
+      <!-- Center: Transfer -->
+      <div style="text-align: center;">
+        <div class="arch-arrow">▼</div>
+        <div class="arch-box" style="background: #dc2626; color: white; min-width: 160px;">🔔 轉接真人客服<br><span style="font-size:0.75rem;">複雜問題無縫轉接</span></div>
+      </div>
+      <!-- Right: Data -->
+      <div style="text-align: center;">
+        <div class="arch-arrow">↘</div>
+        <div class="arch-box db" style="min-width: 160px;">💾 數據儲存<br><span style="font-size:0.75rem;">PostgreSQL + Redis</span></div>
+      </div>
+    </div>
+
+    <!-- Layer 5: Admin -->
+    <div style="height: 12px;"></div>
+    <div class="arch-row" style="gap: 20px;">
+      <div class="arch-box admin">📋 管理後台<br><span style="font-size:0.75rem;">13 功能模組</span></div>
+      <div class="arch-arrow horizontal">⟷</div>
+      <div class="arch-box admin">👨‍💼 客服工作台<br><span style="font-size:0.75rem;">即時接取 / AI 建議</span></div>
+      <div class="arch-arrow horizontal">⟷</div>
+      <div class="arch-box admin">📊 報表分析<br><span style="font-size:0.75rem;">滿意度 / 回覆率</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Core Features -->
+<div class="slide" data-slide="3">
+  <h2 class="text-center mb-32">⭐ 核心功能模組</h2>
+  <div class="card-grid grid-3">
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h4>AI 意圖辨識</h4>
+      <p>自動分析客戶問題意圖，精準匹配最佳回覆，支援多輪對話</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <h4>知識庫 + 訓練系統</h4>
+      <p>上傳企業文件、FAQ、對話紀錄，AI 智能學習您的業務知識</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔀</div>
+      <h4>人機協作</h4>
+      <p>AI 處理常見問題，複雜問題即時轉接真人，AI 提供建議回覆</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💬</div>
+      <h4>多渠道整合</h4>
+      <p>LINE、Web Chat 統一管理，未來擴展 Facebook、WhatsApp</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h4>數據分析報表</h4>
+      <p>即時儀表板、對話量趨勢、客戶滿意度、熱門問題統計</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h4>多租戶 / 多行業</h4>
+      <p>一套系統服務不同企業，各自獨立訓練資料與 AI 模型</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: How AI Training Works -->
+<div class="slide" data-slide="4">
+  <h2 class="text-center mb-32">🎯 AI 訓練流程 — 三步上手</h2>
+  <div style="display: flex; gap: 40px; align-items: center; max-width: 1000px; width: 100%;">
+    <div class="card" style="flex: 1; text-align: center; padding: 32px;">
+      <div style="font-size: 3rem; margin-bottom: 12px;">📄</div>
+      <h4 style="font-size: 1.3rem;">Step 1</h4>
+      <p style="font-size: 1.3rem; font-weight: 700; margin: 8px 0;">匯入對話資料</p>
+      <p>支援 JSON、Excel、純文字<br/>AI 智能解析任意格式</p>
+    </div>
+    <div style="font-size: 2rem; color: var(--accent);">→</div>
+    <div class="card" style="flex: 1; text-align: center; padding: 32px;">
+      <div style="font-size: 3rem; margin-bottom: 12px;">🧠</div>
+      <h4 style="font-size: 1.3rem;">Step 2</h4>
+      <p style="font-size: 1.3rem; font-weight: 700; margin: 8px 0;">AI 自動學習</p>
+      <p>LLM 分析意圖分類<br/>建立回覆知識圖譜</p>
+    </div>
+    <div style="font-size: 2rem; color: var(--accent);">→</div>
+    <div class="card" style="flex: 1; text-align: center; padding: 32px;">
+      <div style="font-size: 3rem; margin-bottom: 12px;">🚀</div>
+      <h4 style="font-size: 1.3rem;">Step 3</h4>
+      <p style="font-size: 1.3rem; font-weight: 700; margin: 8px 0;">上線接客</p>
+      <p>即刻開始服務<br/>持續優化回覆品質</p>
+    </div>
+  </div>
+  <div class="mt-16" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+    <span class="tag">✨ 智能導入</span>
+    <span class="tag">🏷️ 自動意圖標記</span>
+    <span class="tag">📈 持續學習</span>
+    <span class="tag">🔒 數據隔離</span>
+  </div>
+</div>
+
+<!-- Slide 6: Data Dashboard Charts -->
+<div class="slide" data-slide="5">
+  <h2 class="text-center mb-16">📊 即時數據儀表板</h2>
+  <div style="display: flex; gap: 20px; width: 100%; max-width: 1100px; margin-bottom: 16px;">
+    <div class="card" style="flex: 2; padding: 16px;">
+      <h4 style="margin-bottom: 8px; font-size: 0.95rem;">📈 過去 30 天對話量趨勢</h4>
+      <canvas id="chartConvTrend" height="140"></canvas>
+    </div>
+    <div class="card" style="flex: 1; padding: 16px;">
+      <h4 style="margin-bottom: 8px; font-size: 0.95rem;">🤖 AI 解決率</h4>
+      <canvas id="chartResolution" height="140"></canvas>
+    </div>
+  </div>
+  <div style="display: flex; gap: 20px; width: 100%; max-width: 1100px;">
+    <div class="card" style="flex: 1; padding: 16px;">
+      <h4 style="margin-bottom: 8px; font-size: 0.95rem;">🎯 客戶意圖分佈</h4>
+      <canvas id="chartIntents" height="120"></canvas>
+    </div>
+    <div class="card" style="flex: 1; padding: 16px;">
+      <h4 style="margin-bottom: 8px; font-size: 0.95rem;">⏱️ 平均回覆時間 (秒)</h4>
+      <canvas id="chartResponseTime" height="120"></canvas>
+    </div>
+  </div>
+  <p class="mt-16 small" style="color: var(--accent);">💡 即時數據，管理者一目瞭然 — 現在切換到實際系統 Live Demo →</p>
+</div>
+
+<!-- Slide 7: Industry Applications -->
+<div class="slide" data-slide="6">
+  <h2 class="text-center mb-32">🏭 多行業應用場景</h2>
+  <div class="card-grid grid-4">
+    <div class="card" style="text-align: center;">
+      <div class="card-icon">✈️</div>
+      <h4>旅遊業</h4>
+      <p>行程諮詢、訂單查詢<br/>簽證問答、即時報價</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div class="card-icon">🍜</div>
+      <h4>餐飲業</h4>
+      <p>菜單推薦、訂位服務<br/>外送追蹤、優惠通知</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div class="card-icon">🛒</div>
+      <h4>電商零售</h4>
+      <p>商品諮詢、物流查詢<br/>退換貨處理、會員服務</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div class="card-icon">🏟️</div>
+      <h4>場館管理</h4>
+      <p>預約諮詢、場地資訊<br/>會員權益、活動通知</p>
+    </div>
+  </div>
+  <div class="mt-16" style="text-align: center;">
+    <p style="color: var(--text-muted);">支援 <span class="highlight">16 種行業別</span> 預設模板，新行業 <span class="highlight">3 天內</span> 完成客製化</p>
+  </div>
+</div>
+
+<!-- Slide 8: Competitive Advantages -->
+<div class="slide" data-slide="7">
+  <h2 class="text-center mb-32">💪 我們的優勢</h2>
+  <div class="two-col" style="max-width: 1000px;">
+    <div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h4>🚀 快速部署</h4>
+        <p>最快 <strong>1 週</strong> 完成導入上線<br/>不需改變現有工作流程</p>
+      </div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h4>🔒 資料安全</h4>
+        <p>私有雲部署、多租戶隔離<br/>企業數據不外流</p>
+      </div>
+      <div class="card">
+        <h4>🧩 無縫整合</h4>
+        <p>LINE、Web 即插即用<br/>API 對接現有 CRM / ERP</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h4>💰 成本可控</h4>
+        <p>月費制，無隱藏費用<br/>比雇用 1 個客服還便宜</p>
+      </div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h4>📈 持續進化</h4>
+        <p>AI 越用越聰明<br/>每月自動優化回覆品質</p>
+      </div>
+      <div class="card">
+        <h4>🇹🇼 在地服務</h4>
+        <p>台灣團隊、中文優化<br/>專人技術支援與客製</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: Implementation Timeline -->
+<div class="slide" data-slide="8">
+  <h2 class="text-center mb-32">📅 導入時程</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-week">Week 1</div>
+      <div class="timeline-content">
+        <h4>🔍 需求訪談 & 環境建置</h4>
+        <p>了解業務場景、設定渠道串接、建立租戶環境</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-week">Week 2</div>
+      <div class="timeline-content">
+        <h4>📚 知識導入 & AI 訓練</h4>
+        <p>匯入企業 FAQ、歷史對話、產品資料，訓練 AI 模型</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-week">Week 3</div>
+      <div class="timeline-content">
+        <h4>🧪 測試 & 優化</h4>
+        <p>內部測試回覆品質、調整意圖分類、優化回覆話術</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-week">Week 4</div>
+      <div class="timeline-content">
+        <h4>🚀 正式上線 & 培訓</h4>
+        <p>上線部署、管理員培訓、持續監控與調優</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: CTA -->
+<div class="slide" data-slide="9">
+  <div style="font-size: 4rem; margin-bottom: 20px;">🤝</div>
+  <h1 class="gradient-text" style="margin-bottom: 8px;">讓 AI 為您的客服加速</h1>
+  <h3 style="margin-bottom: 40px;">從今天開始，用更低的成本創造更好的客戶體驗</h3>
+  <div class="stats-row" style="margin-bottom: 40px;">
+    <div class="stat">
+      <div class="stat-num gradient-text">70%</div>
+      <div class="stat-label">成本降低</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num gradient-text">3x</div>
+      <div class="stat-label">效率提升</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num gradient-text">24/7</div>
+      <div class="stat-label">全天服務</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num gradient-text">&lt;1s</div>
+      <div class="stat-label">回覆速度</div>
+    </div>
+  </div>
+  <div style="text-align: center;">
+    <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">時光智造科技有限公司</div>
+    <div style="color: var(--text-muted);">www.timux.site</div>
+    <div style="color: var(--accent); margin-top: 16px; font-size: 1.1rem;">📧 聯繫我們，安排免費 Demo 體驗</div>
+  </div>
+</div>
+
+</div>
+
+<!-- Zoom Controls -->
+<div class="zoom-controls">
+  <button onclick="zoomOut()" title="縮小">−</button>
+  <span class="zoom-label" id="zoomLabel">100%</span>
+  <button onclick="zoomIn()" title="放大">+</button>
+  <button onclick="zoomReset()" title="重置" style="font-size:0.8rem;">⟲</button>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()">‹</button>
+  <button onclick="nextSlide()">›</button>
+</div>
+<div class="slide-num"><span id="slideNum">1</span> / <span id="slideTotal">10</span></div>
+<div class="progress" id="progress"></div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('slideTotal').textContent = total;
+
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  current = Math.max(0, Math.min(n, total - 1));
+  slides[current].classList.add('active');
+  document.getElementById('slideNum').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+}
+
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Home') { e.preventDefault(); showSlide(0); }
+  if (e.key === 'End') { e.preventDefault(); showSlide(total - 1); }
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+// Zoom
+let zoomLevel = 100;
+const slidesContainer = document.querySelector('.slides');
+function applyZoom() {
+  slidesContainer.style.transform = `scale(${zoomLevel / 100})`;
+  slidesContainer.style.transformOrigin = 'center center';
+  document.getElementById('zoomLabel').textContent = zoomLevel + '%';
+}
+function zoomIn() { zoomLevel = Math.min(200, zoomLevel + 15); applyZoom(); }
+function zoomOut() { zoomLevel = Math.max(50, zoomLevel - 15); applyZoom(); }
+function zoomReset() { zoomLevel = 100; applyZoom(); }
+
+// Touch support
+let touchX = null;
+document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+document.addEventListener('touchend', e => {
+  if (touchX === null) return;
+  const diff = touchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  touchX = null;
+});
+
+// ===== Charts =====
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = 'Noto Sans TC, sans-serif';
+
+// Generate 30 days labels
+const days30 = Array.from({length: 30}, (_, i) => {
+  const d = new Date(); d.setDate(d.getDate() - 29 + i);
+  return (d.getMonth()+1) + '/' + d.getDate();
+});
+
+// Conversation Trend (Line)
+const convData = Array.from({length: 30}, (_, i) => Math.round(15 + i * 2 + Math.random() * 15));
+const aiResolved = convData.map((v, i) => Math.round(v * (0.7 + i * 0.005 + Math.random() * 0.05)));
+new Chart(document.getElementById('chartConvTrend'), {
+  type: 'line',
+  data: {
+    labels: days30,
+    datasets: [
+      { label: '總對話量', data: convData, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+      { label: 'AI 自動解決', data: aiResolved, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top', labels: { boxWidth: 12, padding: 8, font: { size: 11 } } } }, scales: { x: { ticks: { maxTicksLimit: 8, font: { size: 10 } } }, y: { beginAtZero: true, ticks: { font: { size: 10 } } } } }
+});
+
+// AI Resolution Rate (Doughnut)
+const totalConv = convData.reduce((a, b) => a + b, 0);
+const totalAI = aiResolved.reduce((a, b) => a + b, 0);
+new Chart(document.getElementById('chartResolution'), {
+  type: 'doughnut',
+  data: {
+    labels: ['AI 自動解決', '人工處理'],
+    datasets: [{ data: [totalAI, totalConv - totalAI], backgroundColor: ['#22c55e', '#f59e0b'], borderWidth: 0 }]
+  },
+  options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 6, font: { size: 11 } } } } }
+});
+
+// Intent Distribution (Bar)
+new Chart(document.getElementById('chartIntents'), {
+  type: 'bar',
+  data: {
+    labels: ['商品諮詢', '訂單查詢', '行程安排', '預約服務', '投訴建議', '打招呼', '其他'],
+    datasets: [{ label: '次數', data: [386, 245, 198, 156, 89, 312, 67], backgroundColor: ['#3b82f6','#8b5cf6','#06b6d4','#22c55e','#ef4444','#f59e0b','#6b7280'], borderRadius: 6 }]
+  },
+  options: { responsive: true, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 10 } } }, y: { ticks: { font: { size: 11 } } } } }
+});
+
+// Response Time (Line)
+const respTimes = Array.from({length: 30}, (_, i) => Math.round(15 - i * 0.2 + Math.random() * 8));
+new Chart(document.getElementById('chartResponseTime'), {
+  type: 'line',
+  data: {
+    labels: days30,
+    datasets: [{ label: '回覆時間(秒)', data: respTimes, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.4, pointRadius: 0 }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { maxTicksLimit: 8, font: { size: 10 } } }, y: { beginAtZero: true, ticks: { font: { size: 10 } } } } }
+});
+</script>
+
+</body>
+</html>

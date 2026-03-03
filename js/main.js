@@ -64,39 +64,32 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<span class="animate-pulse">⏳</span>';
             submitBtn.disabled = true;
 
-            try {
-                // Use Formspree for form handling (free tier)
-                // You can replace this with your own endpoint
-                const response = await fetch('https://formspree.io/f/xkgnnwpz', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        ...data,
-                        _replyto: data.email,
-                        _subject: `[Timux Website] 來自 ${data.name} 的詢問 - ${data.product}`
-                    })
-                });
-
-                if (response.ok) {
-                    // Success
-                    formStatus.textContent = t['contact.success'] || 'Message sent successfully!';
-                    formStatus.className = 'mt-4 text-center text-sm text-green-400';
-                    formStatus.classList.remove('hidden');
-                    contactForm.reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                // Fallback: mailto link
-                const mailtoLink = `mailto:bigheadian1166@gmail.com?subject=${encodeURIComponent(`[Timux] 來自 ${data.name} 的詢問`)}&body=${encodeURIComponent(`姓名: ${data.name}\n郵件: ${data.email}\n公司: ${data.company || 'N/A'}\n產品: ${data.product}\n\n訊息:\n${data.message}`)}`;
-                
-                formStatus.innerHTML = `${t['contact.error'] || 'Failed to send.'} <a href="${mailtoLink}" class="underline text-primary">點擊這裡使用郵件發送</a>`;
-                formStatus.className = 'mt-4 text-center text-sm text-yellow-400';
-                formStatus.classList.remove('hidden');
-            } finally {
+            // 直接使用 mailto 方案（最可靠）
+            const mailtoLink = `mailto:bigheadian1166@gmail.com?subject=${encodeURIComponent(`[Timux 官網] ${data.product} 詢問 - ${data.name}`)}&body=${encodeURIComponent(`姓名：${data.name}\n郵件：${data.email}\n公司：${data.company || '無'}\n產品：${data.product}\n\n訊息：\n${data.message}\n\n---\n此訊息來自 Timux 官網聯繫表單 (www.timux.site)`)}`;
+            
+            // 自動開啟郵件客戶端
+            window.location.href = mailtoLink;
+            
+            // 顯示成功提示
+            formStatus.innerHTML = `
+                ✅ 已自動開啟您的郵件軟體！<br>
+                <small class="text-gray-400 mt-1 block">
+                如未自動開啟，請手動發送郵件至：<br>
+                <code class="text-primary">bigheadian1166@gmail.com</code>
+                </small>
+            `;
+            formStatus.className = 'mt-4 text-center text-sm text-green-400';
+            formStatus.classList.remove('hidden');
+            
+            // 清空表單
+            setTimeout(() => {
+                contactForm.reset();
+            }, 1000);
+            
+            // 5秒後隱藏訊息
+            setTimeout(() => {
+                formStatus.classList.add('hidden');
+            }, 6000); finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }

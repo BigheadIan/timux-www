@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智慧物業管理系統 — 架構圖</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-light: #1e293b;
+  --bg-card: #1e293b;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary: #3b82f6;
+  --accent: #f59e0b;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --purple: #8b5cf6;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+}
+
+.slides { position: relative; width: 100vw; height: 100vh; }
+.slide {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 60px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.slide.active { opacity: 1; pointer-events: all; }
+
+h1 { font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; }
+h2 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; }
+h3 { font-size: 1.4rem; font-weight: 500; color: var(--text-muted); }
+.gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { color: var(--accent); font-size: 1.2rem; font-weight: 500; }
+
+/* ===== Architecture Diagram Styles ===== */
+.arch-full { width: 100%; max-width: 1200px; }
+
+/* Flow Section */
+.flow-container {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+.flow-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  padding: 0 8px;
+}
+.flow-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px;
+  font-size: 1.8rem;
+}
+.flow-step h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.flow-step p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+.flow-arrow {
+  position: absolute;
+  right: -12px; top: 30px;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  z-index: 2;
+}
+
+/* Architecture boxes */
+.layer {
+  width: 100%;
+  max-width: 1200px;
+  border: 1px dashed rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.layer-label {
+  position: absolute;
+  top: -10px; left: 20px;
+  background: var(--bg);
+  padding: 0 10px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+.layer-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.box {
+  border-radius: 10px;
+  padding: 10px 16px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  min-width: 120px;
+  line-height: 1.3;
+}
+.box .sub { font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+
+.box.user { background: #059669; }
+.box.channel { background: #2563eb; }
+.box.api { background: #7c3aed; }
+.box.iot { background: #f59e0b; color: #1e293b; }
+.box.db { background: #dc2626; }
+.box.admin { background: #0891b2; }
+.box.lock { background: #d97706; color: #1e293b; }
+.box.light { background: #84cc16; color: #1e293b; }
+.box.elevator { background: #6366f1; }
+.box.gateway { background: #ec4899; }
+.box.service { background: #8b5cf6; }
+.box.feature { background: var(--bg-light); border: 1px solid rgba(255,255,255,0.15); }
+
+.arrow-down {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  margin: 4px 0;
+}
+
+/* PMS Modules Grid */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 1100px;
+}
+.module-card {
+  background: var(--bg-light);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+.module-card .icon { font-size: 2rem; margin-bottom: 8px; }
+.module-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.module-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+.module-card.highlight { border-color: var(--accent); box-shadow: 0 0 20px rgba(245,158,11,0.15); }
+
+/* Two column */
+.two-col { display: flex; gap: 24px; width: 100%; max-width: 1200px; align-items: flex-start; }
+.two-col > div { flex: 1; }
+
+/* Nav */
+.nav {
+  position: fixed; bottom: 30px; right: 40px;
+  display: flex; gap: 12px; z-index: 100;
+}
+.nav button {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; width: 44px; height: 44px; border-radius: 50%;
+  font-size: 1.2rem; cursor: pointer;
+}
+.nav button:hover { background: rgba(255,255,255,0.2); }
+.zoom-controls {
+  position: fixed; top: 20px; right: 20px;
+  display: flex; gap: 8px; z-index: 100;
+}
+.zoom-controls button {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; width: 36px; height: 36px; border-radius: 8px;
+  font-size: 1.1rem; cursor: pointer; font-weight: 700;
+}
+.zoom-controls button:hover { background: rgba(255,255,255,0.25); }
+.zoom-label { color: var(--text-muted); font-size: 0.75rem; line-height: 36px; margin: 0 4px; }
+.progress { position: fixed; bottom: 0; left: 0; height: 3px; background: var(--gradient); transition: width 0.4s; }
+.slide-num { position: fixed; bottom: 36px; left: 40px; font-size: 0.9rem; color: var(--text-muted); }
+
+.tag {
+  display: inline-block; background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.3);
+  padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; color: #93c5fd; margin: 3px;
+}
+.tag.gold { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.3); color: #fcd34d; }
+.tag.green { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.3); color: #86efac; }
+</style>
+</head>
+<body>
+
+<div class="slides">
+
+<!-- ========== Slide 1: Cover ========== -->
+<div class="slide active" data-slide="0">
+  <div style="font-size: 4rem; margin-bottom: 16px;">🏨</div>
+  <h1 class="gradient-text">智慧物業管理系統</h1>
+  <h3 style="margin-bottom: 12px;">IoT 門鎖 × 燈控 × 電梯 — 全場域智慧控制</h3>
+  <div style="display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; justify-content: center;">
+    <span class="tag gold">🔐 TTLock 門鎖</span>
+    <span class="tag gold">💡 智慧燈控</span>
+    <span class="tag gold">🛗 電梯管控</span>
+    <span class="tag green">📱 LINE / App</span>
+    <span class="tag">🤖 自動化排程</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 12px; margin-top: 16px;">
+    <div style="width: 40px; height: 40px; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900;">T</div>
+    <div>
+      <div style="font-weight: 700;">時光智造科技有限公司</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted);">智造交給 AI，時光留給所愛</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 2: User Experience Flow ========== -->
+<div class="slide" data-slide="1">
+  <h2 class="gradient-text" style="margin-bottom: 24px;">📱 Part 1：住客體驗流程</h2>
+  <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem;">從預訂到退房，全程智慧化、無接觸</p>
+
+  <div class="flow-container">
+    <!-- Step 1 -->
+    <div class="flow-step">
+      <div class="flow-icon" style="background: #2563eb;">📱</div>
+      <h4>① 線上預訂</h4>
+      <p>LINE / App / OTA<br/>選擇房型、日期<br/>線上付款確認</p>
+      <div class="flow-arrow">→</div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flow-step">
+      <div class="flow-icon" style="background: #7c3aed;">🔑</div>
+      <h4>② 取得門鎖密碼</h4>
+      <p>系統自動派發<br/>TTLock 臨時密碼<br/>入住前 30 分鐘生效</p>
+      <div class="flow-arrow">→</div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flow-step">
+      <div class="flow-icon" style="background: #059669;">🚪</div>
+      <h4>③ 自助入住</h4>
+      <p>輸入密碼開門<br/>燈光自動亮起<br/>電梯授權樓層</p>
+      <div class="flow-arrow">→</div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flow-step">
+      <div class="flow-icon" style="background: #f59e0b;">🏠</div>
+      <h4>④ 智慧客房</h4>
+      <p>APP 控制燈光<br/>空調溫度調節<br/>服務呼叫 / AI 客服</p>
+      <div class="flow-arrow">→</div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="flow-step">
+      <div class="flow-icon" style="background: #06b6d4;">📊</div>
+      <h4>⑤ 自動退房</h4>
+      <p>密碼到期自動失效<br/>設備自動回歸待機<br/>電梯權限收回</p>
+      <div class="flow-arrow">→</div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="flow-step">
+      <div class="flow-icon" style="background: #ec4899;">⭐</div>
+      <h4>⑥ 評價回饋</h4>
+      <p>LINE 推播評價邀請<br/>自動發送優惠券<br/>會員積分回饋</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; text-align: center;">
+    <div style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 12px 24px; display: inline-block;">
+      <span style="font-size: 1.1rem; font-weight: 700; color: var(--accent);">💡 核心價值：零櫃台、零鑰匙、零等待 — 全程無人化自助入住</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 3: System Architecture ========== -->
+<div class="slide" data-slide="2">
+  <h2 class="gradient-text" style="margin-bottom: 16px;">🏗️ Part 2：系統技術架構圖</h2>
+
+  <!-- Layer 1: Users -->
+  <div class="layer" style="max-width: 600px;">
+    <div class="layer-label">用戶端</div>
+    <div class="layer-content">
+      <div class="box user">👤 住客<div class="sub">LINE / App</div></div>
+      <div class="box user">👨‍💼 物業管理員<div class="sub">Web Admin</div></div>
+      <div class="box user">🏢 業主/投資者<div class="sub">數據報表</div></div>
+    </div>
+  </div>
+
+  <div class="arrow-down">▼</div>
+
+  <!-- Layer 2: Channels -->
+  <div class="layer" style="max-width: 800px;">
+    <div class="layer-label">接入渠道</div>
+    <div class="layer-content">
+      <div class="box channel">💬 LINE LIFF<div class="sub">住客入口</div></div>
+      <div class="box channel">🌐 Web Admin<div class="sub">管理後台</div></div>
+      <div class="box channel">📲 Kiosk<div class="sub">自助機（規劃）</div></div>
+      <div class="box channel">🔗 OTA API<div class="sub">Booking/Agoda</div></div>
+    </div>
+  </div>
+
+  <div class="arrow-down">▼</div>
+
+  <!-- Layer 3: API & Services -->
+  <div class="layer">
+    <div class="layer-label">核心服務層 — NestJS + Prisma</div>
+    <div class="layer-content">
+      <div class="box api">🔐 認證授權<div class="sub">JWT + RBAC</div></div>
+      <div class="box api">📅 訂房引擎<div class="sub">預約 + 排程</div></div>
+      <div class="box service">🔑 TTLock 密碼<div class="sub">自動派發/回收</div></div>
+      <div class="box service">💡 設備控制<div class="sub">燈/空調/電源</div></div>
+      <div class="box service">🛗 電梯授權<div class="sub">樓層權限</div></div>
+      <div class="box api">💰 帳務系統<div class="sub">訂單 + 支付</div></div>
+      <div class="box api">🤖 AI 客服<div class="sub">Gemini LLM</div></div>
+      <div class="box api">📊 數據分析<div class="sub">營運報表</div></div>
+    </div>
+  </div>
+
+  <div class="arrow-down">▼ ▼ ▼</div>
+
+  <!-- Layer 4: IoT + DB -->
+  <div class="two-col" style="max-width: 1200px;">
+    <div class="layer" style="margin-bottom: 0;">
+      <div class="layer-label">IoT 硬體層 — TTLock Cloud API</div>
+      <div class="layer-content">
+        <div class="box lock">🔐 智慧門鎖<div class="sub">房門/大門/公區</div></div>
+        <div class="box light">💡 燈光控制器<div class="sub">走廊/客房/公區</div></div>
+        <div class="box elevator">🛗 電梯控制板<div class="sub">樓層授權</div></div>
+        <div class="box gateway">📡 TTLock 閘道器<div class="sub">WiFi ↔ BLE</div></div>
+      </div>
+    </div>
+    <div class="layer" style="margin-bottom: 0;">
+      <div class="layer-label">數據層</div>
+      <div class="layer-content">
+        <div class="box db">🗄️ MySQL<div class="sub">業務數據</div></div>
+        <div class="box db" style="background: #b91c1c;">⚡ Redis<div class="sub">快取 + 佇列</div></div>
+        <div class="box feature">📝 操作日誌<div class="sub">完整審計</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 4: IoT Detail - Lock/Light/Elevator ========== -->
+<div class="slide" data-slide="3">
+  <h2 class="gradient-text" style="margin-bottom: 20px;">🔌 IoT 三大控制模組詳解</h2>
+
+  <div style="display: flex; gap: 16px; width: 100%; max-width: 1200px;">
+    <!-- Lock Module -->
+    <div style="flex: 1; background: var(--bg-light); border-radius: 16px; padding: 20px; border: 2px solid #d97706;">
+      <div style="text-align: center; margin-bottom: 12px;">
+        <div style="font-size: 2.5rem;">🔐</div>
+        <h3 style="color: #fbbf24; font-size: 1.2rem;">智慧門鎖模組</h3>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">TTLock API v3</div>
+      </div>
+      <div style="font-size: 0.85rem; line-height: 1.8;">
+        <div>✅ <strong>臨時密碼</strong> — 預約連動自動生成</div>
+        <div>✅ <strong>時效控制</strong> — 入住前30min生效，退房後失效</div>
+        <div>✅ <strong>遠端開鎖</strong> — 管理員一鍵遠端控制</div>
+        <div>✅ <strong>開鎖紀錄</strong> — 完整操作日誌審計</div>
+        <div>✅ <strong>電量監控</strong> — 低電量自動預警</div>
+        <div>✅ <strong>密碼同步</strong> — 3次重試 + 閘道器派發</div>
+      </div>
+      <div style="margin-top: 12px; padding: 8px; background: rgba(217,119,6,0.1); border-radius: 8px; font-size: 0.75rem; color: #fbbf24; text-align: center;">
+        🏷️ 已實作完成 — 核心能力
+      </div>
+    </div>
+
+    <!-- Light Module -->
+    <div style="flex: 1; background: var(--bg-light); border-radius: 16px; padding: 20px; border: 2px solid #84cc16;">
+      <div style="text-align: center; margin-bottom: 12px;">
+        <div style="font-size: 2.5rem;">💡</div>
+        <h3 style="color: #a3e635; font-size: 1.2rem;">智慧燈控模組</h3>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">TTLock 電源控制器</div>
+      </div>
+      <div style="font-size: 0.85rem; line-height: 1.8;">
+        <div>✅ <strong>預約連動</strong> — 入住自動開燈</div>
+        <div>✅ <strong>退房關閉</strong> — 退房後自動關閉</div>
+        <div>✅ <strong>分區控制</strong> — 走廊/客房/公區獨立</div>
+        <div>✅ <strong>排程模式</strong> — 公區按時段自動控制</div>
+        <div>✅ <strong>節能統計</strong> — 用電量監控報表</div>
+        <div>✅ <strong>緊急模式</strong> — 全區強制開/關</div>
+      </div>
+      <div style="margin-top: 12px; padding: 8px; background: rgba(132,204,22,0.1); border-radius: 8px; font-size: 0.75rem; color: #a3e635; text-align: center;">
+        🔌 TTLock 電源中控擴展
+      </div>
+    </div>
+
+    <!-- Elevator Module -->
+    <div style="flex: 1; background: var(--bg-light); border-radius: 16px; padding: 20px; border: 2px solid #6366f1;">
+      <div style="text-align: center; margin-bottom: 12px;">
+        <div style="font-size: 2.5rem;">🛗</div>
+        <h3 style="color: #a5b4fc; font-size: 1.2rem;">電梯管控模組</h3>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">TTLock + 梯控板</div>
+      </div>
+      <div style="font-size: 0.85rem; line-height: 1.8;">
+        <div>✅ <strong>樓層授權</strong> — 僅開放住客樓層</div>
+        <div>✅ <strong>時段控制</strong> — 入住期間授權</div>
+        <div>✅ <strong>密碼/刷卡</strong> — 多種認證方式</div>
+        <div>✅ <strong>訪客模式</strong> — 臨時訪客授權</div>
+        <div>✅ <strong>使用紀錄</strong> — 搭乘記錄追蹤</div>
+        <div>✅ <strong>消防模式</strong> — 緊急全樓層開放</div>
+      </div>
+      <div style="margin-top: 12px; padding: 8px; background: rgba(99,102,241,0.1); border-radius: 8px; font-size: 0.75rem; color: #a5b4fc; text-align: center;">
+        🛗 TTLock 梯控擴展模組
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 16px; text-align: center;">
+    <div style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); border-radius: 12px; padding: 10px 24px; display: inline-block;">
+      <span style="font-size: 0.95rem;">🔗 統一通訊：所有設備通過 <strong style="color: #ec4899;">TTLock 閘道器</strong>（WiFi ↔ BLE）連接雲端，管理員可遠端即時操控</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 5: PMS Internal Management ========== -->
+<div class="slide" data-slide="4">
+  <h2 class="gradient-text" style="margin-bottom: 20px;">🏢 物業管理後台模組</h2>
+  <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">飯店 / 商旅 / 民宿 — 統一管理介面</p>
+
+  <div class="module-grid">
+    <div class="module-card highlight">
+      <div class="icon">🏠</div>
+      <h4>房態管理</h4>
+      <p>即時房態看板<br/>空房/在住/清潔/維修<br/>拖拽排房</p>
+    </div>
+    <div class="module-card highlight">
+      <div class="icon">🔐</div>
+      <h4>設備管理</h4>
+      <p>門鎖/燈控/電梯<br/>綁定房間/樓層<br/>狀態監控 + 告警</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">📅</div>
+      <h4>訂房管理</h4>
+      <p>日曆視圖排程<br/>多渠道訂單匯入<br/>動態定價引擎</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">👥</div>
+      <h4>住客管理</h4>
+      <p>入住登記/退房<br/>會員等級體系<br/>偏好紀錄</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">🔑</div>
+      <h4>密碼 & 權限</h4>
+      <p>臨時密碼管理<br/>同步狀態追蹤<br/>訪客權限派發</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">💰</div>
+      <h4>帳務中心</h4>
+      <p>訂單 + 發票<br/>多支付渠道<br/>收入報表</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">🧹</div>
+      <h4>客房服務</h4>
+      <p>清潔派工排程<br/>維修工單追蹤<br/>用品庫存管理</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">📊</div>
+      <h4>營運報表</h4>
+      <p>入住率趨勢<br/>營收分析<br/>能耗統計</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">🏢</div>
+      <h4>多物業管理</h4>
+      <p>多館/多品牌<br/>三級權限架構<br/>集團數據匯總</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">🤖</div>
+      <h4>AI 智慧客服</h4>
+      <p>LINE 即時問答<br/>意圖辨識<br/>轉接真人客服</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">📢</div>
+      <h4>行銷工具</h4>
+      <p>優惠券中心<br/>活動推播<br/>會員回購提醒</p>
+    </div>
+    <div class="module-card">
+      <div class="icon">📝</div>
+      <h4>操作日誌</h4>
+      <p>全操作審計<br/>設備控制紀錄<br/>安全合規</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 6: Data Flow ========== -->
+<div class="slide" data-slide="5">
+  <h2 class="gradient-text" style="margin-bottom: 16px;">🔄 訂房 → IoT 自動化流程</h2>
+
+  <div style="width: 100%; max-width: 1000px;">
+    <!-- Timeline style flow -->
+    <div style="display: flex; align-items: flex-start; gap: 0; position: relative;">
+      <!-- Vertical line -->
+      <div style="position: absolute; left: 24px; top: 24px; bottom: 24px; width: 2px; background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #f59e0b, #22c55e, #06b6d4);"></div>
+
+      <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
+        <!-- Step 1 -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; z-index: 1; flex-shrink: 0;">📅</div>
+          <div style="flex: 1; background: var(--bg-light); border-radius: 12px; padding: 14px 20px; border-left: 3px solid #2563eb;">
+            <div style="font-weight: 700;">1. 住客完成訂房</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">LINE LIFF / OTA 平台 → 系統建立訂單，狀態 = CONFIRMED</div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; z-index: 1; flex-shrink: 0;">🔑</div>
+          <div style="flex: 1; background: var(--bg-light); border-radius: 12px; padding: 14px 20px; border-left: 3px solid #7c3aed;">
+            <div style="font-weight: 700;">2. 自動生成臨時密碼</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">TTLock Password Service → 6位隨機密碼 → 透過閘道器同步到門鎖（3次重試機制）<br/>⏰ 有效期：入住前 30min ~ 退房後 30min</div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; z-index: 1; flex-shrink: 0;">💡</div>
+          <div style="flex: 1; background: var(--bg-light); border-radius: 12px; padding: 14px 20px; border-left: 3px solid #f59e0b;">
+            <div style="font-weight: 700;">3. 設備預排程</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">燈光排程：入住時段自動開啟｜電梯授權：綁定住客樓層｜空調預設：提前 15min 啟動</div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: #22c55e; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; z-index: 1; flex-shrink: 0;">🚪</div>
+          <div style="flex: 1; background: var(--bg-light); border-radius: 12px; padding: 14px 20px; border-left: 3px solid #22c55e;">
+            <div style="font-weight: 700;">4. 住客入住（密碼開門觸發）</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">開門事件 → 系統標記「已入住」→ 客房設備全部啟動 → LINE 推播歡迎訊息</div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: #06b6d4; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; z-index: 1; flex-shrink: 0;">🔒</div>
+          <div style="flex: 1; background: var(--bg-light); border-radius: 12px; padding: 14px 20px; border-left: 3px solid #06b6d4;">
+            <div style="font-weight: 700;">5. 退房自動回收</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">密碼過期自動失效 → TTLock 刪除密碼 → 燈光/空調關閉 → 電梯權限收回 → 房態 = 待清潔</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 16px; text-align: center;">
+    <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 12px; padding: 10px 24px; display: inline-block;">
+      <span style="font-size: 0.95rem;">🤖 全流程自動化 — <strong>管理員零操作</strong>，系統自動處理從密碼派發到設備回收的每一步</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 7: Competitive Edge ========== -->
+<div class="slide" data-slide="6">
+  <h2 class="gradient-text" style="margin-bottom: 24px;">💪 核心優勢</h2>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 1000px;">
+    <div class="module-card" style="text-align: left;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-size: 2rem;">🔐</span>
+        <h4 style="font-size: 1.1rem;">TTLock 深度整合（已實現）</h4>
+      </div>
+      <p>不是概念，是已落地的能力。門鎖、電源、閘道器<br/>完整 API 對接 + 自動化密碼生命週期管理</p>
+    </div>
+    <div class="module-card" style="text-align: left;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-size: 2rem;">💰</span>
+        <h4 style="font-size: 1.1rem;">省人力 = 省成本</h4>
+      </div>
+      <p>無需 24hr 櫃台人員，無需實體鑰匙管理<br/>一個管理員可管 3-5 間物業</p>
+    </div>
+    <div class="module-card" style="text-align: left;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-size: 2rem;">🏢</span>
+        <h4 style="font-size: 1.1rem;">多物業 SaaS 架構</h4>
+      </div>
+      <p>一套系統管多間旅館/民宿<br/>品牌隔離、權限分層、數據獨立</p>
+    </div>
+    <div class="module-card" style="text-align: left;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-size: 2rem;">📱</span>
+        <h4 style="font-size: 1.1rem;">LINE 生態 + 在地化</h4>
+      </div>
+      <p>住客用 LINE 完成一切，無需裝 App<br/>繁中 UI、NT$ 定價、LINE Pay 整合</p>
+    </div>
+    <div class="module-card" style="text-align: left;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-size: 2rem;">🤖</span>
+        <h4 style="font-size: 1.1rem;">AI 賦能</h4>
+      </div>
+      <p>AI 客服即時回答住客問題<br/>智慧定價引擎（規劃中）</p>
+    </div>
+    <div class="module-card" style="text-align: left;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-size: 2rem;">🔒</span>
+        <h4 style="font-size: 1.1rem;">安全與合規</h4>
+      </div>
+      <p>完整操作日誌審計<br/>設備控制紀錄不可篡改、權限分層管理</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 8: Data Dashboard ========== -->
+<div class="slide" data-slide="7">
+  <h2 class="gradient-text" style="margin-bottom: 16px;">📊 營運數據儀表板</h2>
+  <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 0.9rem;">管理者一眼掌握全局 — 即時數據驅動決策</p>
+  <div style="display: flex; gap: 16px; width: 100%; max-width: 1100px; margin-bottom: 12px;">
+    <div class="module-card" style="flex: 2; padding: 14px;">
+      <h4 style="margin-bottom: 6px; font-size: 0.9rem;">📈 月入住率趨勢</h4>
+      <canvas id="chartOccupancy" height="130"></canvas>
+    </div>
+    <div class="module-card" style="flex: 1; padding: 14px;">
+      <h4 style="margin-bottom: 6px; font-size: 0.9rem;">💰 收入來源</h4>
+      <canvas id="chartRevenue" height="130"></canvas>
+    </div>
+  </div>
+  <div style="display: flex; gap: 16px; width: 100%; max-width: 1100px;">
+    <div class="module-card" style="flex: 1; padding: 14px;">
+      <h4 style="margin-bottom: 6px; font-size: 0.9rem;">🔐 IoT 設備使用統計</h4>
+      <canvas id="chartIoT" height="110"></canvas>
+    </div>
+    <div class="module-card" style="flex: 1; padding: 14px;">
+      <h4 style="margin-bottom: 6px; font-size: 0.9rem;">⚡ 月能耗對比 (kWh)</h4>
+      <canvas id="chartEnergy" height="110"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Slide 9: CTA ========== -->
+<div class="slide" data-slide="8">
+  <div style="font-size: 4rem; margin-bottom: 16px;">🏨</div>
+  <h1 class="gradient-text">讓物業管理進入智慧時代</h1>
+  <h3 style="margin-bottom: 32px;">一把鎖、一盞燈、一部電梯 — 都在您指尖掌控</h3>
+
+  <div style="display: flex; gap: 40px; margin-bottom: 32px;">
+    <div style="text-align: center;">
+      <div style="font-size: 2.8rem; font-weight: 900;" class="gradient-text">70%</div>
+      <div style="color: var(--text-muted); font-size: 0.9rem;">人力成本降低</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 2.8rem; font-weight: 900;" class="gradient-text">24/7</div>
+      <div style="color: var(--text-muted); font-size: 0.9rem;">全天候自助入住</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 2.8rem; font-weight: 900;" class="gradient-text">1→5</div>
+      <div style="color: var(--text-muted); font-size: 0.9rem;">一人管五館</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 2.8rem; font-weight: 900;" class="gradient-text">30%</div>
+      <div style="color: var(--text-muted); font-size: 0.9rem;">能耗節省</div>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">時光智造科技有限公司</div>
+    <div style="color: var(--text-muted);">www.timux.site</div>
+    <div style="color: var(--accent); margin-top: 12px;">📧 聯繫我們，安排免費導入評估</div>
+  </div>
+</div>
+
+</div>
+
+<!-- Zoom Controls -->
+<div class="zoom-controls">
+  <button onclick="zoomOut()" title="縮小">−</button>
+  <span class="zoom-label" id="zoomLabel">100%</span>
+  <button onclick="zoomIn()" title="放大">+</button>
+  <button onclick="zoomReset()" title="重置" style="font-size:0.8rem;">⟲</button>
+</div>
+
+<!-- Nav -->
+<div class="nav">
+  <button onclick="prevSlide()">‹</button>
+  <button onclick="nextSlide()">›</button>
+</div>
+<div class="slide-num"><span id="slideNum">1</span> / <span id="slideTotal">9</span></div>
+<div class="progress" id="progress"></div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('slideTotal').textContent = total;
+
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  current = Math.max(0, Math.min(n, total - 1));
+  slides[current].classList.add('active');
+  document.getElementById('slideNum').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+}
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+// Zoom
+let zoomLevel = 100;
+const slidesContainer = document.querySelector('.slides');
+function applyZoom() {
+  slidesContainer.style.transform = `scale(${zoomLevel / 100})`;
+  slidesContainer.style.transformOrigin = 'center center';
+  document.getElementById('zoomLabel').textContent = zoomLevel + '%';
+}
+function zoomIn() { zoomLevel = Math.min(200, zoomLevel + 15); applyZoom(); }
+function zoomOut() { zoomLevel = Math.max(50, zoomLevel - 15); applyZoom(); }
+function zoomReset() { zoomLevel = 100; applyZoom(); }
+
+let touchX = null;
+document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+document.addEventListener('touchend', e => {
+  if (touchX === null) return;
+  const diff = touchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  touchX = null;
+});
+
+// ===== PMS Charts =====
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = 'Noto Sans TC, sans-serif';
+
+const months = ['9月','10月','11月','12月','1月','2月','3月','4月','5月','6月','7月','8月'];
+
+// Occupancy Rate (Line + Bar combo)
+new Chart(document.getElementById('chartOccupancy'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { type: 'line', label: '入住率 %', data: [62,68,71,85,78,65,72,80,88,92,95,89], borderColor: '#f59e0b', backgroundColor: 'transparent', tension: 0.3, pointRadius: 3, pointBackgroundColor: '#f59e0b', yAxisID: 'y1', order: 0 },
+      { type: 'bar', label: '房晚數', data: [186,204,213,255,234,195,216,240,264,276,285,267], backgroundColor: 'rgba(59,130,246,0.6)', borderRadius: 4, yAxisID: 'y', order: 1 },
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 6, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } } },
+      y: { position: 'left', beginAtZero: true, title: { display: true, text: '房晚', font: { size: 9 } }, ticks: { font: { size: 9 } } },
+      y1: { position: 'right', min: 0, max: 100, title: { display: true, text: '%', font: { size: 9 } }, ticks: { font: { size: 9 } }, grid: { drawOnChartArea: false } }
+    }
+  }
+});
+
+// Revenue Sources (Doughnut)
+new Chart(document.getElementById('chartRevenue'), {
+  type: 'doughnut',
+  data: {
+    labels: ['住房收入', '加值服務', '餐飲', '商品銷售', '活動場地'],
+    datasets: [{ data: [58, 15, 12, 8, 7], backgroundColor: ['#3b82f6','#8b5cf6','#f59e0b','#22c55e','#06b6d4'], borderWidth: 0 }]
+  },
+  options: { responsive: true, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, padding: 4, font: { size: 10 } } } } }
+});
+
+// IoT Device Usage (Bar)
+new Chart(document.getElementById('chartIoT'), {
+  type: 'bar',
+  data: {
+    labels: ['門鎖開啟', '密碼派發', '燈光控制', '電梯授權', '遠端開鎖', '密碼回收'],
+    datasets: [{ label: '本月次數', data: [1842, 623, 3650, 1256, 89, 618], backgroundColor: ['#d97706','#8b5cf6','#84cc16','#6366f1','#ec4899','#06b6d4'], borderRadius: 4 }]
+  },
+  options: { responsive: true, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 9 } } }, y: { ticks: { font: { size: 10 } } } } }
+});
+
+// Energy Comparison (Bar - before/after)
+new Chart(document.getElementById('chartEnergy'), {
+  type: 'bar',
+  data: {
+    labels: ['1月','2月','3月','4月','5月','6月'],
+    datasets: [
+      { label: '導入前', data: [4200,3800,4100,4500,5200,5800], backgroundColor: 'rgba(239,68,68,0.6)', borderRadius: 4 },
+      { label: '導入後', data: [2940,2660,2870,3150,3640,4060], backgroundColor: 'rgba(34,197,94,0.6)', borderRadius: 4 },
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 6, font: { size: 10 } } } }, scales: { x: { ticks: { font: { size: 10 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
+});
+</script>
+</body>
+</html>
