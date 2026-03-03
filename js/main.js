@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Close menu when clicking a link
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
@@ -29,15 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
 
-    // Contact form handling
+    // ===== Contact Form =====
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-status');
 
@@ -49,51 +45,96 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = {
                 name: formData.get('name'),
                 email: formData.get('email'),
-                company: formData.get('company'),
+                company: formData.get('company') || '',
                 product: formData.get('product'),
-                message: formData.get('message')
+                message: formData.get('message'),
+                _subject: `[Timux 官網] ${formData.get('product')} 詢問 - ${formData.get('name')}`,
+                _template: 'table'
             };
 
-            // Get current language for messages
-            const lang = localStorage.getItem('timux-lang') || 'zh-TW';
-            const t = window.i18n?.translations[lang] || {};
-
-            // Show loading state
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="animate-pulse">⏳</span>';
+            submitBtn.innerHTML = '<span class="animate-pulse">⏳ 發送中...</span>';
             submitBtn.disabled = true;
 
-            // 直接使用 mailto 方案（最可靠）
-            const mailtoLink = `mailto:bigheadian1166@gmail.com?subject=${encodeURIComponent(`[Timux 官網] ${data.product} 詢問 - ${data.name}`)}&body=${encodeURIComponent(`姓名：${data.name}\n郵件：${data.email}\n公司：${data.company || '無'}\n產品：${data.product}\n\n訊息：\n${data.message}\n\n---\n此訊息來自 Timux 官網聯繫表單 (www.timux.site)`)}`;
-            
-            // 自動開啟郵件客戶端
-            window.location.href = mailtoLink;
-            
-            // 顯示成功提示
-            formStatus.innerHTML = `
-                ✅ 已自動開啟您的郵件軟體！<br>
-                <small class="text-gray-400 mt-1 block">
-                如未自動開啟，請手動發送郵件至：<br>
-                <code class="text-primary">bigheadian1166@gmail.com</code>
-                </small>
-            `;
-            formStatus.className = 'mt-4 text-center text-sm text-green-400';
-            formStatus.classList.remove('hidden');
-            
-            // 清空表單
-            setTimeout(() => {
-                contactForm.reset();
-            }, 1000);
-            
-            // 5秒後隱藏訊息
-            setTimeout(() => {
-                formStatus.classList.add('hidden');
-            }, 6000); finally {
+            try {
+                // 方案 1: FormSubmit.co — 免費、可靠、不需後端
+                const response = await fetch('https://formsubmit.co/ajax/bigheadian1166@gmail.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success === 'true' || result.success === true) {
+                    // ✅ 成功
+                    formStatus.innerHTML = `
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <span class="text-2xl">✅</span>
+                            <span class="text-lg font-semibold">訊息已成功送出！</span>
+                        </div>
+                        <p class="text-gray-400">我們會在 24 小時內回覆您的 <strong>${data.email}</strong></p>
+                    `;
+                    formStatus.className = 'mt-4 text-center text-sm text-green-400 p-4 glass rounded-xl';
+                    formStatus.classList.remove('hidden');
+                    contactForm.reset();
+
+                    // 記錄到 localStorage 備份
+                    saveSubmissionLocally(data);
+
+                    setTimeout(() => { formStatus.classList.add('hidden'); }, 8000);
+                } else {
+                    throw new Error(result.message || '表單提交失敗');
+                }
+
+            } catch (error) {
+                console.error('Form error:', error);
+                
+                // 備用方案: mailto
+                const mailtoLink = `mailto:bigheadian1166@gmail.com?subject=${encodeURIComponent(data._subject)}&body=${encodeURIComponent(`姓名：${data.name}\n郵件：${data.email}\n公司：${data.company || '無'}\n產品：${data.product}\n\n訊息：\n${data.message}\n\n---\n來自 Timux 官網聯繫表單`)}`;
+                
+                formStatus.innerHTML = `
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <span class="text-2xl">📧</span>
+                        <span class="text-lg font-semibold">請透過郵件聯繫我們</span>
+                    </div>
+                    <p class="text-gray-400 mb-3">自動發送暫時無法使用，請點擊下方按鈕：</p>
+                    <a href="${mailtoLink}" class="inline-block gradient-bg px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition">
+                        📧 開啟郵件發送
+                    </a>
+                    <p class="text-gray-500 text-xs mt-2">或直接寄到 bigheadian1166@gmail.com</p>
+                `;
+                formStatus.className = 'mt-4 text-center text-sm text-amber-400 p-4 glass rounded-xl';
+                formStatus.classList.remove('hidden');
+
+                // 仍然記錄到 localStorage
+                saveSubmissionLocally(data);
+            } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
         });
+    }
+
+    // 記錄提交到 localStorage（備份）
+    function saveSubmissionLocally(data) {
+        try {
+            const submissions = JSON.parse(localStorage.getItem('timux-inquiries') || '[]');
+            submissions.push({
+                ...data,
+                timestamp: new Date().toISOString(),
+                _subject: undefined,
+                _template: undefined
+            });
+            localStorage.setItem('timux-inquiries', JSON.stringify(submissions));
+            console.log('📋 表單已備份到 localStorage，共', submissions.length, '筆');
+        } catch (e) {
+            console.warn('localStorage 備份失敗:', e);
+        }
     }
 
     // Navbar background on scroll
@@ -109,12 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Intersection Observer for fade-in animations
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -122,9 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    // Observe all sections
     document.querySelectorAll('section').forEach(section => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(20px)';
@@ -132,14 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(section);
     });
 
-    // Add animation class
     const style = document.createElement('style');
-    style.textContent = `
-        .animate-fade-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
+    style.textContent = `.animate-fade-in { opacity: 1 !important; transform: translateY(0) !important; }`;
     document.head.appendChild(style);
 
     console.log('🚀 Timux website initialized');
