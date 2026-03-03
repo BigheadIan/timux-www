@@ -77,7 +77,7 @@
 
             try {
                 // FormSubmit.co — 免費表單服務
-                const response = await fetch('https://formsubmit.co/ajax/bigheadian1166@gmail.com', {
+                const response = await fetch('https://formsubmit.co/ajax/contact@timux.site', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -107,9 +107,9 @@
                 // 備用方案: mailto
                 var subject = encodeURIComponent(data._subject);
                 var body = encodeURIComponent('姓名：' + data.name + '\n郵件：' + data.email + '\n公司：' + (data.company || '無') + '\n產品：' + data.product + '\n\n訊息：\n' + data.message + '\n\n---\n來自 Timux 官網聯繫表單');
-                var mailtoLink = 'mailto:bigheadian1166@gmail.com?subject=' + subject + '&body=' + body;
+                var mailtoLink = 'mailto:contact@timux.site?subject=' + subject + '&body=' + body;
                 
-                formStatus.innerHTML = '<div class="flex items-center justify-center gap-2 mb-2"><span class="text-2xl">📧</span><span class="text-lg font-semibold">請透過郵件聯繫我們</span></div><p class="text-gray-400 mb-3">自動發送暫時無法使用，請點擊下方按鈕：</p><a href="' + mailtoLink + '" class="inline-block gradient-bg px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition text-white">📧 開啟郵件發送</a><p class="text-gray-500 text-xs mt-2">或直接寄到 bigheadian1166@gmail.com</p>';
+                formStatus.innerHTML = '<div class="flex items-center justify-center gap-2 mb-2"><span class="text-2xl">📧</span><span class="text-lg font-semibold">請透過郵件聯繫我們</span></div><p class="text-gray-400 mb-3">自動發送暫時無法使用，請點擊下方按鈕：</p><a href="' + mailtoLink + '" class="inline-block gradient-bg px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition text-white">📧 開啟郵件發送</a><p class="text-gray-500 text-xs mt-2">或直接寄到 contact@timux.site</p>';
                 formStatus.className = 'mt-4 text-center text-sm text-amber-400 p-4 glass rounded-xl';
                 formStatus.classList.remove('hidden');
                 saveLocal(data);
