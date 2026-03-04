@@ -699,8 +699,8 @@ function showSlide(n) {
   document.getElementById('slideNum').textContent = current + 1;
   document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
 }
-function nextSlide() { showSlide(current + 1); }
-function prevSlide() { showSlide(current - 1); }
+function nextSlide() { resetPan && resetPan(); showSlide(current + 1); }
+function prevSlide() { resetPan && resetPan(); showSlide(current - 1); }
 
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); nextSlide(); }
@@ -710,26 +710,98 @@ document.addEventListener('keydown', e => {
     else document.exitFullscreen();
   }
 });
-// Zoom
+// Zoom + Pan
 let zoomLevel = 100;
+let panX = 0, panY = 0;
 const slidesContainer = document.querySelector('.slides');
+
 function applyZoom() {
-  slidesContainer.style.transform = `scale(${zoomLevel / 100})`;
+  slidesContainer.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel / 100})`;
   slidesContainer.style.transformOrigin = 'center center';
   document.getElementById('zoomLabel').textContent = zoomLevel + '%';
+  slidesContainer.style.cursor = zoomLevel > 100 ? 'grab' : 'default';
 }
+function resetPan() { panX = 0; panY = 0; }
 function zoomIn() { zoomLevel = Math.min(200, zoomLevel + 15); applyZoom(); }
-function zoomOut() { zoomLevel = Math.max(50, zoomLevel - 15); applyZoom(); }
-function zoomReset() { zoomLevel = 100; applyZoom(); }
+function zoomOut() { zoomLevel = Math.max(50, zoomLevel - 15); if (zoomLevel <= 100) resetPan(); applyZoom(); }
+function zoomReset() { zoomLevel = 100; resetPan(); applyZoom(); }
 
-let touchX = null;
-document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+// Mouse drag to pan (when zoomed)
+let isDragging = false, dragStartX = 0, dragStartY = 0, dragStartPanX = 0, dragStartPanY = 0;
+slidesContainer.addEventListener('mousedown', e => {
+  if (zoomLevel <= 100) return;
+  isDragging = true;
+  dragStartX = e.clientX; dragStartY = e.clientY;
+  dragStartPanX = panX; dragStartPanY = panY;
+  slidesContainer.style.cursor = 'grabbing';
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  panX = dragStartPanX + (e.clientX - dragStartX);
+  panY = dragStartPanY + (e.clientY - dragStartY);
+  applyZoom();
+});
+document.addEventListener('mouseup', () => {
+  if (isDragging) { isDragging = false; slidesContainer.style.cursor = zoomLevel > 100 ? 'grab' : 'default'; }
+});
+
+// Touch support: swipe to change slides (1 finger, not zoomed) / drag to pan (1 finger, zoomed) / pinch to zoom (2 fingers)
+let touchX = null, touchY = null, isPinching = false, initialPinchDist = 0, initialPinchZoom = 100;
+let touchPanStartX = 0, touchPanStartY = 0, touchDragStartPanX = 0, touchDragStartPanY = 0, isTouchDragging = false;
+
+function getPinchDist(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+document.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) {
+    isPinching = true; isTouchDragging = false;
+    initialPinchDist = getPinchDist(e.touches);
+    initialPinchZoom = zoomLevel;
+  } else if (e.touches.length === 1) {
+    isPinching = false;
+    touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+    if (zoomLevel > 100) {
+      isTouchDragging = true;
+      touchPanStartX = e.touches[0].clientX; touchPanStartY = e.touches[0].clientY;
+      touchDragStartPanX = panX; touchDragStartPanY = panY;
+    }
+  }
+}, { passive: true });
+
+document.addEventListener('touchmove', e => {
+  if (isPinching && e.touches.length === 2) {
+    const dist = getPinchDist(e.touches);
+    zoomLevel = Math.max(50, Math.min(200, Math.round(initialPinchZoom * (dist / initialPinchDist))));
+    if (zoomLevel <= 100) resetPan();
+    applyZoom();
+  } else if (isTouchDragging && e.touches.length === 1) {
+    panX = touchDragStartPanX + (e.touches[0].clientX - touchPanStartX);
+    panY = touchDragStartPanY + (e.touches[0].clientY - touchPanStartY);
+    applyZoom();
+    e.preventDefault();
+  }
+}, { passive: false });
+
 document.addEventListener('touchend', e => {
+  if (isPinching) { isPinching = false; return; }
+  if (isTouchDragging) { isTouchDragging = false; return; }
   if (touchX === null) return;
   const diff = touchX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
-  touchX = null;
+  if (Math.abs(diff) > 50 && zoomLevel <= 100) { diff > 0 ? nextSlide() : prevSlide(); }
+  touchX = null; touchY = null;
 });
+
+// Mouse wheel zoom
+document.addEventListener('wheel', e => {
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault();
+    if (e.deltaY < 0) zoomIn(); else zoomOut();
+  }
+}, { passive: false });
 
 // ===== PMS Charts =====
 Chart.defaults.color = '#94a3b8';
