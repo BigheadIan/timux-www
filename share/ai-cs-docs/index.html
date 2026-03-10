@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时光智造 AI 智能客服系统 — 使用指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 280px;
+            padding-right: 20px;
+        }
+        
+        /* 侧边栏导航 */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: #fff;
+            border-right: 1px solid #e5e5e5;
+            padding: 30px 20px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar h3 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-list li {
+            margin-bottom: 8px;
+        }
+        
+        .nav-list a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #555;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-list a:hover {
+            background: #3498db;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-section {
+            margin-bottom: 25px;
+        }
+        
+        .nav-section-title {
+            font-weight: 500;
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            padding: 40px 0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .subtitle {
+            font-size: 1.3em;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .section {
+            margin-bottom: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            font-weight: 500;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .steps {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .steps ol {
+            padding-left: 20px;
+        }
+        
+        .steps li {
+            margin-bottom: 12px;
+            color: #444;
+            line-height: 1.7;
+        }
+        
+        .feature-image {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            margin: 30px auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .image-error {
+            width: 100%;
+            max-width: 900px;
+            height: 300px;
+            background: #f1f2f6;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 16px;
+            margin: 30px auto;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            background: #34495e;
+            color: white;
+            margin-top: 60px;
+            border-radius: 12px;
+        }
+        
+        .footer h4 {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .footer p {
+            color: #bdc3c7;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .container {
+                padding-left: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background: #3498db;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+        }
+        
+        .menu-toggle {
+            display: none;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #88d8c0 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .highlight strong {
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰ 目录</button>
+    
+    <!-- 侧边栏导航 -->
+    <nav class="sidebar" id="sidebar">
+        <h3>📖 使用指南</h3>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">快速入门</div>
+            <ul class="nav-list">
+                <li><a href="#ai-training">AI训练</a></li>
+                <li><a href="#channel-config">渠道配置</a></li>
+                <li><a href="#workstation">客服工作台</a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">ERP 管理功能</div>
+            <ul class="nav-list">
+                <li><a href="#dashboard">仪表板</a></li>
+                <li><a href="#customers">顾客管理</a></li>
+                <li><a href="#crm-contacts">CRM 联络人</a></li>
+                <li><a href="#crm-companies">CRM 公司</a></li>
+                <li><a href="#tags">标签管理</a></li>
+                <li><a href="#quick-replies">罐头消息</a></li>
+                <li><a href="#knowledge-base">知识库</a></li>
+                <li><a href="#reports">报表</a></li>
+                <li><a href="#audit-logs">操作日志</a></li>
+                <li><a href="#users">用户管理</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <div class="container">
+        <main class="main-content">
+            <!-- 页面头部 -->
+            <header class="header">
+                <h1>时光智造 AI 智能客服系统</h1>
+                <p class="subtitle">从零开始搭建你的专属 AI 客服</p>
+            </header>
+            
+            <!-- 第一部分：快速入门 -->
+            <section class="section">
+                <h2>第一部分：快速入门</h2>
+                
+                <div id="ai-training">
+                    <h3>1. AI训练 — 创建你的专属AI客服</h3>
+                    <div class="highlight">
+                        <strong>核心功能：</strong>AI训练是系统的核心功能，让你通过简单的步骤训练出专属于你的行业AI客服。
+                    </div>
+                    
+                    <div class="steps">
+                        <p><strong>操作步骤：</strong></p>
+                        <ol>
+                            <li>进入左侧菜单「AI训练」页面</li>
+                            <li>点击「新增租户」，选择行业类型（旅游、餐饮、电商等16种），填写租户名称</li>
+                            <li>创建成功后，系统自动生成3个基础意图（问候、转人工、未知问题）</li>
+                            <li>点击「添加意图」创建自定义意图（如：价格咨询、退款流程等）</li>
+                            <li>为每个意图添加对话范例，范例越多AI越准确</li>
+                            <li>支持「智能导入」— 上传任意格式文档，AI自动解析为结构化对话</li>
+                        </ol>
+                    </div>
+                    
+                    <img src="09-ai-training.png" alt="AI训练界面截图" class="feature-image" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (09-ai-training.png)
+                    </div>
+                </div>
+                
+                <div id="channel-config">
+                    <h3>2. 渠道配置 — 连接你的通讯平台</h3>
+                    <div class="highlight">
+                        <strong>核心功能：</strong>区域管理是配置渠道的地方，将AI客服连接到LINE等通讯平台。
+                    </div>
+                    
+                    <div class="steps">
+                        <p><strong>操作步骤：</strong></p>
+                        <ol>
+                            <li>进入「区域管理」页面</li>
+                            <li>点击「新增区域」或编辑现有区域</li>
+                            <li>填写LINE Channel ID 和 Secret</li>
+                            <li>选择AI训练集（绑定刚才创建的租户）</li>
+                            <li>设置工作时间和图片选单</li>
+                            <li>复制 Webhook URL 到 LINE Developers Console</li>
+                        </ol>
+                    </div>
+                    
+                    <img src="13-regions.png" alt="区域管理界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (13-regions.png)
+                    </div>
+                </div>
+                
+                <div id="workstation">
+                    <h3>3. 客服工作台 — 实时接管AI对话</h3>
+                    <div class="highlight">
+                        <strong>核心功能：</strong>当AI无法回答或客户需要人工服务时，客服人员可以在工作台接管对话。
+                    </div>
+                    
+                    <div class="steps">
+                        <p><strong>操作步骤：</strong></p>
+                        <ol>
+                            <li>进入「客服工作台」页面</li>
+                            <li>左侧显示等待中的对话队列（按优先级排序）</li>
+                            <li>点击任意对话即可接管，AI暂停回复</li>
+                            <li>使用右侧罐头消息快速回复</li>
+                            <li>对话结束后点击「关闭对话」并选择归类</li>
+                        </ol>
+                    </div>
+                    
+                    <img src="02-workstation.png" alt="客服工作台界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (02-workstation.png)
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 第二部分：ERP 管理功能 -->
+            <section class="section">
+                <h2>第二部分：ERP 管理功能</h2>
+                
+                <div id="dashboard">
+                    <h3>4. 仪表板 — 全局数据概览</h3>
+                    <p>一站式查看关键指标：今日对话数、等待中对话、客服在线数、平均响应时间等。支持时间段筛选和趋势图表。</p>
+                    <img src="01-dashboard.png" alt="仪表板界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (01-dashboard.png)
+                    </div>
+                </div>
+                
+                <div id="customers">
+                    <h3>5. 顾客管理</h3>
+                    <p>管理所有来访的顾客信息，包括来源渠道、对话记录、标签分类。支持搜索和筛选。</p>
+                    <img src="03-customers.png" alt="顾客管理界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (03-customers.png)
+                    </div>
+                </div>
+                
+                <div id="crm-contacts">
+                    <h3>6. CRM 联络人</h3>
+                    <p>维护商务联络人信息，关联所属公司，记录跟进备注。支持导入导出。</p>
+                    <img src="04-crm-contacts.png" alt="CRM联络人界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (04-crm-contacts.png)
+                    </div>
+                </div>
+                
+                <div id="crm-companies">
+                    <h3>7. CRM 公司</h3>
+                    <p>管理合作企业资料，包括行业、网站、联系方式、地址等。每家公司可关联多个联络人。</p>
+                    <img src="05-crm-companies.png" alt="CRM公司界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (05-crm-companies.png)
+                    </div>
+                </div>
+                
+                <div id="tags">
+                    <h3>8. 标签管理</h3>
+                    <p>创建和管理标签，用于对顾客、对话进行分类。支持自定义颜色。</p>
+                    <img src="06-tags.png" alt="标签管理界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (06-tags.png)
+                    </div>
+                </div>
+                
+                <div id="quick-replies">
+                    <h3>9. 罐头消息</h3>
+                    <p>预设常用回复模板，客服人员在工作台可一键使用。支持分类和快捷键设置。</p>
+                    <img src="07-quick-replies.png" alt="罐头消息界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (07-quick-replies.png)
+                    </div>
+                </div>
+                
+                <div id="knowledge-base">
+                    <h3>10. 知识库</h3>
+                    <p>FAQ知识库管理，支持按分类组织。AI可参考知识库内容回复客户问题。</p>
+                    <img src="08-knowledge-base.png" alt="知识库界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (08-knowledge-base.png)
+                    </div>
+                </div>
+                
+                <div id="reports">
+                    <h3>11. 报表</h3>
+                    <p>查看客服绩效数据：对话量趋势、响应时间、客户满意度、客服效率排名等。</p>
+                    <img src="10-reports.png" alt="报表界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (10-reports.png)
+                    </div>
+                </div>
+                
+                <div id="audit-logs">
+                    <h3>12. 操作日志</h3>
+                    <p>记录系统所有操作行为，支持按操作类型和时间筛选，确保安全审计可追溯。</p>
+                    <img src="11-audit-logs.png" alt="操作日志界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (11-audit-logs.png)
+                    </div>
+                </div>
+                
+                <div id="users">
+                    <h3>13. 用户管理</h3>
+                    <p>管理系统用户账号和权限。支持三种角色：超级管理员、区域管理员、客服人员。可创建客服组别分配。</p>
+                    <img src="12-users.png" alt="用户管理界面截图" class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-error" style="display: none;">
+                        🖼️ 图片加载失败 (12-users.png)
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- 页脚 -->
+        <footer class="footer">
+            <h4>时光智造科技 | 智造交给 AI，时光留给所爱</h4>
+            <p>联系我们: <a href="https://www.timux.site" target="_blank">www.timux.site</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // 移动端侧边栏切换
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        // 点击主内容区域关闭侧边栏（移动端）
+        document.querySelector('.main-content').addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+        
+        // 当前章节高亮
+        function highlightCurrentSection() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.nav-list a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.background = '';
+                link.style.color = '';
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.background = '#3498db';
+                    link.style.color = 'white';
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightCurrentSection);
+        highlightCurrentSection(); // 初始化时执行一次
+    </script>
+</body>
+</html>
