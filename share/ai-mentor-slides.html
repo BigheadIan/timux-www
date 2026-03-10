@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 实战密技：让机器人帮你赚钱</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+    <style>
+        :root {
+            --bg1: #0a0a1a;
+            --bg2: #0d1117;
+            --accent: #00d4ff;
+            --accent2: #7c3aed;
+            --accent3: #f472b6;
+            --gold: #fbbf24;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --glass: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.08);
+            --glow: 0 0 40px rgba(0,212,255,0.15);
+        }
+        .reveal {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            font-size: 36px;
+            color: var(--text);
+            background: var(--bg1);
+        }
+        .reveal .slides { background: transparent; }
+        .reveal .slides section {
+            text-align: left;
+            padding: 50px 60px;
+            background: transparent;
+        }
+        .reveal .slides section.center { text-align: center; }
+        .reveal .slides section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 10% 20%, rgba(124,58,237,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 90% 80%, rgba(0,212,255,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(244,114,182,0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reveal .slides section > * { position: relative; z-index: 1; }
+        .reveal h1 { font-size: 2.4em; font-weight: 900; line-height: 1.15; margin: 0 0 16px; }
+        .reveal h2 { font-size: 1.55em; font-weight: 700; line-height: 1.2; margin: 0 0 16px; color: var(--text); }
+        .reveal h3 { font-size: 1.2em; font-weight: 600; margin: 0 0 12px; color: var(--muted); }
+        .reveal p, .reveal li { font-weight: 400; line-height: 1.65; margin: 0.4em 0; }
+        .reveal ul { display: block; margin-left: 0.8em; }
+        .reveal li { margin: 0.6em 0; font-size: 0.88em; }
+        .grad-text { background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .accent { color: var(--accent); font-weight: 700; }
+        .purple { color: var(--accent2); font-weight: 700; }
+        .pink { color: var(--accent3); font-weight: 700; }
+        .gold { color: var(--gold); font-weight: 700; }
+        .muted { color: var(--muted); }
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 28px 32px;
+            backdrop-filter: blur(12px);
+            box-shadow: var(--glow);
+        }
+        .pill {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.7em;
+            font-weight: 600;
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.2);
+            color: var(--accent);
+        }
+        .pill-purple { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.2); color: var(--accent2); }
+        .pill-gold { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.2); color: var(--gold); }
+        .demo-box {
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 60px;
+            text-align: center;
+            background: rgba(0,212,255,0.05);
+            box-shadow: 0 0 60px rgba(0,212,255,0.1);
+        }
+        .big-quote {
+            font-size: 1.6em;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.35;
+            margin: 40px 0;
+        }
+        .qr-placeholder {
+            border: 2px dashed rgba(255,255,255,0.15);
+            width: 260px; height: 260px;
+            margin: 16px auto;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            color: var(--muted);
+        }
+        .arch-tree { font-family: 'Menlo','Monaco',monospace; font-size: 0.72em; line-height: 2; }
+        .arch-node {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 10px; padding: 6px 16px;
+        }
+        .slide-number {
+            color: var(--accent) !important;
+            background: rgba(0,0,0,0.5) !important;
+            padding: 6px 12px !important;
+            border-radius: 20px !important;
+            font-size: 14px !important;
+        }
+        .reveal .progress { color: var(--accent); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .stat-box { text-align: center; }
+        .stat-box .num { font-size: 2.2em; font-weight: 900; }
+        .stat-box .label { font-size: 0.65em; color: var(--muted); }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+        .subtitle { font-size: 0.65em; color: var(--muted); margin-top: -8px; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- 1. 封面 -->
+            <section class="center">
+                <h1><span class="grad-text">AI 实战密技</span><br>让机器人帮你赚钱 🤖💰</h1>
+                <div class="subtitle">不教工具，只讲干货</div>
+                <br>
+                <p class="gold">黄昱仁 ｜ 时光智造科技 CEO</p>
+                <br>
+                <p class="muted" style="font-size:0.65em;">武汉东西湖区两岸青年创业基地 × 时光智造科技<br>2026-03-20</p>
+                <aside class="notes">欢迎！今天不聊 ChatGPT 怎么用，聊真正让 AI 帮你赚钱的实战经验。</aside>
+            </section>
+
+            <!-- 2. 自我介绍 -->
+            <section>
+                <h2>关于我 👋</h2>
+                <br>
+                <div class="grid-2">
+                    <div>
+                        <p>🏢 <span class="accent">时光智造科技</span> 创办人暨 CEO</p>
+                        <p>📋 <span class="purple">中国营养学会公共营养师</span></p>
+                        <p>🎓 <span class="accent">成功大学资工硕士</span></p>
+                    </div>
+                    <div>
+                        <p>🏆 <span class="purple">亚太生医创意设计大赛亚军</span></p>
+                        <p>📱 <span class="accent">抖音探店 1.1 万粉丝</span></p>
+                        <p>🏓 <span class="purple">APBA 匹克球教练</span></p>
+                    </div>
+                </div>
+                <aside class="notes">从台湾到武汉创业，一路在思考如何用 AI 解决真实商业问题。</aside>
+            </section>
+
+            <!-- 3. 破题 -->
+            <section class="center">
+                <div class="big-quote">
+                    「AI 时代最值钱的<br>不是工具，<br>是<span class="accent">好奇心</span>。」
+                </div>
+                <aside class="notes">今天不教你怎么用工具，工具会淘汰。教你思维方式。</aside>
+            </section>
+
+            <!-- 4. 实战一：问题 -->
+            <section>
+                <h2>实战一：AI Studio 自媒体自动化 📱</h2>
+                <br>
+                <h3>问题</h3>
+                <p>每天要产出 <span class="accent">4 个平台</span> 内容</p>
+                <div class="tag-row">
+                    <span class="pill">📱 抖音短视频</span>
+                    <span class="pill pill-purple">📝 小红书笔记</span>
+                    <span class="pill">💬 微信朋友圈</span>
+                    <span class="pill pill-purple">📸 Instagram</span>
+                </div>
+                <br>
+                <p class="gold">累不累？ 😩</p>
+                <aside class="notes">做自媒体的痛点：同时经营多个平台，每个风格不同，手动适配很累。</aside>
+            </section>
+
+            <!-- 5. 实战一：解法 -->
+            <section>
+                <h2>解法：Google AI Studio 🚀</h2>
+                <br>
+                <ul>
+                    <li>✅ <span class="accent">完全免费</span> — Google 送的</li>
+                    <li>✅ <span class="purple">一个 prompt 搞定</span> 四平台内容</li>
+                    <li>✅ 自动适配不同平台风格</li>
+                    <li>✅ 连 hashtag 都帮你想好</li>
+                </ul>
+                <aside class="notes">Google AI Studio 功能强大但很多人不知道，完全免费。</aside>
+            </section>
+
+            <!-- 6. 实战一：演示 -->
+            <section class="center">
+                <div class="demo-box">
+                    <h2 style="color:var(--accent);">🔴 现场演示</h2>
+                    <p>Google AI Studio — 一键生成四平台内容</p>
+                </div>
+                <aside class="notes">现场演示，给 AI 一个主题，看它如何生成多平台内容。</aside>
+            </section>
+
+            <!-- 7. 实战一：结果 -->
+            <section class="center">
+                <h2>结果 ⚡</h2>
+                <br>
+                <div class="grid-2">
+                    <div class="glass-card stat-box">
+                        <div class="num pink">2 小时</div>
+                        <div class="label">别人花的时间</div>
+                    </div>
+                    <div class="glass-card stat-box">
+                        <div class="num accent">2 分钟</div>
+                        <div class="label">你花的时间</div>
+                    </div>
+                </div>
+                <br>
+                <div class="big-quote">效率提升 <span class="accent">60 倍</span> 🚀</div>
+                <aside class="notes">这就是 AI 的威力，重复性工作自动化，时间留给更有价值的事。</aside>
+            </section>
+
+            <!-- 8. 实战二：OpenClaw 介绍 -->
+            <section>
+                <h2>实战二：OpenClaw + 小金交易 Bot 🤖</h2>
+                <br>
+                <h3>什么是 OpenClaw？</h3>
+                <div class="glass-card" style="margin-top:16px;">
+                    <ul style="margin:0;">
+                        <li>🧠 <span class="accent">AI 专业经理人</span> — 不是聊天机器人</li>
+                        <li>💻 拥有电脑 <span class="purple">全部权限</span> — 浏览器、文件、API</li>
+                        <li>🔧 可以操作任何软件 — 写代码、做设计、跑数据</li>
+                        <li>⚡ 24/7 不间断工作 — 你睡觉他还在干活</li>
+                    </ul>
+                </div>
+                <aside class="notes">OpenClaw 不只是聊天机器人，它真正能操作电脑执行复杂任务。</aside>
+            </section>
+
+            <!-- 9. 实战二：Subagent 架构 -->
+            <section>
+                <h2>Subagent 虚拟团队架构 🏢</h2>
+                <div class="glass-card arch-tree" style="margin-top:20px; padding:24px 28px;">
+                    <div style="text-align:center; margin-bottom:12px;">
+                        <span class="arch-node" style="border-color:var(--accent); font-size:1.15em;">🧠 <span class="accent">主 Agent · 小mini</span> — Tech Lead 总指挥</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; margin-top:8px;">
+                        <div>├── 💰 <span class="gold">小金</span> · 自动交易 Bot</div>
+                        <div>├── 📋 <span class="purple">PM</span> · 需求分析 & 规格撰写</div>
+                        <div>├── 💻 <span class="accent">Dev</span> · 功能开发 & 代码实现</div>
+                        <div>├── 🧪 <span class="pink">QA</span> · 测试验证 & 质量把关</div>
+                        <div>├── 🎨 <span class="gold">UI</span> · 设计审查 & UX 优化</div>
+                        <div>├── 📊 <span class="purple">Research</span> · 市场调研 & 竞品分析</div>
+                        <div>├── 📢 <span class="accent">Marketing</span> · 文案 & 社群运营</div>
+                        <div>└── 🤖 <span class="pink">Ops</span> · 部署运维 & 监控告警</div>
+                    </div>
+                </div>
+                <br>
+                <p class="gold" style="text-align:center;">一个人 = 一个完整团队，成本不到一个实习生 💡</p>
+                <aside class="notes">这是我们实际在用的架构，每个 Agent 负责不同专业领域，协同工作。一个人管理整个公司。</aside>
+            </section>
+
+            <!-- 10. 实战二：小金交易 -->
+            <section class="center">
+                <h2>小金交易仪表板 📈</h2>
+                <br>
+                <div class="demo-box">
+                    <h2 style="color:var(--accent);">🔴 展示</h2>
+                    <p>wealth.timux.site/dashboard/</p>
+                </div>
+                <br>
+                <div class="big-quote">
+                    「我睡觉的时候，<br><span class="accent">他在帮我赚钱</span> 💤💰」
+                </div>
+                <aside class="notes">实际交易系统，AI 自动分析市场做交易决策，完全不需要人工干预。</aside>
+            </section>
+
+            <!-- 11. 核心信息 -->
+            <section class="center">
+                <div class="big-quote">
+                    「只有你 <span class="gold">想不到</span>，<br>
+                    没有他 <span class="accent">办不到</span>。」
+                </div>
+                <br>
+                <p class="muted">关键是要有想象力和执行力</p>
+                <aside class="notes">AI 的能力边界不断扩展，限制你的不是技术，而是想象力。</aside>
+            </section>
+
+            <!-- 12. 现场互动 -->
+            <section class="center">
+                <div class="big-quote">
+                    来，<span class="pink">抱怨</span>你的工作！ 😤
+                </div>
+                <br>
+                <p class="muted" style="font-size:0.85em;">抱怨跟懒惰是进步的动力 💪</p>
+                <aside class="notes">让大家说说工作中最烦的重复性任务，现场看 AI 怎么解决。</aside>
+            </section>
+
+            <!-- 13. 常见痛点 -->
+            <section>
+                <h2>常见痛点 → AI 解法 ⚡</h2>
+                <br>
+                <div class="glass-card" style="margin-bottom:16px;">
+                    <p><span class="accent">📊 每天整理数据报表</span><br><span class="muted">→ AI 自动抓取、分析、生成图表</span></p>
+                </div>
+                <div class="glass-card" style="margin-bottom:16px;">
+                    <p><span class="purple">📧 回复客户询问</span><br><span class="muted">→ AI 客服 24/7 智能响应</span></p>
+                </div>
+                <div class="glass-card">
+                    <p><span class="pink">🎯 内容创作没灵感</span><br><span class="muted">→ AI 分析热点、生成创意</span></p>
+                </div>
+                <aside class="notes">这些都是实际帮客户解决过的问题，关键是找重复性高的工作。</aside>
+            </section>
+
+            <!-- 14. 红包勾子 -->
+            <section class="center">
+                <h2>🧧 扫码进群抢红包！</h2>
+                <br>
+                <div class="grid-2" style="max-width:700px; margin:0 auto;">
+                    <div class="glass-card" style="text-align:center;">
+                        <p class="gold" style="font-size:1.2em;">🥇 抢到最大的</p>
+                        <p>亲自教你搭建 OpenClaw</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center;">
+                        <p class="accent" style="font-size:1.2em;">🎯 抢到最小的</p>
+                        <p>1v1 分析你的工作困境</p>
+                    </div>
+                </div>
+                <br>
+                <div class="qr-placeholder"><p>QR Code<br>占位区</p></div>
+                <aside class="notes">扫码进群发红包，不管抢到多少都有奖励。</aside>
+            </section>
+
+            <!-- 15. 收尾：心路历程 -->
+            <section>
+                <h2>心路历程 🛤️</h2>
+                <br>
+                <div style="text-align:center; font-size:1.4em; line-height:2;">
+                    <span class="accent">台湾</span> → <span class="purple">武汉</span> → <span class="pink">AI</span> → <span class="gold">降维打击</span>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center;">
+                    <p>「AI <span class="accent">不是要取代你</span>，而是节省你的时间」</p>
+                    <p>「但如果你没有好奇心，<span class="pink">就会被 AI 驱使</span>」</p>
+                </div>
+                <aside class="notes">从台湾到武汉的创业路，最大收获是学会用 AI 放大自己的能力。</aside>
+            </section>
+
+            <!-- 16. 金句收尾 -->
+            <section class="center">
+                <div class="big-quote">
+                    「<span class="accent">智造</span>交给 AI，<br>
+                    <span class="gold">时光</span>留给所爱。」
+                </div>
+                <br>
+                <p style="font-size:0.9em; color:var(--accent);">时光智造科技</p>
+                <br>
+                <h2>谢谢大家！ 🙏</h2>
+                <aside class="notes">用 AI 处理繁琐工作，把珍贵时光留给真正重要的人和事。</aside>
+            </section>
+
+            <!-- 17. 更多课程 -->
+            <section class="center">
+                <h2><span class="grad-text">想深入学习？</span></h2>
+                <br>
+                <div class="grid-3" style="max-width:900px; margin:0 auto;">
+                    <div class="glass-card" style="text-align:center;">
+                        <p style="font-size:2em;">🎓</p>
+                        <p class="accent" style="font-size:0.85em; font-weight:700;">AI 商业变现训练营</p>
+                        <p class="muted" style="font-size:0.6em;">3天2夜 · 小班制<br>手把手搭建 AI 赚钱系统</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center;">
+                        <p style="font-size:2em;">👑</p>
+                        <p class="purple" style="font-size:0.85em; font-weight:700;">AI 创业者联盟</p>
+                        <p class="muted" style="font-size:0.6em;">年度会员 · 每月专场<br>一对一咨询 + 资源对接</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center;">
+                        <p style="font-size:2em;">🏢</p>
+                        <p class="gold" style="font-size:0.85em; font-weight:700;">企业 AI 顾问</p>
+                        <p class="muted" style="font-size:0.6em;">定制方案 · 落地执行<br>从诊断到部署全程服务</p>
+                    </div>
+                </div>
+                <br>
+                <p class="muted" style="font-size:0.7em;">进群了解详情 · 早鸟优惠进行中 🐦</p>
+                <aside class="notes">除了今天的分享，我们还有更深入的课程体系。</aside>
+            </section>
+
+            <!-- 18. 感谢页 -->
+            <section class="center">
+                <h1><span class="grad-text">Thank You!</span> 🚀</h1>
+                <br>
+                <div class="grid-2" style="max-width:700px; margin:0 auto;">
+                    <div>
+                        <p class="muted" style="font-size:0.7em;">🌐 www.timux.site</p>
+                        <p class="muted" style="font-size:0.7em;">📧 联系邮箱占位</p>
+                        <p class="muted" style="font-size:0.7em;">📱 联系电话占位</p>
+                    </div>
+                    <div>
+                        <div class="qr-placeholder" style="width:180px; height:180px;"><p style="font-size:0.7em;">群组<br>QR Code</p></div>
+                    </div>
+                </div>
+                <aside class="notes">感谢聆听，有问题欢迎扫码进群讨论或直接联系。</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            minScale: 0.2,
+            maxScale: 2.0,
+            keyboard: true,
+            overview: true,
+            center: false,
+            touch: true,
+            backgroundTransition: 'fade',
+            plugins: [ RevealNotes ]
+        });
+    </script>
+</body>
+</html>
