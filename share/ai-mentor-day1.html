@@ -32,7 +32,7 @@
         .reveal .slides { background: transparent; }
         .reveal .slides section {
             text-align: left;
-            padding: 50px 60px;
+            padding: 40px 60px;
             background: transparent;
         }
         .reveal .slides section.center { text-align: center; }
@@ -48,12 +48,12 @@
             z-index: 0;
         }
         .reveal .slides section > * { position: relative; z-index: 1; }
-        .reveal h1 { font-size: 2.4em; font-weight: 900; line-height: 1.15; margin: 0 0 16px; }
-        .reveal h2 { font-size: 1.55em; font-weight: 700; line-height: 1.2; margin: 0 0 16px; color: var(--text); }
-        .reveal h3 { font-size: 1.2em; font-weight: 600; margin: 0 0 12px; color: var(--muted); }
-        .reveal p, .reveal li { font-weight: 400; line-height: 1.65; margin: 0.4em 0; }
+        .reveal h1 { font-size: 2.2em; font-weight: 900; line-height: 1.15; margin: 0 0 12px; }
+        .reveal h2 { font-size: 1.45em; font-weight: 700; line-height: 1.2; margin: 0 0 12px; color: var(--text); }
+        .reveal h3 { font-size: 1.1em; font-weight: 600; margin: 0 0 10px; color: var(--muted); }
+        .reveal p, .reveal li { font-weight: 400; line-height: 1.55; margin: 0.3em 0; }
         .reveal ul { display: block; margin-left: 0.8em; }
-        .reveal li { margin: 0.6em 0; font-size: 0.88em; }
+        .reveal li { margin: 0.4em 0; font-size: 0.85em; }
         .grad-text { background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .accent { color: var(--accent); font-weight: 700; }
         .purple { color: var(--accent2); font-weight: 700; }
@@ -66,15 +66,15 @@
             background: var(--glass);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 28px 32px;
+            padding: 24px 28px;
             backdrop-filter: blur(12px);
             box-shadow: var(--glow);
         }
         .pill {
             display: inline-block;
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
-            font-size: 0.7em;
+            font-size: 0.65em;
             font-weight: 600;
             background: rgba(0,212,255,0.1);
             border: 1px solid rgba(0,212,255,0.2);
@@ -85,16 +85,16 @@
         .pill-red { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); color: var(--red); }
         .pill-green { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); color: var(--green); }
         .big-quote {
-            font-size: 1.6em;
+            font-size: 1.5em;
             font-weight: 700;
             text-align: center;
             line-height: 1.35;
-            margin: 40px 0;
+            margin: 30px 0;
         }
         .qr-placeholder {
             border: 2px dashed rgba(255,255,255,0.15);
-            width: 260px; height: 260px;
-            margin: 16px auto;
+            width: 240px; height: 240px;
+            margin: 12px auto;
             display: flex; align-items: center; justify-content: center;
             background: rgba(255,255,255,0.02);
             border-radius: 16px;
@@ -102,13 +102,13 @@
         }
         .img-placeholder {
             border: 2px dashed rgba(255,255,255,0.12);
-            border-radius: 16px;
+            border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             background: rgba(255,255,255,0.02);
             color: var(--muted);
-            font-size: 0.7em;
+            font-size: 0.6em;
             text-align: center;
-            padding: 20px;
+            padding: 14px;
         }
         .slide-number {
             color: var(--accent) !important;
@@ -118,15 +118,14 @@
             font-size: 14px !important;
         }
         .reveal .progress { color: var(--accent); }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
         .stat-box { text-align: center; }
-        .stat-box .num { font-size: 2.2em; font-weight: 900; }
-        .stat-box .label { font-size: 0.65em; color: var(--muted); }
-        .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+        .stat-box .num { font-size: 2em; font-weight: 900; }
+        .stat-box .label { font-size: 0.6em; color: var(--muted); }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
         .subtitle { font-size: 0.65em; color: var(--muted); margin-top: -8px; }
-        .timeline { display: flex; align-items: center; gap: 12px; font-size: 1.2em; }
-        .timeline .arrow { color: var(--muted); }
+        .source-tag { font-size: 0.5em; color: var(--muted); font-style: italic; margin-top: 6px; }
     </style>
 </head>
 <body>
@@ -163,129 +162,135 @@
                     </div>
                 </div>
                 <br>
-                <div class="timeline" style="justify-content: center;">
-                    <span class="accent">台湾</span>
-                    <span class="arrow">→</span>
-                    <span class="purple">武汉创业</span>
-                    <span class="arrow">→</span>
-                    <span class="pink">AI 应用</span>
-                    <span class="arrow">→</span>
-                    <span class="gold">降维打击</span>
+                <div style="text-align:center; font-size:1.1em;">
+                    <span class="accent">台湾</span> <span class="muted">→</span>
+                    <span class="purple">武汉创业</span> <span class="muted">→</span>
+                    <span class="pink">AI 应用</span> <span class="muted">→</span>
+                    <span class="gold">一人公司</span>
                 </div>
                 <aside class="notes">从台湾到武汉，一路用 AI 摸索出一套可复制的方法论。</aside>
             </section>
 
-            <!-- ===== SLIDE 3: 破题 — 内地最大的收获 ===== -->
+            <!-- ===== SLIDE 3: 破题 ===== -->
             <section class="center">
-                <h2>来内地最大的收获 💡</h2>
+                <h2>来内地最大的感触 💡</h2>
                 <br>
                 <div class="big-quote">
-                    「不是<span class="pink">市场</span>，<br>
-                    是 <span class="accent">AI 的速度</span>。」
+                    不是<span class="pink">市场大</span>，<br>
+                    是大家<span class="accent">太卷了</span>。
                 </div>
                 <br>
-                <p class="muted" style="font-size:0.8em;">台湾还在讨论 AI 能不能用的时候<br>内地已经在拼谁用得 <span class="gold">更快、更狠、更全面</span></p>
-                <aside class="notes">来内地之前，以为最大收获会是市场。结果发现，AI 应用的速度差距才是最大的冲击。</aside>
+                <p class="muted" style="font-size:0.78em;">内地的竞争环境逼着每个人拼命提效<br>AI 成了最强加速器 —— 不用的人直接被甩开</p>
+                <br>
+                <p class="gold" style="font-size:0.75em;">台湾人有创意、有品味、有国际视野<br>如果再加上内地这股 AI 效率，那就是降维打击 💪</p>
+                <aside class="notes">不是贬低任何一边。台湾的优势是创意和品味，内地的优势是执行速度和卷的程度。两边结合就很强。</aside>
             </section>
 
-            <!-- ===== SLIDE 4: 内地见闻 — 生活中的 AI ===== -->
+            <!-- ===== SLIDE 4: 内地见闻 — 卷到什么程度 ===== -->
             <section>
-                <h2>🇨🇳 内地 AI 见闻：无处不在</h2>
+                <h2>🇨🇳 内地有多卷？AI 无处不在</h2>
                 <br>
                 <div class="grid-2">
-                    <div class="glass-card" style="padding:20px 24px;">
-                        <p style="margin:0 0 8px;"><span class="accent">🤖 AI 客服</span></p>
-                        <p class="muted" style="font-size:0.7em; margin:0;">银行、外卖、电商…<br>几乎不跟真人说话了</p>
+                    <div class="glass-card" style="padding:18px 22px;">
+                        <p style="margin:0 0 6px;"><span class="accent">🤖 AI 客服全面取代真人</span></p>
+                        <p class="muted" style="font-size:0.65em; margin:0;">银行、外卖、电商、运营商……打电话几乎都是 AI 在回复</p>
                     </div>
-                    <div class="glass-card" style="padding:20px 24px;">
-                        <p style="margin:0 0 8px;"><span class="purple">📺 AI 直播带货</span></p>
-                        <p class="muted" style="font-size:0.7em; margin:0;">数字人 24 小时不间断<br>成本是真人的 1/10</p>
+                    <div class="glass-card" style="padding:18px 22px;">
+                        <p style="margin:0 0 6px;"><span class="purple">📺 AI 数字人 24h 直播带货</span></p>
+                        <p class="muted" style="font-size:0.65em; margin:0;">成本 1/10，同时开几十个直播间，全年无休</p>
                     </div>
-                    <div class="glass-card" style="padding:20px 24px;">
-                        <p style="margin:0 0 8px;"><span class="pink">📸 AI 写真</span></p>
-                        <p class="muted" style="font-size:0.7em; margin:0;">几张照片 → 百种风格<br>街边小店都在用</p>
+                    <div class="glass-card" style="padding:18px 22px;">
+                        <p style="margin:0 0 6px;"><span class="pink">📸 AI 写真街边遍地开花</span></p>
+                        <p class="muted" style="font-size:0.65em; margin:0;">几张照片 → 百种风格，连快照店都在用 AI 出图</p>
                     </div>
-                    <div class="glass-card" style="padding:20px 24px;">
-                        <p style="margin:0 0 8px;"><span class="gold">⚖️ AI 法律顾问</span></p>
-                        <p class="muted" style="font-size:0.7em; margin:0;">小程序输入问题<br>几秒出法律建议书</p>
+                    <div class="glass-card" style="padding:18px 22px;">
+                        <p style="margin:0 0 6px;"><span class="gold">⚖️ AI 法律 / 财务 / 设计</span></p>
+                        <p class="muted" style="font-size:0.65em; margin:0;">小程序几秒出法律建议书、AI 自动做财报、出效果图</p>
                     </div>
                 </div>
-                <aside class="notes">这些不是未来，是现在进行式。内地的 AI 渗透率远超大家想象。</aside>
+                <br>
+                <div class="img-placeholder" style="height:100px;">
+                    <p>⬆️ 请替换：AI 客服 / 数字人直播 / AI 写真 相关新闻截图拼图<br>
+                    建议搜索：「AI数字人直播」「妙鸭相机」「AI客服 银行」相关报道截图</p>
+                </div>
+                <aside class="notes">这些不是新闻标题，是街上走一圈就能看到的日常。内地的卷推动了 AI 极速落地。</aside>
             </section>
 
-            <!-- ===== SLIDE 5: 内地见闻 — 自媒体军备竞赛 ===== -->
+            <!-- ===== SLIDE 5: 自媒体圈更卷 ===== -->
             <section>
-                <h2>🔥 自媒体的 AI 军备竞赛</h2>
+                <h2>🔥 自媒体圈卷到飞起</h2>
                 <br>
                 <ul>
-                    <li>📱 <span class="accent">矩阵号</span> — 一个人同时运营 <span class="gold">50+</span> 帐号，AI 自动改写 + 分发</li>
-                    <li>🎬 <span class="purple">AI 口播</span> — 不用真人出镜，数字人 + AI 脚本，日更 10 条</li>
-                    <li>💬 <span class="pink">AI 评论区运营</span> — 自动回覆、自动互动、24 小时引流</li>
-                    <li>🛒 <span class="accent">AI 全链路带货</span> — 从 1688 选品 → 种草文 → 投放，全自动</li>
+                    <li>📱 <span class="accent">矩阵号操作</span> — 一个人运营 50+ 帐号，AI 自动改写分发</li>
+                    <li>🎬 <span class="purple">AI 口播视频</span> — 数字人 + AI 脚本，日更 10 条不在话下</li>
+                    <li>💬 <span class="pink">AI 评论区运营</span> — 自动回覆、互动、引流，24 小时不停</li>
+                    <li>🛒 <span class="gold">全链路 AI 带货</span> — 选品→文案→投放→客服，全程自动化</li>
                 </ul>
                 <br>
-                <div class="glass-card" style="text-align:center; padding:16px;">
-                    <p style="margin:0;"><span class="red">⚠️ 不用 AI 的人，正在被用 AI 的人淘汰</span></p>
+                <div class="glass-card" style="text-align:center; padding:14px;">
+                    <p style="margin:0;">卷不是坏事 —— <span class="accent">卷出来的效率，正是我们可以学的</span></p>
                 </div>
-                <aside class="notes">在内地自媒体圈，不用 AI 已经不是「效率低」的问题，是「活不下去」的问题。</aside>
+                <br>
+                <div class="img-placeholder" style="height:80px;">
+                    <p>⬆️ 请替换：矩阵号运营工具 / AI 口播工具截图<br>
+                    建议搜索：「AI矩阵号」「数字人口播」相关产品截图</p>
+                </div>
+                <aside class="notes">内地自媒体圈的卷推动了大量 AI 工具的诞生。我们不需要那么卷，但可以学他们的效率方法。</aside>
             </section>
 
             <!-- ===== SLIDE 6: 心法一 ===== -->
             <section class="center">
                 <span class="pill">心法 ❶</span>
                 <br><br>
-                <div class="big-quote">
-                    AI 是<span class="accent">实习生</span>，<br>不是<span class="pink">神</span>。
+                <div class="big-quote" style="font-size:1.4em;">
+                    AI 是<span class="accent">实习生</span>，不是<span class="pink">神</span>。
+                </div>
+                <div class="glass-card" style="max-width:680px; margin:0 auto; text-align:left; padding:20px 28px;">
+                    <p style="margin:4px 0; font-size:0.82em;">❌ <span class="muted">「AI 帮我做一个完美的商业计划」</span></p>
+                    <p style="margin:4px 0; font-size:0.82em;">✅ <span class="accent">「AI 帮我列出框架，我来补细节和判断」</span></p>
                 </div>
                 <br>
-                <div class="glass-card" style="max-width:700px; margin:0 auto; text-align:left; padding:24px 32px;">
-                    <p style="margin:0 0 8px;">❌ <span class="muted">「AI 帮我做一个完美的商业计划」</span></p>
-                    <p style="margin:0;">✅ <span class="accent">「AI 帮我列出商业计划的框架，我来补细节」</span></p>
-                </div>
-                <br>
-                <p class="muted" style="font-size:0.75em;">你要会下指令、会验收、会迭代</p>
-                <aside class="notes">很多人失望是因为期望太高。AI 需要你指导方向，它来执行。像带实习生一样。</aside>
+                <p class="muted" style="font-size:0.72em;">你要会<span class="accent">下指令</span>、会<span class="purple">验收</span>、会<span class="pink">迭代</span> —— 像带实习生一样</p>
+                <aside class="notes">很多人失望是因为期望太高。AI 需要你指导方向，它来执行。心态对了，效果完全不同。</aside>
             </section>
 
             <!-- ===== SLIDE 7: 心法二 ===== -->
             <section class="center">
                 <span class="pill pill-purple">心法 ❷</span>
                 <br><br>
-                <div class="big-quote">
-                    先想<span class="purple">流程</span>，<br>再选<span class="accent">工具</span>。
+                <div class="big-quote" style="font-size:1.4em;">
+                    先想<span class="purple">流程</span>，再选<span class="accent">工具</span>。
                 </div>
-                <br>
-                <div class="glass-card" style="max-width:700px; margin:0 auto; text-align:center; padding:24px 32px;">
-                    <p style="margin:0; font-size:0.85em;">
+                <div class="glass-card" style="max-width:700px; margin:0 auto; text-align:center; padding:20px 28px;">
+                    <p style="margin:0; font-size:0.82em;">
                         <span class="muted">选题</span> → <span class="muted">文案</span> → <span class="muted">配图</span> → <span class="muted">发布</span> → <span class="muted">数据分析</span>
                     </p>
-                    <p style="margin:8px 0 0; font-size:0.7em; color:var(--accent);">先理清每一步，再找 AI 工具来加速每一步</p>
+                    <p style="margin:6px 0 0; font-size:0.68em; color:var(--accent);">先理清每一步，再找 AI 工具来加速每一步</p>
                 </div>
                 <br>
-                <p class="muted" style="font-size:0.75em;">不要被工具牵着走，要让工具为你的流程服务</p>
-                <aside class="notes">最常见的错误：听说 XX 工具很厉害就去学，结果学了不知道用在哪。先画流程图，再填工具。</aside>
+                <p class="muted" style="font-size:0.72em;">不要被工具牵着走，要让工具为你的流程服务</p>
+                <aside class="notes">最常见的错误：听说某工具很厉害就去学，结果学了不知道用在哪。先画流程，再填工具。</aside>
             </section>
 
             <!-- ===== SLIDE 8: 心法三 ===== -->
             <section class="center">
                 <span class="pill pill-gold">心法 ❸</span>
                 <br><br>
-                <div class="big-quote">
+                <div class="big-quote" style="font-size:1.4em;">
                     <span class="gold">80/20</span> 法则
                 </div>
-                <br>
-                <div class="grid-2" style="max-width:800px; margin:0 auto;">
-                    <div class="glass-card stat-box">
+                <div class="grid-2" style="max-width:700px; margin:0 auto;">
+                    <div class="glass-card stat-box" style="padding:20px;">
                         <div class="num accent">80%</div>
                         <div class="label">重复工作交给 AI<br>文案改写 · 数据整理 · 排版</div>
                     </div>
-                    <div class="glass-card stat-box">
+                    <div class="glass-card stat-box" style="padding:20px;">
                         <div class="num gold">20%</div>
                         <div class="label">创意留给自己<br>选题判断 · 人设 · 灵魂</div>
                     </div>
                 </div>
                 <br>
-                <p class="muted" style="font-size:0.75em;">AI 让你 <span class="accent">更自由</span>，不是让你 <span class="pink">更忙</span></p>
+                <p class="muted" style="font-size:0.72em;">AI 让你<span class="accent">更自由</span>，不是让你<span class="pink">更忙</span></p>
                 <aside class="notes">AI 的目标不是让你产出更多，而是让你有更多时间做真正有价值的事。</aside>
             </section>
 
@@ -296,45 +301,44 @@
                 <div class="grid-2">
                     <div>
                         <h3 style="color:var(--red);">没用 AI 之前 😩</h3>
-                        <div class="glass-card" style="padding:20px;">
-                            <p style="margin:4px 0; font-size:0.8em;">📝 写 4 平台文案：<span class="red">6 小时</span></p>
-                            <p style="margin:4px 0; font-size:0.8em;">🎨 做配图封面：<span class="red">3 小时</span></p>
-                            <p style="margin:4px 0; font-size:0.8em;">📊 数据分析报表：<span class="red">2 小时</span></p>
-                            <p style="margin:4px 0; font-size:0.8em;">💬 回复客户咨询：<span class="red">4 小时</span></p>
-                            <hr style="border-color:rgba(255,255,255,0.1);">
-                            <p style="margin:4px 0; font-size:0.85em;">总计：<span class="red">15 小时/周</span></p>
+                        <div class="glass-card" style="padding:16px 20px;">
+                            <p style="margin:3px 0; font-size:0.75em;">📝 写 4 平台文案：<span class="red">6 小时</span></p>
+                            <p style="margin:3px 0; font-size:0.75em;">🎨 做配图封面：<span class="red">3 小时</span></p>
+                            <p style="margin:3px 0; font-size:0.75em;">📊 数据分析报表：<span class="red">2 小时</span></p>
+                            <p style="margin:3px 0; font-size:0.75em;">💬 回复客户咨询：<span class="red">4 小时</span></p>
+                            <hr style="border-color:rgba(255,255,255,0.1); margin:8px 0;">
+                            <p style="margin:3px 0; font-size:0.8em;">总计：<span class="red">15 小时/周</span></p>
                         </div>
                     </div>
                     <div>
                         <h3 style="color:var(--green);">用 AI 之后 😎</h3>
-                        <div class="glass-card" style="padding:20px;">
-                            <p style="margin:4px 0; font-size:0.8em;">📝 AI 生成 + 我微调：<span class="green">40 分钟</span></p>
-                            <p style="margin:4px 0; font-size:0.8em;">🎨 AI 生图 + 模板：<span class="green">20 分钟</span></p>
-                            <p style="margin:4px 0; font-size:0.8em;">📊 AI 自动分析：<span class="green">5 分钟</span></p>
-                            <p style="margin:4px 0; font-size:0.8em;">💬 AI 客服自动回：<span class="green">0 分钟</span></p>
-                            <hr style="border-color:rgba(255,255,255,0.1);">
-                            <p style="margin:4px 0; font-size:0.85em;">总计：<span class="green">1 小时/周</span></p>
+                        <div class="glass-card" style="padding:16px 20px;">
+                            <p style="margin:3px 0; font-size:0.75em;">📝 AI 生成 + 我微调：<span class="green">40 分钟</span></p>
+                            <p style="margin:3px 0; font-size:0.75em;">🎨 AI 生图 + 模板：<span class="green">20 分钟</span></p>
+                            <p style="margin:3px 0; font-size:0.75em;">📊 AI 自动分析：<span class="green">5 分钟</span></p>
+                            <p style="margin:3px 0; font-size:0.75em;">💬 AI 客服自动回：<span class="green">0 分钟</span></p>
+                            <hr style="border-color:rgba(255,255,255,0.1); margin:8px 0;">
+                            <p style="margin:3px 0; font-size:0.8em;">总计：<span class="green">1 小时/周</span></p>
                         </div>
                     </div>
                 </div>
                 <br>
                 <p style="text-align:center;" class="gold">省下的 14 小时，我拿去打匹克球了 🏓</p>
-                <aside class="notes">这是真实数据。省下来的时间你可以做更多创意的事，或者...享受生活。</aside>
+                <aside class="notes">这是真实数据。省下来的时间你可以做更多创意的事，或者享受生活。</aside>
             </section>
 
             <!-- ===== SLIDE 10: 预告 Day 2 ===== -->
             <section class="center">
                 <h2>😏 今天只是<span class="pink">开胃菜</span></h2>
                 <br>
-                <div class="glass-card" style="max-width:700px; margin:0 auto; text-align:left;">
-                    <p style="margin:6px 0;"><span class="accent">🔴 明天我会现场 Live Demo</span></p>
-                    <p style="margin:6px 0;">📱 用 AI 从 0 到 1 产出一篇可发布的内容</p>
-                    <p style="margin:6px 0;">🦞 展示我的私人 AI 助手怎么帮我管理公司</p>
-                    <p style="margin:6px 0;">🇨🇳 更多内地瘋狂 AI 应用案例</p>
-                    <p style="margin:6px 0;">⚡ 所有 prompt 模板免费送</p>
+                <div class="glass-card" style="max-width:700px; margin:0 auto; text-align:left; padding:20px 28px;">
+                    <p style="margin:5px 0;">🔴 <span class="accent">明天现场 Live Demo</span> — 用 AI 从 0 到 1 产出可发布内容</p>
+                    <p style="margin:5px 0;">🦞 <span class="purple">展示私人 AI 助手</span> — 看它怎么帮我管理公司</p>
+                    <p style="margin:5px 0;">🇨🇳 <span class="pink">更多内地疯狂 AI 案例</span> — 连医疗圈都被 AI 颠覆了</p>
+                    <p style="margin:5px 0;">⚡ <span class="gold">所有 prompt 模板免费送</span></p>
                 </div>
                 <br>
-                <p class="gold" style="font-size:1.2em;">明天记得来！带笔电更好 💻</p>
+                <p class="gold" style="font-size:1.1em;">明天记得来！带笔电更好 💻</p>
                 <aside class="notes">明天 30 分钟，全是实操。让你亲眼看到 AI 怎么改变工作方式。</aside>
             </section>
 
@@ -344,16 +348,16 @@
                 <br>
                 <div class="grid-2" style="max-width:700px; margin:0 auto; align-items:center;">
                     <div>
-                        <div class="glass-card" style="text-align:left; padding:20px 24px;">
-                            <p style="margin:6px 0;">✅ 明天课程提醒</p>
-                            <p style="margin:6px 0;">✅ 免费 AI 工具清单</p>
-                            <p style="margin:6px 0;">✅ Prompt 模板包</p>
-                            <p style="margin:6px 0;">✅ 持续更新 AI 新玩法</p>
+                        <div class="glass-card" style="text-align:left; padding:18px 22px;">
+                            <p style="margin:5px 0; font-size:0.85em;">✅ 明天课程提醒</p>
+                            <p style="margin:5px 0; font-size:0.85em;">✅ 免费 AI 工具清单</p>
+                            <p style="margin:5px 0; font-size:0.85em;">✅ Prompt 模板包</p>
+                            <p style="margin:5px 0; font-size:0.85em;">✅ 持续更新最新最卷的 AI 知识</p>
                         </div>
                     </div>
                     <div>
-                        <div class="qr-placeholder" style="width:220px; height:220px;">
-                            <p style="font-size:0.75em;">微信群<br>QR Code<br><span style="font-size:0.8em;">⬆️ 请替换</span></p>
+                        <div class="qr-placeholder" style="width:200px; height:200px;">
+                            <p style="font-size:0.7em;">微信群<br>QR Code<br><span style="font-size:0.8em;">⬆️ 请替换</span></p>
                         </div>
                     </div>
                 </div>
@@ -387,7 +391,7 @@
             transitionSpeed: 'default',
             width: 1280,
             height: 720,
-            margin: 0.08,
+            margin: 0.06,
             minScale: 0.2,
             maxScale: 2.0,
             keyboard: true,
