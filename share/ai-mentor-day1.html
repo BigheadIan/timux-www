@@ -718,15 +718,21 @@
             item.onclick = () => { Reveal.slide(i); ov.classList.remove('show'); };
 
             // 用 iframe 渲染縮略圖
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;';
+
             const iframe = document.createElement('iframe');
-            iframe.style.cssText = 'width:1280px;height:720px;transform:scale(0.22);transform-origin:top left;pointer-events:none;border:none;';
+            iframe.style.cssText = 'position:absolute;top:0;left:0;width:1280px;height:720px;transform-origin:top left;pointer-events:none;border:none;';
             iframe.srcdoc = `<html><head>${document.head.innerHTML}</head><body style="margin:0;overflow:hidden;">
                 <div style="width:1280px;height:720px;padding:30px 50px;box-sizing:border-box;background:linear-gradient(135deg,#0a1628,#0d2137,#0a1628,#061220);">
                 ${slide.innerHTML}</div></body></html>`;
 
-            const wrapper = document.createElement('div');
-            wrapper.style.cssText = 'width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;';
+            // 等 wrapper 渲染後計算正確的縮放比
             wrapper.appendChild(iframe);
+            requestAnimationFrame(() => {
+                const scale = wrapper.offsetWidth / 1280;
+                iframe.style.transform = 'scale(' + scale + ')';
+            });
 
             const num = document.createElement('div');
             num.className = 'grid-num';
