@@ -9,17 +9,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
     <style>
         :root {
-            --bg1: #0a0a1a;
-            --bg2: #0d1117;
-            --accent: #00d4ff;
-            --accent2: #7c3aed;
+            --bg1: #0a1628;
+            --bg2: #0d2137;
+            --accent: #4fc3f7;
+            --accent2: #00e5ff;
             --accent3: #f472b6;
             --gold: #fbbf24;
             --text: #e2e8f0;
             --muted: #94a3b8;
-            --glass: rgba(255,255,255,0.04);
-            --glass-border: rgba(255,255,255,0.08);
-            --glow: 0 0 40px rgba(0,212,255,0.15);
+            --glass: rgba(79, 195, 247, 0.06);
+            --glass-border: rgba(79, 195, 247, 0.15);
+            --glow: 0 0 40px rgba(79, 195, 247, 0.15);
             --red: #ef4444;
             --green: #22c55e;
             --orange: #f97316;
@@ -28,13 +28,47 @@
             font-family: 'Noto Sans SC', -apple-system, sans-serif;
             font-size: 36px;
             color: var(--text);
-            background: var(--bg1);
+            background: linear-gradient(135deg, #0a1628 0%, #0d2137 30%, #0a1628 70%, #061220 100%);
+            position: relative;
+        }
+        .reveal::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            background-image: 
+                linear-gradient(90deg, rgba(79, 195, 247, 0.15) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(79, 195, 247, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 0;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reveal::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 250px;
+            height: 250px;
+            background-image: 
+                radial-gradient(circle at 3px 3px, rgba(79, 195, 247, 0.2) 1px, transparent 1px);
+            background-size: 25px 25px;
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 0;
         }
         .reveal .slides { background: transparent; }
         .reveal .slides section {
             text-align: left;
-            padding: 40px 60px;
+            padding: 30px 50px;
             background: transparent;
+            max-width: 1180px;
+            max-height: 660px;
+            overflow: hidden;
         }
         .reveal .slides section.center { text-align: center; }
         .reveal .slides section::before {
@@ -42,20 +76,38 @@
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             background:
-                radial-gradient(ellipse 600px 400px at 10% 20%, rgba(124,58,237,0.12) 0%, transparent 70%),
-                radial-gradient(ellipse 500px 500px at 90% 80%, rgba(0,212,255,0.08) 0%, transparent 70%),
-                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(244,114,182,0.05) 0%, transparent 70%);
+                radial-gradient(ellipse 600px 400px at 10% 20%, rgba(79, 195, 247, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 90% 80%, rgba(0, 229, 255, 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(79, 195, 247, 0.05) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
         .reveal .slides section > * { position: relative; z-index: 1; }
-        .reveal h1 { font-size: 2.2em; font-weight: 900; line-height: 1.15; margin: 0 0 12px; }
-        .reveal h2 { font-size: 1.45em; font-weight: 700; line-height: 1.2; margin: 0 0 12px; color: var(--text); }
-        .reveal h3 { font-size: 1.1em; font-weight: 600; margin: 0 0 10px; color: var(--muted); }
+        .reveal h1 { 
+            font-size: 2.0em; 
+            font-weight: 900; 
+            line-height: 1.15; 
+            margin: 0 0 12px;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+        }
+        .reveal h2 { 
+            font-size: 1.35em; 
+            font-weight: 700; 
+            line-height: 1.2; 
+            margin: 0 0 12px; 
+            color: var(--text);
+        }
+        .reveal h3 { font-size: 1.05em; font-weight: 600; margin: 0 0 10px; color: var(--muted); }
         .reveal p, .reveal li { font-weight: 400; line-height: 1.55; margin: 0.3em 0; }
         .reveal ul { display: block; margin-left: 0.8em; }
         .reveal li { margin: 0.4em 0; font-size: 0.85em; }
-        .grad-text { background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .grad-text { 
+            background: linear-gradient(135deg, #4fc3f7, #00e5ff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(79, 195, 247, 0.4);
+        }
         .accent { color: var(--accent); font-weight: 700; }
         .purple { color: var(--accent2); font-weight: 700; }
         .pink { color: var(--accent3); font-weight: 700; }
@@ -111,15 +163,22 @@
             color: var(--muted);
         }
         .img-placeholder {
-            border: 2px dashed rgba(255,255,255,0.12);
+            border: 2px dashed rgba(79, 195, 247, 0.15);
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.02);
+            background: rgba(79, 195, 247, 0.05);
             color: var(--muted);
             font-size: 0.58em;
             text-align: center;
             padding: 14px;
             min-height: 100px;
+            max-height: 45vh;
+        }
+        .reveal img {
+            max-height: 45vh;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
         }
         .slide-number {
             color: var(--accent) !important;
@@ -137,13 +196,14 @@
         .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
         .subtitle { font-size: 0.65em; color: var(--muted); margin-top: -8px; }
         .section-divider {
-            background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,212,255,0.1));
-            border: 1px solid rgba(124,58,237,0.2);
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.15), rgba(0, 229, 255, 0.1));
+            border: 1px solid rgba(79, 195, 247, 0.25);
             border-radius: 20px;
             padding: 8px 22px;
             display: inline-block;
             font-size: 0.65em;
             font-weight: 600;
+            color: var(--accent);
         }
         .arch-tree { font-family: 'Menlo','Monaco',monospace; font-size: 0.7em; line-height: 1.9; }
         .arch-node {
