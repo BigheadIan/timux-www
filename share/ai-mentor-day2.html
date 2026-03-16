@@ -665,6 +665,75 @@
                 <aside class="notes">让大家动手试试。流程很简单：先随便找个AI聊天说想法，让AI帮你写提示词，再把提示词丢给AI Studio就自动搭建工具了。</aside>
             </section>
 
+            <!-- RTCO 万能提示词公式 -->
+            <section>
+                <h2 style="font-size:1.15em;">🏆 黄金法则：万能提示词 <span class="gold">RTCO</span> 公式</h2>
+                <p class="muted" style="font-size:0.65em; text-align:center; margin:4px 0 12px;">你的角色：从<span class="red">执行者</span>变成<span class="gold">指挥官</span> 🎖️</p>
+                <div style="display:flex; align-items:center; justify-content:center; gap:16px; font-size:0.9em; flex-wrap:wrap;">
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">R</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Role</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">设定身份</p>
+                    </div>
+                    <span class="gold" style="font-size:1.2em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">T</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Task</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">下达任务</p>
+                    </div>
+                    <span class="gold" style="font-size:1.2em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">C</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Constraints</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">明确要求</p>
+                    </div>
+                    <span class="gold" style="font-size:1.2em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">O</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Output</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">规定格式</p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center; padding:10px; max-width:600px; margin:0 auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.75em;"><span class="gold">沟通越具体，产出越高级</span></p>
+                </div>
+                <aside class="notes">RTCO是万能提示词公式。R设定AI的角色，T下达具体任务，C明确约束条件，O规定输出格式。掌握这个公式，你就从AI的执行者变成指挥官。</aside>
+            </section>
+
+            <!-- RTCO 实战对比：普通 vs 专家 -->
+            <section>
+                <h2 style="font-size:1.1em;">📝 实战对比：同一个需求，两种指令</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 8px;">以「搭建自媒体 AI 工作站」为例</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:12px 16px;">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="red" style="font-size:0.8em; font-weight:700;">❌ 普通人的指令</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.55em; color:var(--muted); font-family:monospace;">
+                            帮我做一个自媒体工具
+                        </div>
+                        <p style="margin:8px 0 0; font-size:0.5em; text-align:center;"><span class="red">结果：</span>AI 随便给个模板，功能少、不精准</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="gold" style="font-size:0.8em; font-weight:700;">✅ RTCO 专家指令</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.5em; color:var(--muted); font-family:monospace; line-height:1.5;">
+                            <span class="gold">[R]</span> 你是一个资深自媒体运营专家<br>
+                            <span class="gold">[T]</span> 搭建一个自媒体 AI 工作站 App，包含：选题引擎、文案生成、配图建议、多平台适配<br>
+                            <span class="gold">[C]</span> 支持抖音/小红书/IG/YT 四平台；文案要有黄金 3 秒 Hook；配图需符合各平台尺寸<br>
+                            <span class="gold">[O]</span> 输出完整 App 代码 + 使用说明
+                        </div>
+                        <p style="margin:8px 0 0; font-size:0.5em; text-align:center;"><span class="gold">结果：</span>AI 思考 139 秒，产出完整专业 App ✨</p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center; padding:8px; max-width:650px; margin:0 auto;">
+                    <p style="margin:0; font-size:0.68em;">
+                        <span class="gold">💡 同样的 AI，同样的问题</span><br>
+                        <span class="muted" style="font-size:0.9em;">指令不同，结果<span class="accent">天差地别</span></span>
+                    </p>
+                </div>
+                <aside class="notes">用自媒体AI工作站当例子。普通人就说「帮我做一个工具」，AI给个半成品。用RTCO公式明确角色、任务、约束、输出，AI就能产出139秒完整App。同一个AI，指令不同结果天差地别。</aside>
+            </section>
+
             <!-- ========================================= -->
             <!-- PART 3: OpenClaw (8 min) -->
             <!-- ========================================= -->
