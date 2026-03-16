@@ -54,8 +54,19 @@
     config.primaryColor = scriptTag.getAttribute('data-color') || config.primaryColor;
     config.position = scriptTag.getAttribute('data-position') || config.position;
 
-    // 從 script src 推斷 API base URL
-    config.apiBase = scriptTag.src.replace('/widget.js', '');
+    // API base URL — 從 script src 推斷或用 data-api 屬性
+    if (scriptTag.getAttribute('data-api')) {
+      config.apiBase = scriptTag.getAttribute('data-api').replace(/\/+$/, '');
+    } else {
+      // 從 script src 提取 origin（支援 /api/widget.js、/widget.js、/js/ai-widget.js 等各種路徑）
+      try {
+        const srcUrl = new URL(scriptTag.src);
+        config.apiBase = srcUrl.origin;
+      } catch (e) {
+        // 相對路徑時用當前頁面的 origin
+        config.apiBase = window.location.origin;
+      }
+    }
 
     // 生成或取得 sessionId
     sessionId = localStorage.getItem(`widget_session_${config.tenantCode}`) || 
