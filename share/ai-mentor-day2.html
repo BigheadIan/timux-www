@@ -809,57 +809,73 @@
                 <aside class="notes">ChatGPT 很强，但它是工具。OpenClaw 让 AI 变成你的同事。</aside>
             </section>
 
-            <!-- OpenClaw: 我的 AI 员工 -->
+            <!-- OpenClaw: 我的 AI 员工 — 架构 -->
             <section>
                 <h2>我的 AI 员工：小mini 🤠</h2>
-                <div style="display:flex; gap:20px; align-items:start;">
-                    <div style="flex:1;">
-                        <p style="font-size:0.75em; margin:0 0 8px;">OpenClaw + <span class="gold">最顶级 AI 模型</span> = 10 人虚拟团队：</p>
-                        <div class="glass-card arch-tree" style="padding:12px 16px;">
-                            <div style="text-align:center; margin-bottom:6px;">
-                                <span class="arch-node" style="border-color:var(--gold);">🧠 <span class="gold">小mini</span> — Claude Opus 4（总指挥）</span>
-                            </div>
-                            <div style="font-size:0.88em;">
-                                <div>├── 📋 <span class="purple">PM</span> · 需求分析 & 规格撰写</div>
-                                <div>├── 💻 <span class="accent">Dev</span> · 全栈开发（前后端 + DB）</div>
-                                <div>├── 🧪 <span class="pink">QA</span> · 测试 & 找 Bug</div>
-                                <div>├── 🎨 <span class="gold">UI</span> · 设计一致性 & UX 审查</div>
-                                <div>├── 📊 <span class="purple">Research</span> · 市场调研 & 竞品分析</div>
-                                <div>├── 📣 <span class="pink">Social Media</span> · 社群策略 & 内容规划</div>
-                                <div>├── 📝 <span class="accent">Content</span> · 行销文案 & 产品介绍</div>
-                                <div>├── 🤝 <span class="gold">Customer Success</span> · 客户问题追踪</div>
-                                <div>├── 🔍 <span class="purple">Explorer</span> · 网络搜索 & 信息整理</div>
-                                <div>└── 🛠️ <span class="accent">Helper</span> · 杂务处理（便宜模型）</div>
-                            </div>
-                        </div>
-                        <p class="muted" style="font-size:0.5em; margin:6px 0 0;">
-                            ⚠️ 总指挥用最强模型（判断准）→ 手下用 Sonnet（便宜 80%）→ 并行 8 任务
-                        </p>
+                <p style="font-size:0.8em; margin:0 0 14px; text-align:center;">OpenClaw + <span class="gold">最顶级 AI 模型</span> = 10 人虚拟团队</p>
+                <div class="glass-card arch-tree" style="padding:18px 28px; max-width:800px; margin:0 auto;">
+                    <div style="text-align:center; margin-bottom:12px;">
+                        <span class="arch-node" style="border-color:var(--gold); font-size:1.05em;">🧠 <span class="gold">小mini</span> — Claude Opus 4（总指挥）</span>
                     </div>
-                    <div style="flex:0 0 300px;">
-                        <div class="glass-card" style="padding:14px 18px; text-align:center; margin-bottom:8px;">
-                            <p class="gold" style="font-size:0.9em; margin:0 0 6px;">📈 实际成果</p>
-                            <p style="margin:4px 0; font-size:0.68em;">✅ 独立开发 <span class="accent">2 个 SaaS 产品</span></p>
-                            <p style="margin:4px 0; font-size:0.68em;">✅ 同时推进 <span class="purple">6 个项目</span></p>
-                            <p style="margin:4px 0; font-size:0.68em;">✅ 全自动 <span class="pink">社群内容日更</span></p>
-                            <p style="margin:4px 0; font-size:0.68em;">✅ 24/7 <span class="gold">AI 客服系统</span></p>
-                            <p style="margin:4px 0; font-size:0.68em;">✅ 投影片 <span class="accent">30 分钟产出</span></p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px 40px; font-size:0.92em;">
+                        <div>├── 📋 <span class="purple">PM</span> · 需求分析 & 规格撰写</div>
+                        <div>├── 📣 <span class="pink">Social Media</span> · 社群策略</div>
+                        <div>├── 💻 <span class="accent">Dev</span> · 全栈开发</div>
+                        <div>├── 📝 <span class="accent">Content</span> · 行销文案</div>
+                        <div>├── 🧪 <span class="pink">QA</span> · 测试 & 找 Bug</div>
+                        <div>├── 🤝 <span class="gold">CS</span> · 客户问题追踪</div>
+                        <div>├── 🎨 <span class="gold">UI</span> · 设计 & UX 审查</div>
+                        <div>├── 🔍 <span class="purple">Explorer</span> · 搜索 & 整理</div>
+                        <div>├── 📊 <span class="purple">Research</span> · 调研 & 竞品</div>
+                        <div>└── 🛠️ <span class="accent">Helper</span> · 杂务（便宜模型）</div>
+                    </div>
+                </div>
+                <br>
+                <div style="display:flex; gap:16px; justify-content:center;">
+                    <div class="glass-card" style="padding:10px 20px; text-align:center;">
+                        <p style="margin:0; font-size:0.72em;">⚡ 总指挥 = <span class="gold">最强模型</span>（判断准）</p>
+                    </div>
+                    <div class="glass-card" style="padding:10px 20px; text-align:center;">
+                        <p style="margin:0; font-size:0.72em;">💰 手下 = <span class="purple">Sonnet</span>（便宜 80%）</p>
+                    </div>
+                    <div class="glass-card" style="padding:10px 20px; text-align:center;">
+                        <p style="margin:0; font-size:0.72em;">🔄 并行 <span class="accent">8 任务</span> 同时跑</p>
+                    </div>
+                </div>
+                <aside class="notes">小mini 是总指挥用 Opus 4 最强模型，底下 10 个角色分工明确。关键：头子用最强，手下用便宜的，成本可控效率极高。</aside>
+            </section>
+
+            <!-- OpenClaw: 小mini 成果 -->
+            <section>
+                <h2>小mini 帮我做到了什么？ 📈</h2>
+                <br>
+                <div class="grid-2" style="align-items:start;">
+                    <div>
+                        <div class="glass-card" style="padding:18px 22px; margin-bottom:12px;">
+                            <p class="gold" style="font-size:0.95em; margin:0 0 10px; font-weight:700;">🏆 实际成果</p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 独立开发 <span class="accent">2 个 SaaS 产品</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 同时推进 <span class="purple">6 个项目</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 全自动 <span class="pink">社群内容日更</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 24/7 <span class="gold">AI 客服系统</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 投影片 <span class="accent">30 分钟完整产出</span></p>
                         </div>
-                        <div class="glass-card" style="padding:10px 18px; margin-bottom:8px;">
-                            <p style="margin:0 0 4px; font-size:0.6em; color:var(--purple); font-weight:700;">🔗 多平台接入</p>
-                            <p style="margin:2px 0; font-size:0.58em;">💬 Discord · Telegram · LINE</p>
-                            <p style="margin:2px 0; font-size:0.58em;">📅 定时任务 · 心跳检测 · 主动提醒</p>
-                            <p style="margin:2px 0; font-size:0.58em;">🌐 浏览器控制 · 网页搜索 · API 调用</p>
+                    </div>
+                    <div>
+                        <div class="glass-card" style="padding:16px 20px; margin-bottom:12px;">
+                            <p style="margin:0 0 8px; font-size:0.78em; color:var(--purple); font-weight:700;">🔗 多平台接入</p>
+                            <p style="margin:5px 0; font-size:0.75em;">💬 Discord · Telegram · LINE</p>
+                            <p style="margin:5px 0; font-size:0.75em;">📅 定时任务 · 心跳检测 · 主动提醒</p>
+                            <p style="margin:5px 0; font-size:0.75em;">🌐 浏览器控制 · 网页搜索 · API</p>
                         </div>
-                        <div class="glass-card" style="padding:10px 18px; text-align:center; border-color:var(--gold);">
-                            <p style="margin:0; font-size:0.75em;">
-                                <span class="gold">一个人 + 🦞 = 一个完整团队</span><br>
-                                <span class="muted" style="font-size:0.72em;">月成本 ≈ 一杯奶茶/天 🧋</span>
+                        <div class="glass-card" style="padding:16px 20px; text-align:center; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.95em;">
+                                <span class="gold">一个人 + 🦞 = 一个完整团队</span>
                             </p>
+                            <p class="muted" style="margin:6px 0 0; font-size:0.78em;">月成本 ≈ 一杯奶茶/天 🧋</p>
                         </div>
                     </div>
                 </div>
-                <aside class="notes">时光智造就是我 + 小mini（10个角色）在运转。总指挥用最强模型 Claude Opus 4，手下用便宜的 Sonnet，并行 8 个任务。多平台接入，全天候运作。</aside>
+                <aside class="notes">两页拆开：上一页是架构，这页是成果。独立开发2个SaaS、6个项目并行、社群日更、24/7客服、投影片30分钟产出。多平台接入，月成本一杯奶茶。</aside>
             </section>
 
             <!-- OpenClaw: Live Demo -->
