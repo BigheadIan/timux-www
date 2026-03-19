@@ -284,8 +284,8 @@
         // 讓所有圖片可點擊放大
         document.querySelectorAll('.reveal .slides section img').forEach(img => {
           img.classList.add('st-zoomable');
-          img._stZoomClick = () => ST.zoomOpen(img.src);
-          img.addEventListener('click', img._stZoomClick);
+          img._stZoomClick = (e) => { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); ST.zoomOpen(img.src); };
+          img.addEventListener('click', img._stZoomClick, true);
         });
       } else {
         btn.classList.remove('active');
@@ -338,7 +338,9 @@
     },
 
     zoomClose() {
-      document.getElementById('st-zoom-overlay').classList.remove('show');
+      const ov = document.getElementById('st-zoom-overlay');
+      ov.classList.remove('show');
+      ov.onwheel = null; ov.onmousedown = null; ov.onmousemove = null; ov.onmouseup = null; ov.onmouseleave = null; ov.ondblclick = null;
       document.getElementById('st-zoom-controls').classList.remove('show');
       zoomImg = null;
     },
@@ -441,11 +443,11 @@
     if (editMode && e.target.contentEditable === 'true') return;
     if (e.key === 'g' || e.key === 'G') ST.overview();
     if (e.key === 'e' || e.key === 'E') ST.toggleEdit();
-    if (e.key === 'z' || e.key === 'Z') ST.toggleZoom();
-    if (e.key === '+' || e.key === '=') { if (zoomImg) { e.preventDefault(); ST.zoomIn(); } }
-    if (e.key === '-' || e.key === '_') { if (zoomImg) { e.preventDefault(); ST.zoomOut(); } }
+    if (e.key === 'z' || e.key === 'Z') { e.preventDefault(); e.stopPropagation(); ST.toggleZoom(); }
+    if (e.key === '+' || e.key === '=') { if (zoomImg) { e.preventDefault(); e.stopPropagation(); ST.zoomIn(); } }
+    if (e.key === '-' || e.key === '_') { if (zoomImg) { e.preventDefault(); e.stopPropagation(); ST.zoomOut(); } }
     if (e.key === 'Escape') {
-      if (zoomImg) { ST.zoomClose(); return; }
+      if (zoomImg) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); ST.zoomClose(); return; }
       document.getElementById('st-overview').classList.remove('show');
       document.getElementById('st-restore-bar').classList.remove('show');
       if (editMode) ST.toggleEdit();
