@@ -113,6 +113,36 @@
     }
     #st-banner .st-saved.flash { opacity:1; }
 
+    /* --- 放大模式 --- */
+    #st-zoom-overlay {
+      display:none; position:fixed; inset:0; z-index:9997;
+      background:rgba(0,0,0,.92); cursor:grab;
+      overflow:hidden;
+    }
+    #st-zoom-overlay.show { display:flex; align-items:center; justify-content:center; }
+    #st-zoom-overlay.dragging { cursor:grabbing; }
+    #st-zoom-overlay img {
+      max-width:none; max-height:none; transition:transform .15s ease-out;
+      user-select:none; -webkit-user-drag:none;
+    }
+    #st-zoom-controls {
+      position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+      z-index:9998; display:none; gap:8px;
+      background:rgba(10,22,40,.9); padding:8px 16px; border-radius:24px;
+      border:1px solid rgba(79,195,247,.3); backdrop-filter:blur(8px);
+    }
+    #st-zoom-controls.show { display:flex; }
+    #st-zoom-controls button {
+      width:36px; height:36px; border-radius:50%;
+      border:1px solid rgba(79,195,247,.3); background:rgba(10,22,40,.85);
+      color:#4fc3f7; font-size:18px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    #st-zoom-controls button:hover { background:rgba(79,195,247,.2); }
+    #st-zoom-controls span { color:#4fc3f7; font-size:13px; display:flex; align-items:center; padding:0 8px; font-family:monospace; }
+    .st-zoomable { cursor:zoom-in !important; transition:outline .2s; }
+    .st-zoomable:hover { outline:2px solid rgba(79,195,247,.5); outline-offset:4px; border-radius:8px; }
+
     /* --- 存檔還原提示 --- */
     #st-restore-bar {
       display:none; position:fixed; bottom:70px; right:20px; z-index:9999;
@@ -137,6 +167,7 @@
     <button onclick="ST.fullscreen()" title="全螢幕"><span class="st-tip">全螢幕 (F)</span>⛶</button>
     <button onclick="ST.speakerNotes()" title="講者備註"><span class="st-tip">講者備註 (S)</span>📋</button>
     <button onclick="ST.overview()" title="總覽"><span class="st-tip">總覽所有頁面 (G)</span>🔍</button>
+    <button id="st-zoom-btn" onclick="ST.toggleZoom()" title="放大模式"><span class="st-tip">放大模式 (Z)</span>🔎</button>
     <button id="st-edit-btn" onclick="ST.toggleEdit()" title="編輯"><span class="st-tip">編輯模式 (E)</span>✏️</button>
   `;
   document.body.appendChild(toolbar);
@@ -171,8 +202,29 @@
   `;
   document.body.appendChild(restoreBar);
 
+  // ========== 放大模式 ==========
+  const zoomOverlay = document.createElement('div');
+  zoomOverlay.id = 'st-zoom-overlay';
+  document.body.appendChild(zoomOverlay);
+
+  const zoomControls = document.createElement('div');
+  zoomControls.id = 'st-zoom-controls';
+  zoomControls.innerHTML = `
+    <button onclick="ST.zoomIn()">＋</button>
+    <span id="st-zoom-level">100%</span>
+    <button onclick="ST.zoomOut()">－</button>
+    <button onclick="ST.zoomReset()">↺</button>
+    <button onclick="ST.zoomClose()">✕</button>
+  `;
+  document.body.appendChild(zoomControls);
+
   // ========== 狀態 ==========
   let editMode = false;
+  let zoomMode = false;
+  let zoomScale = 1;
+  let zoomTranslateX = 0, zoomTranslateY = 0;
+  let isDragging = false, dragStartX = 0, dragStartY = 0;
+  let zoomImg = null;
 
   // ========== API ==========
   window.ST = {
@@ -221,6 +273,85 @@
         });
       });
       ov.classList.add('show');
+    },
+
+    // ---- 放大模式 ----
+    toggleZoom() {
+      zoomMode = !zoomMode;
+      const btn = document.getElementById('st-zoom-btn');
+      if (zoomMode) {
+        btn.classList.add('active');
+        // 讓所有圖片可點擊放大
+        document.querySelectorAll('.reveal .slides section img').forEach(img => {
+          img.classList.add('st-zoomable');
+          img._stZoomClick = () => ST.zoomOpen(img.src);
+          img.addEventListener('click', img._stZoomClick);
+        });
+      } else {
+        btn.classList.remove('active');
+        document.querySelectorAll('.st-zoomable').forEach(img => {
+          img.classList.remove('st-zoomable');
+          if (img._stZoomClick) {
+            img.removeEventListener('click', img._stZoomClick);
+            delete img._stZoomClick;
+          }
+        });
+        ST.zoomClose();
+      }
+    },
+
+    zoomOpen(src) {
+      const ov = document.getElementById('st-zoom-overlay');
+      const ctrl = document.getElementById('st-zoom-controls');
+      ov.innerHTML = '';
+      zoomImg = document.createElement('img');
+      zoomImg.src = src;
+      zoomScale = 1; zoomTranslateX = 0; zoomTranslateY = 0;
+      ST._applyZoomTransform();
+      ov.appendChild(zoomImg);
+      ov.classList.add('show');
+      ctrl.classList.add('show');
+      // 滾輪縮放
+      ov.onwheel = (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.15 : 0.15;
+        zoomScale = Math.max(0.3, Math.min(8, zoomScale + delta));
+        ST._applyZoomTransform();
+      };
+      // 拖動平移
+      ov.onmousedown = (e) => {
+        if (e.target === zoomImg || e.target === ov) {
+          isDragging = true; dragStartX = e.clientX - zoomTranslateX; dragStartY = e.clientY - zoomTranslateY;
+          ov.classList.add('dragging');
+        }
+      };
+      ov.onmousemove = (e) => {
+        if (!isDragging) return;
+        zoomTranslateX = e.clientX - dragStartX;
+        zoomTranslateY = e.clientY - dragStartY;
+        ST._applyZoomTransform();
+      };
+      ov.onmouseup = () => { isDragging = false; ov.classList.remove('dragging'); };
+      ov.onmouseleave = () => { isDragging = false; ov.classList.remove('dragging'); };
+      // 雙擊還原
+      ov.ondblclick = () => { zoomScale = 1; zoomTranslateX = 0; zoomTranslateY = 0; ST._applyZoomTransform(); };
+    },
+
+    zoomClose() {
+      document.getElementById('st-zoom-overlay').classList.remove('show');
+      document.getElementById('st-zoom-controls').classList.remove('show');
+      zoomImg = null;
+    },
+
+    zoomIn() { zoomScale = Math.min(8, zoomScale + 0.3); ST._applyZoomTransform(); },
+    zoomOut() { zoomScale = Math.max(0.3, zoomScale - 0.3); ST._applyZoomTransform(); },
+    zoomReset() { zoomScale = 1; zoomTranslateX = 0; zoomTranslateY = 0; ST._applyZoomTransform(); },
+
+    _applyZoomTransform() {
+      if (zoomImg) {
+        zoomImg.style.transform = 'translate(' + zoomTranslateX + 'px,' + zoomTranslateY + 'px) scale(' + zoomScale + ')';
+      }
+      document.getElementById('st-zoom-level').textContent = Math.round(zoomScale * 100) + '%';
     },
 
     toggleEdit() {
@@ -310,7 +441,11 @@
     if (editMode && e.target.contentEditable === 'true') return;
     if (e.key === 'g' || e.key === 'G') ST.overview();
     if (e.key === 'e' || e.key === 'E') ST.toggleEdit();
+    if (e.key === 'z' || e.key === 'Z') ST.toggleZoom();
+    if (e.key === '+' || e.key === '=') { if (zoomImg) { e.preventDefault(); ST.zoomIn(); } }
+    if (e.key === '-' || e.key === '_') { if (zoomImg) { e.preventDefault(); ST.zoomOut(); } }
     if (e.key === 'Escape') {
+      if (zoomImg) { ST.zoomClose(); return; }
       document.getElementById('st-overview').classList.remove('show');
       document.getElementById('st-restore-bar').classList.remove('show');
       if (editMode) ST.toggleEdit();
