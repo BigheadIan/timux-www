@@ -306,18 +306,15 @@
       ov.innerHTML = '';
       zoomImg = document.createElement('img');
       zoomImg.src = src;
+      // 先用 CSS 限制圖片不超出螢幕
+      zoomImg.style.maxWidth = '92vw';
+      zoomImg.style.maxHeight = '88vh';
+      zoomImg.style.objectFit = 'contain';
       zoomScale = 1; zoomTranslateX = 0; zoomTranslateY = 0;
       ov.appendChild(zoomImg);
       ov.classList.add('show');
       ctrl.classList.add('show');
-      // 等圖片載入後 fit to screen
-      zoomImg.onload = () => {
-        const sw = window.innerWidth * 0.92, sh = window.innerHeight * 0.88;
-        const iw = zoomImg.naturalWidth, ih = zoomImg.naturalHeight;
-        if (iw && ih) { zoomScale = Math.min(sw / iw, sh / ih, 3); }
-        ST._applyZoomTransform();
-      };
-      if (zoomImg.complete && zoomImg.naturalWidth) { zoomImg.onload(); }
+      ST._applyZoomTransform();
       // 滾輪縮放
       ov.onwheel = (e) => {
         e.preventDefault();
