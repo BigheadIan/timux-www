@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>上午场讲稿 & 提词</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#0a0a1a; color:#e0e0f0; font-family:'Noto Sans SC',system-ui,sans-serif;
+    max-width:800px; margin:0 auto; padding:20px 24px 80px;
+    line-height:1.7; font-size:16px;
+  }
+  h1 { text-align:center; font-size:28px; margin:20px 0 8px;
+    background:linear-gradient(90deg,#00d4aa,#b47eff,#ff6b9d);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .meta { text-align:center; color:#8888aa; font-size:14px; margin-bottom:30px; }
+  
+  .section { margin:28px 0; }
+  .section-header {
+    display:flex; align-items:center; gap:10px; margin-bottom:12px;
+    padding:10px 16px; border-radius:10px;
+    background:rgba(255,255,255,0.04); border-left:4px solid #00d4aa;
+  }
+  .section-num { font-size:13px; color:#00d4aa; font-weight:700; white-space:nowrap; }
+  .section-title { font-size:18px; font-weight:700; color:#fff; }
+  .section-time { font-size:12px; color:#ffd700; margin-left:auto; white-space:nowrap; }
+
+  .cue { padding:12px 18px; margin:8px 0; border-radius:8px; }
+  .cue-talk { background:rgba(0,212,170,0.06); border:1px solid rgba(0,212,170,0.15); }
+  .cue-key { background:rgba(255,215,0,0.06); border:1px solid rgba(255,215,0,0.15); }
+  .cue-note { background:rgba(180,126,255,0.06); border:1px solid rgba(180,126,255,0.15); font-size:14px; color:#b47eff; }
+  
+  .label { font-size:11px; font-weight:700; margin-bottom:4px; display:block; }
+  .label-talk { color:#00d4aa; }
+  .label-key { color:#ffd700; }
+  .label-note { color:#b47eff; }
+  
+  .highlight { color:#00d4aa; font-weight:700; }
+  .gold { color:#ffd700; }
+  .pink { color:#ff6b9d; }
+  .purple { color:#b47eff; }
+  .red { color:#ff4444; }
+  
+  .divider { border:none; border-top:1px solid rgba(255,255,255,0.06); margin:24px 0; }
+
+  /* 提词模式 */
+  .mode-toggle {
+    position:fixed; top:16px; right:16px; z-index:99;
+    display:flex; gap:6px;
+  }
+  .mode-toggle button {
+    padding:6px 14px; border-radius:20px; border:1px solid rgba(255,255,255,0.15);
+    background:rgba(10,10,26,0.9); color:#8888aa; cursor:pointer; font-size:13px;
+    backdrop-filter:blur(8px);
+  }
+  .mode-toggle button.active { background:rgba(0,212,170,0.2); color:#00d4aa; border-color:#00d4aa; }
+
+  body.teleprompter .cue-note { display:none; }
+  body.teleprompter .section-header { padding:8px 16px; }
+  body.teleprompter { font-size:22px; line-height:1.9; max-width:700px; }
+  body.teleprompter .cue { padding:16px 20px; margin:12px 0; }
+</style>
+</head>
+<body>
+
+<div class="mode-toggle">
+  <button id="btn-full" class="active" onclick="setMode('full')">📋 完整讲稿</button>
+  <button id="btn-tele" onclick="setMode('teleprompter')">📺 提词模式</button>
+</div>
+
+<h1>🌏 上午场讲稿</h1>
+<p class="meta">从台湾到武汉 — AI 改变了我什么 ｜ ~10 分钟 ｜ 2026-03-20</p>
+
+<!-- ==================== 1. 开场 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">① 开场</span>
+    <span class="section-title">自我介绍</span>
+    <span class="section-time">~1.5 min</span>
+  </div>
+  
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    大家好！我是<span class="highlight">黄昱仁</span>，大家可以叫我<span class="highlight">大头 Ian</span>。<br>
+    台湾成功大学资工硕士毕业，之后在上海做了几年科技新创，然后来武汉独立创业。<br>
+    现在是<span class="gold">时光智造科技</span>的 CEO，一家用 AI 做智能产品的公司。
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    我在内地已经<span class="highlight">九年</span>了。2023 年开始深刻感受到 AI 的颠覆力量——<br>
+    很多原本需要人做的事，AI 几秒钟就搞定了。<br>
+    所以我开始主动转型，往<span class="gold">服务人、提供情绪价值</span>的方向走——<br>
+    比如匹克球教练、抖音探店这些。
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">⭐ 重点</span>
+    路径：台湾 🏠 → 上海 🏙️ → 武汉 🏢 → AI 转型 🤖 → 一人公司 👑（用 AI 打造 10 人团队）
+  </div>
+
+  <div class="cue cue-note">
+    <span class="label label-note">📝 备注</span>
+    轻松聊天的语气，不要太正式。让大家觉得你是学长在分享经验。
+  </div>
+</div>
+
+<!-- ==================== 2. 为什么武汉 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">② 为什么武汉</span>
+    <span class="section-title">选择武汉的理由</span>
+    <span class="section-time">~1 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    很多人问我：一个台湾人，为什么跑来武汉？<br><br>
+    三个原因：<br>
+    🤖 <span class="highlight">AI 政策强力支持</span>——国家级战略推进，各地政府补贴，创业门槛越来越低<br>
+    📍 <span class="purple">地理位置优势</span>——武汉在内地中心，高铁 4 小时覆盖大半版图<br>
+    🏢 <span class="gold">台青科孵化器</span>——专门辅助台湾青年创业，办公场地、政策对接都帮你搞定
+  </div>
+
+  <div class="cue cue-note">
+    <span class="label label-note">📝 备注</span>
+    这段可以顺便感谢一下台青科孵化器和主办方。
+  </div>
+</div>
+
+<!-- ==================== 3. 破题 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">③ 核心感触</span>
+    <span class="section-title">来内地最大的感触</span>
+    <span class="section-time">~1 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    来内地这么多年，最大的感触是什么？<br><br>
+    不是<span class="pink">市场大</span>——<br>
+    是大家<span class="highlight">拼劲太强了</span>。<br><br>
+    内地的竞争环境，逼着每个人拼命提效。<br>
+    AI 成了最强的加速器——不用的人，直接被甩开。
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">⭐ 金句</span>
+    台湾人有创意、有品味、有国际视野。<br>
+    如果再加上内地这股 AI 效率，那就是<span class="gold">降维打击</span> 💪
+  </div>
+
+  <div class="cue cue-note">
+    <span class="label label-note">📝 备注</span>
+    这里语气要正面，不是贬低台湾，是说两边结合更强。
+  </div>
+</div>
+
+<!-- ==================== 4. 内地见闻 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">④ 内地见闻</span>
+    <span class="section-title">AI 无处不在</span>
+    <span class="section-time">~1.5 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    给大家讲几个我在内地看到的 AI 应用，这些不是新闻标题，是日常生活：<br><br>
+    🤖 <span class="highlight">AI 客服全面取代真人</span>——银行、外卖、电商，打电话过去几乎都是 AI<br>
+    📺 <span class="purple">AI 数字人 24h 直播带货</span>——成本只有真人的 1/10，同时开几十个直播间<br>
+    📸 <span class="pink">AI 写真街边遍地开花</span>——几张照片就能生成百种风格<br>
+    ⚖️ <span class="gold">AI 法律、财务、设计</span>——小程序几秒出法律建议书、做财报
+  </div>
+</div>
+
+<!-- ==================== 5. 直播对比 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">⑤ 举个例子</span>
+    <span class="section-title">直播带货的差距</span>
+    <span class="section-time">~1 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    举个大家最熟悉的例子——直播带货。<br><br>
+    <span class="pink">台湾</span>：直播平台喊 +1 → 跳到另一个平台下单 → 各种支付方式 → 回传确认……<br>
+    链路长，流失率高。<br><br>
+    <span class="highlight">内地</span>：看直播 → 右下角「立即购买」→ 完成 ✅<br>
+    全程不离开 App。链路短，转化飙升。
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">⭐ 重点</span>
+    竞争激烈 → 逼出极致用户体验 → 每一步都在缩短决策路径<br>
+    <span class="gold">不是台湾不好，是竞争环境不同逼出来的。</span>
+  </div>
+</div>
+
+<!-- ==================== 6. 法规差异 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">⑥ 深层原因</span>
+    <span class="section-title">为什么内地跑得这么快？</span>
+    <span class="section-time">~1.5 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    为什么差距这么大？不是技术问题，是<span class="highlight">思维模式</span>不同。<br><br>
+    🏠 <span class="pink">台湾</span>的逻辑：法律没有明文允许的 → <span class="red">预设禁止</span><br>
+    ⚡ <span class="highlight">内地</span>的逻辑：法律没有明文禁止的 → <span class="highlight">预设可以做</span>（先行先试）<br><br>
+    举几个真实案例：
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">⭐ 三组对比</span>
+    🚕 <strong>出行</strong>：Uber 2013 进台湾 → 被认定违法 → 罚到撤出<br>
+    　 滴滴 2012 上线 → 野蛮生长 → 2016 才出管理办法，已有 5.5 亿用户<br><br>
+    💳 <strong>支付</strong>：台湾金管会要求先有法规框架 → 夜市还在用现金<br>
+    　 支付宝 2003 上线 → 央行 2010 才发牌照（晚 7 年）→ 13 亿用户<br><br>
+    📺 <strong>直播电商</strong>：台湾没有明确法规 → 大家还在 FB 喊 +1<br>
+    　 淘宝直播 2016 先做 → 2021 才出规范 → 4.9 万亿市场
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 金句</span>
+    台湾说「先证明安全，再让你创新」<br>
+    内地说「先让你创新，再想办法让它安全」<br><br>
+    <span class="gold">不是技术更强，是试错的空间更大。</span>
+  </div>
+
+  <div class="cue cue-note">
+    <span class="label label-note">📝 备注</span>
+    语气中立，不批评台湾。重点是让大家理解这里的机会窗口。
+  </div>
+</div>
+
+<!-- ==================== 7. 三个心法 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">⑦ AI 使用心法</span>
+    <span class="section-title">三个核心心法</span>
+    <span class="section-time">~1.5 min</span>
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">❶ 心法一</span>
+    <span style="font-size:1.1em;">AI 是<span class="highlight">实习生</span>，不是<span class="pink">神</span>。</span><br><br>
+    ❌「AI 帮我做一个完美的商业计划」<br>
+    ✅「AI 帮我列出框架，我来补细节和判断」<br><br>
+    你要会<span class="highlight">下指令</span>、会<span class="purple">验收</span>、会<span class="pink">迭代</span>——像带实习生一样。
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">❷ 心法二</span>
+    <span style="font-size:1.1em;">先想<span class="purple">流程</span>，再选<span class="highlight">工具</span>。</span><br><br>
+    选题 → 文案 → 配图 → 发布 → 数据分析<br>
+    先理清每一步，再找 AI 工具来加速每一步。<br><br>
+    <span class="gold">不要被工具牵着走，要让工具为你的流程服务。</span>
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">❸ 心法三</span>
+    <span style="font-size:1.1em;"><span class="gold">80/20</span> 法则</span><br><br>
+    80% 重复工作交给 AI（文案改写、数据整理、排版）<br>
+    20% 创意留给自己（选题判断、人设、灵魂）<br><br>
+    <span class="gold">AI 让你更自由，不是让你更忙。</span>
+  </div>
+</div>
+
+<!-- ==================== 8. 小案例 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">⑧ 真实案例</span>
+    <span class="section-title">我的一周</span>
+    <span class="section-time">~0.5 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    给大家看我自己的真实数据：<br><br>
+    没用 AI 之前，一周花 <span class="red">15 小时</span>做重复工作——<br>
+    写文案 6 小时、做配图 3 小时、数据分析 2 小时、回客户 4 小时。<br><br>
+    用了 AI 之后？<span class="highlight">1 小时</span>搞定。<br><br>
+    <span class="gold">省下来的 14 小时，我拿去打匹克球了 🏓</span>
+  </div>
+</div>
+
+<!-- ==================== 9. 预告下午 ==================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">⑨ 收尾</span>
+    <span class="section-title">预告下午场 + 金句</span>
+    <span class="section-time">~0.5 min</span>
+  </div>
+
+  <div class="cue cue-talk">
+    <span class="label label-talk">💬 讲</span>
+    早上只是<span class="pink">开胃菜</span>！<br><br>
+    下午我会给大家：<br>
+    🔴 <span class="highlight">现场 Live Demo</span>——用 AI 从 0 到 1 产出可发布内容<br>
+    🦞 <span class="purple">展示我的私人 AI 助手</span>——看它怎么帮我管理公司<br>
+    ⚡ <span class="pink">更多疯狂 AI 案例</span>——连医疗圈都被 AI 颠覆了<br>
+    ⚡ <span class="gold">所有 prompt 模板免费送</span>
+  </div>
+
+  <div class="cue cue-key">
+    <span class="label label-key">⭐ 结束金句</span>
+    <span style="font-size:1.2em;">「<span class="highlight">智造</span>交给 AI，<span class="gold">时光</span>留给所爱。」</span><br><br>
+    下午见！👋
+  </div>
+</div>
+
+<hr class="divider">
+<p style="text-align:center; color:#8888aa; font-size:13px;">
+  时光智造科技 · www.timux.site<br>
+  💡 提示：点右上角切换「提词模式」，字更大、只显示讲稿重点
+</p>
+
+<script>
+function setMode(mode) {
+  document.body.className = mode === 'teleprompter' ? 'teleprompter' : '';
+  document.getElementById('btn-full').className = mode === 'full' ? 'active' : '';
+  document.getElementById('btn-tele').className = mode === 'teleprompter' ? 'active' : '';
+}
+</script>
+
+</body>
+</html>
