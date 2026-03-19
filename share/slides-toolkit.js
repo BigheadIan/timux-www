@@ -307,14 +307,21 @@
       zoomImg = document.createElement('img');
       zoomImg.src = src;
       zoomScale = 1; zoomTranslateX = 0; zoomTranslateY = 0;
-      ST._applyZoomTransform();
       ov.appendChild(zoomImg);
       ov.classList.add('show');
       ctrl.classList.add('show');
+      // 等圖片載入後 fit to screen
+      zoomImg.onload = () => {
+        const sw = window.innerWidth * 0.92, sh = window.innerHeight * 0.88;
+        const iw = zoomImg.naturalWidth, ih = zoomImg.naturalHeight;
+        if (iw && ih) { zoomScale = Math.min(sw / iw, sh / ih, 3); }
+        ST._applyZoomTransform();
+      };
+      if (zoomImg.complete && zoomImg.naturalWidth) { zoomImg.onload(); }
       // 滾輪縮放
       ov.onwheel = (e) => {
         e.preventDefault();
-        const delta = e.deltaY > 0 ? -0.15 : 0.15;
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
         zoomScale = Math.max(0.3, Math.min(8, zoomScale + delta));
         ST._applyZoomTransform();
       };
@@ -345,8 +352,8 @@
       zoomImg = null;
     },
 
-    zoomIn() { zoomScale = Math.min(8, zoomScale + 0.3); ST._applyZoomTransform(); },
-    zoomOut() { zoomScale = Math.max(0.3, zoomScale - 0.3); ST._applyZoomTransform(); },
+    zoomIn() { zoomScale = Math.min(8, zoomScale * 1.1); ST._applyZoomTransform(); },
+    zoomOut() { zoomScale = Math.max(0.2, zoomScale * 0.9); ST._applyZoomTransform(); },
     zoomReset() { zoomScale = 1; zoomTranslateX = 0; zoomTranslateY = 0; ST._applyZoomTransform(); },
 
     _applyZoomTransform() {
