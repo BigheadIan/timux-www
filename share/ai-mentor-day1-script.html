@@ -63,6 +63,22 @@
   body.teleprompter .script { padding:20px 24px; font-size:24px; }
   body.teleprompter .section-header { display:none; }
   body.teleprompter .divider { margin:20px 0; }
+  body.teleprompter .outline-card { display:none; }
+
+  /* 大纲速览卡 */
+  .outline-card {
+    background:rgba(255,215,0,0.06); border:1px solid rgba(255,215,0,0.2);
+    border-radius:12px; padding:18px 24px; margin:0 0 30px;
+  }
+  .outline-card h2 { font-size:16px; color:#ffd700; margin-bottom:12px; }
+  .outline-list { display:flex; flex-wrap:wrap; gap:8px; }
+  .outline-item {
+    padding:6px 14px; border-radius:8px; font-size:14px; font-weight:700;
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+    color:#e0e0f0; white-space:nowrap;
+  }
+  .outline-item .oi-num { color:#00d4aa; margin-right:4px; }
+  .outline-item .oi-time { color:#8888aa; font-weight:400; font-size:11px; margin-left:6px; }
 </style>
 </head>
 <body>
@@ -74,6 +90,21 @@
 
 <h1>🌏 上午场逐字稿</h1>
 <p class="meta">从台湾到武汉 — AI 改变了我什么 ｜ ~10 分钟 ｜ 2026-03-20</p>
+
+<div class="outline-card">
+  <h2>🗂️ 板块速览（讲前看一眼）</h2>
+  <div class="outline-list">
+    <div class="outline-item"><span class="oi-num">①</span> 自我介绍<span class="oi-time">1.5′</span></div>
+    <div class="outline-item"><span class="oi-num">②</span> 为什么武汉<span class="oi-time">1′</span></div>
+    <div class="outline-item"><span class="oi-num">③</span> 最大感触：拼劲<span class="oi-time">1′</span></div>
+    <div class="outline-item"><span class="oi-num">④</span> AI 无处不在<span class="oi-time">1′</span></div>
+    <div class="outline-item"><span class="oi-num">⑤</span> 直播带货对比<span class="oi-time">1′</span></div>
+    <div class="outline-item"><span class="oi-num">⑥</span> 法规思维差异<span class="oi-time">1.5′</span></div>
+    <div class="outline-item"><span class="oi-num">⑦</span> 三个AI心法<span class="oi-time">1.5′</span></div>
+    <div class="outline-item"><span class="oi-num">⑧</span> 我的一周案例<span class="oi-time">0.5′</span></div>
+    <div class="outline-item"><span class="oi-num">⑨</span> 预告下午+金句<span class="oi-time">0.5′</span></div>
+  </div>
+</div>
 
 <!-- ==================== ① 开场 ==================== -->
 <div class="section">
