@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1600,initial-scale=1">
+<title>AI Team Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1600px; height:960px; overflow:hidden;
+    background:linear-gradient(135deg,#0a1628 0%,#0d2137 40%,#0a1628 70%,#061220 100%);
+    font-family:'Inter',system-ui,sans-serif; color:#e0e0f0;
+  }
+  :root {
+    --accent:#00d4aa; --purple:#b47eff; --pink:#ff6b9d;
+    --gold:#ffd700; --muted:#8888aa; --glass:rgba(255,255,255,.06);
+    --glass-border:rgba(255,255,255,.1);
+  }
+
+  /* Header */
+  .header {
+    text-align:center; padding:20px 0 8px;
+  }
+  .header h1 {
+    font-size:30px; font-weight:900; letter-spacing:1px;
+    background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .header p { color:var(--muted); font-size:14px; margin-top:4px; }
+
+  /* Main layout */
+  .main { display:flex; gap:14px; padding:0 28px; height:calc(100% - 78px); }
+
+  /* Left: Boss + mini */
+  .left { width:240px; flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
+
+  /* Center: Team grid */
+  .center { flex:1; display:flex; flex-direction:column; gap:8px; }
+
+  /* Right: Platforms + schedule */
+  .right { width:260px; flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
+
+  /* Card base */
+  .card {
+    background:var(--glass); border:1px solid var(--glass-border);
+    border-radius:14px; padding:14px 16px;
+    backdrop-filter:blur(12px);
+  }
+
+  /* Boss card */
+  .boss-card {
+    text-align:center; border-color:var(--gold);
+    background:rgba(255,215,0,.06);
+  }
+  .boss-card .emoji { font-size:36px; }
+  .boss-card .name { font-size:16px; font-weight:700; color:var(--gold); margin:4px 0 2px; }
+  .boss-card .role { font-size:11px; color:var(--muted); }
+
+  /* Mini card */
+  .mini-card {
+    text-align:center; border-color:var(--accent);
+    background:rgba(0,212,170,.06); flex:1;
+  }
+  .mini-card .emoji { font-size:32px; }
+  .mini-card .name { font-size:16px; font-weight:700; color:var(--accent); margin:4px 0 2px; }
+  .mini-card .model { font-size:10px; color:var(--purple); margin:2px 0 6px; }
+  .mini-card .abilities {
+    display:flex; flex-wrap:wrap; gap:4px; justify-content:center;
+  }
+  .mini-card .abilities span {
+    font-size:9px; padding:2px 7px; border-radius:10px;
+    background:rgba(0,212,170,.15); color:var(--accent); border:1px solid rgba(0,212,170,.25);
+  }
+
+  /* Arrow connector */
+  .arrow-down {
+    text-align:center; color:var(--gold); font-size:20px; line-height:1;
+  }
+
+  /* Team grid */
+  .team-grid {
+    display:grid; grid-template-columns:repeat(5,1fr); gap:8px; flex:1;
+  }
+  .agent-card {
+    text-align:center; padding:10px 8px; position:relative;
+    transition:transform .2s, border-color .2s;
+  }
+  .agent-card:hover { transform:translateY(-2px); }
+  .agent-card .emoji { font-size:24px; }
+  .agent-card .name { font-size:12px; font-weight:700; margin:3px 0 1px; }
+  .agent-card .desc { font-size:9px; color:var(--muted); line-height:1.3; }
+  .agent-card .model-tag {
+    font-size:8px; padding:1px 6px; border-radius:8px; margin-top:4px; display:inline-block;
+  }
+  .tag-sonnet { background:rgba(180,126,255,.15); color:var(--purple); border:1px solid rgba(180,126,255,.25); }
+  .tag-opus { background:rgba(0,212,170,.15); color:var(--accent); border:1px solid rgba(0,212,170,.25); }
+
+  /* Color variants */
+  .c-purple { border-color:var(--purple); }
+  .c-purple .name { color:var(--purple); }
+  .c-pink { border-color:var(--pink); }
+  .c-pink .name { color:var(--pink); }
+  .c-accent { border-color:var(--accent); }
+  .c-accent .name { color:var(--accent); }
+  .c-gold { border-color:var(--gold); }
+  .c-gold .name { color:var(--gold); }
+
+  /* Workflow section */
+  .workflow {
+    padding:8px 12px;
+  }
+  .workflow h3 { font-size:12px; color:var(--accent); margin-bottom:8px; font-weight:700; }
+  .flow-row {
+    display:flex; align-items:center; gap:4px; margin-bottom:6px; font-size:10px;
+  }
+  .flow-step {
+    padding:4px 8px; border-radius:8px; font-size:9px; font-weight:600;
+    white-space:nowrap;
+  }
+  .fs-gold { background:rgba(255,215,0,.15); color:var(--gold); border:1px solid rgba(255,215,0,.2); }
+  .fs-accent { background:rgba(0,212,170,.15); color:var(--accent); border:1px solid rgba(0,212,170,.2); }
+  .fs-purple { background:rgba(180,126,255,.15); color:var(--purple); border:1px solid rgba(180,126,255,.2); }
+  .fs-pink { background:rgba(255,107,157,.15); color:var(--pink); border:1px solid rgba(255,107,157,.2); }
+  .flow-arrow { color:var(--muted); font-size:12px; }
+
+  /* Platform badges */
+  .platform-card { text-align:center; }
+  .platform-card h3 { font-size:11px; color:var(--purple); margin-bottom:8px; font-weight:700; }
+  .platform-badges { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+  .badge {
+    font-size:10px; padding:4px 10px; border-radius:10px;
+    background:rgba(180,126,255,.1); border:1px solid rgba(180,126,255,.2);
+    color:#c8b8ff;
+  }
+
+  /* Schedule */
+  .schedule-card { }
+  .schedule-card h3 { font-size:11px; color:var(--pink); margin-bottom:6px; font-weight:700; }
+  .sched-item { font-size:9px; color:#c0c0d0; margin:3px 0; display:flex; gap:4px; white-space:nowrap; }
+  .sched-item .time { color:var(--gold); font-weight:600; min-width:46px; flex-shrink:0; }
+
+  /* Cost bar */
+  .cost-bar {
+    text-align:center; border-color:var(--gold);
+    background:rgba(255,215,0,.04);
+  }
+  .cost-bar h3 { font-size:11px; color:var(--gold); margin-bottom:4px; font-weight:700; }
+  .cost-row { display:flex; justify-content:center; gap:12px; font-size:10px; }
+  .cost-row span { color:var(--muted); }
+  .cost-row .val { color:var(--accent); font-weight:700; }
+
+  /* Footer */
+  .footer {
+    text-align:center; padding:6px; font-size:10px; color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤠 時光智造 AI 團隊架構</h1>
+  <p>1 個人 + 1 個 AI 總管 + 10 個 AI 角色 = 完整團隊</p>
+</div>
+
+<div class="main">
+  <!-- LEFT: Boss + Mini -->
+  <div class="left">
+    <div class="card boss-card">
+      <div class="emoji">👨‍💼</div>
+      <div class="name">頭頭（黃昱仁）</div>
+      <div class="role">CEO · 方向決策 · 最終審核</div>
+    </div>
+    <div class="arrow-down">▼</div>
+    <div class="card mini-card">
+      <div class="emoji">🤠</div>
+      <div class="name">小mini</div>
+      <div class="model">Claude Opus 4.6 · 最強模型</div>
+      <div class="abilities">
+        <span>統籌</span><span>規劃</span><span>審核</span>
+        <span>派工</span><span>記憶</span><span>主動</span>
+      </div>
+    </div>
+    <div class="card cost-bar">
+      <h3>💰 成本控制</h3>
+      <div style="font-size:10px; color:#c0c0d0;">
+        <div style="margin:2px 0;">🧠 總管 Opus = <span style="color:var(--gold);">$15/M</span></div>
+        <div style="margin:2px 0;">⚡ 手下 Sonnet = <span style="color:var(--accent);">$3/M</span></div>
+        <div style="margin:4px 0; color:var(--pink); font-weight:700;">≈ 一杯奶茶/天 🧋</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Team + Workflow -->
+  <div class="center">
+    <div style="text-align:center; color:var(--accent); font-size:12px; font-weight:600;">
+      ▼ 小mini 統籌調度 10 個 AI 角色（全部使用 Sonnet 便宜模型）▼
+    </div>
+    <div class="team-grid">
+      <!-- Row 1: Dev roles -->
+      <div class="card agent-card c-accent">
+        <div class="emoji">📋</div>
+        <div class="name">PM</div>
+        <div class="desc">需求分析<br>規格撰寫<br>驗收標準</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-accent">
+        <div class="emoji">💻</div>
+        <div class="name">Dev</div>
+        <div class="desc">全棧開發<br>API + 前端<br>資料庫</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-pink">
+        <div class="emoji">🧪</div>
+        <div class="name">QA</div>
+        <div class="desc">測試驗證<br>找 Bug<br>回歸測試</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-gold">
+        <div class="emoji">🎨</div>
+        <div class="name">UI</div>
+        <div class="desc">設計審查<br>UX 一致性<br>視覺規範</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-purple">
+        <div class="emoji">📊</div>
+        <div class="name">Research</div>
+        <div class="desc">市場調研<br>競品分析<br>數據收集</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <!-- Row 2: Biz roles -->
+      <div class="card agent-card c-pink">
+        <div class="emoji">📣</div>
+        <div class="name">Social Media</div>
+        <div class="desc">社群策略<br>品牌調性<br>熱點追蹤</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-accent">
+        <div class="emoji">📝</div>
+        <div class="name">Content</div>
+        <div class="desc">行銷文案<br>產品介紹<br>案例包裝</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-gold">
+        <div class="emoji">🤝</div>
+        <div class="name">CS</div>
+        <div class="desc">客戶追蹤<br>問題分類<br>滿意度</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-purple">
+        <div class="emoji">🔍</div>
+        <div class="name">Explorer</div>
+        <div class="desc">搜索整理<br>代碼探索<br>文件彙整</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+      <div class="card agent-card c-accent">
+        <div class="emoji">🛠️</div>
+        <div class="name">Helper</div>
+        <div class="desc">雜務處理<br>數據格式<br>批量任務</div>
+        <div class="model-tag tag-sonnet">Sonnet</div>
+      </div>
+    </div>
+
+    <!-- Workflow -->
+    <div class="card workflow">
+      <h3>⚡ 工作流程（可並行 8 任務同時跑）</h3>
+      <div style="display:flex; gap:20px;">
+        <div style="flex:1;">
+          <div style="font-size:10px; color:var(--gold); font-weight:600; margin-bottom:4px;">🔧 開發流程</div>
+          <div class="flow-row">
+            <span class="flow-step fs-gold">頭頭提需求</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-purple">PM 寫規格</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-accent">Dev 實作</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-pink">QA 測試</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-accent">部署上線</span>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:10px; color:var(--pink); font-weight:600; margin-bottom:4px;">📣 行銷流程</div>
+          <div class="flow-row">
+            <span class="flow-step fs-gold">頭頭給方向</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-pink">Social 策略</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-accent">Content 撰文</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-purple">小mini 審核</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-accent">發佈</span>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:10px; color:var(--accent); font-weight:600; margin-bottom:4px;">🤝 客戶流程</div>
+          <div class="flow-row">
+            <span class="flow-step fs-gold">客戶反饋</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-accent">CS 分類</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-purple">對應角色處理</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-pink">小mini 確認</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step fs-gold">回報</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Platforms + Schedule -->
+  <div class="right">
+    <div class="card platform-card">
+      <h3>📱 多平台接入</h3>
+      <div class="platform-badges">
+        <span class="badge">💬 Discord</span>
+        <span class="badge">✈️ Telegram</span>
+        <span class="badge">🟢 LINE</span>
+        <span class="badge">🌐 瀏覽器</span>
+        <span class="badge">💻 終端機</span>
+        <span class="badge">📧 Email</span>
+      </div>
+    </div>
+    <div class="card schedule-card">
+      <h3>⏰ 自動排程</h3>
+      <div class="sched-item"><span class="time">每30min</span> 心跳巡檢</div>
+      <div class="sched-item"><span class="time">每2hr</span> 小金交易報告</div>
+      <div class="sched-item"><span class="time">每日</span> 服務健康檢查</div>
+      <div class="sched-item"><span class="time">每日</span> 記憶整理歸檔</div>
+      <div class="sched-item"><span class="time">觸發</span> 異常即時告警</div>
+    </div>
+    <div class="card" style="flex:1;">
+      <h3 style="font-size:11px; color:var(--accent); margin-bottom:6px; font-weight:700;">🧠 核心能力</h3>
+      <div style="font-size:9px; color:#c0c0d0; line-height:1.6;">
+        <div>✅ 持久記憶（三層架構）</div>
+        <div>✅ 上網搜索 + 瀏覽器操作</div>
+        <div>✅ 文件讀寫 + 代碼開發</div>
+        <div>✅ 主動提醒 + 定時排程</div>
+        <div>✅ 多 Agent 並行派工</div>
+        <div>✅ 自架私有（數據在手上）</div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center; border-color:var(--accent);">
+      <div style="font-size:9px; color:var(--muted);">Powered by</div>
+      <div style="font-size:14px; font-weight:700; color:var(--accent); margin:2px 0;">🦞 OpenClaw</div>
+      <div style="font-size:9px; color:var(--muted);">開源 AI 助手框架</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">時光智造科技有限公司 · 智造交給 AI，時光留給所愛</div>
+
+</body>
+</html>
