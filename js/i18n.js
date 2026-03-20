@@ -421,11 +421,11 @@ function applyTranslations(lang) {
     // Update html lang attribute
     document.documentElement.lang = lang;
     
-    // Update selector
-    const selector = document.getElementById('lang-selector');
-    if (selector) {
-        selector.value = lang;
-    }
+    // Update selectors (desktop + mobile)
+    ['lang-selector', 'lang-selector-mobile'].forEach(id => {
+        const selector = document.getElementById(id);
+        if (selector) selector.value = lang;
+    });
 
     // Save preference
     localStorage.setItem('timux-lang', lang);
@@ -436,13 +436,15 @@ function initI18n() {
     const lang = detectLanguage();
     applyTranslations(lang);
 
-    // Language selector change event
-    const selector = document.getElementById('lang-selector');
-    if (selector) {
-        selector.addEventListener('change', (e) => {
-            applyTranslations(e.target.value);
-        });
-    }
+    // Language selector change events (desktop + mobile, synced)
+    ['lang-selector', 'lang-selector-mobile'].forEach(id => {
+        const selector = document.getElementById(id);
+        if (selector) {
+            selector.addEventListener('change', (e) => {
+                applyTranslations(e.target.value);
+            });
+        }
+    });
 }
 
 // Export for use
