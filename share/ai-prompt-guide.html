@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt 使用指南 — 基於 PRISM 論文實證 | 時光智造 Timux</title>
+    <meta name="description" content="基於 USC 2026 年 PRISM 論文，整理出什麼時候該給 AI 角色設定、什麼時候不該，以及改良的 TCO+S prompt 框架。">
+    <meta property="og:title" content="AI Prompt 使用指南 — 「你是專家」竟成幻覺毒藥？">
+    <meta property="og:description" content="基於 arXiv:2603.18507 論文實證，教你什麼時候該給 AI 角色設定。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.timux.site/share/ai-prompt-guide.html">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-code: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-heading: #f8fafc;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #fb923c;
+            --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--text-heading);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        header .meta a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        header .meta a:hover { text-decoration: underline; }
+        h2 {
+            font-size: 1.4rem;
+            color: var(--text-heading);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        h3 {
+            font-size: 1.1rem;
+            color: var(--primary-light);
+            margin: 1.8rem 0 0.8rem;
+        }
+        p { margin-bottom: 1rem; }
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.2rem 0;
+            border: 1px solid var(--border);
+        }
+        .card.highlight {
+            border-left: 4px solid var(--primary);
+        }
+        .card.warning {
+            border-left: 4px solid var(--accent-yellow);
+        }
+        .card.danger {
+            border-left: 4px solid var(--accent-red);
+        }
+        .card.success {
+            border-left: 4px solid var(--accent-green);
+        }
+        blockquote {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            color: var(--text);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.92rem;
+        }
+        th, td {
+            padding: 0.7rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-card);
+            color: var(--primary-light);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        tr:hover td { background: rgba(99, 102, 241, 0.05); }
+        code {
+            background: var(--bg-code);
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        pre {
+            background: var(--bg-code);
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.88rem;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.15em 0.6em;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .tag-up { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+        .tag-down { background: rgba(248,113,113,0.15); color: var(--accent-red); }
+        .tag-warn { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+        .tag-special { background: rgba(251,146,60,0.15); color: var(--accent-orange); }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 640px) {
+            .comparison { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.4rem; }
+            .container { padding: 1rem; }
+        }
+        .comparison .bad { border-left: 4px solid var(--accent-red); }
+        .comparison .good { border-left: 4px solid var(--accent-green); }
+        .comparison .label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .comparison .bad .label { color: var(--accent-red); }
+        .comparison .good .label { color: var(--accent-green); }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        footer a { color: var(--primary-light); text-decoration: none; }
+        .toc {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .toc h3 { margin-top: 0; }
+        .toc ol { padding-left: 1.5rem; }
+        .toc li { margin: 0.4rem 0; }
+        .toc a { color: var(--primary-light); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .example-box {
+            background: var(--bg-code);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+        .example-box .q { color: var(--accent-yellow); font-weight: 600; }
+        .example-box .good-answer { color: var(--accent-green); }
+        .example-box .bad-answer { color: var(--accent-red); }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>🧠 AI Prompt 使用指南</h1>
+    <div class="subtitle">「你是專家」竟成幻覺毒藥？— 基於 PRISM 論文實證</div>
+    <div class="meta">
+        參考論文：<a href="https://arxiv.org/abs/2603.18507" target="_blank">arXiv:2603.18507</a>（USC, 2026-03-19）<br>
+        整理：<a href="https://www.timux.site" target="_blank">時光智造 Timux</a> · 最後更新 2026-03-25
+    </div>
+</header>
+
+<div class="toc">
+    <h3>📑 目錄</h3>
+    <ol>
+        <li><a href="#findings">論文核心發現</a></li>
+        <li><a href="#models">測試模型一覽與評估</a></li>
+        <li><a href="#guide">實用指南：什麼時候該加角色？</a></li>
+        <li><a href="#framework">改良 Prompt 框架：TCO+S</a></li>
+        <li><a href="#length">角色描述長度的影響</a></li>
+        <li><a href="#advanced">進階技巧</a></li>
+        <li><a href="#commercial">商業模型使用建議</a></li>
+        <li><a href="#limits">論文局限性</a></li>
+    </ol>
+</div>
+
+<!-- Section 1 -->
+<h2 id="findings">一、論文核心發現</h2>
+
+<p>南加州大學（USC）研究團隊系統性測試了 <strong>6 個 AI 模型</strong>，發現一個違反直覺的結論：</p>
+
+<div class="card highlight">
+    <p><strong>告訴 AI「你是某領域專家」，會讓它的事實準確率下降，但會提升它的表達品質和安全性。</strong></p>
+</div>
+
+<h3>📊 關鍵數據</h3>
+
+<table>
+    <thead>
+        <tr><th>指標</th><th>不加角色</th><th>加專家角色</th><th>變化</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>知識問答準確率（MMLU）</td><td>71.6%</td><td>68.0%</td><td><span class="tag tag-down">📉 -3.6%</span></td></tr>
+        <tr><td>寫作品質（MT-Bench）</td><td>基準</td><td>+0.40 分</td><td><span class="tag tag-up">📈 提升</span></td></tr>
+        <tr><td>提取任務</td><td>基準</td><td>+0.65 分</td><td><span class="tag tag-up">📈 提升</span></td></tr>
+        <tr><td>STEM 結構化</td><td>基準</td><td>+0.60 分</td><td><span class="tag tag-up">📈 提升</span></td></tr>
+        <tr><td>安全防禦（越獄攻擊）</td><td>53.2%</td><td>70.9%</td><td><span class="tag tag-up">📈 +17.7%</span></td></tr>
+        <tr><td>數學推理</td><td>基準</td><td>-0.10 分</td><td><span class="tag tag-down">📉 下降</span></td></tr>
+        <tr><td>程式碼生成</td><td>基準</td><td>-0.65 分</td><td><span class="tag tag-down">📉 下降</span></td></tr>
+        <tr><td>人文知識</td><td>基準</td><td>-0.20 分</td><td><span class="tag tag-down">📉 下降</span></td></tr>
+    </tbody>
+</table>
+
+<h3>🔍 為什麼會這樣？</h3>
+
+<div class="card">
+    <p><strong>1. 角色設定啟動「表演模式」</strong> — AI 把計算資源分配給「扮演專家」，擠掉了「回憶知識」的能力</p>
+    <p><strong>2. 專家不能說「不知道」</strong> — 被設定為專家後，AI 傾向給出答案而非承認不確定</p>
+    <p><strong>3. 角色越詳細，傷害越大</strong> — 更多前綴文字佔用上下文窗口，干擾知識檢索</p>
+</div>
+
+<h3>😱 觸目驚心的例子（論文原文）</h3>
+
+<div class="example-box">
+    <p class="q">問題：擲兩個骰子，點數總和 ≥3 的機率是多少？</p>
+    <br>
+    <p class="good-answer">✅ 不加角色 → 9/10 分<br>
+    「共 36 種結果，只有 1+1=2 小於 3，所以 P = 35/36」</p>
+    <br>
+    <p class="bad-answer">❌ 加上「數學專家」→ 1.5/10 分<br>
+    「有 3 + 6 = 9 種結果小於 3...」（完全算錯）</p>
+</div>
+
+<!-- Section 2 -->
+<h2 id="models">二、測試模型一覽與評估</h2>
+
+<table>
+    <thead>
+        <tr><th>模型</th><th>類型</th><th>參數量</th><th>擅長</th><th>弱項</th><th>角色敏感度</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Mistral-7B-v0.3</strong></td>
+            <td>基礎指令微調</td>
+            <td>7B</td>
+            <td>通用對話</td>
+            <td>安全性差、角色響應弱</td>
+            <td><span class="tag tag-up">🟢 低</span></td>
+        </tr>
+        <tr>
+            <td><strong>Qwen2.5-7B</strong></td>
+            <td>中度指令微調</td>
+            <td>7B</td>
+            <td>中文理解、多語言</td>
+            <td>角色設定下知識回憶受損</td>
+            <td><span class="tag tag-warn">🟡 中</span></td>
+        </tr>
+        <tr>
+            <td><strong>Llama-3.1-8B</strong></td>
+            <td>高度指令微調</td>
+            <td>8B</td>
+            <td>指令跟隨、格式控制</td>
+            <td>角色設定下準確率降幅最大</td>
+            <td><span class="tag tag-down">🔴 高</span></td>
+        </tr>
+        <tr>
+            <td><strong>Qwen1.5-MoE</strong></td>
+            <td>MoE 架構</td>
+            <td>~14B 激活 4B</td>
+            <td>效率高、多任務</td>
+            <td>角色響應不穩定</td>
+            <td><span class="tag tag-warn">🟡 中</span></td>
+        </tr>
+        <tr>
+            <td><strong>DeepSeek-R1-Qwen-7B</strong></td>
+            <td>推理蒸餾</td>
+            <td>7B</td>
+            <td>數學、程式、STEM</td>
+            <td>寫作/人文被蒸餾破壞、安全性歸零</td>
+            <td><span class="tag tag-special">🟠 特殊</span></td>
+        </tr>
+        <tr>
+            <td><strong>DeepSeek-R1-Llama-8B</strong></td>
+            <td>推理蒸餾</td>
+            <td>8B</td>
+            <td>同上</td>
+            <td>同上</td>
+            <td><span class="tag tag-special">🟠 特殊</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="card warning">
+    <h3>🔑 關鍵規律</h3>
+    <p><strong>越高度優化的模型，對角色設定越敏感</strong> — 好處更大，傷害也更大。</p>
+    <p><strong>推理蒸餾模型（DeepSeek-R1）有特殊行為</strong> — 角色的具體內容不重要，只是因為多了一段前綴文字而強化了推理鏈。換句話說，用「數學專家」和「寫作專家」去回答數學題，效果幾乎一樣。</p>
+</div>
+
+<!-- Section 3 -->
+<h2 id="guide">三、實用指南：什麼時候該加角色？</h2>
+
+<div class="card highlight">
+    <p style="font-size: 1.1rem; text-align: center;"><strong>核心判斷：我要的是「正確答案」還是「好的表達」？</strong></p>
+    <p style="text-align: center; color: var(--text-muted);">正確答案 → 不加角色 ｜ 好的表達 → 加角色 ｜ 兩者都要 → 分兩步</p>
+</div>
+
+<table>
+    <thead>
+        <tr><th>任務類型</th><th>加角色？</th><th>理由</th><th>正確寫法範例</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>查事實/數據</td><td>❌ 不要</td><td>降低準確率 3.6%</td><td>「幫我查武漢 OPC 政策申請條件」</td></tr>
+        <tr><td>數學/邏輯推理</td><td>❌ 不要</td><td>干擾推理鏈</td><td>「計算這個方案的月成本」</td></tr>
+        <tr><td>寫程式/Debug</td><td>❌ 不要</td><td>增加幻覺代碼</td><td>「修復這段 API 的 500 錯誤」</td></tr>
+        <tr><td>市場分析</td><td>❌ 不要</td><td>編造合理假數據</td><td>「分析風險，不確定的標注」</td></tr>
+        <tr><td>寫商務信件</td><td>✅ 加語氣</td><td>提升格式和語氣</td><td>「用專業商務語氣寫信給台辦」</td></tr>
+        <tr><td>寫行銷文案</td><td>✅ 加風格</td><td>提升創意表達</td><td>「用活潑社群風格寫 IG 貼文」</td></tr>
+        <tr><td>安全審查</td><td>✅ 加監督角色</td><td>防禦率 +17.7%</td><td>「以安全審查員身份檢查內容」</td></tr>
+        <tr><td>格式化/報告</td><td>✅ 加格式要求</td><td>提升結構化</td><td>「用表格整理，按金額排序」</td></tr>
+    </tbody>
+</table>
+
+<!-- Section 4 -->
+<h2 id="framework">四、改良 Prompt 框架：TCO+S</h2>
+
+<h3>舊框架：RTCO</h3>
+<pre><code>R = Role（角色）    → ⚠️ 知識類任務有風險
+T = Task（任務）    → ✅ 永遠有用
+C = Context（約束） → ✅ 永遠有用
+O = Output（格式）  → ✅ 永遠有用</code></pre>
+
+<h3>新框架：TCO+S</h3>
+<pre><code>T = Task（明確任務）                        → ✅ 永遠有用
+C = Constraint（約束 + 「不確定的標注」）     → ✅ 永遠有用
+O = Output（輸出格式）                       → ✅ 永遠有用
+S = Style（僅在需要特定語氣時加，盡量短）     → 🟡 視情況</code></pre>
+
+<h3>範例對比</h3>
+
+<div class="comparison">
+    <div class="card bad">
+        <div class="label">❌ 舊寫法（知識任務加了角色）</div>
+        <pre><code>R：你是市場研究分析師
+T：搜索武漢 AI 創業補貼
+C：只要官方來源
+O：表格整理</code></pre>
+    </div>
+    <div class="card good">
+        <div class="label">✅ 新寫法</div>
+        <pre><code>T：搜索武漢 AI 創業補貼政策
+C：只要官方來源，附鏈接，
+   不確定的標注來源可靠度
+O：表格，按金額排序</code></pre>
+    </div>
+</div>
+
+<div class="card success">
+    <div class="label" style="color: var(--accent-green); font-weight: 600; margin-bottom: 0.5rem;">✅ 需要風格時才加 S</div>
+    <pre><code>T：寫一封信給武漢市台辦詢問台青創業補貼
+C：提到公司已在武漢註冊，附公司簡介
+O：正式信件格式
+S：專業商務語氣，禮貌但不卑微</code></pre>
+</div>
+
+<!-- Section 5 -->
+<h2 id="length">五、角色描述長度的影響</h2>
+
+<table>
+    <thead>
+        <tr><th>角色長度</th><th>MMLU 準確率</th><th>建議</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>不加角色</td><td><strong>71.6%</strong></td><td>知識任務首選</td></tr>
+        <tr><td>最短角色（一句話）</td><td>68.0%</td><td>如果必須加，用這個</td></tr>
+        <tr><td>中等角色</td><td>~67%</td><td>不建議</td></tr>
+        <tr><td>長角色（詳細背景描述）</td><td><strong>66.3%</strong></td><td>❌ 避免</td></tr>
+    </tbody>
+</table>
+
+<div class="comparison">
+    <div class="card bad">
+        <div class="label">❌ 不好</div>
+        <p>「你是一位擁有 20 年經驗的資深市場分析師，專精於中國大陸政策研究，曾在麥肯錫工作...」</p>
+    </div>
+    <div class="card good">
+        <div class="label">✅ 好</div>
+        <p>「用專業分析語氣」</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">只在需要語氣時加，盡量短</p>
+    </div>
+</div>
+
+<!-- Section 6 -->
+<h2 id="advanced">六、進階技巧</h2>
+
+<h3>🔄 兩步法：同時要準確 + 好表達</h3>
+<div class="card">
+    <p><strong>Step 1（取得正確內容，不加角色）：</strong></p>
+    <pre><code>幫我分析武漢 OPC 政策對台灣人的適用性，
+不確定的標注，列出具體條件和金額</code></pre>
+    <p><strong>Step 2（調整表達，加角色）：</strong></p>
+    <pre><code>把上面的分析改寫成給投資人看的一頁摘要，
+用專業但易懂的語氣</code></pre>
+</div>
+
+<h3>❓ 追問確信度</h3>
+<div class="card">
+    <pre><code>「這個數據你多確定？來源是什麼？」
+「把確定的、大概率對的、和猜測的分開標注」</code></pre>
+</div>
+
+<h3>🤝 鼓勵 AI 說「不確定」</h3>
+<div class="card">
+    <pre><code>「不確定的直接說，不要編。
+我寧可知道你不確定，也不要一個漂亮但可能錯的答案。」</code></pre>
+</div>
+
+<!-- Section 7 -->
+<h2 id="commercial">七、商業模型使用建議</h2>
+
+<div class="card warning">
+    <p>⚠️ 以下為基於論文規律的合理推測，非論文直接測試數據。商業大模型（100B+ 參數）的行為可能與小型開源模型不同。</p>
+</div>
+
+<table>
+    <thead>
+        <tr><th>模型</th><th>角色敏感度（推測）</th><th>最佳使用方式</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Claude Opus / GPT-4o</td><td><span class="tag tag-down">🔴 高</span></td><td>知識類完全不加角色；風格類用短角色</td></tr>
+        <tr><td>Claude Sonnet / GPT-4o mini</td><td><span class="tag tag-warn">🟡 中</span></td><td>同上，傷害可能稍小</td></tr>
+        <tr><td>DeepSeek-R1</td><td><span class="tag tag-special">🟠 特殊</span></td><td>任何前綴都強化推理，但角色內容無意義</td></tr>
+        <tr><td>Gemini 2.5 Pro</td><td><span class="tag tag-warn">🟡 中</span></td><td>同 Claude Sonnet 推測</td></tr>
+    </tbody>
+</table>
+
+<!-- Section 8 -->
+<h2 id="limits">八、論文局限性</h2>
+
+<div class="card">
+    <ol style="padding-left: 1.5rem;">
+        <li><strong>測試模型均為 7-8B 小型模型</strong> — 大型商業模型（100B+）的行為可能不同</li>
+        <li><strong>主要測試英文任務</strong> — 中文任務的表現未直接測試</li>
+        <li><strong>MMLU 是選擇題</strong> — 開放式問答的影響可能不同</li>
+        <li><strong>PRISM 方案需要微調</strong> — 普通用戶無法直接使用，但論文發現本身具有實用價值</li>
+    </ol>
+</div>
+
+<footer>
+    <p>
+        📄 原始論文：<a href="https://arxiv.org/abs/2603.18507" target="_blank">arXiv:2603.18507</a><br>
+        🏢 整理：<a href="https://www.timux.site" target="_blank">時光智造科技 Timux</a><br>
+        最後更新：2026-03-25
+    </p>
+</footer>
+
+</div>
+</body>
+</html>
