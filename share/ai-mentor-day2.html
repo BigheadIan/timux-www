@@ -707,6 +707,131 @@
             </section>
 
             <!-- ========================================= -->
+            <!-- RTCO 补充: PRISM 论文实证 + TCO+S 进阶 -->
+            <!-- ========================================= -->
+
+            <!-- PRISM 核心发现 -->
+            <section>
+                <h2 style="font-size:1.1em;">⚠️ 等等！「你是专家」竟然是<span class="pink">幻觉毒药</span>？</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 10px;">南加州大学 PRISM 论文实证（2026）· arXiv:2603.18507</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:12px 16px;">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.75em; font-weight:700;"><span class="accent">📈 加了角色更好的</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ 写作品质 <span class="accent">+0.40</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ STEM 结构化 <span class="accent">+0.60</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ 安全防御 <span class="accent">+17.7%</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ 内容提取 <span class="accent">+0.65</span></p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--pink);">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.75em; font-weight:700;"><span class="pink">📉 加了角色更差的</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 知识准确率 <span class="pink">-3.6%</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 数学推理 <span class="pink">-0.10</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 代码生成 <span class="pink">-0.65</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 人文知识 <span class="pink">-0.20</span></p>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align:center; padding:10px 18px; margin-top:12px; max-width:650px; margin-left:auto; margin-right:auto;">
+                    <p style="margin:0; font-size:0.65em;">
+                        🔍 <span class="gold">原因：</span>角色设定启动「表演模式」，AI 把算力分配给「扮演专家」<br>
+                        挤掉了「回忆知识」的能力 → <span class="pink">专家不能说「不知道」</span>
+                    </p>
+                </div>
+                <aside class="notes">这个论文颠覆了大家对 prompt 的认知。告诉AI「你是专家」，写作会更好，但事实准确率反而下降3.6%。因为AI忙着扮演专家，就不会说「我不确定」了。</aside>
+            </section>
+
+            <!-- 触目惊心的例子 -->
+            <section>
+                <h2 style="font-size:1.1em;">😱 真实案例：「数学专家」算错数学题</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 10px;">掷两个骰子，点数总和 ≥ 3 的概率是多少？</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:14px 18px; border-color:var(--accent);">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="accent" style="font-size:0.8em; font-weight:700;">✅ 不加角色 → 9/10 分</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.55em; color:var(--muted); line-height:1.6;">
+                            共 36 种结果<br>
+                            只有 1+1=2 小于 3<br>
+                            所以 P = <span class="accent" style="font-weight:700;">35/36</span> ✅
+                        </div>
+                    </div>
+                    <div class="glass-card" style="padding:14px 18px; border-color:var(--pink);">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="pink" style="font-size:0.8em; font-weight:700;">❌ 加「数学专家」→ 1.5/10 分</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.55em; color:var(--muted); line-height:1.6;">
+                            有 3 + 6 = 9 种结果小于 3...<br>
+                            <span class="pink">（完全算错）</span><br>
+                            连基本逻辑都崩了 💀
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align:center; padding:10px; margin-top:12px; max-width:600px; margin-left:auto; margin-right:auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.72em;">
+                        <span class="gold">💡 核心判断：</span>要「正确答案」→ <span class="accent">不加角色</span> ｜ 要「好的表达」→ <span class="purple">加角色</span>
+                    </p>
+                </div>
+                <aside class="notes">这个例子在论文里原文引用的。简单的骰子概率题，不加角色能算对，加了数学专家反而算错。因为AI忙着表演「我是专家」，反而干扰了推理过程。</aside>
+            </section>
+
+            <!-- RTCO → TCO+S 进化 -->
+            <section>
+                <h2 style="font-size:1.1em;">🔄 RTCO 进化版：<span class="gold">TCO+S</span> 框架</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 10px;">什么时候该加角色？什么时候不该？</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:12px 16px;">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.7em; font-weight:700;">旧：<span class="pink">RTCO</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="pink" style="font-weight:700;">R</span> Role → ⚠️ 知识任务有风险</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="accent" style="font-weight:700;">T</span> Task → ✅ 永远有用</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="accent" style="font-weight:700;">C</span> Constraints → ✅ 永远有用</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="accent" style="font-weight:700;">O</span> Output → ✅ 永远有用</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.7em; font-weight:700;">新：<span class="gold">TCO+S</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">T</span> Task — 明确任务 ✅</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">C</span> Constraint — 约束 + 「不确定的标注」 ✅</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">O</span> Output — 输出格式 ✅</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">+S</span> Style — 🟡 <span class="muted">仅需要语气时加，尽量短</span></p>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align:center; padding:10px; margin-top:12px; max-width:650px; margin-left:auto; margin-right:auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.65em;">
+                        <span class="gold">简单记：</span>RTCO 是入门好用的 → 进阶后用 TCO+S 更精准<br>
+                        <span class="muted" style="font-size:0.9em;">角色不是不能用，是<span class="accent">要看场景</span></span>
+                    </p>
+                </div>
+                <aside class="notes">RTCO是入门的好工具，但进阶后要知道R什么时候该用什么时候不该。TCO+S把角色变成可选的Style，需要语气就加，查资料就不加。这是论文给我们的最大启发。</aside>
+            </section>
+
+            <!-- 什么时候该加角色 -->
+            <section>
+                <h2 style="font-size:1.05em;">📋 速查表：什么时候该加角色？</h2>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.55em;">
+                    <div class="glass-card" style="padding:10px 14px; border-color:var(--pink);">
+                        <p style="margin:0 0 6px; font-weight:700; color:var(--pink);">❌ 不要加角色</p>
+                        <p style="margin:2px 0;">🔍 查事实/数据 — 降低准确率</p>
+                        <p style="margin:2px 0;">🧮 数学/逻辑推理 — 干扰推理链</p>
+                        <p style="margin:2px 0;">💻 写代码/Debug — 增加幻觉</p>
+                        <p style="margin:2px 0;">📊 市场分析 — 编造合理假数据</p>
+                    </div>
+                    <div class="glass-card" style="padding:10px 14px; border-color:var(--accent);">
+                        <p style="margin:0 0 6px; font-weight:700; color:var(--accent);">✅ 可以加角色</p>
+                        <p style="margin:2px 0;">✉️ 写商务信件 — 提升格式语气</p>
+                        <p style="margin:2px 0;">📝 写行销文案 — 提升创意表达</p>
+                        <p style="margin:2px 0;">🛡️ 安全审查 — 防御率+17.7%</p>
+                        <p style="margin:2px 0;">📑 格式化/报告 — 提升结构化</p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="padding:10px 16px; max-width:650px; margin:0 auto;">
+                    <p style="margin:0 0 6px; font-size:0.65em; font-weight:700; color:var(--gold);">🔄 进阶技巧：两步法（同时要准确 + 好表达）</p>
+                    <div style="font-size:0.52em; color:var(--muted); line-height:1.6;">
+                        <p style="margin:2px 0;"><span class="accent">Step 1</span>（不加角色）：帮我分析武汉 AI 创业补贴政策，不确定的标注</p>
+                        <p style="margin:2px 0;"><span class="gold">Step 2</span>（加 Style）：把上面改写成给投资人看的一页摘要，用专业但易懂的语气</p>
+                    </div>
+                </div>
+                <p style="text-align:center; font-size:0.6em; margin-top:10px;">
+                    📖 完整指南：<a href="https://www.timux.site/share/ai-prompt-guide.html" target="_blank" style="color:var(--gold);">timux.site/share/ai-prompt-guide.html</a>
+                </p>
+                <aside class="notes">这张速查表就是精华。左边查资料、算数、写代码不要加角色。右边写文案、写信可以加。两者都要？用两步法：先不加角色拿到准确内容，再加Style调整语气。详细版可以扫链接看完整指南。</aside>
+            </section>
+
+            <!-- ========================================= -->
             <!-- PART 3: OpenClaw (8 min) -->
             <!-- ========================================= -->
             <section class="center">
