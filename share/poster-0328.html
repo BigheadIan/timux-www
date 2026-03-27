@@ -9,282 +9,289 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            background: #f5e6f0;
+            background: #f0e4ee;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
         .poster {
-            width: 750px;
-            background: linear-gradient(170deg, #fff8fc 0%, #fce8f3 35%, #fff0f8 65%, #fef3ec 100%);
+            width: 780px;
+            background: #fff8fc;
             border-radius: 28px;
             overflow: hidden;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(220, 100, 130, 0.25);
-            border: 1px solid rgba(240, 160, 180, 0.3);
+            box-shadow: 0 20px 60px rgba(200, 80, 130, 0.2);
+            border: 2px solid rgba(230, 150, 170, 0.25);
         }
 
-        /* 頂部背景：小龍蝦圖 */
-        .hero {
+        /* ===== TOP HEADER 區 ===== */
+        .top-header {
+            background: linear-gradient(135deg, #c8315a 0%, #e05080 60%, #e86894 100%);
+            padding: 28px 40px 24px;
             position: relative;
-            height: 360px;
             overflow: hidden;
         }
 
-        .hero-bg {
-            width: 100%;
-            height: 100%;
+        /* 右上角小裝飾圖 */
+        .deco-icon {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            width: 130px;
+            height: 130px;
             object-fit: cover;
-            object-position: center 10%;
+            border-radius: 50%;
+            opacity: 0.25;
+            filter: saturate(0.8);
         }
 
-        /* 漸層遮罩 */
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(250, 230, 240, 0.15) 0%,
-                rgba(250, 230, 240, 0.05) 40%,
-                rgba(255, 245, 252, 0.7) 75%,
-                rgba(255, 248, 252, 1) 100%
-            );
-        }
-
-        /* 浮在圖上的 Badge + 時間 */
-        .hero-top {
-            position: absolute;
-            top: 18px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
-        }
-
-        .badge {
+        .event-badge {
             display: inline-block;
-            background: rgba(220, 80, 120, 0.85);
+            background: rgba(255,255,255,0.2);
             color: #fff;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
-            padding: 5px 16px;
+            padding: 5px 18px;
             border-radius: 20px;
-            letter-spacing: 0.5px;
-            backdrop-filter: blur(6px);
-        }
-
-        .time-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.9);
-            color: #c0395a;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 5px 14px;
-            border-radius: 20px;
-            border: 1.5px solid rgba(220, 80, 120, 0.4);
-        }
-
-        /* 標題區（疊在圖底部） */
-        .hero-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0 36px 20px;
-            text-align: center;
+            border: 1px solid rgba(255,255,255,0.4);
+            margin-bottom: 14px;
+            letter-spacing: 1px;
         }
 
         .main-title {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 900;
-            line-height: 1.25;
-            color: #2d0a1a;
-            text-shadow: 0 2px 12px rgba(255,255,255,0.8);
-            margin-bottom: 6px;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            position: relative;
         }
 
-        .main-title .hi {
-            color: #d63060;
+        .main-title .highlight {
+            color: #ffe08a;
         }
 
-        .subtitle {
-            font-size: 14px;
-            color: #8a4060;
-            font-weight: 500;
-        }
-
-        /* 講師 + 照片 */
-        .speaker-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 16px 32px;
-            background: rgba(255,255,255,0.7);
-            border: 1px solid rgba(220, 140, 160, 0.25);
-            border-radius: 16px;
-            padding: 14px 18px;
-            backdrop-filter: blur(4px);
-        }
-
-        .speaker-photo {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            object-fit: cover;
-            object-position: center 15%;
-            border: 3px solid #e8a0b0;
-            flex-shrink: 0;
-        }
-
-        .speaker-info .name {
-            font-size: 18px;
-            font-weight: 800;
-            color: #2d0a1a;
-        }
-
-        .speaker-info .role {
-            font-size: 12px;
-            color: #8a4060;
-            margin-top: 3px;
+        .sub-title {
+            font-size: 16px;
+            color: rgba(255,255,255,0.85);
+            font-weight: 400;
             line-height: 1.5;
         }
 
-        .lobster-mini {
-            margin-left: auto;
-            font-size: 36px;
-        }
-
-        /* 你将学到 */
-        .highlights {
-            padding: 0 32px 16px;
-        }
-
-        .section-title {
-            font-size: 12px;
-            color: #c0395a;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+        /* ===== 時間/平台 超大顯眼區 ===== */
+        .time-block {
+            background: linear-gradient(135deg, #fff3e0, #fff8fc);
+            border-bottom: 3px solid #e05080;
+            padding: 20px 40px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0;
         }
 
-        .section-title::after {
+        .time-item {
+            flex: 1;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .time-item + .time-item {
+            border-left: 2px solid rgba(200, 80, 130, 0.2);
+        }
+
+        .time-label {
+            font-size: 13px;
+            color: #a04060;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .time-value {
+            font-size: 30px;
+            font-weight: 900;
+            color: #c8315a;
+            line-height: 1.1;
+        }
+
+        .time-value .sub {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e05080;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ===== 講師區 ===== */
+        .speaker-section {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 40px;
+            background: #fff;
+            border-bottom: 1px solid rgba(220, 150, 170, 0.2);
+        }
+
+        .speaker-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 10%;
+            border: 4px solid #e05080;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(200, 80, 130, 0.25);
+        }
+
+        .speaker-text .name {
+            font-size: 28px;
+            font-weight: 900;
+            color: #1a0610;
+            margin-bottom: 6px;
+        }
+
+        .speaker-text .role {
+            font-size: 15px;
+            color: #7a3050;
+            line-height: 1.6;
+        }
+
+        .speaker-text .role span {
+            display: inline-block;
+            background: rgba(200, 80, 130, 0.1);
+            border-radius: 6px;
+            padding: 2px 8px;
+            margin: 2px 2px 0 0;
+            font-weight: 600;
+            color: #c8315a;
+            font-size: 13px;
+        }
+
+        /* ===== 你將學到 ===== */
+        .section-wrap {
+            padding: 20px 40px 0;
+        }
+
+        .section-header {
+            font-size: 15px;
+            font-weight: 800;
+            color: #c8315a;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-header::after {
             content: '';
             flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, rgba(200, 80, 120, 0.4), transparent);
+            height: 2px;
+            background: linear-gradient(to right, rgba(200,80,130,0.3), transparent);
+            border-radius: 2px;
         }
 
         .highlight-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .hl-item {
-            background: rgba(255,255,255,0.8);
-            border: 1px solid rgba(220, 140, 160, 0.3);
+            background: linear-gradient(135deg, #fff5f8, #fff8fc);
+            border: 1.5px solid rgba(220, 140, 160, 0.3);
             border-radius: 14px;
-            padding: 14px 16px;
+            padding: 16px 18px;
         }
 
-        .hl-item .icon { font-size: 22px; margin-bottom: 6px; }
-        .hl-item .hl-title { font-size: 14px; font-weight: 700; color: #2d0a1a; margin-bottom: 4px; }
-        .hl-item .hl-desc { font-size: 12px; color: #7a4060; line-height: 1.5; }
+        .hl-item .icon { font-size: 26px; margin-bottom: 8px; }
+        .hl-item .hl-title { font-size: 16px; font-weight: 800; color: #1a0610; margin-bottom: 5px; }
+        .hl-item .hl-desc { font-size: 13px; color: #7a3050; line-height: 1.55; }
 
-        /* 聽完你會獲得 */
+        /* ===== 聽完你會獲得 ===== */
         .hooks {
-            margin: 0 32px 16px;
-            background: linear-gradient(135deg, rgba(220,80,120,0.08), rgba(255,180,160,0.08));
-            border: 1.5px solid rgba(220, 80, 120, 0.25);
-            border-radius: 14px;
-            padding: 14px 18px;
+            margin: 0 40px 20px;
+            background: linear-gradient(135deg, rgba(200,80,130,0.06), rgba(255,180,160,0.06));
+            border: 2px solid rgba(200, 80, 130, 0.25);
+            border-radius: 16px;
+            padding: 18px 22px;
         }
 
         .hook-title {
-            font-size: 13px;
-            color: #c0395a;
+            font-size: 16px;
+            color: #c8315a;
             font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
+            margin-bottom: 12px;
         }
 
-        .hook-list { display: flex; flex-direction: column; gap: 8px; }
+        .hook-list { display: flex; flex-direction: column; gap: 10px; }
 
         .hook-item {
-            font-size: 13px;
-            color: #3d0e20;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a0610;
             display: flex;
             align-items: flex-start;
-            gap: 8px;
+            gap: 10px;
             line-height: 1.4;
         }
 
-        .hook-item .cherry { font-size: 14px; flex-shrink: 0; }
-
-        /* QR + 底部 */
+        /* ===== QR + 底部 ===== */
         .footer {
-            padding: 10px 32px 28px;
+            padding: 16px 40px 30px;
             display: flex;
-            align-items: flex-start;
-            gap: 20px;
+            align-items: center;
+            gap: 24px;
+            background: #fff;
+            border-top: 1px solid rgba(220, 150, 170, 0.2);
         }
 
-        .qr-wrap {
-            flex-shrink: 0;
-            text-align: center;
-        }
+        .qr-wrap { flex-shrink: 0; text-align: center; }
 
         .qr-wrap img {
-            width: 120px;
-            height: 120px;
-            border-radius: 12px;
-            border: 2px solid rgba(200,80,120,0.4);
+            width: 140px;
+            height: 140px;
+            border-radius: 14px;
+            border: 3px solid rgba(200, 80, 130, 0.4);
             object-fit: cover;
         }
 
         .qr-label {
-            font-size: 11px;
-            color: #c0395a;
-            margin-top: 5px;
-            font-weight: 600;
+            font-size: 13px;
+            color: #c8315a;
+            margin-top: 6px;
+            font-weight: 700;
         }
 
         .info-box { flex: 1; }
 
         .quote {
-            font-size: 17px;
-            font-weight: 800;
-            color: #2d0a1a;
+            font-size: 22px;
+            font-weight: 900;
+            color: #1a0610;
             line-height: 1.45;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
-        .quote .a { color: #e05580; }
+        .quote .a { color: #e05080; }
         .quote .g { color: #d4701a; }
 
         .info-row {
-            font-size: 12px;
-            color: #7a4060;
-            margin: 5px 0;
+            font-size: 13px;
+            color: #7a3050;
+            margin: 6px 0;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .info-row .val { color: #3d0e20; font-weight: 500; }
+        .info-row .val { color: #1a0610; font-weight: 600; }
 
         /* 底部彩條 */
         .bottom-strip {
-            height: 5px;
+            height: 6px;
             background: linear-gradient(90deg, #f472b6, #e05580, #ff7043, #fbbf24, #f472b6);
         }
     </style>
@@ -292,33 +299,48 @@
 <body>
 <div class="poster">
 
-    <!-- Hero：小龍蝦 + 樓花背景 -->
-    <div class="hero">
-        <img class="hero-bg" src="slides-assets/lobster-sakura.jpg" alt="小龍蝦與櫻花">
-        <div class="hero-overlay"></div>
-        <div class="hero-top">
-            <div class="badge">🤖 AI 使用分享会</div>
-            <div class="time-badge">📅 3/28（六）13:00–14:00 · Google Meet</div>
+    <!-- TOP HEADER -->
+    <div class="top-header">
+        <img class="deco-icon" src="slides-assets/lobster-sakura.jpg" alt="">
+        <div class="event-badge">🌸 AI 使用分享会 · 免费线上直播</div>
+        <div class="main-title">一个台湾人<br>怎么用 AI 打造<span class="highlight">一人公司</span> 🦞</div>
+        <div class="sub-title">内地见闻 × AI 创业心法 × 实战工具演示</div>
+    </div>
+
+    <!-- 時間超大顯眼區 -->
+    <div class="time-block">
+        <div class="time-item">
+            <div class="time-label">📅 活動日期</div>
+            <div class="time-value">3月28日<span class="sub">2026年（六）</span></div>
         </div>
-        <div class="hero-title">
-            <div class="main-title">一个台湾人<br>怎么用 AI 打造<span class="hi">一人公司</span></div>
-            <div class="subtitle">内地见闻 × AI 创业心法 × 实战工具演示</div>
+        <div class="time-item">
+            <div class="time-label">⏰ 活動時間</div>
+            <div class="time-value">13:00 – 14:00<span class="sub">台灣 / 北京時間</span></div>
+        </div>
+        <div class="time-item">
+            <div class="time-label">📹 使用平台</div>
+            <div class="time-value">Google Meet<span class="sub">掃碼進群獲取連結</span></div>
         </div>
     </div>
 
     <!-- 講師 -->
-    <div class="speaker-row">
+    <div class="speaker-section">
         <img class="speaker-photo" src="slides-assets/ian-speaking-0320.jpg" alt="黄昱仁">
-        <div class="speaker-info">
+        <div class="speaker-text">
             <div class="name">黄昱仁（大头 Ian）</div>
-            <div class="role">AI 创业导师 · 时光智造科技 CEO<br>在武汉创业的台湾人 🌸</div>
+            <div class="role">
+                <span>AI 创业导师</span>
+                <span>时光智造科技 CEO</span>
+                <span>在武汉创业的台湾人 🌸</span>
+                <br style="margin: 4px 0;">
+                成功大学资工硕士 · 内地创业 9 年 · 抖音探店 1.1 万粉
+            </div>
         </div>
-        <div class="lobster-mini">🦞</div>
     </div>
 
-    <!-- 你将学到 -->
-    <div class="highlights">
-        <div class="section-title">🌸 你将学到</div>
+    <!-- 你將學到 -->
+    <div class="section-wrap">
+        <div class="section-header">🌸 你将学到</div>
         <div class="highlight-grid">
             <div class="hl-item">
                 <div class="icon">🧠</div>
@@ -328,17 +350,17 @@
             <div class="hl-item">
                 <div class="icon">⚡</div>
                 <div class="hl-title">内地 AI 真实案例</div>
-                <div class="hl-desc">AI 客服、数字人直播、小红书爆款策略</div>
+                <div class="hl-desc">AI 客服、数字人直播、小红书爆款全拆解</div>
             </div>
             <div class="hl-item">
                 <div class="icon">✍️</div>
                 <div class="hl-title">Prompt 进阶公式</div>
-                <div class="hl-desc">RTCO/TCO+S + 南加大论文实证，让 AI 更听话</div>
+                <div class="hl-desc">RTCO 框架 + 南加大论文实证，让 AI 更准确</div>
             </div>
             <div class="hl-item">
                 <div class="icon">🦞</div>
                 <div class="hl-title">私人 AI 管家演示</div>
-                <div class="hl-desc">OpenClaw 实战：24/7 AI 助手管理 10 个项目</div>
+                <div class="hl-desc">OpenClaw 实战：一人公司如何同时跑 10 个项目</div>
             </div>
         </div>
     </div>
@@ -347,23 +369,23 @@
     <div class="hooks">
         <div class="hook-title">🌸 听完你会获得</div>
         <div class="hook-list">
-            <div class="hook-item"><span class="cherry">🌸</span>如何保持 AI 时代最重要的好奇心</div>
-            <div class="hook-item"><span class="cherry">🌸</span>拆解工作流程，多出 8 成时间</div>
-            <div class="hook-item"><span class="cherry">🌸</span>从 0 开始搓出适合自己的 AI 工具</div>
+            <div class="hook-item"><span>🌸</span>如何保持 AI 时代最重要的好奇心</div>
+            <div class="hook-item"><span>🌸</span>拆解工作流程，多出 8 成时间</div>
+            <div class="hook-item"><span>🌸</span>从 0 开始搓出适合自己的 AI 工具</div>
         </div>
     </div>
 
-    <!-- 底部：QR + 聯繫 -->
+    <!-- QR + 底部 -->
     <div class="footer">
         <div class="qr-wrap">
             <img src="slides-assets/wechat-group-qr.jpg" alt="微信群二维码">
-            <div class="qr-label">扫码进群 · 获取 Meet 链接</div>
+            <div class="qr-label">扫码进群 · 获取 Meet 连接</div>
         </div>
         <div class="info-box">
             <div class="quote">「<span class="a">智造</span>交给 AI，<br><span class="g">时光</span>留给所爱。」</div>
             <div class="info-row">🌐 <span class="val">www.timux.site</span></div>
             <div class="info-row">📊 <span class="val">timux.site/share/ai-mentor-0328.html</span></div>
-            <div class="info-row">🤖 <span class="val">时光智造科技 · 限时免费分享</span></div>
+            <div class="info-row">🆓 <span class="val">完全免费 · 限时分享</span></div>
         </div>
     </div>
 
