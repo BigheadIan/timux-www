@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 不只是聊天机器人 · 2026-03-28</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+    <style>
+        :root {
+            --bg1: #0a1628;
+            --bg2: #0d2137;
+            --accent: #4fc3f7;
+            --accent2: #00e5ff;
+            --accent3: #f472b6;
+            --gold: #fbbf24;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --glass: rgba(79, 195, 247, 0.06);
+            --glass-border: rgba(79, 195, 247, 0.15);
+            --glow: 0 0 40px rgba(79, 195, 247, 0.15);
+            --red: #ef4444;
+            --green: #22c55e;
+            --orange: #f97316;
+        }
+        .reveal {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            font-size: 36px;
+            color: var(--text);
+            background: linear-gradient(135deg, #0a1628 0%, #0d2137 30%, #0a1628 70%, #061220 100%);
+            position: relative;
+        }
+        .reveal::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            background-image: 
+                linear-gradient(90deg, rgba(79, 195, 247, 0.15) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(79, 195, 247, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 0;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reveal::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 250px;
+            height: 250px;
+            background-image: 
+                radial-gradient(circle at 3px 3px, rgba(79, 195, 247, 0.2) 1px, transparent 1px);
+            background-size: 25px 25px;
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reveal .slides { background: transparent; }
+        .reveal .slides section {
+            text-align: left;
+            padding: 30px 50px;
+            background: transparent;
+            max-width: 1180px;
+            max-height: 660px;
+            overflow: hidden;
+        }
+        .reveal .slides section.center { text-align: center; }
+        .reveal .slides section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 10% 20%, rgba(79, 195, 247, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 90% 80%, rgba(0, 229, 255, 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(79, 195, 247, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reveal .slides section > * { position: relative; z-index: 1; }
+        .reveal h1 { 
+            font-size: 2.0em; 
+            font-weight: 900; 
+            line-height: 1.15; 
+            margin: 0 0 12px;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+        }
+        .reveal h2 { 
+            font-size: 1.35em; 
+            font-weight: 700; 
+            line-height: 1.2; 
+            margin: 0 0 12px; 
+            color: var(--text);
+        }
+        .reveal h3 { font-size: 1.05em; font-weight: 600; margin: 0 0 10px; color: var(--muted); }
+        .reveal p, .reveal li { font-weight: 400; line-height: 1.55; margin: 0.3em 0; }
+        .reveal ul { display: block; margin-left: 0.8em; }
+        .reveal li { margin: 0.4em 0; font-size: 0.85em; }
+        .grad-text { 
+            background: linear-gradient(135deg, #4fc3f7, #00e5ff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(79, 195, 247, 0.4);
+        }
+        .accent { color: var(--accent); font-weight: 700; }
+        .purple { color: var(--accent2); font-weight: 700; }
+        .pink { color: var(--accent3); font-weight: 700; }
+        .gold { color: var(--gold); font-weight: 700; }
+        .red { color: var(--red); font-weight: 700; }
+        .green { color: var(--green); font-weight: 700; }
+        .orange { color: var(--orange); font-weight: 700; }
+        .muted { color: var(--muted); }
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 22px 26px;
+            backdrop-filter: blur(12px);
+            box-shadow: var(--glow);
+        }
+        .pill {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.65em;
+            font-weight: 600;
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.2);
+            color: var(--accent);
+        }
+        .pill-purple { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.2); color: var(--accent2); }
+        .pill-gold { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.2); color: var(--gold); }
+        .pill-red { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); color: var(--red); }
+        .pill-green { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); color: var(--green); }
+        .demo-box {
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(0,212,255,0.05);
+            box-shadow: 0 0 60px rgba(0,212,255,0.1);
+        }
+        .big-quote {
+            font-size: 1.45em;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.35;
+            margin: 30px 0;
+        }
+        .qr-placeholder {
+            border: 2px dashed rgba(255,255,255,0.15);
+            width: 240px; height: 240px;
+            margin: 12px auto;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            color: var(--muted);
+        }
+        .img-placeholder {
+            border: 2px dashed rgba(79, 195, 247, 0.15);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(79, 195, 247, 0.05);
+            color: var(--muted);
+            font-size: 0.58em;
+            text-align: center;
+            padding: 14px;
+            min-height: 100px;
+            max-height: 45vh;
+        }
+        .reveal img {
+            max-height: 45vh;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .slide-number {
+            color: var(--accent) !important;
+            background: rgba(0,0,0,0.5) !important;
+            padding: 6px 12px !important;
+            border-radius: 20px !important;
+            font-size: 14px !important;
+        }
+        .reveal .progress { color: var(--accent); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .stat-box { text-align: center; }
+        .stat-box .num { font-size: 2em; font-weight: 900; }
+        .stat-box .label { font-size: 0.6em; color: var(--muted); }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .subtitle { font-size: 0.65em; color: var(--muted); margin-top: -8px; }
+        .section-divider {
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.15), rgba(0, 229, 255, 0.1));
+            border: 1px solid rgba(79, 195, 247, 0.25);
+            border-radius: 20px;
+            padding: 8px 22px;
+            display: inline-block;
+            font-size: 0.65em;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .arch-tree { font-family: 'Menlo','Monaco',monospace; font-size: 0.7em; line-height: 1.9; }
+        .arch-node {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 10px; padding: 5px 14px;
+        }
+        .source-tag { font-size: 0.48em; color: var(--muted); font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========================================= -->
+            <!-- 封面 -->
+            <!-- ========================================= -->
+            <section class="center">
+                <span class="pill pill-gold">AI 使用分享 · 2026-03-28</span>
+                <br><br>
+                <h1><span class="grad-text">一个台湾人</span><br>用 AI 打造一人公司 🤖</h1>
+                <div class="subtitle">内地见闻 × AI 创业心法 × 实战工具 × 私人 AI 助手</div>
+                <br>
+                <p class="gold">黄昱仁（大头 Ian） ｜ AI 创业导师 · 时光智造科技 CEO</p>
+                <br>
+                <div class="glass-card" style="padding:10px 24px; max-width:700px; margin:0 auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.7em; text-align:center;">
+                        AI 时代，重要的能力不是用工具，而是<span class="gold">好奇心</span><br>
+                        <span class="accent">懂得抱怨提问的人</span>会取代<span class="muted">安逸舒适的人</span>
+                    </p>
+                </div>
+                <aside class="notes">欢迎大家！今天分享一个台湾人用 AI 创业的故事、心法，以及完整的实战工具演示。</aside>
+            </section>
+
+            <!-- 自我介绍 -->
+            <section>
+                <h2>关于我 👋</h2>
+                <div style="display:flex; align-items:start; gap:28px;">
+                    <div style="flex:0 0 220px; text-align:center;">
+                        <img src="slides-assets/ian-speaking-sm.jpg" style="width:220px; max-height:48vh; object-fit:cover; border-radius:12px; border:2px solid var(--gold);">
+                        <p style="margin:8px 0 0; font-size:0.75em; font-weight:700;">黄昱仁（大头 Ian）</p>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="grid-2" style="margin-bottom:6px;">
+                            <div class="glass-card" style="padding:10px 16px;">
+                                <p style="margin:0 0 4px; font-size:0.55em; color:var(--accent); font-weight:700;">🚀 一直在创业路上</p>
+                                <p style="margin:3px 0; font-size:0.7em;">🏢 <span class="accent">时光智造科技</span> CEO</p>
+                                <p style="margin:3px 0; font-size:0.7em;">🎓 <span class="purple">成功大学资工硕士</span></p>
+                                <p style="margin:3px 0; font-size:0.7em;">🏆 <span class="accent">亚太生医工程创新大赛亚军</span></p>
+                            </div>
+                            <div class="glass-card" style="padding:10px 16px;">
+                                <p style="margin:0 0 4px; font-size:0.55em; color:var(--pink); font-weight:700;">💡 感受 AI 颠覆 → 主动转型</p>
+                                <p style="margin:3px 0; font-size:0.7em;">📱 <span class="purple">抖音探店 1.1 万粉</span></p>
+                                <p style="margin:3px 0; font-size:0.7em;">🏓 <span class="accent">APBA 匹克球教练</span></p>
+                                <p style="margin:3px 0; font-size:0.7em;">📋 <span class="purple">公共营养师</span></p>
+                            </div>
+                        </div>
+                        <p style="margin:0 0 8px; font-size:0.5em; color:var(--muted); text-align:center;">感受到 AI 快速发展，职能即将被取代 → 主动转向<span class="gold">服务人、提供情绪价值</span>的行业</p>
+                        <div class="glass-card" style="padding:10px 18px; margin-bottom:10px;">
+                            <p style="margin:0 0 4px; font-size:0.72em; color:var(--gold); font-weight:700;">🤔 为什么待在内地九年？</p>
+                            <div style="display:flex; gap:20px;">
+                                <p style="margin:0; font-size:0.68em;">📈 <span class="accent">市场大</span></p>
+                                <p style="margin:0; font-size:0.68em;">⚡ <span class="purple">速度快</span></p>
+                                <p style="margin:0; font-size:0.68em;">🔥 <span class="pink">新东西多</span></p>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                            <div class="glass-card" style="text-align:center; padding:5px 10px;"><p style="margin:0; font-size:0.8em;">🏠</p><p class="accent" style="margin:1px 0; font-size:0.55em; font-weight:700;">台湾</p><p class="muted" style="margin:0; font-size:0.4em;">资工硕士</p></div>
+                            <span class="gold" style="font-size:1em;">→</span>
+                            <div class="glass-card" style="text-align:center; padding:5px 10px;"><p style="margin:0; font-size:0.8em;">🏙️</p><p class="purple" style="margin:1px 0; font-size:0.55em; font-weight:700;">上海</p><p class="muted" style="margin:0; font-size:0.4em;">科技新创实战</p></div>
+                            <span class="gold" style="font-size:1em;">→</span>
+                            <div class="glass-card" style="text-align:center; padding:5px 10px;"><p style="margin:0; font-size:0.8em;">🏢</p><p class="pink" style="margin:1px 0; font-size:0.55em; font-weight:700;">武汉</p><p class="muted" style="margin:0; font-size:0.4em;">独立创业</p></div>
+                            <span class="gold" style="font-size:1em;">→</span>
+                            <div class="glass-card" style="text-align:center; padding:5px 10px;"><p style="margin:0; font-size:0.8em;">🤖</p><p class="accent" style="margin:1px 0; font-size:0.55em; font-weight:700;">AI 转型</p><p class="muted" style="margin:0; font-size:0.4em;">智能产品落地</p></div>
+                            <span class="gold" style="font-size:1em;">→</span>
+                            <div class="glass-card" style="text-align:center; padding:5px 12px; border-color:var(--gold);"><p style="margin:0; font-size:0.8em;">👑</p><p class="gold" style="margin:1px 0; font-size:0.55em; font-weight:700;">一人公司</p><p class="muted" style="margin:0; font-size:0.38em;">用🦞打造 10 人 AI 团队</p></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">自我介绍。台湾人在武汉创业9年，感受到AI颠覆后主动转型，现在用OpenClaw打造一人公司。</aside>
+            </section>
+
+            <!-- 心法一 -->
+            <section class="center">
+                <span class="pill">心法 ❶</span>
+                <br>
+                <div class="big-quote" style="font-size:1.4em;">
+                    AI 是<span class="accent">实习生</span>，不是<span class="pink">神</span>。
+                </div>
+                <div class="glass-card" style="max-width:680px; margin:0 auto; text-align:left; padding:18px 28px;">
+                    <p style="margin:4px 0; font-size:0.82em;">❌ <span class="muted">「AI 帮我做一个完美的商业计划」</span></p>
+                    <p style="margin:4px 0; font-size:0.82em;">✅ <span class="accent">「AI 帮我列出框架，我来补细节和判断」</span></p>
+                </div>
+                <p class="muted" style="font-size:0.72em; margin-top:16px;">你要会<span class="accent">下指令</span>、会<span class="purple">验收</span>、会<span class="pink">迭代</span> —— 像带实习生一样</p>
+                <aside class="notes">很多人失望是因为期望太高。AI 需要你指导方向，它来执行。心态对了，效果完全不同。</aside>
+            </section>
+
+            <!-- 心法二 -->
+            <section class="center">
+                <span class="pill pill-purple">心法 ❷</span>
+                <br>
+                <div class="big-quote" style="font-size:1.4em;">
+                    先想<span class="purple">流程</span>，再选<span class="accent">工具</span>。
+                </div>
+                <div class="glass-card" style="max-width:700px; margin:0 auto; text-align:center; padding:18px 28px;">
+                    <p style="margin:0; font-size:0.82em;">
+                        <span class="muted">选题</span> → <span class="muted">文案</span> → <span class="muted">配图</span> → <span class="muted">发布</span> → <span class="muted">数据分析</span>
+                    </p>
+                    <p style="margin:6px 0 0; font-size:0.68em; color:var(--accent);">先理清每一步，再找 AI 工具来加速每一步</p>
+                </div>
+                <p class="muted" style="font-size:0.72em; margin-top:16px;">不要被工具牵着走，要让工具为你的流程服务</p>
+                <aside class="notes">最常见的错误：听说某工具很厉害就去学，结果学了不知道用在哪。先画流程，再填工具。</aside>
+            </section>
+
+            <!-- 心法三 -->
+            <section class="center">
+                <span class="pill pill-gold">心法 ❸</span>
+                <br>
+                <div class="big-quote" style="font-size:1.4em;">
+                    <span class="gold">80/20</span> 法则
+                </div>
+                <div class="grid-2" style="max-width:700px; margin:0 auto;">
+                    <div class="glass-card stat-box" style="padding:18px;">
+                        <div class="num accent">80%</div>
+                        <div class="label">重复工作交给 AI<br>文案改写 · 数据整理 · 排版</div>
+                    </div>
+                    <div class="glass-card stat-box" style="padding:18px;">
+                        <div class="num gold">20%</div>
+                        <div class="label">创意留给自己<br>选题判断 · 人设 · 灵魂</div>
+                    </div>
+                </div>
+                <p class="muted" style="font-size:0.72em; margin-top:16px;">AI 让你<span class="accent">更自由</span>，不是让你<span class="pink">更忙</span></p>
+                <aside class="notes">AI 的目标不是让你产出更多，而是让你有更多时间做真正有价值的事。</aside>
+            </section>
+
+            <!-- ========================================= -->
+            <!-- PART 1: 内地 AI 疯狂应用 (7 min) -->
+            <!-- ========================================= -->
+            <section class="center">
+                <div class="section-divider">PART 1 · 7 分钟</div>
+                <br>
+                <h1>⚡ 内地 AI<br><span class="grad-text">拼出了什么？</span></h1>
+                <br>
+                <p class="muted">高速竞争催生了惊人的创新速度！<br>
+                <span class="gold">我们来学能学的部分 💪</span></p>
+                <aside class="notes">强调：不是说台湾不好，台湾人有创意有品味。内地的优势是执行速度，竞争环境逼出来的。两边各有长处。</aside>
+            </section>
+
+            <!-- 补充：直播下单对比 -->
+            <section>
+                <h2 style="font-size:1.2em;">💡 举个例子：直播带货的差距</h2>
+                <div class="grid-2" style="align-items:start;">
+                    <div>
+                        <div class="glass-card" style="padding:12px 16px;">
+                            <h3 style="color:var(--muted); text-align:center; margin:0 0 6px; font-size:0.9em;">🏠 台湾</h3>
+                            <p style="margin:3px 0; font-size:0.62em;">1️⃣ 直播平台喊 <span class="red">+1</span>，输入产品编号</p>
+                            <p style="margin:3px 0; font-size:0.62em;">2️⃣ 跳到其他平台产生订单</p>
+                            <p style="margin:3px 0; font-size:0.62em;">3️⃣ 各种支付方式琳琅满目</p>
+                            <p style="margin:3px 0; font-size:0.62em;">4️⃣ 回传确认后完成下单</p>
+                            <p style="margin:6px 0; font-size:0.6em; text-align:center;"><span class="red">链路长 → 流失率高</span></p>
+                        </div>
+                        <img src="slides-assets/tw-livestream-plus1.png" style="width:100%; max-height:28vh; object-fit:contain; border-radius:8px; margin-top:6px;">
+                    </div>
+                    <div>
+                        <div class="glass-card" style="padding:12px 16px; border-color:var(--accent);">
+                            <h3 style="color:var(--accent); text-align:center; margin:0 0 6px; font-size:0.9em;">⚡ 内地</h3>
+                            <p style="margin:3px 0; font-size:0.62em;">1️⃣ 看直播 / 短视频 / 种草视频</p>
+                            <p style="margin:3px 0; font-size:0.62em;">2️⃣ 右下角 <span class="accent">「立即购买」</span></p>
+                            <p style="margin:3px 0; font-size:0.62em;">3️⃣ <span class="gold">完成 ✅</span> 全程不离开 App</p>
+                            <p style="margin:6px 0; font-size:0.6em; text-align:center;"><span class="green">链路短 → 转化飙升</span></p>
+                        </div>
+                        <div style="display:flex; gap:6px; margin-top:6px;">
+                            <img src="slides-assets/cn-livestream-douyin.png" style="width:50%; max-height:32vh; object-fit:contain; border-radius:8px;">
+                            <img src="slides-assets/cn-douyin-seed-video.jpg" style="width:50%; max-height:32vh; object-fit:contain; border-radius:8px;">
+                        </div>
+                    </div>
+                </div>
+                <p style="text-align:center; font-size:0.68em; margin-top:6px;" class="gold">竞争激烈 → 逼出极致用户体验 → 每一步都在缩短决策路径</p>
+                <aside class="notes">台湾直播+1模式大家都懂，一对比就能感受内地的效率优化有多极致。不是台湾不好，是竞争环境不同逼出来的。</aside>
+            </section>
+
+            <!-- 案例 1: 罗永浩数字人 — 截图+数据 -->
+            <section>
+                <h2 style="font-size:1.2em;">🔥 罗永浩数字人 — 一场卖了 <span class="gold">5500 万</span></h2>
+                <div class="grid-2" style="align-items:start;">
+                    <div>
+                        <img src="slides-assets/luoyonghao-real-vs-ai.png" style="width:100%; max-height:40vh; object-fit:contain; border-radius:10px; border:2px solid var(--gold);">
+                        <p style="text-align:center; font-size:0.55em; margin:4px 0 0;">
+                            <span class="gold">👆 你分得出哪个是真人，哪个是 AI 吗？</span>
+                        </p>
+                    </div>
+                    <div>
+                        <div class="glass-card" style="padding:12px;">
+                            <p style="margin:0 0 6px; font-size:0.75em; color:var(--gold); font-weight:700;">📊 关键数据</p>
+                            <p style="margin:3px 0; font-size:0.62em;">⏱ 直播 <span class="accent">7 小时</span>，不喊累不休息</p>
+                            <p style="margin:3px 0; font-size:0.62em;">👀 <span class="purple">130 万</span>人次观看</p>
+                            <p style="margin:3px 0; font-size:0.62em;">💰 GMV <span class="gold">5500 万</span></p>
+                            <p style="margin:3px 0; font-size:0.62em;">📈 <span class="gold">1/3 产品销量超真人场</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:10px; margin-top:8px;">
+                            <p style="margin:0 0 4px; font-size:0.7em; color:var(--accent); font-weight:700;">🎬 数字人能做什么？</p>
+                            <p style="margin:2px 0; font-size:0.58em;">🍺 喝啤酒、用筷子吃菜、和弹幕互怼</p>
+                            <p style="margin:2px 0; font-size:0.58em;">🪜 爬上桌子展示产品、复刻推眼镜动作</p>
+                            <p style="margin:2px 0; font-size:0.58em;">📝 AI 生成 <span class="accent">9.7 万字</span>剧本 + <span class="purple">8300 个</span>动作</p>
+                        </div>
+                        <p style="text-align:center; font-size:0.55em; margin-top:8px;">
+                            <span class="muted">来源：36氪、百度电商</span> ｜ <span class="gold">连名人都用数字人了</span>
+                        </p>
+                    </div>
+                </div>
+                <aside class="notes">让大家猜哪个是真人哪个是AI，制造互动。数据来自36氪报道。</aside>
+            </section>
+
+            <!-- 案例 2: AI 短视频工厂 -->
+            <section>
+                <h2>🔥 案例二：一个人 = 一个内容工厂</h2>
+                <div class="grid-2" style="align-items:start;">
+                    <div>
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:8px;">
+                            <p style="margin:3px 0; font-size:0.82em;"><span class="accent">输入：</span>一篇文章 / 一个主题</p>
+                            <p style="margin:3px 0; font-size:0.82em;"><span class="purple">AI 全自动：</span></p>
+                            <p style="margin:2px 0 2px 14px; font-size:0.72em;">✅ 生成脚本 → 配音（多音色）</p>
+                            <p style="margin:2px 0 2px 14px; font-size:0.72em;">✅ 生成画面 → 剪辑 + 字幕</p>
+                            <p style="margin:2px 0 2px 14px; font-size:0.72em;">✅ 一键发布多平台</p>
+                        </div>
+                        <p class="gold" style="font-size:0.75em; margin:0 0 8px;">日产 50+ 条视频，一个人抵一个 10 人团队 🏭</p>
+                        <div class="glass-card" style="padding:10px 14px; border-color:var(--pink);">
+                            <p style="margin:0 0 4px; font-size:0.6em; color:var(--pink); font-weight:700;">内地 vs 台湾 差在哪？</p>
+                            <p style="margin:2px 0; font-size:0.55em;">• 内地已出现<span class="accent">「矩阵号」运营</span> — 一人管 50+ 账号，日更百条</p>
+                            <p style="margin:2px 0; font-size:0.55em;">• 可灵 AI、即梦、剪映 AI 等工具<span class="purple">免费且成熟</span>，台湾使用比例还不高</p>
+                            <p style="margin:2px 0; font-size:0.55em;">• 内地创作者已经用 AI <span class="gold">批量生产</span>，台湾多数创作者还在用传统工具</p>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="slides-assets/kling-ai-homepage.png" style="width:100%; border-radius:12px; border:1px solid var(--glass-border);">
+                        <p class="muted" style="font-size:0.48em; text-align:center; margin:4px 0;">可灵 AI — 快手旗下 AI 视频生成平台（内地免费使用）</p>
+                    </div>
+                </div>
+                <aside class="notes">内地矩阵号运营已经很普及，一人管50+账号日更百条。台湾创作者还在手工做，这就是拼搏环境催生的效率差距。工具免费又成熟，关键是敢不敢用、会不会用。</aside>
+            </section>
+
+            <!-- 案例 3: AI 电商全链路 -->
+            <section>
+                <h2>🔥 案例三：AI 电商全链路自动化</h2>
+                <p class="muted" style="font-size:0.6em; text-align:center; margin:0 0 12px;">从选品到售后，AI 全程接管 — 一个人就是一家店</p>
+                <!-- 放大版流程链 -->
+                <div style="display:flex; align-items:stretch; justify-content:center; gap:8px; margin-bottom:16px;">
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; flex:1; border-color:var(--accent);">
+                        <p style="margin:0; font-size:1.6em;">🔍</p>
+                        <p class="accent" style="margin:4px 0 2px; font-size:0.85em; font-weight:700;">AI 选品</p>
+                        <p class="muted" style="margin:0; font-size:0.55em;">大数据爆款预测<br>自动跟踪趋势</p>
+                    </div>
+                    <span class="gold" style="font-size:1.5em; display:flex; align-items:center;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; flex:1; border-color:var(--purple);">
+                        <p style="margin:0; font-size:1.6em;">📸</p>
+                        <p class="purple" style="margin:4px 0 2px; font-size:0.85em; font-weight:700;">AI 拍图</p>
+                        <p class="muted" style="margin:0; font-size:0.55em;">虚拟模特换装<br>场景自动生成</p>
+                    </div>
+                    <span class="gold" style="font-size:1.5em; display:flex; align-items:center;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; flex:1; border-color:var(--pink);">
+                        <p style="margin:0; font-size:1.6em;">✍️</p>
+                        <p class="pink" style="margin:4px 0 2px; font-size:0.85em; font-weight:700;">AI 文案</p>
+                        <p class="muted" style="margin:0; font-size:0.55em;">种草文 + 详情页<br>多平台适配</p>
+                    </div>
+                    <span class="gold" style="font-size:1.5em; display:flex; align-items:center;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; flex:1; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.6em;">📺</p>
+                        <p class="gold" style="margin:4px 0 2px; font-size:0.85em; font-weight:700;">AI 直播</p>
+                        <p class="muted" style="margin:0; font-size:0.55em;">数字人主播<br>24/7 不休息</p>
+                    </div>
+                    <span class="gold" style="font-size:1.5em; display:flex; align-items:center;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; flex:1; border-color:var(--accent);">
+                        <p style="margin:0; font-size:1.6em;">💬</p>
+                        <p class="accent" style="margin:4px 0 2px; font-size:0.85em; font-weight:700;">AI 客服</p>
+                        <p class="muted" style="margin:0; font-size:0.55em;">智能回复推荐<br>自动售后处理</p>
+                    </div>
+                </div>
+                <!-- 底部两栏：成果 + 对比 -->
+                <div style="display:flex; gap:14px; align-items:stretch;">
+                    <div class="glass-card" style="flex:1; padding:14px 18px;">
+                        <p style="margin:0 0 6px; font-size:0.75em; color:var(--gold); font-weight:700;">📊 内地实际数据</p>
+                        <p style="margin:3px 0; font-size:0.62em;">• 阿里/京东/拼多多平台<span class="accent">内建 AI 工具</span>，卖家免费用</p>
+                        <p style="margin:3px 0; font-size:0.62em;">• 已有大量「一人电商」<span class="gold">年营收百万+</span></p>
+                        <p style="margin:3px 0; font-size:0.62em;">• 数字人直播成本仅为真人的 <span class="accent">1/10</span></p>
+                    </div>
+                    <div class="glass-card" style="flex:1; padding:14px 18px; border-color:var(--pink);">
+                        <p style="margin:0 0 6px; font-size:0.75em; color:var(--pink); font-weight:700;">内地 vs 台湾 差在哪？</p>
+                        <p style="margin:3px 0; font-size:0.62em;">• 内地电商 <span class="accent">全链路 AI 化</span>，台湾使用比例较低</p>
+                        <p style="margin:3px 0; font-size:0.62em;">• 内地平台<span class="purple">内建免费 AI</span>，台湾多数还在用传统流程</p>
+                        <p style="margin:3px 0; font-size:0.62em;">• 数字人直播 24/7 — 台湾 <span class="muted">AI 直播工具采用比例较低</span></p>
+                    </div>
+                </div>
+                <aside class="notes">重新设计：流程链放大为主视觉，每个环节有详细说明。底部两栏：左边内地数据，右边与台湾对比。不需要配图，流程图本身就是最好的视觉。</aside>
+            </section>
+
+            <!-- 案例 4: AI 进入医疗 — OpenClaw 案例 -->
+            <section>
+                <h2>🔥 案例四：AI 连医疗圈都颠覆了</h2>
+                <div style="display:flex; gap:20px; align-items:start;">
+                    <div style="flex:1;">
+                        <div class="glass-card" style="padding:14px 16px; border-color:var(--accent); margin-bottom:8px;">
+                            <p style="margin:0 0 6px; font-size:0.82em;"><span class="accent">🦞 OpenClaw — 医疗 Agent OS</span></p>
+                            <p class="source-tag" style="margin:0;">来源：新智元 · 微信公众号</p>
+                        </div>
+                        <div class="glass-card" style="padding:12px 16px; margin-bottom:8px;">
+                            <p style="margin:0 0 4px; font-size:0.65em; color:var(--gold); font-weight:700;">🏥 真实使用场景</p>
+                            <p style="margin:3px 0; font-size:0.62em;">📋 <span class="accent">智能预问诊</span> — 患者到院前 AI 自动采集症状，生成结构化病历</p>
+                            <p style="margin:3px 0; font-size:0.62em;">🔬 <span class="purple">影像辅助诊断</span> — AI Agent 自动分析 CT/MRI，标记异常区域</p>
+                            <p style="margin:3px 0; font-size:0.62em;">💊 <span class="pink">用药安全监控</span> — 实时检查药物交互作用，防止处方冲突</p>
+                            <p style="margin:3px 0; font-size:0.62em;">📊 <span class="accent">多科室协作</span> — 多个 AI Agent 并行：检验、影像、药剂各司其职</p>
+                            <p style="margin:3px 0; font-size:0.62em;">🗂️ <span class="purple">病历自动摘要</span> — 10 年病史 → 30 秒生成完整摘要</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; text-align:center;">
+                            <p style="margin:0; font-size:0.7em;">
+                                AI 不只是写文案聊天<br>
+                                <span class="gold">连人命攸关的医疗都在用了</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div style="flex:0 0 340px;">
+                        <img src="slides-assets/medical-openclaw-cover.jpg" style="width:100%; max-height:48vh; object-fit:contain; border-radius:12px; border:1px solid var(--glass-border);">
+                        <p class="muted" style="font-size:0.45em; text-align:center; margin-top:4px;">
+                            「OpenClaw杀进内地医疗圈，掀翻千亿市场！<br>全球首个医疗Agent OS来了」
+                        </p>
+                    </div>
+                </div>
+                <aside class="notes">新智元报道 OpenClaw 在医疗领域的应用：智能预问诊、影像辅助诊断、用药监控、多科室AI协作、病历自动摘要。连最保守的医疗行业都开始用 AI Agent 了。</aside>
+            </section>
+
+            <!-- AI 各行业渗透 -->
+            <section>
+                <h2>🔥 AI 渗透各行各业</h2>
+                <br>
+                <div class="grid-3">
+                    <div class="glass-card" style="text-align:center; padding:16px;">
+                        <p style="font-size:1.3em; margin:0;">⚖️</p>
+                        <p class="accent" style="font-size:0.75em; margin:4px 0 2px;">AI 法律</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">合同审查 · 法律咨询<br>几秒出建议书</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:16px;">
+                        <p style="font-size:1.3em; margin:0;">🎓</p>
+                        <p class="purple" style="font-size:0.75em; margin:4px 0 2px;">AI 教育</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">个性化辅导 · AI 老师<br>一对一不再奢侈</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:16px;">
+                        <p style="font-size:1.3em; margin:0;">🏗️</p>
+                        <p class="pink" style="font-size:0.75em; margin:4px 0 2px;">AI 设计</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">室内设计 · 建筑规划<br>几分钟出效果图</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:16px;">
+                        <p style="font-size:1.3em; margin:0;">💰</p>
+                        <p class="gold" style="font-size:0.75em; margin:4px 0 2px;">AI 财务</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">报销审核 · 财务分析<br>自动化处理</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:16px;">
+                        <p style="font-size:1.3em; margin:0;">💻</p>
+                        <p class="accent" style="font-size:0.75em; margin:4px 0 2px;">AI 编程</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">不会写代码的运营<br>自己搭管理系统</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:16px;">
+                        <p style="font-size:1.3em; margin:0;">🏥</p>
+                        <p class="purple" style="font-size:0.75em; margin:4px 0 2px;">AI 医疗</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">辅助诊断 · 影像分析<br>基层医院大升级</p>
+                    </div>
+                </div>
+                <br>
+                <p style="text-align:center; font-size:0.8em;" class="gold">
+                    拼出来的不只是竞争，更是<span class="accent">全民 AI 化</span>的加速 🚀
+                </p>
+                <aside class="notes">各行各业都在用。积极的氛围反而加速了 AI 的全面落地。</aside>
+            </section>
+
+            <!-- 差距总结 — 正面表述 -->
+            <section class="center">
+                <div class="big-quote" style="font-size:1.3em;">
+                    内地的<span class="accent">积极拼搏</span>，催生了惊人的效率<br><br>
+                    台湾的<span class="gold">创意与品味</span>，是我们的护城河<br><br>
+                    <span class="pink">两边结合 = 降维打击</span> 💪
+                </div>
+                <br>
+                <p class="muted" style="font-size:0.78em;">好消息：AI 工具全球通用，你今天就能开始 🌍</p>
+                <aside class="notes">台湾人的优势在创意、品味、国际视野。加上内地这些效率工具和方法，就是降维打击。</aside>
+            </section>
+
+            <!-- ========================================= -->
+            <!-- PART 2: AI Studio 自媒体实战 -->
+            <!-- ========================================= -->
+            <section class="center">
+                <div class="section-divider">PART 2 · 8 分钟</div>
+                <br>
+                <h1>⚡ <span class="grad-text">AI Studio<br>自媒体实战</span></h1>
+                <h2>Google 最强免费 AI 工具 🔴</h2>
+                <br>
+                <p class="muted"></p>
+                <aside class="notes">接下来用 Google AI Studio 展示自媒体内容产出的完整流程。</aside>
+            </section>
+
+            <!-- AI Studio 介绍 + 139秒搭建 -->
+            <section>
+                <h2 style="font-size:1.2em;">🌟 AI 思考 <span class="gold">139 秒</span>，搭建完整 App</h2>
+                <div style="display:flex; align-items:flex-start; gap:16px;">
+                    <div style="flex:1;">
+                        <img src="slides-assets/aistudio-app-overview.png" style="width:100%; max-height:55vh; object-fit:contain; border-radius:10px; border:1px solid var(--glass-border);">
+                    </div>
+                    <div style="flex:0 0 260px;">
+                        <div class="glass-card" style="padding:12px; border-color:var(--gold); text-align:center;">
+                            <p style="margin:0; font-size:0.75em;">
+                                <span class="gold">⏱ AI 思考了 139 秒</span>
+                            </p>
+                            <p style="margin:4px 0; font-size:0.58em; color:var(--muted);">自动编辑 4 个文件<br>搭建完整 App</p>
+                            <p style="margin:4px 0 0; font-size:0.6em;">
+                                我的<span class="accent">「自媒体 AI 工作站」</span><br>就这么诞生了 ✨
+                            </p>
+                        </div>
+                        <div class="glass-card" style="padding:10px; margin-top:8px;">
+                            <p style="margin:0 0 4px; font-size:0.6em; color:var(--gold); font-weight:700;">⚡ Google AI Studio</p>
+                            <p style="margin:2px 0; font-size:0.55em;">✅ <span class="accent">完全免费</span></p>
+                            <p style="margin:2px 0; font-size:0.55em;">✅ <span class="purple">Gemini 最新模型</span></p>
+                            <p style="margin:2px 0; font-size:0.55em;">✅ <span class="gold">自定义 App</span></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">重点强调：AI只用了139秒就搭建了一个完整的自媒体工作站App。左边是AI的思考过程，右边是自动生成的App界面。</aside>
+            </section>
+
+            <!-- AI Studio Demo: 文案生成 + 配图 -->
+            <section>
+                <h2>🔴 实际效果：选题 → 文案 → 配图</h2>
+                <br>
+                <div class="grid-2">
+                    <div>
+                        <img src="slides-assets/aistudio-app-copywriting.png" style="width:100%; max-height:48vh; object-fit:contain; border-radius:10px; border:1px solid var(--glass-border);">
+                        <p class="muted" style="font-size:0.45em; text-align:center; margin-top:4px;">▲ 文案生成引擎 — 黄金 3 秒 Hook + 多平台文案 + 标题备选</p>
+                    </div>
+                    <div>
+                        <img src="slides-assets/aistudio-app-images.png" style="width:100%; max-height:48vh; object-fit:contain; border-radius:10px; border:1px solid var(--glass-border);">
+                        <p class="muted" style="font-size:0.45em; text-align:center; margin-top:4px;">▲ AI 配图生成 — 抖音/小红书/IG/YT 四平台 + 标签策略</p>
+                    </div>
+                </div>
+                <br>
+
+                <aside class="notes">展示实际的App效果：左边是文案生成引擎，选好话题和平台就自动出文案；右边是AI配图，自动生成4个平台的配图加上标签策略。</aside>
+            </section>
+
+            <!-- 实战成果 -->
+            <section class="center">
+                <h2>⚡ 刚才发生了什么？</h2>
+                <br>
+                <div style="display:flex; align-items:center; justify-content:center; gap:14px; font-size:0.88em;">
+                    <div class="glass-card" style="text-align:center; padding:14px 18px;">
+                        <p class="accent" style="margin:0;">选题</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.65em;">2 min</p>
+                    </div>
+                    <span class="muted">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 18px;">
+                        <p class="purple" style="margin:0;">文案 ×4</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.65em;">3 min</p>
+                    </div>
+                    <span class="muted">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 18px;">
+                        <p class="pink" style="margin:0;">配图</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.65em;">3 min</p>
+                    </div>
+                    <span class="muted">=</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 18px; border-color:var(--gold);">
+                        <p class="gold" style="margin:0;">完成！</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.65em;">8 min</p>
+                    </div>
+                </div>
+                <br>
+                <div class="big-quote" style="font-size:1.2em;">
+                    <span class="gold">8 分钟</span>，<span class="accent">4 个平台</span>的内容全部产出 ✅
+                </div>
+                <p class="muted" style="font-size:0.78em;">别人花 2 小时做的事，你 8 分钟搞定 🚀</p>
+                <aside class="notes">让数字说话。8 分钟 vs 2 小时。</aside>
+            </section>
+
+            <!-- 动手试试：自己搭建 AI 工具 -->
+            <section>
+                <h2>🛠 换你试试！3 步搭建自己的 AI 工具</h2>
+                <br>
+                <div style="display:flex; align-items:center; justify-content:center; gap:14px; font-size:0.85em; flex-wrap:wrap;">
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; min-width:200px;">
+                        <p style="margin:0; font-size:1.3em;">💬</p>
+                        <p class="accent" style="margin:4px 0; font-size:0.85em; font-weight:700;">Step 1</p>
+                        <p style="margin:0; font-size:0.65em;">找任意 AI 聊天工具<br>（ChatGPT、Gemini…）</p>
+                        <p class="muted" style="margin:4px 0 0; font-size:0.55em;">说出你的想法和需求<br>让 AI 帮你生成<span class="gold">「提示词」</span></p>
+                    </div>
+                    <span class="gold" style="font-size:1.5em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; min-width:200px;">
+                        <p style="margin:0; font-size:1.3em;">📋</p>
+                        <p class="purple" style="margin:4px 0; font-size:0.85em; font-weight:700;">Step 2</p>
+                        <p style="margin:0; font-size:0.65em;">复制 AI 产出的提示词</p>
+                        <p class="muted" style="margin:4px 0 0; font-size:0.55em;">这段提示词就是<br>你的<span class="accent">「AI 工具设计图」</span></p>
+                    </div>
+                    <span class="gold" style="font-size:1.5em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:16px 20px; min-width:200px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.3em;">⚡</p>
+                        <p class="gold" style="margin:4px 0; font-size:0.85em; font-weight:700;">Step 3</p>
+                        <p style="margin:0; font-size:0.65em;">丢进 Google AI Studio</p>
+                        <p class="muted" style="margin:4px 0 0; font-size:0.55em;">AI 自动搭建你的<br><span class="gold">专属工具 App ✨</span></p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center; padding:12px; max-width:700px; margin:0 auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.72em;">
+                        <span class="gold">💡 重点：</span>你不需要会写代码！<br>
+                        <span class="muted" style="font-size:0.85em;">只要能<span class="accent">说清楚你要什么</span>，AI 就能帮你做出来</span>
+                    </p>
+                </div>
+                <aside class="notes">让大家动手试试。流程很简单：先随便找个AI聊天说想法，让AI帮你写提示词，再把提示词丢给AI Studio就自动搭建工具了。</aside>
+            </section>
+
+            <!-- RTCO 万能提示词公式 -->
+            <section>
+                <h2 style="font-size:1.15em;">🏆 黄金法则：万能提示词 <span class="gold">RTCO</span> 公式</h2>
+                <p class="muted" style="font-size:0.65em; text-align:center; margin:4px 0 12px;">你的角色：从<span class="red">执行者</span>变成<span class="gold">指挥官</span> 🎖️</p>
+                <div style="display:flex; align-items:center; justify-content:center; gap:16px; font-size:0.9em; flex-wrap:wrap;">
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">R</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Role</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">设定身份</p>
+                    </div>
+                    <span class="gold" style="font-size:1.2em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">T</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Task</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">下达任务</p>
+                    </div>
+                    <span class="gold" style="font-size:1.2em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">C</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Constraints</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">明确要求</p>
+                    </div>
+                    <span class="gold" style="font-size:1.2em;">→</span>
+                    <div class="glass-card" style="text-align:center; padding:14px 20px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:1.8em; font-weight:900; color:var(--gold);">O</p>
+                        <p style="margin:4px 0 0; font-size:0.8em; font-weight:700;">Output</p>
+                        <p class="muted" style="margin:2px 0 0; font-size:0.6em;">规定格式</p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center; padding:10px; max-width:600px; margin:0 auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.75em;"><span class="gold">沟通越具体，产出越高级</span></p>
+                </div>
+                <aside class="notes">RTCO是万能提示词公式。R设定AI的角色，T下达具体任务，C明确约束条件，O规定输出格式。掌握这个公式，你就从AI的执行者变成指挥官。</aside>
+            </section>
+
+            <!-- RTCO 实战对比：普通 vs 专家 -->
+            <section>
+                <h2 style="font-size:1.1em;">📝 实战对比：同一个需求，两种指令</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 8px;">以「搭建自媒体 AI 工作站」为例</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:12px 16px;">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="red" style="font-size:0.8em; font-weight:700;">❌ 普通人的指令</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.55em; color:var(--muted); font-family:monospace;">
+                            帮我做一个自媒体工具
+                        </div>
+                        <p style="margin:8px 0 0; font-size:0.5em; text-align:center;"><span class="red">结果：</span>AI 随便给个模板，功能少、不精准</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="gold" style="font-size:0.8em; font-weight:700;">✅ RTCO 专家指令（给 AI Studio Builder）</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.5em; color:var(--muted); font-family:monospace; line-height:1.5;">
+                            <span class="gold">[R]</span> 你是一个资深自媒体运营专家，我要用 AI Studio 搭建一个自媒体工作站 App<br>
+                            <span class="gold">[T]</span> 帮我设计这个 App 的系统提示词（System Instruction），包含：选题引擎、文案生成、配图建议、多平台适配<br>
+                            <span class="gold">[C]</span> 支持抖音/小红书/IG/YT 四平台；文案要有黄金 3 秒 Hook；配图需符合各平台尺寸；用户只需输入一个话题<br>
+                            <span class="gold">[O]</span> 输出可直接贴进 AI Studio Builder 的完整 System Instruction
+                        </div>
+                        <p style="margin:8px 0 0; font-size:0.5em; text-align:center;"><span class="gold">结果：</span>复制贴进 AI Studio → 139 秒建好专业 App ✨</p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center; padding:8px; max-width:650px; margin:0 auto;">
+                    <p style="margin:0; font-size:0.68em;">
+                        <span class="gold">💡 同样的 AI，同样的问题</span><br>
+                        <span class="muted" style="font-size:0.9em;">指令不同，结果<span class="accent">天差地别</span></span>
+                    </p>
+                </div>
+                <aside class="notes">用自媒体AI工作站当例子。普通人就说「帮我做一个工具」，AI给个半成品。用RTCO公式明确角色、任务、约束、输出，AI就能产出139秒完整App。同一个AI，指令不同结果天差地别。</aside>
+            </section>
+
+            <!-- ========================================= -->
+            <!-- RTCO 补充: PRISM 论文实证 + TCO+S 进阶 -->
+            <!-- ========================================= -->
+
+            <!-- PRISM 核心发现 -->
+            <section>
+                <h2 style="font-size:1.1em;">⚠️ 等等！「你是专家」竟然是<span class="pink">幻觉毒药</span>？</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 10px;">南加州大学 PRISM 论文实证（2026）· arXiv:2603.18507</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:12px 16px;">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.75em; font-weight:700;"><span class="accent">📈 加了角色更好的</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ 写作品质 <span class="accent">+0.40</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ STEM 结构化 <span class="accent">+0.60</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ 安全防御 <span class="accent">+17.7%</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">✅ 内容提取 <span class="accent">+0.65</span></p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--pink);">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.75em; font-weight:700;"><span class="pink">📉 加了角色更差的</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 知识准确率 <span class="pink">-3.6%</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 数学推理 <span class="pink">-0.10</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 代码生成 <span class="pink">-0.65</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;">❌ 人文知识 <span class="pink">-0.20</span></p>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align:center; padding:10px 18px; margin-top:12px; max-width:650px; margin-left:auto; margin-right:auto;">
+                    <p style="margin:0; font-size:0.65em;">
+                        🔍 <span class="gold">原因：</span>角色设定启动「表演模式」，AI 把算力分配给「扮演专家」<br>
+                        挤掉了「回忆知识」的能力 → <span class="pink">专家不能说「不知道」</span>
+                    </p>
+                </div>
+                <aside class="notes">这个论文颠覆了大家对 prompt 的认知。告诉AI「你是专家」，写作会更好，但事实准确率反而下降3.6%。因为AI忙着扮演专家，就不会说「我不确定」了。</aside>
+            </section>
+
+            <!-- 触目惊心的例子 -->
+            <section>
+                <h2 style="font-size:1.1em;">😱 真实案例：「数学专家」算错数学题</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 10px;">掷两个骰子，点数总和 ≥ 3 的概率是多少？</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:14px 18px; border-color:var(--accent);">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="accent" style="font-size:0.8em; font-weight:700;">✅ 不加角色 → 9/10 分</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.55em; color:var(--muted); line-height:1.6;">
+                            共 36 种结果<br>
+                            只有 1+1=2 小于 3<br>
+                            所以 P = <span class="accent" style="font-weight:700;">35/36</span> ✅
+                        </div>
+                    </div>
+                    <div class="glass-card" style="padding:14px 18px; border-color:var(--pink);">
+                        <p style="margin:0 0 6px; text-align:center;"><span class="pink" style="font-size:0.8em; font-weight:700;">❌ 加「数学专家」→ 1.5/10 分</span></p>
+                        <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; font-size:0.55em; color:var(--muted); line-height:1.6;">
+                            有 3 + 6 = 9 种结果小于 3...<br>
+                            <span class="pink">（完全算错）</span><br>
+                            连基本逻辑都崩了 💀
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align:center; padding:10px; margin-top:12px; max-width:600px; margin-left:auto; margin-right:auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.72em;">
+                        <span class="gold">💡 核心判断：</span>要「正确答案」→ <span class="accent">不加角色</span> ｜ 要「好的表达」→ <span class="purple">加角色</span>
+                    </p>
+                </div>
+                <aside class="notes">这个例子在论文里原文引用的。简单的骰子概率题，不加角色能算对，加了数学专家反而算错。因为AI忙着表演「我是专家」，反而干扰了推理过程。</aside>
+            </section>
+
+            <!-- RTCO → TCO+S 进化 -->
+            <section>
+                <h2 style="font-size:1.1em;">🔄 RTCO 进化版：<span class="gold">TCO+S</span> 框架</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 10px;">什么时候该加角色？什么时候不该？</p>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:12px 16px;">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.7em; font-weight:700;">旧：<span class="pink">RTCO</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="pink" style="font-weight:700;">R</span> Role → ⚠️ 知识任务有风险</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="accent" style="font-weight:700;">T</span> Task → ✅ 永远有用</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="accent" style="font-weight:700;">C</span> Constraints → ✅ 永远有用</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="accent" style="font-weight:700;">O</span> Output → ✅ 永远有用</p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.7em; font-weight:700;">新：<span class="gold">TCO+S</span></p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">T</span> Task — 明确任务 ✅</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">C</span> Constraint — 约束 + 「不确定的标注」 ✅</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">O</span> Output — 输出格式 ✅</p>
+                        <p style="margin:3px 0; font-size:0.55em;"><span class="gold" style="font-weight:700;">+S</span> Style — 🟡 <span class="muted">仅需要语气时加，尽量短</span></p>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align:center; padding:10px; margin-top:12px; max-width:650px; margin-left:auto; margin-right:auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.65em;">
+                        <span class="gold">简单记：</span>RTCO 是入门好用的 → 进阶后用 TCO+S 更精准<br>
+                        <span class="muted" style="font-size:0.9em;">角色不是不能用，是<span class="accent">要看场景</span></span>
+                    </p>
+                </div>
+                <aside class="notes">RTCO是入门的好工具，但进阶后要知道R什么时候该用什么时候不该。TCO+S把角色变成可选的Style，需要语气就加，查资料就不加。这是论文给我们的最大启发。</aside>
+            </section>
+
+            <!-- 什么时候该加角色 -->
+            <section>
+                <h2 style="font-size:1.05em;">📋 速查表：什么时候该加角色？</h2>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.55em;">
+                    <div class="glass-card" style="padding:10px 14px; border-color:var(--pink);">
+                        <p style="margin:0 0 6px; font-weight:700; color:var(--pink);">❌ 不要加角色</p>
+                        <p style="margin:2px 0;">🔍 查事实/数据 — 降低准确率</p>
+                        <p style="margin:2px 0;">🧮 数学/逻辑推理 — 干扰推理链</p>
+                        <p style="margin:2px 0;">💻 写代码/Debug — 增加幻觉</p>
+                        <p style="margin:2px 0;">📊 市场分析 — 编造合理假数据</p>
+                    </div>
+                    <div class="glass-card" style="padding:10px 14px; border-color:var(--accent);">
+                        <p style="margin:0 0 6px; font-weight:700; color:var(--accent);">✅ 可以加角色</p>
+                        <p style="margin:2px 0;">✉️ 写商务信件 — 提升格式语气</p>
+                        <p style="margin:2px 0;">📝 写行销文案 — 提升创意表达</p>
+                        <p style="margin:2px 0;">🛡️ 安全审查 — 防御率+17.7%</p>
+                        <p style="margin:2px 0;">📑 格式化/报告 — 提升结构化</p>
+                    </div>
+                </div>
+                <br>
+                <div class="glass-card" style="padding:10px 16px; max-width:650px; margin:0 auto;">
+                    <p style="margin:0 0 6px; font-size:0.65em; font-weight:700; color:var(--gold);">🔄 进阶技巧：两步法（同时要准确 + 好表达）</p>
+                    <div style="font-size:0.52em; color:var(--muted); line-height:1.6;">
+                        <p style="margin:2px 0;"><span class="accent">Step 1</span>（不加角色）：帮我分析武汉 AI 创业补贴政策，不确定的标注</p>
+                        <p style="margin:2px 0;"><span class="gold">Step 2</span>（加 Style）：把上面改写成给投资人看的一页摘要，用专业但易懂的语气</p>
+                    </div>
+                </div>
+                <p style="text-align:center; font-size:0.6em; margin-top:10px;">
+                    📖 完整指南：<a href="https://www.timux.site/share/ai-prompt-guide.html" target="_blank" style="color:var(--gold);">timux.site/share/ai-prompt-guide.html</a>
+                </p>
+                <aside class="notes">这张速查表就是精华。左边查资料、算数、写代码不要加角色。右边写文案、写信可以加。两者都要？用两步法：先不加角色拿到准确内容，再加Style调整语气。详细版可以扫链接看完整指南。</aside>
+            </section>
+
+            <!-- ========================================= -->
+            <!-- PART 3: OpenClaw (8 min) -->
+            <!-- ========================================= -->
+            <section class="center">
+                <div class="section-divider">PART 3 · 8 分钟</div>
+                <br>
+                <h1>🦞 <span class="grad-text">OpenClaw</span></h1>
+                <h2>你的私人 AI 管家</h2>
+                <br>
+                <p class="muted">从「打开网页问 AI」→「AI 随时在你身边」</p>
+                <aside class="notes">接下来介绍一个让我工作方式彻底改变的工具。</aside>
+            </section>
+
+            <!-- OpenClaw: 是什么 -->
+            <section>
+                <h2>🦞 OpenClaw 是什么？</h2>
+                <br>
+                <div class="glass-card" style="padding:20px 28px;">
+                    <p style="margin:6px 0;">🧠 <span class="accent">开源</span>的私人 AI 助手平台</p>
+                    <p style="margin:6px 0;">📱 连接你<span class="purple">所有通讯软件</span> — LINE、Telegram、Discord、WhatsApp…</p>
+                    <p style="margin:6px 0;">💻 拥有电脑<span class="pink">完整操控权</span> — 文件、浏览器、API、代码</p>
+                    <p style="margin:6px 0;">⏰ <span class="gold">24/7 不间断</span>运行 — 你睡觉它还在干活</p>
+                    <p style="margin:6px 0;">🔒 <span class="accent">数据在你手上</span> — 自架运行，隐私有保障</p>
+                </div>
+                <br>
+                <div class="glass-card" style="text-align:center; padding:14px; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.82em;">
+                        ⚠️ <span class="gold">关键：要用最顶级的 AI 模型来当助理头子</span><br>
+                        <span class="muted" style="font-size:0.8em;">Claude Opus / GPT-4o — 便宜模型会偷懒、会出错、会让你更累</span>
+                    </p>
+                </div>
+                <aside class="notes">强调：AI 助手的核心是模型质量。用最强的模型当「大脑」，其他便宜模型当「手脚」。省的不是模型费，是你的时间。</aside>
+            </section>
+
+            <!-- OpenClaw: 对比 ChatGPT -->
+            <section>
+                <h2>跟 ChatGPT 有什么不同？ 🤔</h2>
+                <br>
+                <div class="grid-2">
+                    <div class="glass-card" style="padding:18px 22px;">
+                        <h3 style="color:var(--muted); text-align:center;">ChatGPT / Gemini</h3>
+                        <p style="margin:5px 0; font-size:0.75em;">😐 你去找它（开网页/App）</p>
+                        <p style="margin:5px 0; font-size:0.75em;">😐 只能聊天对话</p>
+                        <p style="margin:5px 0; font-size:0.75em;">😐 不能操作你的电脑</p>
+                        <p style="margin:5px 0; font-size:0.75em;">😐 关掉就忘了你是谁</p>
+                        <p style="margin:5px 0; font-size:0.75em;">😐 数据在别人服务器</p>
+                    </div>
+                    <div class="glass-card" style="padding:18px 22px; border-color:var(--accent);">
+                        <h3 style="color:var(--accent); text-align:center;">🦞 OpenClaw</h3>
+                        <p style="margin:5px 0; font-size:0.75em;">✅ <span class="accent">它在你身边</span>（LINE/TG 发消息）</p>
+                        <p style="margin:5px 0; font-size:0.75em;">✅ <span class="accent">能做事</span>（操作电脑、浏览器、文件）</p>
+                        <p style="margin:5px 0; font-size:0.75em;">✅ <span class="accent">能主动</span>（定时排程、主动提醒）</p>
+                        <p style="margin:5px 0; font-size:0.75em;">✅ <span class="accent">记得你</span>（持久记忆系统）</p>
+                        <p style="margin:5px 0; font-size:0.75em;">✅ <span class="accent">自架私有</span>（数据在自己手上）</p>
+                    </div>
+                </div>
+                <br>
+                <p style="text-align:center;" class="gold">从「工具」进化成「伙伴」🤝</p>
+                <aside class="notes">ChatGPT 很强，但它是工具。OpenClaw 让 AI 变成你的同事。</aside>
+            </section>
+
+            <!-- OpenClaw: 灵魂设定档 -->
+            <section>
+                <h2 style="font-size:1.1em;">🧬 什么让 AI 成为真正<span class="grad-text">属于你的</span>助理？</h2>
+                <p class="muted" style="font-size:0.55em; text-align:center; margin:2px 0 12px;">OpenClaw 的灵魂系统 — 5 个核心配置文件</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.7em;">
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--pink);">
+                        <p style="margin:0 0 6px; font-weight:700;"><span class="pink">SOUL.md</span> — 灵魂</p>
+                        <p style="margin:0; font-size:0.75em; color:var(--muted); line-height:1.5;">她是谁？什么性格？语气风格？<br>「温柔、偶尔俏皮撒娇 🎀」<br>→ 她才会有<span class="pink">真实的个性</span></p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                        <p style="margin:0 0 6px; font-weight:700;"><span class="gold">IDENTITY.md</span> — 身份</p>
+                        <p style="margin:0; font-size:0.75em; color:var(--muted); line-height:1.5;">名字、职称、emoji<br>「小mini · 时光智造三号员工 🤠」<br>→ 她知道<span class="gold">她是谁</span></p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--accent);">
+                        <p style="margin:0 0 6px; font-weight:700;"><span class="accent">USER.md</span> — 认识你</p>
+                        <p style="margin:0; font-size:0.75em; color:var(--muted); line-height:1.5;">你叫什么？公司是什么？<br>你喜欢被叫「头头」<br>→ 她才能<span class="accent">真正了解你</span></p>
+                    </div>
+                    <div class="glass-card" style="padding:12px 16px; border-color:var(--purple);">
+                        <p style="margin:0 0 6px; font-weight:700;"><span class="purple">MEMORY.md</span> — 记忆</p>
+                        <p style="margin:0; font-size:0.75em; color:var(--muted); line-height:1.5;">学过什么？踩过什么坑？<br>每次对话都会更新积累<br>→ 她会<span class="purple">越用越聪明</span></p>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding:10px 16px; text-align:center; margin-top:8px; max-width:700px; margin-left:auto; margin-right:auto;">
+                    <p style="margin:0; font-size:0.7em;">
+                        <span class="gold">AGENTS.md</span> — 行为准则（怎么工作、什么时候说话、什么时候沉默…）
+                    </p>
+                </div>
+                <p style="text-align:center; margin-top:10px; font-size:0.65em;" class="muted">
+                    这 5 个文件 = AI 的灵魂 · <span class="accent">所有人都能定制，0 编程门槛</span>
+                </p>
+                <aside class="notes">这是 OpenClaw 最核心也最独特的部分。普通 ChatGPT 没有这些，每次都是全新对话。但 OpenClaw 通过这 5 个文件，让 AI 真正"认识你"、有自己的个性、有记忆、有行为准则。SOUL.md 是最重要的——里面定义她是温柔俏皮的女生、会叫老板"头头"。USER.md 里写你是谁、你的公司、你的偏好。MEMORY.md 每次对话后自动更新，越用越懂你。</aside>
+            </section>
+
+            <!-- OpenClaw: 灵魂对比 — 有没有设定的差别 -->
+            <section>
+                <h2 style="font-size:1.05em;">💡 有了灵魂设定 vs 没有</h2>
+                <div class="grid-2" style="align-items:start;">
+                    <div class="glass-card" style="padding:14px 18px;">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.8em; color:var(--muted); font-weight:700;">😐 普通 AI（没有设定）</p>
+                        <div style="font-size:0.6em; color:var(--muted); line-height:1.7;">
+                            <p style="margin:2px 0;">🤖 「您好！我是 AI 助手，请问需要帮忙吗？」</p>
+                            <p style="margin:2px 0;">🤖 每次重新介绍自己</p>
+                            <p style="margin:2px 0;">🤖 不知道你叫什么</p>
+                            <p style="margin:2px 0;">🤖 不知道你的公司/项目</p>
+                            <p style="margin:2px 0;">🤖 上次踩的坑，这次还踩</p>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="padding:14px 18px; border-color:var(--pink);">
+                        <p style="margin:0 0 8px; text-align:center; font-size:0.8em; color:var(--pink); font-weight:700;">🎀 小mini（有灵魂设定）</p>
+                        <div style="font-size:0.6em; color:var(--muted); line-height:1.7;">
+                            <p style="margin:2px 0;">🤠 「头头你来了～今天PlayTime有3个问题记得处理」</p>
+                            <p style="margin:2px 0;">🤠 记得你所有项目进度</p>
+                            <p style="margin:2px 0;">🤠 知道你的工作风格和偏好</p>
+                            <p style="margin:2px 0;">🤠 有自己的个性和语气</p>
+                            <p style="margin:2px 0;">🤠 上次踩的坑，记录了不会再踩</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding:10px 18px; text-align:center; margin-top:12px; max-width:650px; margin-left:auto; margin-right:auto; border-color:var(--gold);">
+                    <p style="margin:0; font-size:0.72em;">
+                        <span class="gold">核心差距：</span>工具 vs 伙伴<br>
+                        <span class="muted" style="font-size:0.85em;">灵魂设定文件 = 让 AI 从「陌生人」变成「老搭档」</span>
+                    </p>
+                </div>
+                <aside class="notes">左右对比最直观。有没有灵魂设定，用起来完全是两种感觉。没有设定的 AI 就是服务生，有设定的才是真正的老搭档。这也是为什么 OpenClaw 比直接用 ChatGPT 强那么多——它有记忆、有个性、认识你。</aside>
+            </section>
+
+            <!-- OpenClaw: 我的 AI 员工 — 架构 -->
+            <section>
+                <h2>我的 AI 员工：小mini 🤠</h2>
+                <p style="font-size:0.8em; margin:0 0 14px; text-align:center;">OpenClaw + <span class="gold">最顶级 AI 模型</span> = 10 人虚拟团队</p>
+                <div class="glass-card arch-tree" style="padding:16px 24px; max-width:850px; margin:0 auto;">
+                    <div style="text-align:center; margin-bottom:10px;">
+                        <span class="arch-node" style="border-color:var(--gold); font-size:1em;">🧠 <span class="gold">小mini</span> — Claude Opus 4（总指挥）</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 30px; font-size:0.82em; white-space:nowrap;">
+                        <div>├── 📋 <span class="purple">PM</span> · 需求分析</div>
+                        <div>├── 📣 <span class="pink">Social</span> · 社群策略</div>
+                        <div>├── 💻 <span class="accent">Dev</span> · 全栈开发</div>
+                        <div>├── 📝 <span class="accent">Content</span> · 行销文案</div>
+                        <div>├── 🧪 <span class="pink">QA</span> · 测试找 Bug</div>
+                        <div>├── 🤝 <span class="gold">CS</span> · 客户追踪</div>
+                        <div>├── 🎨 <span class="gold">UI</span> · 设计审查</div>
+                        <div>├── 🔍 <span class="purple">Explorer</span> · 搜索整理</div>
+                        <div>├── 📊 <span class="purple">Research</span> · 调研竞品</div>
+                        <div>└── 🛠️ <span class="accent">Helper</span> · 杂务</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:14px; justify-content:center; margin-top:14px;">
+                    <div class="glass-card" style="padding:8px 18px; text-align:center;">
+                        <p style="margin:0; font-size:0.68em;">⚡ 总指挥 = <span class="gold">最强模型</span></p>
+                    </div>
+                    <div class="glass-card" style="padding:8px 18px; text-align:center;">
+                        <p style="margin:0; font-size:0.68em;">💰 手下 = <span class="purple">Sonnet</span>（便宜 80%）</p>
+                    </div>
+                    <div class="glass-card" style="padding:8px 18px; text-align:center;">
+                        <p style="margin:0; font-size:0.68em;">🔄 并行 <span class="accent">8 任务</span>同时跑</p>
+                    </div>
+                </div>
+                <aside class="notes">小mini 是总指挥用 Opus 4 最强模型，底下 10 个角色分工明确。关键：头子用最强，手下用便宜的，成本可控效率极高。</aside>
+            </section>
+
+            <!-- OpenClaw: 小mini 成果 -->
+            <section>
+                <h2>小mini 帮我做到了什么？ 📈</h2>
+                <br>
+                <div class="grid-2" style="align-items:start;">
+                    <div>
+                        <div class="glass-card" style="padding:18px 22px; margin-bottom:12px;">
+                            <p class="gold" style="font-size:0.95em; margin:0 0 10px; font-weight:700;">🏆 实际成果</p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 独立开发 <span class="accent">2 个 SaaS 产品</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 同时推进 <span class="purple">6 个项目</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 全自动 <span class="pink">社群内容日更</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 24/7 <span class="gold">AI 客服系统</span></p>
+                            <p style="margin:6px 0; font-size:0.82em;">✅ 投影片 <span class="accent">30 分钟完整产出</span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="glass-card" style="padding:16px 20px; margin-bottom:12px;">
+                            <p style="margin:0 0 8px; font-size:0.78em; color:var(--purple); font-weight:700;">🔗 多平台接入</p>
+                            <p style="margin:5px 0; font-size:0.75em;">💬 Discord · Telegram · LINE</p>
+                            <p style="margin:5px 0; font-size:0.75em;">📅 定时任务 · 心跳检测 · 主动提醒</p>
+                            <p style="margin:5px 0; font-size:0.75em;">🌐 浏览器控制 · 网页搜索 · API</p>
+                        </div>
+                        <div class="glass-card" style="padding:16px 20px; text-align:center; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.95em;">
+                                <span class="gold">一个人 + 🦞 = 一个完整团队</span>
+                            </p>
+                            <p class="muted" style="margin:6px 0 0; font-size:0.78em;">月成本 ≈ 一杯奶茶/天 🧋</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">两页拆开：上一页是架构，这页是成果。独立开发2个SaaS、6个项目并行、社群日更、24/7客服、投影片30分钟产出。多平台接入，月成本一杯奶茶。</aside>
+            </section>
+
+            <!-- OpenClaw: Live Demo -->
+            <section class="center">
+                <div class="demo-box" style="padding:30px;">
+                    <h2 style="color:var(--accent);">🔴 现场演示 — OpenClaw × Discord</h2>
+                    <p>看 AI 助手如何<span class="gold">即时回应 + 执行任务 + 多人协作</span></p>
+                </div>
+                <div style="display:flex; gap:16px; margin-top:16px;">
+                    <!-- Demo 1 -->
+                    <div class="glass-card" style="flex:1; padding:14px 16px;">
+                        <p style="margin:0 0 6px; font-size:0.75em; color:var(--accent); font-weight:700;">① 即时对话</p>
+                        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:10px 14px; font-family:monospace; font-size:0.55em; color:#e0e0e0;">
+                            <p style="margin:2px 0;"><span class="gold">我：</span>小mini，帮我用 RTCO 写一段自我介绍</p>
+                            <p style="margin:2px 0; color:var(--muted);">R：你是个人品牌顾问</p>
+                            <p style="margin:2px 0; color:var(--muted);">T：帮我写一段30秒自我介绍</p>
+                            <p style="margin:2px 0; color:var(--muted);">C：面向创业者，突出AI经验</p>
+                            <p style="margin:2px 0; color:var(--muted);">O：口语化，可直接念</p>
+                        </div>
+                    </div>
+                    <!-- Demo 2 -->
+                    <div class="glass-card" style="flex:1; padding:14px 16px;">
+                        <p style="margin:0 0 6px; font-size:0.75em; color:var(--purple); font-weight:700;">② 搜索 + 整理</p>
+                        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:10px 14px; font-family:monospace; font-size:0.55em; color:#e0e0e0;">
+                            <p style="margin:2px 0;"><span class="gold">我：</span>小mini，帮我调研一下</p>
+                            <p style="margin:2px 0; color:var(--muted);">R：你是市场研究分析师</p>
+                            <p style="margin:2px 0; color:var(--muted);">T：搜索2026年武汉AI创业补贴政策</p>
+                            <p style="margin:2px 0; color:var(--muted);">C：只要官方来源，附上链接</p>
+                            <p style="margin:2px 0; color:var(--muted);">O：表格整理，按金额排序</p>
+                        </div>
+                    </div>
+                    <!-- Demo 3 -->
+                    <div class="glass-card" style="flex:1; padding:14px 16px;">
+                        <p style="margin:0 0 6px; font-size:0.75em; color:var(--pink); font-weight:700;">③ 多 Agent 派工</p>
+                        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:10px 14px; font-family:monospace; font-size:0.55em; color:#e0e0e0;">
+                            <p style="margin:2px 0;"><span class="gold">我：</span>小mini，帮我做个竞品分析</p>
+                            <p style="margin:2px 0; color:var(--muted);">R：你是产品经理</p>
+                            <p style="margin:2px 0; color:var(--muted);">T：分析3个匹克球预约App的优劣</p>
+                            <p style="margin:2px 0; color:var(--muted);">C：派Research去搜索，Content写报告</p>
+                            <p style="margin:2px 0; color:var(--muted);">O：对比表格 + 改进建议</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="muted" style="font-size:0.5em; margin-top:10px; text-align:center;">💡 所有提示词都用 <span class="gold">RTCO 公式</span> — 刚刚学的马上就用！</p>
+                <aside class="notes">现场用 Discord 演示三个场景。每个都用 RTCO 格式下指令，让观众看到刚学的公式马上就能实战。Demo 1 简单对话，Demo 2 网络搜索整理，Demo 3 派多个 Agent 并行工作。</aside>
+            </section>
+
+            <!-- Demo 结果 1: RTCO 自我介绍 -->
+            <section>
+                <h2>① 演示结果：<span class="accent">即时对话</span></h2>
+                <p class="muted" style="font-size:0.6em; margin:0 0 12px;">用 RTCO 写自我介绍 → <span class="gold">10 秒出稿</span>，还会主动确认细节</p>
+                <div style="display:flex; gap:16px; align-items:start;">
+                    <img src="slides-assets/demo-rtco-intro.png" style="flex:2; max-height:55vh; object-fit:contain; border-radius:12px; border:1px solid var(--glass-border);">
+                    <div style="flex:1;">
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:10px;">
+                            <p class="accent" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">🎯 亮点</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 不是直接生成 — <span class="gold">先确认需求</span></p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 主动问：怎么称呼？强调哪些经历？</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 先给初版，<span class="accent">可以继续修改</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 16px; border-color:var(--gold);">
+                            <p class="gold" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">💡 启示</p>
+                            <p style="margin:3px 0; font-size:0.58em;">好的 AI 助手 ≠ 无脑执行</p>
+                            <p style="margin:3px 0; font-size:0.58em;">= <span class="purple">懂得追问 + 确认 + 迭代</span></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">这就是为什么 RTCO 公式有效 — 给AI明确角色和约束，它就能像真人助理一样主动确认需求再执行。</aside>
+            </section>
+
+            <!-- Demo 结果 2: AI 补贴搜索 -->
+            <section>
+                <h2>② 演示结果：<span class="purple">搜索 + 整理</span></h2>
+                <p class="muted" style="font-size:0.6em; margin:0 0 12px;">搜索武汉 AI 补贴政策 → <span class="gold">自动整理成表格</span>，附来源</p>
+                <div style="display:flex; gap:16px; align-items:start;">
+                    <img src="slides-assets/demo-ai-subsidy.png" style="flex:2; max-height:55vh; object-fit:contain; border-radius:12px; border:1px solid var(--glass-border);">
+                    <div style="flex:1;">
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:10px;">
+                            <p class="purple" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">🔍 亮点</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 派 Helper <span class="accent">自动搜索</span>全网资料</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 找到「<span class="gold">汉十条</span>」最新政策</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 自动整理成<span class="purple">表格 + 按金额排序</span></p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 附上官方来源，<span class="accent">可追溯验证</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 16px; border-color:var(--gold);">
+                            <p class="gold" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">💡 启示</p>
+                            <p style="margin:3px 0; font-size:0.58em;">AI 不只是聊天 —</p>
+                            <p style="margin:3px 0; font-size:0.58em;">= <span class="pink">搜索引擎 + 分析师 + 排版助理</span></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">这个 Demo 展示 AI 助手不只是聊天，而是能主动上网搜索、整理数据、按指定格式输出。</aside>
+            </section>
+
+            <!-- Demo 结果 2b: 即时优化工作流 -->
+            <section>
+                <h2>② 延伸：<span class="gold">发现浪费，立刻修正</span></h2>
+                <p class="muted" style="font-size:0.6em; margin:0 0 12px;">管理 AI 团队就像管理真人团队 — 发现问题要<span class="accent">即时调整流程</span></p>
+                <div style="display:flex; gap:16px; align-items:start;">
+                    <img src="slides-assets/demo-ai-subsidy-fix.png" style="flex:2; max-height:55vh; object-fit:contain; border-radius:12px; border:1px solid var(--glass-border);">
+                    <div style="flex:1;">
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:10px;">
+                            <p class="pink" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">⚠️ 发现问题</p>
+                            <p style="margin:3px 0; font-size:0.55em;">• 小mini 派了 Helper 搜 → <span class="pink">搜不到</span></p>
+                            <p style="margin:3px 0; font-size:0.55em;">• 然后自己又搜了一次 → 找到了</p>
+                            <p style="margin:3px 0; font-size:0.55em;">• 结果：<span class="pink">重复工作 + 两次回复</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:10px; border-color:var(--accent);">
+                            <p class="accent" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">✅ 修正规则</p>
+                            <p style="margin:3px 0; font-size:0.55em;">🟢 简单搜索 → <span class="accent">自己做</span></p>
+                            <p style="margin:3px 0; font-size:0.55em;">🟡 中等任务 → <span class="purple">派 subagent，自己不重复</span></p>
+                            <p style="margin:3px 0; font-size:0.55em;">🔴 复杂任务 → <span class="gold">派 subagent，review 后再回报</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; border-color:var(--gold);">
+                            <p class="gold" style="margin:0; font-size:0.62em; font-weight:700;">💡 AI 团队也需要管理优化！</p>
+                            <p style="margin:3px 0 0; font-size:0.52em;">发现问题 → 立刻调整 → <span class="accent">记下来不再犯</span></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">这是真实发生的案例。小mini搜索补贴时派了helper但搜不到，自己又做了一次，造成浪费。老板发现后立刻修正了工作流。这说明AI团队跟真人团队一样需要持续优化管理。</aside>
+            </section>
+
+            <!-- Demo 结果 3: 竞品分析 -->
+            <section>
+                <h2>③ 演示结果：<span class="pink">多 Agent 派工</span></h2>
+                <p class="muted" style="font-size:0.6em; margin:0 0 12px;">派 Research 搜索 + PM 分析 + Content 写报告 → <span class="gold">团队协作</span></p>
+                <div style="display:flex; gap:16px; align-items:start;">
+                    <img src="slides-assets/demo-competitive-analysis.png" style="flex:2; max-height:55vh; object-fit:contain; border-radius:12px; border:1px solid var(--glass-border);">
+                    <div style="flex:1;">
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:10px;">
+                            <p class="pink" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">🤖 亮点</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 一句话 → <span class="accent">自动拆解任务</span></p>
+                            <p style="margin:3px 0; font-size:0.58em;">• Research 搜索 + Content 写报告</p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 输出：<span class="gold">竞品对比表 + 改进建议</span></p>
+                            <p style="margin:3px 0; font-size:0.58em;">• 像真的有一个<span class="purple">分析团队</span>在工作</p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 16px; border-color:var(--gold);">
+                            <p class="gold" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">💡 启示</p>
+                            <p style="margin:3px 0; font-size:0.58em;">这就是 AI 最强的地方 —</p>
+                            <p style="margin:3px 0; font-size:0.58em;"><span class="accent">一个人指挥一个 AI 团队</span></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">最震撼的 Demo — 一句话就能派出多个AI角色各自搜索分析写报告，最后汇总成专业竞品分析。这在传统方式至少需要2-3天，AI几分钟搞定。</aside>
+            </section>
+
+            <!-- OpenClaw: 小金交易机器人 -->
+            <section>
+                <h2>💰 OpenClaw 案例：AI 交易机器人</h2>
+                <br>
+                <div class="grid-2">
+                    <div>
+                        <div class="glass-card" style="padding:18px;">
+                            <p style="margin:0 0 10px; font-size:0.85em; color:var(--gold); font-weight:700;">🤖 「小金」— 我的 AI 交易伙伴</p>
+                            <p style="margin:4px 0; font-size:0.7em;">✅ 完全不懂交易的人，也能参与市场</p>
+                            <p style="margin:4px 0; font-size:0.7em;">✅ AI 自动研究策略、执行交易</p>
+                            <p style="margin:4px 0; font-size:0.7em;">✅ 每天接收报告 → 边学习边优化</p>
+                            <p style="margin:4px 0; font-size:0.7em;">✅ 人不在电脑前，AI 持续运作</p>
+                        </div>
+                        <br>
+                        <div class="glass-card" style="padding:14px; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.75em; text-align:center;">
+                                <span class="gold">关键不是赚多少</span><br>
+                                <span class="muted" style="font-size:0.85em;">而是一个完全不懂的人<br>也能用 AI 进入一个全新领域<br>边做边学、持续进化 📈</span>
+                            </p>
+                        </div>
+                        <br>
+                        <div class="glass-card" style="padding:10px 16px;">
+                            <p style="margin:0; font-size:0.6em; color:var(--accent);">
+                                📊 实时仪表板：<a href="https://wealth.timux.site/dashboard/" target="_blank" style="color:var(--accent);">wealth.timux.site/dashboard</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="slides-assets/xiaojin-trading-dashboard.png" style="width:100%; border-radius:12px; border:1px solid var(--glass-border);">
+                        <p class="muted" style="font-size:0.55em; text-align:center; margin-top:8px;">
+                            小金交易仪表板 — 190 笔交易 · 多策略并行 · 实时损益追踪
+                        </p>
+                    </div>
+                </div>
+                <aside class="notes">这是我自己的案例。完全不懂交易，但用 OpenClaw 搭了一个交易机器人"小金"。它自动研究策略、执行交易，每天给我报告。重点不是赚了多少钱，而是展示 AI 让你能进入任何领域。</aside>
+            </section>
+
+            <!-- 小金 Telegram 日报 -->
+            <section>
+                <h2>💰 小金每天在 Telegram 跟我汇报</h2>
+                <p class="muted" style="font-size:0.6em; margin:0 0 12px;">就像一个<span class="gold">真人交易员</span>，每天定时发送完整报告</p>
+                <div style="display:flex; gap:16px; align-items:start;">
+                    <img src="slides-assets/xiaojin-telegram-report.png" style="flex:2; max-height:55vh; object-fit:contain; border-radius:12px; border:1px solid var(--glass-border);">
+                    <div style="flex:1;">
+                        <div class="glass-card" style="padding:14px 16px; margin-bottom:10px;">
+                            <p class="gold" style="margin:0 0 6px; font-size:0.7em; font-weight:700;">📊 日报内容</p>
+                            <p style="margin:3px 0; font-size:0.55em;">💰 <span class="accent">帐户总览</span> — 实时余额 & 损益</p>
+                            <p style="margin:3px 0; font-size:0.55em;">😨 <span class="pink">恐惧贪婪指数</span> — 市场情绪判断</p>
+                            <p style="margin:3px 0; font-size:0.55em;">📈 <span class="purple">当前持仓</span> — 进场价 / 止损 / 止盈</p>
+                            <p style="margin:3px 0; font-size:0.55em;">📋 <span class="accent">48h 交易记录</span> — 盈亏明细</p>
+                            <p style="margin:3px 0; font-size:0.55em;">⚙️ <span class="gold">系统状态</span> — 多策略运行监控</p>
+                            <p style="margin:3px 0; font-size:0.55em;">💡 <span class="pink">建议</span> — 风险提醒 & 操作建议</p>
+                        </div>
+                        <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                            <p class="gold" style="margin:0 0 4px; font-size:0.68em; font-weight:700;">💡 关键点</p>
+                            <p style="margin:3px 0; font-size:0.55em;">• <span class="accent">每 2 小时自动发送</span>（避开睡眠时间）</p>
+                            <p style="margin:3px 0; font-size:0.55em;">• 用 Telegram 沟通 — <span class="purple">手机随时看</span></p>
+                            <p style="margin:3px 0; font-size:0.55em;">• 有异常会<span class="pink">主动告警</span>，不只定时报告</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">小金通过 Telegram 每天自动汇报，就像真人交易员。这就是 OpenClaw 的核心优势 — AI 不只是在电脑上等你问，而是主动通过你日常用的通讯软件跟你沟通。</aside>
+            </section>
+
+            <!-- ========================================= -->
+            <!-- AI 健检互动环节 -->
+            <!-- ========================================= -->
+            <section>
+                <h2>🩺 AI 使用状态健检</h2>
+                <p class="muted" style="font-size:0.7em;">来，大家一起做个小测试 👇</p>
+                <br>
+                <div class="grid-2">
+                    <div>
+                        <div class="glass-card" style="padding:18px;">
+                            <p style="margin:0 0 10px; font-size:0.85em; color:var(--accent3); font-weight:700;">😤 先来吐槽 — 你最烦的事？</p>
+                            <p style="margin:6px 0; font-size:0.7em;">每天花多少时间在<span class="accent">重复性工作</span>上？</p>
+                            <p style="margin:6px 0; font-size:0.7em;">哪件事让你觉得<span class="pink">「这也太浪费时间了」</span>？</p>
+                            <p style="margin:6px 0; font-size:0.7em;">生活中有没有什么<span class="purple">「好烦好不方便」</span>的事？</p>
+                            <p style="margin:6px 0; font-size:0.7em;">你<span class="gold">最想从工作中解放</span>的一件事是什么？</p>
+                        </div>
+                        <br>
+                        <div class="glass-card" style="padding:14px; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.72em; text-align:center;">
+                                <span class="gold">💡 越不满现状 = 越适合用 AI</span><br>
+                                <span class="muted" style="font-size:0.82em;">不安于现状的情绪，就是进步的动力</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="glass-card" style="padding:18px;">
+                            <p style="margin:0 0 10px; font-size:0.85em; color:var(--accent); font-weight:700;">🔍 你的 AI 使用现况</p>
+                            <p style="margin:6px 0; font-size:0.7em;">Level 0️⃣ <span class="muted">没用过 / 偶尔玩玩</span></p>
+                            <p style="margin:6px 0; font-size:0.7em;">Level 1️⃣ <span class="muted">用 ChatGPT 写文案/翻译</span></p>
+                            <p style="margin:6px 0; font-size:0.7em;">Level 2️⃣ <span class="accent">日常工作有固定用 AI</span></p>
+                            <p style="margin:6px 0; font-size:0.7em;">Level 3️⃣ <span class="purple">建立了 AI 工作流程</span></p>
+                            <p style="margin:6px 0; font-size:0.7em;">Level 4️⃣ <span class="gold">AI 已经是你的团队成员</span></p>
+                        </div>
+                        <br>
+                        <div class="glass-card" style="padding:14px; border-color:var(--accent);">
+                            <p style="margin:0; font-size:0.72em; text-align:center;">
+                                <span class="accent">大部分人卡在 Level 1 → 2</span><br>
+                                <span class="muted" style="font-size:0.82em;">今天教的工具能直接帮你跳到 Level 3+</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">互动环节！让大家举手或打字回答。先让大家吐槽工作中最烦的事 — 抱怨越多，越能引导到 AI 解决方案。然后做 AI Level 测试，大部分人会在 1-2，这就是今天课程的价值所在。</aside>
+            </section>
+
+            <!-- 你的烦恼 → AI 的解决方案 -->
+            <section>
+                <h2>😤 你的烦恼 → 🤖 AI 的解决方案</h2>
+                <br>
+                <div style="max-width:900px; margin:0 auto;">
+                    <div class="glass-card" style="padding:12px 20px; margin-bottom:10px; display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:1.2em;">😩</span>
+                        <span style="font-size:0.72em; flex:1;">「每天花 3 小时回复客户同样的问题」</span>
+                        <span style="font-size:1em;">→</span>
+                        <span style="font-size:0.72em; flex:1; color:var(--accent);">🤖 AI 客服 24/7 自动回复，你只管特殊情况</span>
+                    </div>
+                    <div class="glass-card" style="padding:12px 20px; margin-bottom:10px; display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:1.2em;">😩</span>
+                        <span style="font-size:0.72em; flex:1;">「写一篇小红书要想半天、改半天」</span>
+                        <span style="font-size:1em;">→</span>
+                        <span style="font-size:0.72em; flex:1; color:var(--accent2);">⚡ AI 5 分钟出 4 平台文案，你只管微调</span>
+                    </div>
+                    <div class="glass-card" style="padding:12px 20px; margin-bottom:10px; display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:1.2em;">😩</span>
+                        <span style="font-size:0.72em; flex:1;">「做数据报表好麻烦，每月重复一次」</span>
+                        <span style="font-size:1em;">→</span>
+                        <span style="font-size:0.72em; flex:1; color:var(--accent3);">📊 AI 自动跑报表，你只管看结论</span>
+                    </div>
+                    <div class="glass-card" style="padding:12px 20px; margin-bottom:10px; display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:1.2em;">😩</span>
+                        <span style="font-size:0.72em; flex:1;">「想学投资/编程/设计但完全没基础」</span>
+                        <span style="font-size:1em;">→</span>
+                        <span style="font-size:0.72em; flex:1; color:var(--gold);">🧠 AI 当你的教练 + 执行者，边做边学</span>
+                    </div>
+                    <div class="glass-card" style="padding:12px 20px; margin-bottom:10px; display:flex; align-items:center; gap:16px;">
+                        <span style="font-size:1.2em;">😩</span>
+                        <span style="font-size:0.72em; flex:1;">「下班后还要帮忙买菜、记账、排行程」</span>
+                        <span style="font-size:1em;">→</span>
+                        <span style="font-size:0.72em; flex:1; color:var(--accent);">🦞 AI 管家帮你搞定生活琐事</span>
+                    </div>
+                </div>
+                <br>
+                <p style="text-align:center; font-size:0.82em;">
+                    <span class="gold">你烦的每一件事，都可能有 AI 解法 💡</span><br>
+                    <span class="muted" style="font-size:0.8em;">不满现状 → 找到痛点 → 交给 AI → 你去做更有价值的事</span>
+                </p>
+                <aside class="notes">对应观众刚才吐槽的痛点。每一个"好烦"背后都有 AI 解法。关键是让大家意识到：你不需要忍受这些重复劳动。</aside>
+            </section>
+
+            <!-- ========================================= -->
+            <!-- PART 4: 串联 + 转化 -->
+            <!-- ========================================= -->
+            <section class="center">
+                <div class="section-divider">PART 4 · 总结 + 转化</div>
+                <br>
+                <h2>今天的三个收获 🎯</h2>
+                <br>
+                <div class="grid-3" style="max-width:880px; margin:0 auto;">
+                    <div class="glass-card" style="text-align:center; padding:20px 16px;">
+                        <p style="font-size:1.8em; margin:0;">⚡</p>
+                        <p class="accent" style="font-size:0.8em; margin:6px 0 3px;">拼搏的启发</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">内地的效率值得学<br>台湾的创意是护城河<br>结合 = 降维打击</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:20px 16px;">
+                        <p style="font-size:1.8em; margin:0;">🦞</p>
+                        <p class="purple" style="font-size:0.8em; margin:6px 0 3px;">AI 伙伴</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">不只是聊天工具<br>用最强模型当大脑<br>变成你的 24/7 助手</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:20px 16px;">
+                        <p style="font-size:1.8em; margin:0;">⚡</p>
+                        <p class="gold" style="font-size:0.8em; margin:6px 0 3px;">马上行动</p>
+                        <p class="muted" style="font-size:0.55em; margin:0;">AI Studio 免费用<br>8 分钟产 4 平台内容<br>今天回去就能开始</p>
+                    </div>
+                </div>
+                <aside class="notes">三个关键词：拼搏的启发、AI 伙伴、马上行动。</aside>
+            </section>
+
+            <!-- 深入学习 + 红包活动（合并） -->
+            <section>
+                <h2 style="font-size:1.15em;"><span class="grad-text">想深入学习？</span> 🎓</h2>
+                <div class="grid-3" style="max-width:880px; margin:0 auto;">
+                    <div class="glass-card" style="text-align:center; padding:12px;">
+                        <p style="font-size:1.4em; margin:0;">🛠️</p>
+                        <p class="accent" style="font-size:0.7em; font-weight:700; margin:4px 0;">AI 助手搭建工作坊</p>
+                        <p class="muted" style="font-size:0.5em; margin:0;">手把手搭建私人 AI 助手<br>半天 · 小班制</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:12px;">
+                        <p style="font-size:1.4em; margin:0;">📱</p>
+                        <p class="purple" style="font-size:0.7em; font-weight:700; margin:4px 0;">AI 自媒体训练营</p>
+                        <p class="muted" style="font-size:0.5em; margin:0;">完整工作流 + 矩阵号<br>3 天 · 含实操</p>
+                    </div>
+                    <div class="glass-card" style="text-align:center; padding:12px;">
+                        <p style="font-size:1.4em; margin:0;">👑</p>
+                        <p class="gold" style="font-size:0.7em; font-weight:700; margin:4px 0;">AI 创业者联盟</p>
+                        <p class="muted" style="font-size:0.5em; margin:0;">年度会员 · 1v1 咨询<br>资源对接 · 持续更新</p>
+                    </div>
+                </div>
+                <div style="margin-top:12px; display:flex; align-items:start; justify-content:center; gap:24px; flex-wrap:wrap;">
+                    <div style="max-width:420px;">
+                        <div class="glass-card" style="padding:12px 16px; border-color:var(--gold);">
+                            <p style="margin:0 0 4px;"><span class="gold" style="font-size:0.85em;">🧧 扫码进群 · 抢红包！</span></p>
+                            <p style="margin:3px 0; font-size:0.6em;">🥇 <span class="accent">最大的</span> → 手把手搭建个人 AI 助手</p>
+                            <p style="margin:3px 0; font-size:0.6em;">🎯 <span class="purple">最小的</span> → 1v1 分析你的 AI 加速点</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-top:6px;">
+                            <p style="margin:0 0 3px; font-size:0.65em;"><span class="accent">📱 进群福利</span></p>
+                            <p style="margin:2px 0; font-size:0.55em;">📄 Prompt 模板 · 🔧 50+ 工具清单 · 🔗 AI Studio App</p>
+                            <p style="margin:2px 0; font-size:0.55em;">🔥 <span class="gold">持续更新最新最前沿的 AI 知识</span></p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="qr-placeholder" style="width:160px; height:160px;">
+                            <p style="font-size:0.6em;">微信群<br>QR Code<br><span style="font-size:0.8em;">⬆️ 请替换</span></p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">深入学习课程 + 红包活动。扫码进群拿红包和资料。</aside>
+            </section>
+
+            <!-- 名片页 -->
+            <!-- 金句收尾 -->
+            <section class="center">
+                <div class="big-quote">
+                    「<span class="accent">智造</span>交给 AI，<br>
+                    <span class="gold">时光</span>留给所爱。」
+                </div>
+                <br>
+                <p style="font-size:0.9em; color:var(--accent);">时光智造科技</p>
+                <p class="muted" style="font-size:0.65em;">www.timux.site</p>
+                <aside class="notes">用 AI 处理繁琐工作，把珍贵时光留给真正重要的人和事。</aside>
+            </section>
+
+            <!-- 联系我 -->
+            <section class="center">
+                <div class="glass-card" style="max-width:800px; margin:0 auto; padding:30px 40px; border-color:var(--gold); background:rgba(255,255,255,0.03);">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:40px; flex-wrap:wrap;">
+                        <!-- 左：名片信息 -->
+                        <div style="text-align:left;">
+                            <p style="font-size:1.4em; margin:0 0 4px; font-weight:700;">
+                                <span class="grad-text">时光智造科技</span>
+                            </p>
+                            <p style="font-size:0.6em; margin:0 0 16px; color:var(--gold);">智造交给 AI，时光留给所爱 ✨</p>
+                            <p style="font-size:0.75em; margin:6px 0; font-weight:600;">黄昱仁（大头 Ian）</p>
+                            <p style="font-size:0.6em; margin:3px 0; color:var(--muted);">创办人 & CEO</p>
+                            <div style="margin-top:14px;">
+                                <p style="font-size:0.6em; margin:4px 0;">🌐 <span class="accent">www.timux.site</span></p>
+                                <p style="font-size:0.6em; margin:4px 0;">💬 微信：扫右方二维码</p>
+                            </div>
+                            <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--glass-border);">
+                                <p style="font-size:0.55em; margin:3px 0; color:var(--muted);">🏢 场馆管理 · AI 客服 · 数据分析</p>
+                                <p style="font-size:0.55em; margin:3px 0; color:var(--muted);">🤖 智慧场馆 AceTime · 运动揪团 PlayTime</p>
+                            </div>
+                        </div>
+                        <!-- 右：微信二维码 -->
+                        <div style="text-align:center;">
+                            <img src="slides-assets/wechat-qr-ian.jpg" style="width:200px; height:200px; border-radius:12px; border:2px solid var(--gold); object-fit:cover;">
+                            <p style="font-size:0.5em; margin:6px 0 0; color:var(--gold);">扫码加微信 💬</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <p style="font-size:0.75em; margin-top:8px;">谢谢大家，有任何 AI 相关问题欢迎随时交流 🙏</p>
+                <aside class="notes">最后一页名片，让大家扫码加微信。</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            width: 1280,
+            height: 720,
+            margin: 0.06,
+            minScale: 0.2,
+            maxScale: 2.0,
+            keyboard: true,
+            overview: true,
+            center: false,
+            touch: true,
+            backgroundTransition: 'fade',
+            plugins: [ RevealNotes ]
+        });
+    </script>
+
+    <script src="slides-toolkit.js"></script>
+</body>
+</html>
