@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>梅芷萱 - 自我介紹</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #2D3436;
+  --accent: #E17055;
+  --accent2: #6C5CE7;
+  --light: #FFF8F0;
+  --warm: #FFEAA7;
+  --teal: #00B894;
+  --blue: #74B9FF;
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: #000;
+  color: var(--primary);
+}
+
+.slide {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  margin: 0 auto;
+}
+
+/* ===== SLIDE 1: Cover ===== */
+.slide-cover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cover-content {
+  text-align: center;
+  color: white;
+  z-index: 2;
+}
+.cover-photo {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 6px solid rgba(255,255,255,0.8);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  margin-bottom: 40px;
+}
+.cover-name {
+  font-size: 88px;
+  font-weight: 900;
+  letter-spacing: 12px;
+  margin-bottom: 16px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.cover-name-en {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 8px;
+  opacity: 0.85;
+  margin-bottom: 40px;
+}
+.cover-tagline {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  opacity: 0.9;
+  line-height: 1.8;
+}
+.cover-tagline span {
+  display: inline-block;
+  margin: 0 16px;
+}
+.cover-deco {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.cover-deco-1 { top: -200px; right: -100px; }
+.cover-deco-2 { bottom: -300px; left: -200px; width: 800px; height: 800px; }
+
+/* ===== SLIDE 2: About Me ===== */
+.slide-about {
+  background: var(--light);
+  display: flex;
+}
+.about-left {
+  width: 45%;
+  height: 100%;
+  position: relative;
+}
+.about-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-left::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 120px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, var(--light));
+}
+.about-right {
+  width: 55%;
+  padding: 80px 80px 60px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 52px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  line-height: 1.3;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.about-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.about-icon {
+  font-size: 36px;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+.about-item-text h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--primary);
+}
+.about-item-text p {
+  font-size: 17px;
+  color: #636e72;
+  line-height: 1.5;
+}
+
+/* ===== SLIDE 3: Career ===== */
+.slide-career {
+  background: white;
+  padding: 80px 100px;
+}
+.career-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 60px;
+}
+.career-timeline {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  height: 580px;
+}
+.career-card {
+  flex: 1;
+  padding: 40px 36px;
+  border-radius: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.career-card:nth-child(1) {
+  background: linear-gradient(180deg, #a29bfe 0%, #6c5ce7 100%);
+  color: white;
+  margin-right: -12px;
+  z-index: 3;
+}
+.career-card:nth-child(2) {
+  background: linear-gradient(180deg, #74b9ff 0%, #0984e3 100%);
+  color: white;
+  margin-right: -12px;
+  z-index: 2;
+}
+.career-card:nth-child(3) {
+  background: linear-gradient(180deg, #55efc4 0%, #00b894 100%);
+  color: white;
+  z-index: 1;
+}
+.career-period {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.career-role {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.career-org {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+.career-details {
+  list-style: none;
+  flex: 1;
+}
+.career-details li {
+  font-size: 17px;
+  line-height: 1.7;
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 8px;
+}
+.career-details li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  opacity: 0.7;
+}
+
+/* ===== SLIDE 4: Certifications ===== */
+.slide-certs {
+  background: linear-gradient(135deg, #2D3436 0%, #636e72 100%);
+  color: white;
+  padding: 80px 100px;
+}
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  margin-top: 50px;
+}
+.cert-card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 40px 36px;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: transform 0.3s;
+}
+.cert-emoji {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+.cert-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.cert-desc {
+  font-size: 18px;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+.cert-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+/* ===== SLIDE 5: Passions ===== */
+.slide-passions {
+  background: var(--light);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+.passion-cell {
+  position: relative;
+  overflow: hidden;
+}
+.passion-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.passion-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  color: white;
+}
+.passion-label {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.passion-desc {
+  font-size: 18px;
+  opacity: 0.9;
+}
+/* Center title overlay */
+.passions-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: rgba(255,255,255,0.95);
+  padding: 24px 56px;
+  border-radius: 60px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.passions-center h2 {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+/* ===== SLIDE 6: Travel ===== */
+.slide-travel {
+  background: white;
+  display: flex;
+}
+.travel-photos {
+  width: 55%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 6px;
+  padding: 6px;
+}
+.travel-photos img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.travel-text {
+  width: 45%;
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.travel-quote {
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--primary);
+  margin-bottom: 40px;
+  position: relative;
+  padding-left: 30px;
+  border-left: 4px solid var(--accent);
+}
+.travel-places {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.travel-tag {
+  background: #f1f2f6;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #636e72;
+}
+
+/* ===== SLIDE 7: Closing ===== */
+.slide-closing {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+.closing-content {
+  z-index: 2;
+}
+.closing-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 48px;
+  max-width: 1000px;
+}
+.closing-name {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  margin-bottom: 16px;
+}
+.closing-contact {
+  font-size: 22px;
+  opacity: 0.8;
+  font-weight: 300;
+}
+.closing-deco {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.closing-deco-1 { width: 500px; height: 500px; top: -150px; left: -100px; }
+.closing-deco-2 { width: 700px; height: 700px; bottom: -300px; right: -200px; }
+
+/* Print */
+@media print {
+  .slide { page-break-after: always; }
+  body { background: white; }
+}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Cover -->
+<div class="slide slide-cover">
+  <div class="cover-deco cover-deco-1"></div>
+  <div class="cover-deco cover-deco-2"></div>
+  <div class="cover-content">
+    <img class="cover-photo" src="mei-photos/01-skiing.jpg" alt="梅芷萱">
+    <div class="cover-name">梅芷萱</div>
+    <div class="cover-name-en">Mei Zhi-Xuan</div>
+    <div class="cover-tagline">
+      <span>🎹 鋼琴</span>
+      <span>🤿 潛水</span>
+      <span>⛷️ 滑雪</span>
+      <span>🥊 泰拳</span>
+      <span>👩‍🏫 教育</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: About Me -->
+<div class="slide slide-about">
+  <div class="about-left">
+    <img src="mei-photos/04-forest.jpg" alt="森林步道">
+  </div>
+  <div class="about-right">
+    <div class="section-label">About Me</div>
+    <div class="section-title">關於我</div>
+    <div class="about-grid">
+      <div class="about-item">
+        <div class="about-icon">👩‍🏫</div>
+        <div class="about-item-text">
+          <h4>幼兒教育工作者</h4>
+          <p>空軍預警學院幼兒園班主任<br>空軍一級教師職稱</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-icon">🎹</div>
+        <div class="about-item-text">
+          <h4>鋼琴十級</h4>
+          <p>中國音樂家協會認證<br>七年鋼琴教學經驗</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-icon">🤿</div>
+        <div class="about-item-text">
+          <h4>潛水愛好者</h4>
+          <p>PADI OW + AOW<br>AIDA 自由潛水認證</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-icon">🏔️</div>
+        <div class="about-item-text">
+          <h4>戶外探險家</h4>
+          <p>滑雪 · 泰拳 · 旅行<br>足跡遍及亞洲多國</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-icon">🎓</div>
+        <div class="about-item-text">
+          <h4>本科學歷</h4>
+          <p>武漢人 · 1995 年生<br>普通話二級甲等</p>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-icon">🏆</div>
+        <div class="about-item-text">
+          <h4>多項榮譽</h4>
+          <p>全國教師競賽獎項<br>教學創新標兵</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: Career -->
+<div class="slide slide-career">
+  <div class="career-header">
+    <div>
+      <div class="section-label">Career Path</div>
+      <div class="section-title">職業經歷</div>
+    </div>
+  </div>
+  <div class="career-timeline">
+    <div class="career-card">
+      <div class="career-period">至 2024 年 9 月</div>
+      <div class="career-role">班主任</div>
+      <div class="career-org">空軍預警學院幼兒園</div>
+      <ul class="career-details">
+        <li>負責班級全面管理與日常教學</li>
+        <li>制定學期教學計劃與主題活動</li>
+        <li>與家長建立良好溝通機制</li>
+        <li>帶領班級參與園區活動與比賽</li>
+        <li>2022 年獲評空軍一級教師職稱</li>
+      </ul>
+    </div>
+    <div class="career-card">
+      <div class="career-period">七年教培經驗</div>
+      <div class="career-role">鋼琴教師</div>
+      <div class="career-org">鋼琴教學 · 音樂啟蒙</div>
+      <ul class="career-details">
+        <li>一對一及小班鋼琴教學</li>
+        <li>幼兒音樂啟蒙課程設計</li>
+        <li>學員考級輔導與演出準備</li>
+        <li>自身持有鋼琴十級證書</li>
+        <li>中國音樂家協會認證</li>
+      </ul>
+    </div>
+    <div class="career-card">
+      <div class="career-period">持續進修</div>
+      <div class="career-role">自我成長</div>
+      <div class="career-org">多元技能 · 國際視野</div>
+      <ul class="career-details">
+        <li>考取 PADI OW + AOW 潛水證照</li>
+        <li>AIDA 自由潛水認證</li>
+        <li>泰拳訓練實踐</li>
+        <li>新媒體運營與內容創作</li>
+        <li>多國旅行拓展國際視野</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Certifications -->
+<div class="slide slide-certs">
+  <div class="section-label" style="color: var(--warm);">Certifications & Awards</div>
+  <div class="section-title" style="color: white;">證照與榮譽</div>
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-emoji">🎖️</div>
+      <div class="cert-title">空軍一級教師</div>
+      <div class="cert-desc">2022 年獲評<br>專業教師職稱認證</div>
+      <div class="cert-badge">教育類</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-emoji">🎹</div>
+      <div class="cert-title">鋼琴十級</div>
+      <div class="cert-desc">中國音樂家協會<br>最高等級演奏認證</div>
+      <div class="cert-badge">音樂類</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-emoji">🗣️</div>
+      <div class="cert-title">普通話二級甲等</div>
+      <div class="cert-desc">國家語言文字<br>工作委員會認證</div>
+      <div class="cert-badge">語言類</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-emoji">🤿</div>
+      <div class="cert-title">PADI OW + AOW</div>
+      <div class="cert-desc">開放水域潛水員<br>進階開放水域潛水員</div>
+      <div class="cert-badge">潛水類</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-emoji">🧜‍♀️</div>
+      <div class="cert-title">AIDA 自由潛水</div>
+      <div class="cert-desc">國際自由潛水<br>發展協會認證</div>
+      <div class="cert-badge">潛水類</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-emoji">🏆</div>
+      <div class="cert-title">全國教師競賽</div>
+      <div class="cert-desc">多項全國級別<br>教師技能競賽獎項</div>
+      <div class="cert-badge">榮譽類</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: Passions -->
+<div class="slide slide-passions" style="position: relative;">
+  <div class="passion-cell">
+    <img src="mei-photos/01-skiing.jpg" alt="滑雪">
+    <div class="passion-overlay">
+      <div class="passion-label">⛷️ 滑雪</div>
+      <div class="passion-desc">北海道羊蹄山 · 粉雪天堂</div>
+    </div>
+  </div>
+  <div class="passion-cell">
+    <img src="mei-photos/02-freediving.jpg" alt="潛水">
+    <div class="passion-overlay">
+      <div class="passion-label">🤿 潛水</div>
+      <div class="passion-desc">自由潛水 · 與魚群共舞</div>
+    </div>
+  </div>
+  <div class="passion-cell">
+    <img src="mei-photos/06-muaythai.jpg" alt="泰拳">
+    <div class="passion-overlay">
+      <div class="passion-label">🥊 泰拳</div>
+      <div class="passion-desc">泰國實地訓練 · 挑戰自我</div>
+    </div>
+  </div>
+  <div class="passion-cell">
+    <img src="mei-photos/03-usj.jpg" alt="探索">
+    <div class="passion-overlay">
+      <div class="passion-label">✈️ 探索</div>
+      <div class="passion-desc">日本環球影城 · 發現新世界</div>
+    </div>
+  </div>
+  <div class="passions-center">
+    <h2>🔥 我的熱愛</h2>
+  </div>
+</div>
+
+<!-- SLIDE 6: Travel -->
+<div class="slide slide-travel">
+  <div class="travel-photos">
+    <img src="mei-photos/05-thailand-market.jpg" alt="泰國">
+    <img src="mei-photos/07-cultural-market.jpg" alt="文創市集">
+    <img src="mei-photos/03-usj.jpg" alt="日本">
+    <img src="mei-photos/04-forest.jpg" alt="森林">
+  </div>
+  <div class="travel-text">
+    <div class="section-label">Footprints</div>
+    <div class="section-title" style="margin-bottom: 36px;">旅行的意義</div>
+    <div class="travel-quote">
+      每一次出發，<br>都是為了遇見<br>更好的自己。
+    </div>
+    <div class="travel-places">
+      <span class="travel-tag">🇯🇵 日本</span>
+      <span class="travel-tag">🇹🇭 泰國</span>
+      <span class="travel-tag">🇵🇭 菲律賓</span>
+      <span class="travel-tag">🇲🇾 馬來西亞</span>
+      <span class="travel-tag">🇮🇩 印尼</span>
+      <span class="travel-tag">🇰🇷 韓國</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Closing -->
+<div class="slide slide-closing">
+  <div class="closing-deco closing-deco-1"></div>
+  <div class="closing-deco closing-deco-2"></div>
+  <div class="closing-content">
+    <div class="closing-quote">
+      "用音樂啟迪心靈，<br>用行動探索世界，<br>用熱愛點亮生活。"
+    </div>
+    <div class="closing-name">梅 芷 萱</div>
+    <div class="closing-contact">感謝您的聆聽 💫</div>
+  </div>
+</div>
+
+</body>
+</html>
