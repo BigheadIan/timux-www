@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中國大陸主流 AI 大模型深度對比（2026年3月）| 時光智造 Timux</title>
+    <meta name="description" content="10 大中國 AI 模型深度對比：DeepSeek、Kimi、Qwen、文心一言、豆包等，涵蓋深度推理能力、API 價格、免費額度與推薦。">
+    <meta property="og:title" content="中國 AI 大模型深度對比 — 2026年3月">
+    <meta property="og:description" content="DeepSeek vs Kimi vs Qwen vs 文心一言 vs 豆包…10 大模型全面比較">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.timux.site/share/china-ai-comparison.html">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-code: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-heading: #f8fafc;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #fb923c;
+            --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'Noto Sans SC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        header { text-align: center; padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+        header h1 { font-size: 1.8rem; color: var(--text-heading); margin-bottom: 0.5rem; }
+        header .subtitle { color: var(--text-muted); font-size: 0.95rem; }
+        header .badge { display: inline-block; background: var(--primary); color: white; padding: 0.2rem 0.8rem; border-radius: 99px; font-size: 0.8rem; margin-top: 0.8rem; }
+        h2 { color: var(--text-heading); font-size: 1.4rem; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary); }
+        h3 { color: var(--primary-light); font-size: 1.15rem; margin: 1.8rem 0 0.8rem; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; }
+        .card h3 { margin-top: 0; color: var(--text-heading); font-size: 1.1rem; }
+        .card .tag { display: inline-block; background: var(--bg-code); color: var(--accent-green); padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.78rem; margin-right: 0.3rem; }
+        .card .tag.warn { color: var(--accent-yellow); }
+        .card .tag.no { color: var(--accent-red); }
+        .card ul { padding-left: 1.2rem; }
+        .card li { margin-bottom: 0.3rem; }
+        .price { color: var(--accent-green); font-weight: bold; }
+        .free { color: var(--accent-yellow); font-weight: bold; }
+        .warn { color: var(--accent-orange); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+        th { background: var(--bg-code); color: var(--text-heading); padding: 0.6rem; text-align: left; border: 1px solid var(--border); }
+        td { padding: 0.5rem 0.6rem; border: 1px solid var(--border); }
+        tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        .rank { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; margin-bottom: 1rem; }
+        .rank ol { padding-left: 1.5rem; }
+        .rank li { margin-bottom: 0.5rem; }
+        .medal { font-size: 1.1rem; }
+        .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+        .rec-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+        .rec-item .label { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.3rem; }
+        .rec-item .pick { color: var(--accent-green); font-weight: bold; font-size: 1rem; }
+        .rec-item .reason { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem; }
+        .disclaimer { background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; padding: 1rem; margin: 2rem 0; font-size: 0.88rem; color: var(--accent-yellow); }
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        footer a { color: var(--primary-light); text-decoration: none; }
+        @media (max-width: 600px) {
+            .rec-grid { grid-template-columns: 1fr; }
+            table { font-size: 0.78rem; }
+            th, td { padding: 0.35rem 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>🤖 中國大陸主流 AI 大模型<br>深度對比研究報告</h1>
+    <p class="subtitle">深度推理 × 性價比 × 免費額度 — 10 大模型全面比較</p>
+    <span class="badge">2026年3月 最新版</span>
+</header>
+
+<!-- ===== 產品介紹 ===== -->
+<h2>一、10 大 AI 模型逐一介紹</h2>
+
+<div class="card">
+    <h3>1️⃣ Kimi — 月之暗面 Moonshot</h3>
+    <span class="tag">k2.5</span><span class="tag">256K ctx</span><span class="tag">Agent Swarm</span>
+    <ul>
+        <li>1T 參數 MoE 架構，原生多模態（視覺+文本）</li>
+        <li><strong>深度推理</strong>：✅ k2-thinking 系列，Agentic Coding 超強</li>
+        <li><strong>API 價格</strong>：<span class="warn">⚠️ 官方定價頁未確認，建議查 platform.moonshot.cn</span></li>
+        <li><strong>產品</strong>：網頁 / App / API / Deep Research / Slides / Sheets</li>
+        <li><strong>特色</strong>：前端代碼生成頂尖、Agent Swarm 多智能體協作</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>2️⃣ DeepSeek — 深度求索</h3>
+    <span class="tag">V3.2</span><span class="tag">128K ctx</span><span class="tag">OpenAI 相容</span>
+    <ul>
+        <li><strong>深度推理</strong>：✅ deepseek-reasoner（強制鏈式推理，業界標竿）</li>
+        <li><strong>API 價格</strong>：chat <span class="price">¥2/百萬</span>入 + <span class="price">¥3</span>出 | reasoner <span class="price">¥2</span>入 + <span class="price">¥8</span>出</li>
+        <li><strong>免費額度</strong>：App 每日免費，API 有贈送餘額</li>
+        <li><strong>特色</strong>：數學推理頂尖、開源、OpenAI 格式直接替換</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>3️⃣ 通義千問 Qwen — 阿里</h3>
+    <span class="tag">Qwen3-Max</span><span class="tag">100萬 ctx</span><span class="tag">多模態</span>
+    <ul>
+        <li><strong>深度推理</strong>：✅ Thinking mode 可切換</li>
+        <li><strong>API 價格</strong>：Qwen3-Max <span class="price">¥2.5</span>入 + <span class="price">¥10</span>出 | Flash <span class="price">¥0.2</span>入 + <span class="price">¥2</span>出</li>
+        <li><strong>特色</strong>：100 萬 token 超長上下文、視頻理解、模型種類最豐富</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>4️⃣ 文心一言 ERNIE — 百度</h3>
+    <span class="tag">ERNIE 4.5</span><span class="tag">X1 Turbo</span><span class="tag">搜索整合</span>
+    <ul>
+        <li><strong>深度推理</strong>：✅ ERNIE X1（對標 DeepSeek-R1，成本低一半）</li>
+        <li><strong>API 價格</strong>：X1 Turbo <span class="price">¥1</span>入 + <span class="price">¥4</span>出 | 4.5 <span class="price">¥4</span>入 + <span class="price">¥16</span>出</li>
+        <li><strong>免費額度</strong>：App <span class="free">完全免費</span></li>
+        <li><strong>特色</strong>：最深度整合百度搜索生態</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>5️⃣ 豆包 — 字節跳動</h3>
+    <span class="tag">Seed-1.6</span><span class="tag">thinking</span><span class="tag">Trae 插件</span>
+    <ul>
+        <li><strong>深度推理</strong>：✅ Seed-1.6-thinking（編碼/數學強化）</li>
+        <li><strong>API 價格</strong>：pro <span class="price">¥0.8</span>入 + <span class="price">¥2</span>出 | lite <span class="price">¥0.3</span>入 + <span class="price">¥0.6</span>出</li>
+        <li><strong>免費額度</strong>：App 免費；API 每月 50 萬 tokens</li>
+        <li><strong>特色</strong>：字節系整合（抖音/剪映）、VS Code 插件 Trae</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>6️⃣ 智譜 ChatGLM</h3>
+    <span class="tag">GLM-4-Plus</span><span class="tag">Z1-Air</span><span class="tag">Flash 免費</span>
+    <ul>
+        <li><strong>深度推理</strong>：✅ GLM-Z1-Air（比 DeepSeek-R1 快 8 倍，成本 1/30）</li>
+        <li><strong>API 價格</strong>：Plus <span class="price">¥5/百萬</span> | Flash <span class="free">完全免費 ✨</span></li>
+        <li><strong>特色</strong>：GLM-4-Flash API 永久免費、Z1 推理效率極高</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>7️⃣ MiniMax / 海螺AI</h3>
+    <span class="tag">M2.1</span><span class="tag">400萬 ctx</span><span class="tag">視頻生成</span>
+    <ul>
+        <li><strong>API 價格</strong>：MiniMax-01 ~<span class="price">¥1.4</span>入 + ~<span class="price">¥8</span>出</li>
+        <li><strong>特色</strong>：超長上下文 400 萬 token、多模態視頻生成、語音合成</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>8️⃣ 階躍星辰 Step</h3>
+    <span class="tag">Step-2-mini</span><span class="tag">文學大師</span>
+    <ul>
+        <li><strong>API 價格</strong>：mini <span class="price">¥1</span>入 + <span class="price">¥2</span>出</li>
+        <li><strong>特色</strong>：文學創作能力突出、MFA 自研注意力架構</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>9️⃣ 零一萬物 Yi</h3>
+    <span class="tag">Yi-Lightning</span><span class="tag">ToB 轉型</span>
+    <ul>
+        <li><strong>API 價格</strong>：<span class="price">¥0.99/百萬</span>（輸入輸出不分）</li>
+        <li><strong>特色</strong>：中英雙語強、現重心轉向 ToB 企業服務</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>🔟 百川智能 Baichuan</h3>
+    <span class="tag">Baichuan4</span><span class="tag">醫療專精</span>
+    <ul>
+        <li><strong>API 價格</strong>：Turbo <span class="price">¥15/百萬</span> | Air <span class="price">¥0.98/百萬</span></li>
+        <li><strong>免費額度</strong>：新用戶 80 元體驗金</li>
+        <li><strong>特色</strong>：中文知識問答頂尖、醫療健康領域專精</li>
+    </ul>
+</div>
+
+<!-- ===== 價格表 ===== -->
+<h2>二、API 價格對比表</h2>
+
+<table>
+<thead>
+<tr><th>產品</th><th>模型</th><th>輸入 ¥/百萬</th><th>輸出 ¥/百萬</th><th>思考模式</th></tr>
+</thead>
+<tbody>
+<tr><td>DeepSeek</td><td>V3.2（非思考）</td><td>2</td><td>3</td><td>✅（另計）</td></tr>
+<tr><td>DeepSeek</td><td>V3.2（推理）</td><td>2</td><td>8</td><td>✅</td></tr>
+<tr><td>通義 Qwen</td><td>Qwen3-Max</td><td>2.5</td><td>10</td><td>✅</td></tr>
+<tr><td>通義 Qwen</td><td>Qwen3.5-Plus</td><td>0.8</td><td>4.8</td><td>✅ 100萬ctx</td></tr>
+<tr><td>通義 Qwen</td><td>Qwen3.5-Flash</td><td>0.2</td><td>2</td><td>✅ 100萬ctx</td></tr>
+<tr><td>文心 ERNIE</td><td>X1 Turbo</td><td>1</td><td>4</td><td>✅</td></tr>
+<tr><td>文心 ERNIE</td><td>4.5</td><td>4</td><td>16</td><td>✅</td></tr>
+<tr><td>豆包</td><td>Doubao-pro-32k</td><td>0.8</td><td>2</td><td>✅</td></tr>
+<tr><td>豆包</td><td>Doubao-lite</td><td>0.3</td><td>0.6</td><td>✅</td></tr>
+<tr><td>智譜 GLM</td><td>GLM-4-Plus</td><td>5</td><td>5</td><td>✅ Z1系列</td></tr>
+<tr><td>智譜 GLM</td><td>GLM-4-Flash</td><td style="color:#fbbf24;font-weight:bold">免費</td><td style="color:#fbbf24;font-weight:bold">免費</td><td>❌</td></tr>
+<tr><td>MiniMax</td><td>MiniMax-01</td><td>~1.4</td><td>~8</td><td>⚠️</td></tr>
+<tr><td>Step</td><td>Step-2-mini</td><td>1</td><td>2</td><td>❌</td></tr>
+<tr><td>Yi</td><td>Yi-Lightning</td><td>0.99</td><td>0.99</td><td>❌</td></tr>
+<tr><td>Baichuan</td><td>Baichuan4-Air</td><td>0.98</td><td>0.98</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<!-- ===== 排名 ===== -->
+<h2>三、重點排名</h2>
+
+<div class="rank">
+    <h3>🧠 深度推理能力</h3>
+    <ol>
+        <li><span class="medal">🥇</span> <strong>DeepSeek-V3.2 reasoner</strong> — 業界標竿，AIME/MATH 頂尖</li>
+        <li><span class="medal">🥈</span> <strong>Kimi K2.5 / k2-thinking</strong> — Agentic + 多模態 + 推理三合一</li>
+        <li><span class="medal">🥉</span> <strong>通義 Qwen3-Max</strong> — 思考模式可切換，100 萬超長上下文</li>
+        <li><strong>ERNIE X1 Turbo</strong> — 媲美 DeepSeek R1 且更便宜</li>
+        <li><strong>GLM-Z1-Air</strong> — 快 8 倍成本 1/30，輕量推理選手</li>
+        <li><strong>Doubao-Seed-1.6-thinking</strong> — 編碼/數學強化</li>
+    </ol>
+</div>
+
+<div class="rank">
+    <h3>💰 性價比排名（API 視角）</h3>
+    <ol>
+        <li><span class="medal">🥇</span> <strong>GLM-4-Flash</strong> — 完全免費！</li>
+        <li><span class="medal">🥈</span> <strong>Qwen3.5-Flash</strong> — ¥0.2/百萬，100 萬上下文，帶思考</li>
+        <li><span class="medal">🥉</span> <strong>DeepSeek-V3.2</strong> — ¥2/百萬，能力超強</li>
+        <li><strong>Doubao-lite</strong> — ¥0.3 入，字節品質保證</li>
+        <li><strong>Yi-Lightning</strong> — ¥0.99，超低價</li>
+    </ol>
+</div>
+
+<div class="rank">
+    <h3>🆓 免費用戶首選</h3>
+    <ol>
+        <li><span class="medal">🥇</span> <strong>DeepSeek App</strong> — 完全免費 + 深度推理無限制 ⭐</li>
+        <li><span class="medal">🥈</span> <strong>Kimi</strong> — 每日免費額度，Agent Swarm 都能用</li>
+        <li><span class="medal">🥉</span> <strong>文心一言</strong> — App 全面免費，百度搜索整合</li>
+        <li><strong>豆包</strong> — 字節系，App 免費</li>
+        <li><strong>通義千問</strong> — 有每日免費額度</li>
+    </ol>
+</div>
+
+<!-- ===== 推薦 ===== -->
+<h2>四、最終推薦</h2>
+
+<div class="rec-grid">
+    <div class="rec-item">
+        <div class="label">🆓 免費日常使用</div>
+        <div class="pick">DeepSeek App</div>
+        <div class="reason">白嫖深度推理，次選 Kimi</div>
+    </div>
+    <div class="rec-item">
+        <div class="label">🔌 API 開發（通用）</div>
+        <div class="pick">DeepSeek V3.2</div>
+        <div class="reason">¥2+¥3，OpenAI 相容格式</div>
+    </div>
+    <div class="rec-item">
+        <div class="label">💸 追求最低成本</div>
+        <div class="pick">Qwen3.5-Flash / GLM-4-Flash</div>
+        <div class="reason">¥0.2 或免費</div>
+    </div>
+    <div class="rec-item">
+        <div class="label">📄 長上下文應用</div>
+        <div class="pick">Qwen3.5-Plus</div>
+        <div class="reason">100 萬 ctx，¥0.8 輸入</div>
+    </div>
+    <div class="rec-item">
+        <div class="label">💻 代碼 / Agent</div>
+        <div class="pick">Kimi K2.5</div>
+        <div class="reason">Agentic Coding 頂尖，開源可自部署</div>
+    </div>
+    <div class="rec-item">
+        <div class="label">🇨🇳 合規首選</div>
+        <div class="pick">以上全部</div>
+        <div class="reason">大陸直接用，無需翻牆</div>
+    </div>
+</div>
+
+<div class="disclaimer">
+    ⚠️ <strong>注意</strong>：部分價格標示 ⚠️ 為二手資料或估算，建議使用前至各官網確認最新定價。AI 行業價格戰激烈，定價可能隨時下調。<br><br>
+    📌 <strong>資料來源</strong>：api-docs.deepseek.com、platform.moonshot.cn、help.aliyun.com/zh/model-studio/models、minimaxi.com/pricing，以及多篇 2025-2026 年媒體報道。
+</div>
+
+<footer>
+    <p>時光智造 Timux — 智造交給 AI，時光留給所愛</p>
+    <p><a href="https://www.timux.site">www.timux.site</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">研究完成時間：2026年3月31日</p>
+</footer>
+
+</div>
+</body>
+</html>
