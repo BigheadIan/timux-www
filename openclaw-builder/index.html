@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦞 龙虾管家 · 私人 AI 管家配置器</title>
+  <style>
+    :root {
+      --primary: #e74c3c;
+      --primary-dark: #c0392b;
+      --accent: #f39c12;
+      --bg: #0f0f0f;
+      --surface: #1a1a2e;
+      --surface2: #16213e;
+      --text: #eaeaea;
+      --text-muted: #8a8a9a;
+      --border: #2a2a3e;
+      --green: #2ecc71;
+      --blue: #3498db;
+      --purple: #9b59b6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .header .logo { font-size: 3rem; margin-bottom: 0.5rem; }
+    .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .header .subtitle { color: var(--text-muted); font-size: 1rem; }
+
+    /* Main Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Step Cards */
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .step.active { border-color: var(--primary); }
+    .step.completed { border-color: var(--green); opacity: 0.85; }
+    .step.locked { opacity: 0.4; pointer-events: none; }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .step-number {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .step.completed .step-number { background: var(--green); }
+    .step-title { font-size: 1.1rem; font-weight: 600; }
+
+    /* Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .option-card {
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .option-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .option-card.selected { border-color: var(--primary); background: rgba(231, 76, 60, 0.1); }
+    .option-card.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .option-card .badge {
+      position: absolute;
+      top: -8px;
+      right: 8px;
+      background: var(--accent);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .option-card .badge.coming {
+      background: var(--text-muted);
+      color: var(--bg);
+    }
+    .option-card .badge.free { background: var(--green); }
+    .option-card .badge.pro { background: var(--purple); color: white; }
+    .option-name { font-weight: 600; margin-bottom: 0.25rem; }
+    .option-desc { font-size: 0.85rem; color: var(--text-muted); }
+    .option-emoji { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+    /* Token Input */
+    .token-section {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .token-input {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: 'SF Mono', monospace;
+    }
+    .token-input:focus { outline: none; border-color: var(--primary); }
+    .token-input::placeholder { color: var(--text-muted); }
+
+    /* Model Layers */
+    .model-layers {
+      margin-top: 0.75rem;
+    }
+    .model-layer {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .layer-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .layer-info { flex: 1; }
+    .layer-name { font-weight: 600; font-size: 0.9rem; }
+    .layer-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .layer-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .layer-select:focus { outline: none; border-color: var(--primary); }
+
+    /* Generate Button */
+    .generate-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 2rem;
+    }
+    .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); }
+    .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* Command Output */
+    .command-output {
+      display: none;
+      margin-top: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .command-output.show { display: block; animation: fadeIn 0.3s ease; }
+    .command-output h3 { color: var(--green); margin-bottom: 1rem; }
+    .command-box {
+      background: #000;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 0.85rem;
+      color: var(--green);
+      word-break: break-all;
+      position: relative;
+      line-height: 1.8;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: var(--primary); }
+
+    /* Steps after download */
+    .post-steps {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--surface2);
+      border-radius: 8px;
+    }
+    .post-steps h4 { margin-bottom: 0.75rem; color: var(--accent); }
+    .post-steps ol { padding-left: 1.5rem; }
+    .post-steps li { margin-bottom: 0.5rem; font-size: 0.9rem; }
+
+    /* Info Banner */
+    .info-banner {
+      background: rgba(52, 152, 219, 0.1);
+      border: 1px solid rgba(52, 152, 219, 0.3);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--blue);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+    .footer a { color: var(--primary); text-decoration: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.4rem; }
+      .options-grid { grid-template-columns: 1fr; }
+      .token-section { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🦞</div>
+  <h1>龙虾管家 · 私人 AI 管家</h1>
+  <p class="subtitle">3 分钟拥有自己的 AI 管家 · 数据完全在你电脑上</p>
+</div>
+
+<div class="container">
+
+  <div class="info-banner">
+    💡 选好配置后，我们会生成一行命令。复制到终端运行就行，全自动安装！
+  </div>
+
+  <!-- Step 1: Hardware -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div class="step-title">选择你的设备</div>
+    </div>
+    <div class="options-grid">
+      <div class="option-card selected" data-group="hardware" data-value="mac-m2" onclick="selectOption(this)">
+        <div class="badge">推荐</div>
+        <div class="option-emoji">💻</div>
+        <div class="option-name">Mac (M1/M2/M3/M4)</div>
+        <div class="option-desc">Apple Silicon · 首选支持</div>
+      </div>
+      <div class="option-card disabled" data-group="hardware" data-value="mac-intel">
+        <div class="badge coming">即将支持</div>
+        <div class="option-emoji">🖥️</div>
+        <div class="option-name">Mac (Intel)</div>
+        <div class="option-desc">2020 年前的 Mac</div>
+      </div>
+      <div class="option-card disabled" data-group="hardware" data-value="windows">
+        <div class="badge coming">即将支持</div>
+        <div class="option-emoji">🪟</div>
+        <div class="option-name">Windows</div>
+        <div class="option-desc">Windows 10/11</div>
+      </div>
+      <div class="option-card disabled" data-group="hardware" data-value="linux">
+        <div class="badge coming">即将支持</div>
+        <div class="option-emoji">🐧</div>
+        <div class="option-name">Linux</div>
+        <div class="option-desc">Ubuntu / Debian</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Model Config (3-Layer) -->
+  <div class="step active" id="step2">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div class="step-title">配置 AI 大脑（三层架构）</div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+      三层模型保证又聪明又省钱：复杂的事用最强大脑，日常用经济款，都挂了还有免费的兜底。
+    </p>
+    <div class="model-layers">
+      <div class="model-layer">
+        <div class="layer-icon">🧠</div>
+        <div class="layer-info">
+          <div class="layer-name">最强大脑（统整 · 复杂推理）</div>
+          <div class="layer-desc">处理难题、写方案、做决策</div>
+        </div>
+        <select class="layer-select" id="model-brain">
+          <option value="deepseek-reasoner" selected>DeepSeek Reasoner</option>
+          <option value="qwen-max">Qwen Max</option>
+          <option value="glm-4-plus">GLM-4 Plus</option>
+        </select>
+      </div>
+      <div class="model-layer">
+        <div class="layer-icon">⚡</div>
+        <div class="layer-info">
+          <div class="layer-name">日常执行（快速 · 便宜）</div>
+          <div class="layer-desc">聊天、写文案、整理信息</div>
+        </div>
+        <select class="layer-select" id="model-worker">
+          <option value="deepseek-chat" selected>DeepSeek Chat</option>
+          <option value="qwen-plus">Qwen Plus</option>
+          <option value="glm-4-flash">GLM-4 Flash</option>
+        </select>
+      </div>
+      <div class="model-layer">
+        <div class="layer-icon">🆓</div>
+        <div class="layer-info">
+          <div class="layer-name">免费兜底（都失败时接住）</div>
+          <div class="layer-desc">保底运行，不花一分钱</div>
+        </div>
+        <select class="layer-select" id="model-fallback">
+          <option value="glm-4-flash-free" selected>GLM-4 Flash（免费）</option>
+          <option value="qwen-turbo-free">Qwen Turbo（免费）</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Persona -->
+  <div class="step active" id="step3">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div class="step-title">选择 AI 人格</div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+      基础版可免费选 1 个。付费 Token 可解锁全部人格 + 自定义。
+    </p>
+    <div class="options-grid">
+      <div class="option-card selected" data-group="persona" data-value="general" onclick="selectOption(this)">
+        <div class="badge free">免费</div>
+        <div class="option-emoji">🌟</div>
+        <div class="option-name">小慧 · 通用助手</div>
+        <div class="option-desc">温暖体贴，日常好帮手</div>
+      </div>
+      <div class="option-card" data-group="persona" data-value="content" onclick="selectOption(this)">
+        <div class="badge free">免费</div>
+        <div class="option-emoji">📱</div>
+        <div class="option-name">创作君 · 内容创作</div>
+        <div class="option-desc">爆款文案，小红书/B站</div>
+      </div>
+      <div class="option-card" data-group="persona" data-value="business" onclick="selectOption(this)">
+        <div class="badge free">免费</div>
+        <div class="option-emoji">💼</div>
+        <div class="option-name">Mini · 商务助理</div>
+        <div class="option-desc">CEO 右手，专业干练</div>
+      </div>
+      <div class="option-card pro-locked" data-group="persona" data-value="sales" onclick="selectOption(this)">
+        <div class="badge pro">Pro</div>
+        <div class="option-emoji">🎯</div>
+        <div class="option-name">销售王 · 业务助手</div>
+        <div class="option-desc">客户管理、跟进提醒</div>
+      </div>
+      <div class="option-card pro-locked" data-group="persona" data-value="coder" onclick="selectOption(this)">
+        <div class="badge pro">Pro</div>
+        <div class="option-emoji">👨‍💻</div>
+        <div class="option-name">码农 · 开发助手</div>
+        <div class="option-desc">写代码、review、debug</div>
+      </div>
+      <div class="option-card pro-locked" data-group="persona" data-value="custom" onclick="selectOption(this)">
+        <div class="badge pro">Pro</div>
+        <div class="option-emoji">✨</div>
+        <div class="option-name">自定义人格</div>
+        <div class="option-desc">首次启动时引导你设定</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Token -->
+  <div class="step active" id="step4">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div class="step-title">输入激活码（可选）</div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+      没有激活码？免费版可直接使用基础功能。有激活码可解锁 Pro 人格和高级 Agent。
+    </p>
+    <div class="token-section">
+      <input type="text" class="token-input" id="tokenInput"
+             placeholder="粘贴你的激活码（例如：LB-XXXX-XXXX-XXXX）" maxlength="20">
+      <button class="copy-btn" onclick="validateToken()" style="position:static; padding: 0.75rem 1rem;">验证</button>
+    </div>
+    <div id="tokenStatus" style="margin-top: 0.5rem; font-size: 0.85rem;"></div>
+  </div>
+
+  <!-- Generate Button -->
+  <button class="generate-btn" id="generateBtn" onclick="generateCommand()">
+    🦞 生成安装命令
+  </button>
+
+  <!-- Command Output -->
+  <div class="command-output" id="commandOutput">
+    <h3>✅ 你的专属安装命令</h3>
+    <div class="command-box" id="commandText">
+      <button class="copy-btn" onclick="copyCommand()">📋 复制</button>
+      <span id="commandContent"></span>
+    </div>
+
+    <div class="post-steps">
+      <h4>📋 接下来怎么做？</h4>
+      <ol>
+        <li>打开 <strong>终端</strong>（Terminal）
+          <br><span style="font-size:0.8rem;color:var(--text-muted)">→ 按 ⌘+空格，输入"终端"或"Terminal"，回车</span>
+        </li>
+        <li><strong>粘贴</strong>上面的命令（⌘+V），按 <strong>Enter</strong></li>
+        <li>下载完成后，<strong>双击打开</strong> <code>~/lobster-butler/安装管家.html</code></li>
+        <li>按照页面上的 <strong>按钮逐步安装</strong>，每步都有说明</li>
+        <li>全部变绿 ✅ 就大功告成了！</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>🦞 龙虾管家 by <a href="https://www.timux.site" target="_blank">时光智造 Timux</a></p>
+  <p style="margin-top:0.5rem;">数据 100% 存在你电脑 · 开源透明 · 你的 AI，你做主</p>
+</div>
+
+<script>
+  // State
+  const state = {
+    hardware: 'mac-m2',
+    persona: 'general',
+    brain: 'deepseek-reasoner',
+    worker: 'deepseek-chat',
+    fallback: 'glm-4-flash-free',
+    token: '',
+    tokenValid: false,
+    tokenTier: 'free'  // free | pro
+  };
+
+  // Select option
+  function selectOption(el) {
+    const group = el.dataset.group;
+    const value = el.dataset.value;
+
+    // Check if pro locked
+    if (el.classList.contains('pro-locked') && state.tokenTier !== 'pro') {
+      showTokenHint();
+      return;
+    }
+
+    // Deselect siblings
+    document.querySelectorAll(`[data-group="${group}"]`).forEach(card => {
+      card.classList.remove('selected');
+    });
+    el.classList.add('selected');
+    state[group] = value;
+  }
+
+  function showTokenHint() {
+    const status = document.getElementById('tokenStatus');
+    status.innerHTML = '<span style="color: var(--accent);">⚠️ 需要 Pro 激活码才能解锁此人格。联系我们获取：support@timux.site</span>';
+    document.getElementById('step4').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Validate token
+  async function validateToken() {
+    const token = document.getElementById('tokenInput').value.trim();
+    const status = document.getElementById('tokenStatus');
+
+    if (!token) {
+      status.innerHTML = '<span style="color: var(--text-muted);">未输入激活码，将使用免费版</span>';
+      state.token = '';
+      state.tokenValid = false;
+      state.tokenTier = 'free';
+      updateProCards();
+      return;
+    }
+
+    status.innerHTML = '<span style="color: var(--blue);">🔄 验证中...</span>';
+
+    try {
+      const resp = await fetch(`https://ai-customer-service.timux.site/api/lobster/token/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const data = await resp.json();
+
+      if (data.valid) {
+        state.token = token;
+        state.tokenValid = true;
+        state.tokenTier = data.tier || 'pro';
+        status.innerHTML = `<span style="color: var(--green);">✅ ${data.tier === 'pro' ? 'Pro' : '基础'} 激活码验证成功！${data.tier === 'pro' ? '已解锁全部人格和 Agent' : ''}</span>`;
+        updateProCards();
+      } else {
+        state.tokenValid = false;
+        state.tokenTier = 'free';
+        status.innerHTML = `<span style="color: var(--primary);">❌ ${data.message || '激活码无效，请检查后重试'}</span>`;
+        updateProCards();
+      }
+    } catch (err) {
+      // API 不可用时 fallback 到本地验证（开发/演示用）
+      if (token.startsWith('LB-') && token.length >= 12) {
+        state.token = token;
+        state.tokenValid = true;
+        state.tokenTier = 'pro';
+        status.innerHTML = '<span style="color: var(--green);">✅ Pro 激活码验证成功！（离线模式）</span>';
+      } else {
+        state.tokenValid = false;
+        state.tokenTier = 'free';
+        status.innerHTML = '<span style="color: var(--primary);">❌ 激活码无效或服务暂不可用</span>';
+      }
+      updateProCards();
+    }
+  }
+
+  function updateProCards() {
+    document.querySelectorAll('.pro-locked').forEach(card => {
+      if (state.tokenTier === 'pro') {
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+      } else {
+        card.style.opacity = '0.4';
+        card.style.pointerEvents = 'auto'; // keep clickable to show hint
+        card.classList.remove('selected');
+      }
+    });
+  }
+
+  // Generate command
+  function generateCommand() {
+    // Read model selects
+    state.brain = document.getElementById('model-brain').value;
+    state.worker = document.getElementById('model-worker').value;
+    state.fallback = document.getElementById('model-fallback').value;
+
+    const params = new URLSearchParams({
+      hw: state.hardware,
+      p: state.persona,
+      b: state.brain,
+      w: state.worker,
+      f: state.fallback,
+      t: state.token || 'free',
+      v: '0.1.0'
+    });
+
+    const cmd = `curl -fsSL "https://ai-customer-service.timux.site/api/lobster/install?${params}" -o ~/Downloads/lobster-install.sh && bash ~/Downloads/lobster-install.sh`;
+
+    document.getElementById('commandContent').textContent = cmd;
+    document.getElementById('commandOutput').classList.add('show');
+    document.getElementById('commandOutput').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Copy command
+  function copyCommand() {
+    const text = document.getElementById('commandContent').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.command-output .copy-btn');
+      btn.textContent = '✅ 已复制！';
+      setTimeout(() => btn.textContent = '📋 复制', 2000);
+    });
+  }
+
+  // Init
+  updateProCards();
+</script>
+
+</body>
+</html>
