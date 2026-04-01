@@ -524,7 +524,7 @@
     status.innerHTML = '<span style="color: var(--blue);">🔄 验证中...</span>';
 
     try {
-      const resp = await fetch(`https://ai-customer-service.timux.site/api/lobster/token/validate`, {
+      const resp = await fetch(`https://golden-dragon-admin.timux.site/api/lobster/token/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token })
@@ -589,7 +589,7 @@
       v: '0.1.0'
     });
 
-    const cmd = `curl -fsSL "https://ai-customer-service.timux.site/api/lobster/install?${params}" -o ~/Downloads/lobster-install.sh && bash ~/Downloads/lobster-install.sh`;
+    const cmd = `curl -fsSL "https://golden-dragon-admin.timux.site/api/lobster/install?${params}" -o ~/Downloads/lobster-install.sh && bash ~/Downloads/lobster-install.sh`;
 
     document.getElementById('commandContent').textContent = cmd;
     document.getElementById('commandOutput').classList.add('show');
