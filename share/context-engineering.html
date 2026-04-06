@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Engineering 深度研究：AI Agent 的記憶與效率革命 | 時光智造 Timux</title>
+    <meta name="description" content="深入研究 Manus、Anthropic、Google ADK、SkillReducer 論文的 Context Engineering 最佳實踐，揭示 AI Agent 10 倍成本優化的關鍵策略。">
+    <meta property="og:title" content="Context Engineering 深度研究 — AI Agent 的記憶與效率革命">
+    <meta property="og:description" content="Manus、Anthropic、Google ADK、SkillReducer 四大來源的業界最佳實踐，AI Agent 成本與品質的 10x 優化策略">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.timux.site/share/context-engineering.html">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-code: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-heading: #f8fafc;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #fb923c;
+            --accent-blue: #60a5fa;
+            --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'Noto Sans SC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        header { text-align: center; padding: 3rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+        header h1 { font-size: 1.8rem; color: var(--text-heading); margin-bottom: 0.5rem; line-height: 1.4; }
+        header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+        header .badge { display: inline-block; background: var(--primary); color: white; padding: 0.2rem 0.8rem; border-radius: 99px; font-size: 0.8rem; margin-top: 0.8rem; }
+        h2 { color: var(--text-heading); font-size: 1.4rem; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary); }
+        h3 { color: var(--primary-light); font-size: 1.15rem; margin: 1.8rem 0 0.8rem; }
+        p { margin-bottom: 0.8rem; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; }
+        .card h3 { margin-top: 0; color: var(--text-heading); font-size: 1.1rem; }
+        .card .tag { display: inline-block; background: var(--bg-code); color: var(--accent-green); padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.78rem; margin-right: 0.3rem; margin-bottom: 0.5rem; }
+        .card .tag.source { color: var(--accent-blue); }
+        .card .tag.metric { color: var(--accent-yellow); }
+        .card .tag.warn { color: var(--accent-orange); }
+        .card ul { padding-left: 1.2rem; }
+        .card li { margin-bottom: 0.4rem; }
+        .highlight { color: var(--accent-green); font-weight: bold; }
+        .cost-red { color: var(--accent-red); font-weight: bold; }
+        .cost-green { color: var(--accent-green); font-weight: bold; }
+        .insight-box { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; }
+        .insight-box strong { color: var(--primary-light); }
+        .quote { border-left: 3px solid var(--primary); padding-left: 1rem; margin: 1rem 0; color: var(--text-muted); font-style: italic; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+        .stat-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+        .stat-item .number { font-size: 1.6rem; font-weight: bold; color: var(--accent-green); }
+        .stat-item .label { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.3rem; }
+        .priority-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        .priority-table th { background: var(--bg-code); color: var(--text-heading); padding: 0.6rem 0.8rem; text-align: left; border: 1px solid var(--border); }
+        .priority-table td { padding: 0.5rem 0.8rem; border: 1px solid var(--border); vertical-align: top; }
+        .priority-table tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        .p-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .p0 { background: rgba(248, 113, 113, 0.2); color: var(--accent-red); }
+        .p1 { background: rgba(251, 146, 60, 0.2); color: var(--accent-orange); }
+        .p2 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .p3 { background: rgba(52, 211, 153, 0.2); color: var(--accent-green); }
+        .p4 { background: rgba(96, 165, 250, 0.2); color: var(--accent-blue); }
+        .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+        .toc h3 { margin-top: 0; color: var(--text-heading); font-size: 1rem; margin-bottom: 0.8rem; }
+        .toc ol { padding-left: 1.5rem; }
+        .toc li { margin-bottom: 0.3rem; }
+        .toc a { color: var(--primary-light); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .sources { background: rgba(96, 165, 250, 0.08); border: 1px solid rgba(96, 165, 250, 0.2); border-radius: 8px; padding: 1rem 1.2rem; margin: 2rem 0; font-size: 0.88rem; }
+        .sources a { color: var(--accent-blue); text-decoration: none; word-break: break-all; }
+        .sources a:hover { text-decoration: underline; }
+        .sources li { margin-bottom: 0.4rem; }
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        footer a { color: var(--primary-light); text-decoration: none; }
+        @media (max-width: 600px) {
+            .stat-grid { grid-template-columns: 1fr; }
+            .priority-table { font-size: 0.8rem; }
+            .priority-table th, .priority-table td { padding: 0.35rem 0.5rem; }
+            header h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>🔬 Context Engineering 深度研究<br>AI Agent 的記憶與效率革命</h1>
+    <p class="subtitle">Manus × Anthropic × Google ADK × SkillReducer — 業界最佳實踐全面解析</p>
+    <span class="badge">2026年4月 研究報告</span>
+</header>
+
+<!-- 目錄 -->
+<div class="toc">
+    <h3>📑 目錄</h3>
+    <ol>
+        <li><a href="#manus">Manus：KV-Cache 命中率是唯一指標</a></li>
+        <li><a href="#anthropic">Anthropic 官方四大策略</a></li>
+        <li><a href="#skillreducer">SkillReducer 論文：量化證明「少即是多」</a></li>
+        <li><a href="#google-adk">Google ADK 的「Scope by Default」原則</a></li>
+        <li><a href="#claude-code">Claude Code 的壓縮機制與 80/20 法則</a></li>
+        <li><a href="#conclusion">綜合結論：五大優先級行動方案</a></li>
+    </ol>
+</div>
+
+<!-- ===== 1. Manus ===== -->
+<h2 id="manus">一、Manus 的核心洞察：KV-Cache 命中率是唯一指標</h2>
+
+<div class="card">
+    <h3>💡 來源背景</h3>
+    <span class="tag source">Manus 官方博客</span>
+    <span class="tag metric">全球百萬用戶級 AI Agent</span>
+    <span class="tag">4 次完整框架重寫</span>
+    <p style="margin-top: 0.8rem;">Manus 是全球用戶量最大的 AI Agent 產品之一。經過 4 次完整的框架重寫後，他們得出了一個關鍵結論：</p>
+    <div class="quote">
+        「KV-cache 命中率是生產環境 AI Agent 最重要的單一指標。」
+    </div>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-item">
+        <div class="number" style="color: var(--accent-red);">$3.00</div>
+        <div class="label">🔴 未命中快取<br>每百萬 token</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">$0.30</div>
+        <div class="label">🟢 命中快取<br>每百萬 token</div>
+    </div>
+</div>
+
+<p>以 Claude Sonnet 為例，快取命中與否有 <span class="highlight">10 倍成本差距</span>。而 Agent 的特性是輸入遠大於輸出（輸入：輸出 ≈ 100:1），因此 prefix caching 的效益極為巨大。</p>
+
+<div class="card">
+    <h3>🏗️ Manus 的三條鐵律</h3>
+    <ul>
+        <li><strong>Append-Only 架構</strong> — 永遠只追加，不修改之前的內容。哪怕只改動一個 token，後面整段快取全部失效</li>
+        <li><strong>穩定的 Prompt 前綴</strong> — 避免時間戳等動態元素放在前面，確保系統 prompt 部分完全不變</li>
+        <li><strong>確定性序列化</strong> — JSON key 排序固定，不能有隨機性</li>
+    </ul>
+</div>
+
+<div class="insight-box">
+    <strong>💡 實踐啟示：</strong>每次 session 注入的 workspace context 順序應保持穩定（如 AGENTS → SOUL → USER → MEMORY），且前綴部分盡量不頻繁變動，可大幅提升快取命中率。
+</div>
+
+<!-- ===== 2. Anthropic ===== -->
+<h2 id="anthropic">二、Anthropic 官方的四大策略</h2>
+
+<div class="card">
+    <h3>📝 Writing — 把資訊存到 Context Window 外面</h3>
+    <span class="tag source">Anthropic Engineering Blog</span>
+    <ul>
+        <li>用 NOTES.md / TODO.md 追蹤進度，讓 Agent 擁有持久化的外部記憶</li>
+        <li>範例：Claude 玩 Pokémon 時，跨數千步精確追蹤「過去 1,234 步我一直在 Route 1 訓練」</li>
+        <li>核心概念：<strong>Context Window 是工作記憶，檔案系統是長期記憶</strong></li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>🔍 Selecting — 按需載入，不預載</h3>
+    <ul>
+        <li>保持輕量指標（檔案路徑、URL、query），需要時才讀取完整內容</li>
+        <li><strong>Progressive Disclosure</strong> — Agent 通過探索逐步發現所需 context</li>
+        <li>混合策略：少量關鍵資訊預載（如 CLAUDE.md），其餘用 glob/grep 按需獲取</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>🗜️ Compressing — 保留精華，丟棄冗餘</h3>
+    <ul>
+        <li>定期壓縮對話歷史為結構化摘要</li>
+        <li><strong>Tool Result Clearing</strong> — 工具輸出用完就清，這是最安全的壓縮方式</li>
+        <li>調優原則：先最大化 recall（確保不丟重要資訊），再優化 precision（去除多餘）</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>🔀 Isolating — Sub-agent 各管各的</h3>
+    <ul>
+        <li>主 Agent 統籌全局，Sub-agent 在獨立 context window 裡執行具體任務</li>
+        <li>Sub-agent 可能用了幾萬 token 做分析，但只回傳 <strong>1,000-2,000 token</strong> 的精煉結果</li>
+        <li>在複雜研究任務上，比單 agent 有顯著品質提升</li>
+    </ul>
+</div>
+
+<div class="insight-box">
+    <strong>💡 四維框架精髓：</strong>Write（寫出去持久化）→ Select（按需拉進來）→ Compress（壓縮保精華）→ Isolate（隔離降耦合）。這四個維度構成了完整的 context 管理策略。
+</div>
+
+<!-- ===== 3. SkillReducer ===== -->
+<h2 id="skillreducer">三、SkillReducer 論文：量化證明「少即是多」</h2>
+
+<div class="card">
+    <h3>📄 論文背景</h3>
+    <span class="tag source">arXiv 2603.29919</span>
+    <span class="tag metric">2026 年 3 月發表</span>
+    <p style="margin-top: 0.8rem;">這篇學術論文直接研究了「Skill 檔案的 token 浪費」問題 — 當 AI Agent 載入過多指令和範例時，會發生什麼？</p>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-item">
+        <div class="number">38.5%</div>
+        <div class="label">核心可執行規則<br>佔 Skill 檔案比例</div>
+    </div>
+    <div class="stat-item">
+        <div class="number" style="color: var(--accent-red);">61.5%</div>
+        <div class="label">補充材料（範例、模板）<br>可以按需載入</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">75%</div>
+        <div class="label">Token 節省幅度<br>（359K → 84K）</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">25.3%</div>
+        <div class="label">壓縮後品質提升<br>（Less-is-More 效應）</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>🔑 最反直覺的發現</h3>
+    <ul>
+        <li>壓縮後 <strong>86%</strong> 的 Skills 品質持平或更好</li>
+        <li><strong>25.3%</strong> 品質明顯提升 — 這就是 Less-is-More 效應</li>
+        <li>只有 <strong>4.7%</strong> 是真正的壓縮損失</li>
+        <li>Description 壓縮 <strong>48%</strong>（中位數 59%）</li>
+        <li>Body 內容壓縮 <strong>39%</strong>（每個 Skill 省約 1,000 tokens）</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>🛠️ 方法論（兩階段）</h3>
+    <ul>
+        <li><strong>Stage 1</strong>：用 delta debugging 找出最小充分的路由描述 — 刪到不能再刪</li>
+        <li><strong>Stage 2</strong>：把內容分為「核心規則（永遠載入）」和「補充模組（按需讀取）」</li>
+    </ul>
+</div>
+
+<div class="insight-box">
+    <strong>💡 實踐啟示：</strong>大型 Agent 配置檔（如 3000+ 字的系統指令）中，大約只有 40% 是核心規則，其餘 60% 可以改為按需載入。純敘述式改成結構化格式，就能再省 30% tokens。
+</div>
+
+<!-- ===== 4. Google ADK ===== -->
+<h2 id="google-adk">四、Google ADK 的「Scope by Default」原則</h2>
+
+<div class="card">
+    <h3>🌐 設計哲學</h3>
+    <span class="tag source">Google Developers Blog</span>
+    <span class="tag">Agent Development Kit</span>
+    <span class="tag">Multi-Agent Framework</span>
+    <div class="quote" style="margin-top: 0.8rem;">
+        「每次 model 調用和 sub-agent，只看到最小必要 context。Agent 必須主動伸手去拿更多資訊。」
+    </div>
+</div>
+
+<div class="card">
+    <h3>📋 四大具體做法</h3>
+    <ul>
+        <li><strong>Artifacts 用 Handle 模式</strong> — 大檔案（CSV、PDF）預設只放輕量引用，Agent 需要時才用 LoadArtifactsTool 載入，用完就卸載</li>
+        <li><strong>Context Caching 分層</strong> — 穩定前綴（系統指令、身份）vs 可變後綴（最近對話、工具輸出），充分利用 prefix caching</li>
+        <li><strong>Scoped Handoffs</strong> — 交接任務時可選 include_contents: none，只傳必要指令，不帶歷史包袱</li>
+        <li><strong>Memory 是搜索式的</strong> — 不是永遠釘在 context 裡，而是用相似度搜索按需注入</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>🧠 記憶的兩種觸發模式</h3>
+    <ul>
+        <li><strong>被動回憶（Reactive）</strong>：Agent 意識到需要知識時，主動呼叫 load_memory_tool</li>
+        <li><strong>主動回憶（Proactive）</strong>：系統對用戶輸入做相似度搜索，自動注入相關片段</li>
+    </ul>
+</div>
+
+<div class="insight-box">
+    <strong>💡 實踐啟示：</strong>MEMORY.md 這類長期記憶不應整個釘死在 context 中。更好的做法是只放一行索引，搭配 memory_search + memory_get 按需獲取，頻道 ID 表、專案索引等靜態資料移到可搜索檔案。
+</div>
+
+<!-- ===== 5. Claude Code ===== -->
+<h2 id="claude-code">五、Claude Code 的壓縮機制與 80/20 法則</h2>
+
+<div class="card">
+    <h3>📐 核心原則</h3>
+    <span class="tag source">ClaudeFast Code Kit</span>
+    <span class="tag source">SFEIR Institute 分析</span>
+    <div class="quote" style="margin-top: 0.8rem;">
+        Context 不是倉庫，是工作記憶。填到最後 20% 時，複雜任務的品質會明顯下降。
+    </div>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-item">
+        <div class="number">30%</div>
+        <div class="label">結構化 Prompt<br>比敘述式省 tokens</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">92%</div>
+        <div class="label">結構化壓縮後<br>保真度</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">71%</div>
+        <div class="label">敘述式壓縮後<br>保真度</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">3×</div>
+        <div class="label">多 Session 架構<br>180K → 3×40K</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>🔧 具體實踐</h3>
+    <ul>
+        <li><strong>結構化 vs 敘述式</strong>：結構化 Prompt（列表 + 直接指令）比敘述式省 30% tokens（450 → 280 tokens），且壓縮後保真度從 71% 提升到 92%</li>
+        <li><strong>多 Session 架構</strong>：一個 180K token 的飽和 session 改為 3 個 40K 的目標 session，並行工作</li>
+        <li><strong>Session Memory 機制</strong>：壓縮時產生的摘要持久化存儲，下次壓縮不需重新摘要，直接增量更新</li>
+    </ul>
+</div>
+
+<!-- ===== 結論 ===== -->
+<h2 id="conclusion">六、綜合結論：五大優先級行動方案</h2>
+
+<p>綜合以上五大來源的最佳實踐，我們將 Context Engineering 的優化策略歸納為五個優先級：</p>
+
+<table class="priority-table">
+    <thead>
+        <tr>
+            <th>優先級</th>
+            <th>策略</th>
+            <th>來源</th>
+            <th>預期效果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="p-tag p0">P0</span></td>
+            <td><strong>KV-Cache 友好架構</strong><br>確保 system prompt 前綴穩定不變，context 追加不修改（append-only）</td>
+            <td>Manus</td>
+            <td>10x 成本差距<br>ROI 最高</td>
+        </tr>
+        <tr>
+            <td><span class="p-tag p1">P1</span></td>
+            <td><strong>Progressive Disclosure</strong><br>把 workspace context 拆分為「核心」(38%) +「補充」(62%)，核心永遠載入，補充按需拉取</td>
+            <td>SkillReducer<br>Anthropic</td>
+            <td>Token 減少 40-75%</td>
+        </tr>
+        <tr>
+            <td><span class="p-tag p2">P2</span></td>
+            <td><strong>Memory 從「釘死」改「搜索」</strong><br>長期記憶不全文注入，改用相似度搜索按需獲取</td>
+            <td>Google ADK</td>
+            <td>Context 空間釋放<br>精準度提升</td>
+        </tr>
+        <tr>
+            <td><span class="p-tag p3">P3</span></td>
+            <td><strong>Sub-agent Context 隔離</strong><br>Sub-agent 只帶最小必要 context，回傳 1-2K 精煉結果</td>
+            <td>Anthropic<br>Google</td>
+            <td>品質提升<br>上下文不互相污染</td>
+        </tr>
+        <tr>
+            <td><span class="p-tag p4">P4</span></td>
+            <td><strong>結構化 Prompt 改造</strong><br>從敘述式改成結構化格式（列表 + 直接指令）</td>
+            <td>Claude Code</td>
+            <td>省 30% tokens<br>壓縮保真 71%→92%</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="insight-box">
+    <strong>🎯 核心理念：</strong>Context Engineering 不是「把所有資訊塞進去」，而是「在正確的時間，以最小的成本，提供最相關的上下文」。這些不是理論空想 — 是有百萬用戶級產品（Manus）、學術論文（SkillReducer）、和平台官方（Anthropic、Google）背書的實踐。
+</div>
+
+<!-- 來源 -->
+<div class="sources">
+    <strong>📌 參考來源</strong>
+    <ol>
+        <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus">Manus — Context Engineering for AI Agents: Lessons from Building Manus</a></li>
+        <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic — Effective Context Engineering for AI Agents</a></li>
+        <li><a href="https://arxiv.org/abs/2603.29919">SkillReducer — arXiv 2603.29919（2026 年 3 月）</a></li>
+        <li><a href="https://developers.googleblog.com/architecting-efficient-context-aware-multi-agent-framework-for-production/">Google ADK — Architecting Efficient Context-Aware Multi-Agent Framework</a></li>
+        <li><a href="https://claudefa.st/blog/guide/mechanics/context-management">ClaudeFast — Context Management Mechanics</a></li>
+    </ol>
+</div>
+
+<footer>
+    <p>時光智造 Timux — 智造交給 AI，時光留給所愛</p>
+    <p><a href="https://www.timux.site">www.timux.site</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">研究完成時間：2026年4月6日</p>
+</footer>
+
+</div>
+</body>
+</html>
