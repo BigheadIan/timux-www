@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenClaw + Claude Bridge 完整安裝指南 | 時光智造 Timux</title>
-    <meta name="description" content="讓 OpenClaw 透過 Claude Code CLI 使用 Max 訂閱，並優化 Context 利用率的完整安裝與設定指南。">
+    <meta name="description" content="讓 OpenClaw 透過 Claude Code CLI 使用 Max 訂閱，並優化 Context 利用率的完整安裝指南。">
     <meta property="og:title" content="OpenClaw + Claude Bridge 完整安裝指南">
-    <meta property="og:description" content="Bridge 安裝、OpenClaw 設定、Context 三層防護、Dashboard 使用，一站搞定。">
+    <meta property="og:description" content="讓 OpenClaw 透過 Claude Code CLI 使用 Max 訂閱（免費），並優化 Context 利用率。Bridge 安裝、macOS 自啟、Context 三層防護完整教學。">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.timux.site/share/openclaw-claude-bridge-guide.html">
     <style>
@@ -42,39 +42,52 @@
         h2 { color: var(--text-heading); font-size: 1.4rem; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary); }
         h3 { color: var(--primary-light); font-size: 1.15rem; margin: 1.8rem 0 0.8rem; }
         p { margin-bottom: 0.8rem; }
-        ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
-        li { margin-bottom: 0.4rem; }
         a { color: var(--accent-blue); text-decoration: none; }
         a:hover { text-decoration: underline; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; }
         .card h3 { margin-top: 0; color: var(--text-heading); font-size: 1.1rem; }
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
-        .stat-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
-        .stat-item .number { font-size: 1.6rem; font-weight: bold; color: var(--accent-green); }
-        .stat-item .label { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.3rem; }
+        .card .tag { display: inline-block; background: var(--bg-code); color: var(--accent-green); padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.78rem; margin-right: 0.3rem; margin-bottom: 0.5rem; }
+        .card .tag.source { color: var(--accent-blue); }
+        .card .tag.metric { color: var(--accent-yellow); }
+        .card .tag.warn { color: var(--accent-orange); }
+        .card ul { padding-left: 1.2rem; }
+        .card li { margin-bottom: 0.4rem; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
         .highlight { color: var(--accent-green); font-weight: bold; }
-        .warn { color: var(--accent-orange); font-weight: bold; }
+        .cost-red { color: var(--accent-red); font-weight: bold; }
         .insight-box { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; }
         .insight-box strong { color: var(--primary-light); }
         .warn-box { background: rgba(251, 146, 60, 0.1); border: 1px solid rgba(251, 146, 60, 0.3); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; }
         .warn-box strong { color: var(--accent-orange); }
-        pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0 1.2rem; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; }
-        code { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.88rem; }
-        :not(pre) > code { background: var(--bg-code); padding: 0.15rem 0.4rem; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
-        th { background: var(--bg-code); color: var(--text-heading); padding: 0.6rem 0.8rem; text-align: left; border: 1px solid var(--border); }
-        td { padding: 0.5rem 0.8rem; border: 1px solid var(--border); vertical-align: top; }
-        tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
+        .quote { border-left: 3px solid var(--primary); padding-left: 1rem; margin: 1rem 0; color: var(--text-muted); font-style: italic; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+        .stat-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+        .stat-item .number { font-size: 1.6rem; font-weight: bold; color: var(--accent-green); }
+        .stat-item .label { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.3rem; }
+        .priority-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        .priority-table th { background: var(--bg-code); color: var(--text-heading); padding: 0.6rem 0.8rem; text-align: left; border: 1px solid var(--border); }
+        .priority-table td { padding: 0.5rem 0.8rem; border: 1px solid var(--border); vertical-align: top; }
+        .priority-table tr:nth-child(even) { background: rgba(30, 41, 59, 0.5); }
         .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
         .toc h3 { margin-top: 0; color: var(--text-heading); font-size: 1rem; margin-bottom: 0.8rem; }
-        .toc a { color: var(--primary-light); }
-        .arch-diagram { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.2rem 0; text-align: center; font-family: 'SF Mono', monospace; font-size: 0.85rem; line-height: 1.6; white-space: pre; overflow-x: auto; }
-        footer { text-align: center; padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 3rem; color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--primary-light); }
+        .toc ol { padding-left: 1.5rem; }
+        .toc li { margin-bottom: 0.3rem; }
+        .toc a { color: var(--primary-light); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0 1.2rem; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; }
+        code { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace; font-size: 0.88rem; }
+        :not(pre) > code { background: var(--bg-code); padding: 0.15rem 0.4rem; border-radius: 4px; color: var(--accent-yellow); }
+        pre code { color: var(--text); }
+        .comment { color: var(--text-muted); }
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        footer a { color: var(--primary-light); text-decoration: none; }
         @media (max-width: 600px) {
             .stat-grid { grid-template-columns: 1fr; }
+            .priority-table { font-size: 0.8rem; }
+            .priority-table th, .priority-table td { padding: 0.35rem 0.5rem; }
             header h1 { font-size: 1.4rem; }
-            .arch-diagram { font-size: 0.72rem; }
+            pre { font-size: 0.8rem; padding: 0.8rem; }
         }
     </style>
 </head>
@@ -83,142 +96,187 @@
 
 <header>
     <h1>OpenClaw + Claude Bridge<br>完整安裝指南</h1>
-    <p class="subtitle">讓 OpenClaw 透過 Claude Code CLI 使用 Max 訂閱（免費），並優化 Context 利用率。</p>
-    <span class="badge">2026-04-07 最終版</span>
+    <p class="subtitle">讓 OpenClaw 透過 Claude Code CLI 使用 Max 訂閱（免費），並優化 Context 利用率</p>
+    <span class="badge">2026-04-07 | by 頭頭 + Claude</span>
 </header>
 
 <!-- 成果 -->
+<h2 id="results">成果</h2>
+
 <div class="stat-grid">
     <div class="stat-item">
         <div class="number">$0</div>
-        <div class="label">API 費用（Max 訂閱免費）</div>
+        <div class="label">API 費用<br>走 Max 訂閱免費</div>
     </div>
     <div class="stat-item">
         <div class="number">7.8s</div>
-        <div class="label">平均回應（原 25s，KV-cache）</div>
+        <div class="label">平均回應速度<br>（原 25s，KV-cache 加速）</div>
     </div>
     <div class="stat-item">
         <div class="number">61%</div>
-        <div class="label">Context 壓縮率（46K → 18K）</div>
+        <div class="label">Context 壓縮率<br>46K &rarr; 18K</div>
     </div>
     <div class="stat-item">
         <div class="number">3 層</div>
-        <div class="label">自動防護（自檢 + 告警 + 壓縮）</div>
+        <div class="label">自動防護<br>自檢 + 告警 + 壓縮</div>
     </div>
+</div>
+
+<div class="card">
+    <h3>Bridge 層</h3>
+    <span class="tag source">Claude Code CLI</span>
+    <span class="tag metric">KV-cache 加速</span>
+    <ul style="margin-top: 0.5rem;">
+        <li>API extra-usage &rarr; Max 免費（走 Claude Code CLI）</li>
+        <li>回應 <span class="cost-red">25s</span> &rarr; <span class="highlight">7.8s</span>（KV-cache 加速）</li>
+        <li>10min idle timeout、native tools 禁用、memory flush 支援</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Context 層</h3>
+    <span class="tag">61% 壓縮</span>
+    <span class="tag metric">三層防護</span>
+    <ul style="margin-top: 0.5rem;">
+        <li>Workspace <span class="cost-red">46K</span> &rarr; <span class="highlight">18K</span>（61% 壓縮）</li>
+        <li>三層自動防護（agent 自檢 + bridge 告警 + session 壓縮）</li>
+    </ul>
 </div>
 
 <!-- 目錄 -->
 <div class="toc">
     <h3>目錄</h3>
     <ol>
-        <li><a href="#arch">架構總覽</a></li>
-        <li><a href="#prereq">前置條件</a></li>
-        <li><a href="#install">Bridge 安裝</a></li>
-        <li><a href="#macos">macOS 開機自啟</a></li>
-        <li><a href="#oc-config">OpenClaw 設定</a></li>
-        <li><a href="#context">Context 優化（三層防護）</a></li>
-        <li><a href="#session-fix">清除污染 Session</a></li>
-        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#prereqs">前置條件</a></li>
+        <li><a href="#bridge-install">一、Bridge 安裝</a></li>
+        <li><a href="#macos-autostart">二、macOS 開機自啟（launchd）</a></li>
+        <li><a href="#openclaw-config">三、OpenClaw 設定</a></li>
+        <li><a href="#context-opt">四、Context 優化（三層防護）</a></li>
+        <li><a href="#session-cleanup">五、清除污染 Session（400 錯誤處理）</a></li>
+        <li><a href="#dashboard">六、Dashboard</a></li>
         <li><a href="#notes">注意事項</a></li>
     </ol>
 </div>
 
-<!-- 架構 -->
-<h2 id="arch">一、架構總覽</h2>
-<div class="arch-diagram">
-OpenClaw agent               Bridge                    Claude CLI
-(Discord/Telegram)
-      │                        │                           │
-      │  POST /v1/chat/        │                           │
-      │  completions           │  轉換訊息格式              │
-      ├───────────────────────▶│  注入工具協議              │
-      │                        │  映射思考等級              │
-      │                        │                           │
-      │                        │  stdin ──▶ claude --print │
-      │                        │  stdout ◀── stream-json   │
-      │                        │                           │
-      │  SSE stream            │  解析回應：                │
-      ◀───────────────────────│  ├─ 文字 → 乾淨輸出        │
-      │                        │  └─ &lt;tool_call&gt; → OpenAI │
-      │                        │                           │
-      │  tool_calls?           │                           │
-      │  有 → OC 執行工具       │                           │
-      │  無 → 答案回傳用戶     │                           │
-</div>
-<div class="insight-box">
-    <strong>核心原則：</strong>Bridge 從不執行工具。它只負責翻譯。OpenClaw 擁有工具循環。
-</div>
-
 <!-- 前置條件 -->
-<h2 id="prereq">二、前置條件</h2>
-<ul>
-    <li><strong>Claude Code CLI</strong> 已安裝並登入 Max 訂閱帳號</li>
-    <li><strong>Node.js</strong> &gt;= 18</li>
-    <li><strong>OpenClaw</strong> &gt;= 2026.1（Gateway 運行於 port 18789）</li>
-</ul>
-<pre><code># 驗證
-claude --version
-claude auth status   # 確認已登入 Max 帳號</code></pre>
+<h2 id="prereqs">前置條件</h2>
 
-<!-- Bridge 安裝 -->
-<h2 id="install">三、Bridge 安裝</h2>
-<pre><code># 1. Clone
+<div class="card">
+    <h3>環境需求</h3>
+    <ul>
+        <li><strong>Claude Code CLI</strong> 已安裝並登入 Max 訂閱帳號</li>
+        <li><strong>Node.js</strong> &gt;= 18</li>
+        <li><strong>OpenClaw</strong> &gt;= 2026.1（Gateway 運行於 port 18789）</li>
+    </ul>
+</div>
+
+<pre><code><span class="comment"># 驗證</span>
+claude --version
+claude auth status   <span class="comment"># 確認已登入 Max 帳號</span></code></pre>
+
+<!-- 一、Bridge 安裝 -->
+<h2 id="bridge-install">一、Bridge 安裝</h2>
+
+<pre><code><span class="comment"># 1. Clone</span>
 git clone https://github.com/shinglokto/openclaw-claude-bridge.git
 cd openclaw-claude-bridge
-npm install   # 會自動 build Dashboard
+npm install   <span class="comment"># 會自動 build Dashboard</span>
 
-# 2. 設定 .env
+<span class="comment"># 2. 設定 .env</span>
 cp .env.example .env
-# 編輯 .env，至少設定 DASHBOARD_PASS
+<span class="comment"># 編輯 .env，至少設定 DASHBOARD_PASS</span>
 
-# 3. 啟動測試
+<span class="comment"># 3. 啟動測試</span>
 npm start
-curl http://localhost:3456/health   # 應回傳 {"status":"ok"}</code></pre>
+curl http://localhost:3456/health   <span class="comment"># 應回傳 {"status":"ok"}</span></code></pre>
 
 <h3>端口說明</h3>
-<table>
-    <tr><th>端口</th><th>綁定</th><th>用途</th></tr>
-    <tr><td>3456</td><td>localhost</td><td>OpenAI 相容 API（僅本機）</td></tr>
-    <tr><td>3458</td><td>0.0.0.0</td><td>Dashboard（區域網絡可存取）</td></tr>
+
+<table class="priority-table">
+    <thead>
+        <tr>
+            <th>端口</th>
+            <th>綁定</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>3456</code></td>
+            <td>localhost</td>
+            <td>OpenAI 相容 API（僅本機）</td>
+        </tr>
+        <tr>
+            <td><code>3458</code></td>
+            <td>0.0.0.0</td>
+            <td>Dashboard（區域網絡可存取）</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3>重要環境變數</h3>
-<table>
-    <tr><th>變數</th><th>預設</th><th>說明</th></tr>
-    <tr><td><code>DASHBOARD_PASS</code></td><td>—</td><td>Dashboard 密碼（用戶名 admin）</td></tr>
-    <tr><td><code>IDLE_TIMEOUT_MS</code></td><td>120000</td><td>Claude CLI 無輸出超時（ms）</td></tr>
-    <tr><td><code>MAX_PER_CHANNEL</code></td><td>2</td><td>每 channel 最大同時請求數</td></tr>
-    <tr><td><code>MAX_GLOBAL</code></td><td>20</td><td>全局最大同時請求數</td></tr>
-    <tr><td><code>OPUS_MODEL</code></td><td>opus</td><td>Opus 的 CLI 模型別名</td></tr>
-    <tr><td><code>SONNET_MODEL</code></td><td>sonnet</td><td>Sonnet 的 CLI 模型別名</td></tr>
+
+<table class="priority-table">
+    <thead>
+        <tr>
+            <th>變數</th>
+            <th>預設</th>
+            <th>說明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>DASHBOARD_PASS</code></td>
+            <td>&mdash;</td>
+            <td>Dashboard 密碼（用戶名 admin）</td>
+        </tr>
+        <tr>
+            <td><code>IDLE_TIMEOUT_MS</code></td>
+            <td>120000</td>
+            <td>Claude CLI 無輸出超時（ms）</td>
+        </tr>
+        <tr>
+            <td><code>MAX_PER_CHANNEL</code></td>
+            <td>2</td>
+            <td>每 channel 最大同時請求數</td>
+        </tr>
+        <tr>
+            <td><code>OPUS_MODEL</code></td>
+            <td>opus</td>
+            <td>Opus 的 CLI 模型別名</td>
+        </tr>
+        <tr>
+            <td><code>SONNET_MODEL</code></td>
+            <td>sonnet</td>
+            <td>Sonnet 的 CLI 模型別名</td>
+        </tr>
+    </tbody>
 </table>
 
-<!-- macOS -->
-<h2 id="macos">四、macOS 開機自啟（launchd）</h2>
-<pre><code># 一鍵安裝（自動偵測路徑、讀取 .env）
+<!-- 二、macOS 開機自啟 -->
+<h2 id="macos-autostart">二、macOS 開機自啟（launchd）</h2>
+
+<pre><code><span class="comment"># 一鍵安裝（自動偵測路徑、讀取 .env）</span>
 ./service/install-mac.sh</code></pre>
 
 <h3>手動管理</h3>
-<pre><code># 重啟（重載 plist 設定）
+
+<pre><code><span class="comment"># 重啟</span>
 launchctl bootout gui/$(id -u)/com.openclaw.claude-bridge
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.openclaw.claude-bridge.plist
 
-# 日誌
+<span class="comment"># 日誌</span>
 tail -f ~/openclaw-claude-bridge/bridge.log</code></pre>
 
 <div class="warn-box">
-    <strong>⚠️ 重要：</strong><code>.env</code> 改動後要重跑 <code>./service/install-mac.sh</code>，因為 launchd 在啟動時就載入環境變數。
+    <strong>重要：</strong><code>.env</code> 改動後要重跑 <code>./service/install-mac.sh</code>
 </div>
 
-<h3>Linux（systemd）</h3>
-<pre><code>cp service/openclaw-claude-bridge.service ~/.config/systemd/user/
-systemctl --user daemon-reload
-systemctl --user enable --now openclaw-claude-bridge
-loginctl enable-linger $USER  # 未登入時亦可開機啟動</code></pre>
+<!-- 三、OpenClaw 設定 -->
+<h2 id="openclaw-config">三、OpenClaw 設定</h2>
 
-<!-- OpenClaw 設定 -->
-<h2 id="oc-config">五、OpenClaw 設定</h2>
 <p>在 <code>~/.openclaw/openclaw.json</code> 新增 provider：</p>
+
 <pre><code>{
   "models": {
     "providers": {
@@ -246,89 +304,113 @@ loginctl enable-linger $USER  # 未登入時亦可開機啟動</code></pre>
     }
   }
 }</code></pre>
-<p>然後將 agent 的模型指定為 <code>claude-bridge/claude-opus-latest</code> 或 <code>claude-bridge/claude-sonnet-latest</code>。<code>apiKey</code> 可以是任何非空字串 — Bridge 不會驗證。</p>
 
-<!-- Context 優化 -->
-<h2 id="context">六、Context 優化（三層防護）</h2>
+<div class="insight-box">
+    <strong>模型指定：</strong>將 agent 的模型設為 <code>claude-bridge/claude-opus-latest</code> 或 <code>claude-bridge/claude-sonnet-latest</code>。
+</div>
+
+<!-- 四、Context 優化 -->
+<h2 id="context-opt">四、Context 優化（三層防護）</h2>
 
 <div class="card">
     <h3>第一層：Agent 自檢</h3>
-    <p>Heartbeat 時自動檢查 workspace 檔案大小，超過預算立即壓縮：</p>
-    <table>
-        <tr><th>檔案</th><th>預算</th></tr>
-        <tr><td><code>WORKLOG.md</code></td><td>&lt; 2K chars</td></tr>
-        <tr><td><code>MEMORY.md</code></td><td>&lt; 3K chars</td></tr>
-        <tr><td><code>CONTEXT.md</code></td><td>&lt; 5K chars</td></tr>
-    </table>
-    <pre><code>for f in WORKLOG.md MEMORY.md CONTEXT.md; do
+    <span class="tag">Heartbeat 觸發</span>
+    <span class="tag metric">自動壓縮</span>
+    <p style="margin-top: 0.8rem;">Heartbeat 時自動檢查 workspace 檔案大小：</p>
+    <pre style="margin-top: 0.5rem;"><code><span class="comment"># Agent heartbeat 自檢</span>
+for f in WORKLOG.md MEMORY.md CONTEXT.md; do
   SIZE=$(wc -c < "$f" 2>/dev/null || echo 0)
   echo "$f: ${SIZE} bytes"
 done</code></pre>
+    <p style="margin-top: 0.8rem;">超過預算則立即壓縮：</p>
+    <table class="priority-table" style="margin-top: 0.5rem;">
+        <thead>
+            <tr>
+                <th>檔案</th>
+                <th>上限</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>WORKLOG.md</code></td>
+                <td>&lt; 2K</td>
+            </tr>
+            <tr>
+                <td><code>MEMORY.md</code></td>
+                <td>&lt; 3K</td>
+            </tr>
+            <tr>
+                <td><code>CONTEXT.md</code></td>
+                <td>&lt; 5K</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <div class="card">
     <h3>第二層：Bridge 告警</h3>
-    <p>Prompt 超過 <span class="warn">50K tokens</span> → Bridge log WARNING，提醒需要壓縮。</p>
+    <span class="tag warn">WARNING</span>
+    <p style="margin-top: 0.8rem;">Prompt &gt; <span class="cost-red">50K tokens</span> 時，Bridge log 輸出 WARNING。</p>
 </div>
 
 <div class="card">
     <h3>第三層：Session 壓縮</h3>
-    <p>Session 接近 context 上限時觸發 <span class="highlight">memoryFlush + compact refresh</span>，自動持久化記憶並重新整理上下文。</p>
+    <span class="tag metric">自動觸發</span>
+    <p style="margin-top: 0.8rem;">Session 接近 context 上限時觸發 <span class="highlight">memoryFlush + compact refresh</span>。</p>
 </div>
 
-<!-- Session 清除 -->
-<h2 id="session-fix">七、清除污染 Session（400 錯誤處理）</h2>
+<!-- 五、清除污染 Session -->
+<h2 id="session-cleanup">五、清除污染 Session（400 錯誤處理）</h2>
+
 <p>Session 被污染（400 Bad Request）時，需清除三層：</p>
-<pre><code># 1. Bridge state
+
+<pre><code><span class="comment"># 1. Bridge state</span>
 rm ~/openclaw-claude-bridge/state.json
 
-# 2. Claude CLI sessions
+<span class="comment"># 2. Claude CLI sessions</span>
 claude sessions list
-# 手動刪除有問題的 session，或清除全部：
-# claude sessions clear
+<span class="comment"># 手動刪除有問題的 session，或清除全部：</span>
+<span class="comment"># claude sessions clear</span>
 
-# 3. OpenClaw sessions
-# 在 OC 內執行 /new 建立新 session</code></pre>
+<span class="comment"># 3. OpenClaw sessions</span>
+<span class="comment"># 在 OC 內執行 /new 建立新 session</span></code></pre>
 
-<!-- Dashboard -->
-<h2 id="dashboard">八、Dashboard</h2>
+<div class="insight-box">
+    <strong>清除順序：</strong>Bridge state &rarr; Claude CLI sessions &rarr; OpenClaw sessions。三層都清除後，系統即回復正常。
+</div>
+
+<!-- 六、Dashboard -->
+<h2 id="dashboard">六、Dashboard</h2>
+
 <p>存取：<code>http://localhost:3458/</code>（或 <code>http://&lt;Mac-IP&gt;:3458/</code>）</p>
-<p>設定 <code>DASHBOARD_PASS</code> 環境變數以啟用 HTTP Basic Auth（用戶名：<code>admin</code>）。</p>
 
-<div class="stat-grid">
-    <div class="card">
-        <h3>即時活動</h3>
-        <p>事件串流：🧠 思考、🔧 工具、♻️ 刷新、✅ 完成、❌ 錯誤</p>
-    </div>
-    <div class="card">
-        <h3>Context 監控</h3>
-        <p>窗口使用量進度條：<span class="highlight">綠 &lt;40%</span>、<span class="warn">琥珀 40-65%</span>、<span style="color:var(--accent-red);font-weight:bold;">紅 &gt;65%</span></p>
-    </div>
-    <div class="card">
-        <h3>請求表格</h3>
-        <p>13 欄詳細紀錄：時間、channel、成本、快取命中率、耗時等</p>
-    </div>
-    <div class="card">
-        <h3>Session 清理</h3>
-        <p>一鍵清除超過 24 小時的 CLI sessions</p>
-    </div>
+<div class="card">
+    <h3>功能一覽</h3>
+    <ul>
+        <li><strong>即時活動動態</strong> &mdash; 思考、工具呼叫、刷新、完成、錯誤狀態即時顯示</li>
+        <li><strong>Context 窗口使用量</strong> &mdash; <span class="highlight">綠色 &lt;40%</span>、<span style="color: var(--accent-yellow); font-weight: bold;">琥珀色 40-65%</span>、<span class="cost-red">紅色 &gt;65%</span></li>
+        <li><strong>請求表格</strong> &mdash; 成本、耗時、快取命中率一覽</li>
+        <li><strong>Session 清理</strong> &mdash; 一鍵清除超過 24h 的 sessions</li>
+    </ul>
 </div>
 
 <!-- 注意事項 -->
-<h2 id="notes">九、注意事項</h2>
+<h2 id="notes">注意事項</h2>
+
 <div class="warn-box">
-    <ul style="margin-bottom:0;">
+    <strong>請留意以下事項：</strong>
+    <ul style="margin-top: 0.5rem; margin-bottom: 0;">
         <li><code>.env</code> 改動後要重跑 <code>install-mac.sh</code></li>
         <li>Session 被 400 污染要清 3 層（bridge state + CLI sessions + OC sessions）</li>
-        <li>Bridge port 3456 只綁定 localhost，外部無法存取</li>
+        <li>Bridge port <code>3456</code> 只綁定 localhost，外部無法存取</li>
         <li><code>--tools ""</code> 已禁用 Claude 原生工具，安全無虞</li>
-        <li>完整原始碼：<a href="https://github.com/shinglokto/openclaw-claude-bridge">github.com/shinglokto/openclaw-claude-bridge</a></li>
     </ul>
 </div>
 
 <footer>
     <p>時光智造 Timux &mdash; 智造交給 AI，時光留給所愛</p>
     <p><a href="https://www.timux.site">www.timux.site</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">指南發布時間：2026年4月7日</p>
 </footer>
 
 </div>
