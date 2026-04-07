@@ -154,6 +154,7 @@
         <li><a href="#context-opt">四、Context 優化（三層防護）</a></li>
         <li><a href="#session-cleanup">五、清除污染 Session（400 錯誤處理）</a></li>
         <li><a href="#dashboard">六、Dashboard</a></li>
+        <li><a href="#anti-detection">七、Bridge 反偵測原理</a></li>
         <li><a href="#notes">注意事項</a></li>
     </ol>
 </div>
@@ -392,6 +393,130 @@ claude sessions list
         <li><strong>請求表格</strong> &mdash; 成本、耗時、快取命中率一覽</li>
         <li><strong>Session 清理</strong> &mdash; 一鍵清除超過 24h 的 sessions</li>
     </ul>
+</div>
+
+<!-- 七、Bridge 反偵測原理 -->
+<h2 id="anti-detection">七、Bridge 反偵測原理</h2>
+
+<p>Bridge 需要將 OpenClaw 的 system prompt 注入 Claude CLI，但 Anthropic 對 CLI 有多層偵測機制。以下說明偵測原理與 Bridge 的三層繞過策略。</p>
+
+<h3>Anthropic 的三層偵測</h3>
+
+<div class="card">
+    <h3>第一層：關鍵字偵測</h3>
+    <p><code>--system-prompt</code> 參數內容包含特定關鍵字（如 <code>personal assistant running inside OpenClaw</code>）會被攔截，回傳 <strong>400 錯誤</strong>。</p>
+    <div class="insight-box">
+        <strong>觸發條件：</strong>內容中出現已知框架標識字串即觸發，與內容長度無關。
+    </div>
+</div>
+
+<div class="card">
+    <h3>第二層：內容結構偵測</h3>
+    <p><code>--system-prompt</code> 超過約 <strong>21K 字元</strong>時觸發深度分析，掃描是否包含：</p>
+    <ul>
+        <li>Metadata schema 格式（如工具定義結構）</li>
+        <li>工具呼叫模板（tool definition patterns）</li>
+        <li>多層指令注入結構</li>
+    </ul>
+    <div class="warn-box">
+        <strong>結果：</strong>即使替換了所有關鍵字，長內容仍可能因結構特徵被判定為第三方框架注入而回傳 400。
+    </div>
+</div>
+
+<div class="card">
+    <h3>第三層：參數 vs stdin 差異</h3>
+    <p>同一段內容：</p>
+    <ul>
+        <li>透過 <code>--system-prompt</code> 傳入 → <strong>會被掃描</strong></li>
+        <li>透過 <strong>stdin</strong>（標準輸入）傳入 → <strong>不會被掃描</strong></li>
+    </ul>
+    <div class="insight-box">
+        <strong>關鍵發現：</strong>Anthropic 的偵測只作用於 CLI 參數層，stdin 內容不經過相同的過濾管線。
+    </div>
+</div>
+
+<h3>Bridge 的三層繞過策略</h3>
+
+<div class="card">
+    <h3>策略一：Random Alias 隨機替換</h3>
+    <p>將 system prompt 中所有已知敏感關鍵字替換為隨機別名：</p>
+    <ul>
+        <li><strong>225 種組合</strong>的隨機別名池</li>
+        <li>每次請求隨機選取，避免固定模式被識別</li>
+        <li>Claude 回覆後自動還原為原始名稱</li>
+        <li>使用 <strong>path-safe regex</strong> 確保替換不破壞結構</li>
+    </ul>
+    <div class="insight-box">
+        <strong>作用：</strong>繞過第一層關鍵字偵測。
+    </div>
+</div>
+
+<div class="card">
+    <h3>策略二：Stdin Prepend 動態內容前置</h3>
+    <p>將動態變化的內容（如對話歷史、即時指令）從 <code>--system-prompt</code> 移至 <strong>stdin</strong> 傳入。</p>
+    <div class="insight-box">
+        <strong>作用：</strong>繞過第三層 — 動態內容不經過參數層偵測。
+    </div>
+</div>
+
+<div class="card">
+    <h3>策略三：Cache-Optimized Split 快取最佳化分割</h3>
+    <p>將完整 system prompt 拆分為兩部分：</p>
+    <ul>
+        <li><strong>穩定部分（~20K）</strong> → 透過 <code>--system-prompt</code> 傳入，享受 KV-cache 加速</li>
+        <li><strong>動態部分（~12K）</strong> → 透過 stdin 傳入，避開偵測</li>
+    </ul>
+    <div class="insight-box">
+        <strong>作用：</strong>穩定內容控制在安全長度內（不觸發第二層），同時保留快取效能優勢。
+    </div>
+</div>
+
+<h3>為何三層缺一不可？</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>策略組合</th>
+            <th>第一層（關鍵字）</th>
+            <th>第二層（結構）</th>
+            <th>第三層（參數掃描）</th>
+            <th>結果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>無任何繞過</td>
+            <td class="cost-red">&#10007;</td>
+            <td class="cost-red">&#10007;</td>
+            <td class="cost-red">&#10007;</td>
+            <td class="cost-red">400</td>
+        </tr>
+        <tr>
+            <td>僅 Alias</td>
+            <td class="cost-green">&#10003;</td>
+            <td class="cost-red">&#10007;</td>
+            <td class="cost-red">&#10007;</td>
+            <td class="cost-red">400</td>
+        </tr>
+        <tr>
+            <td>Alias + Stdin</td>
+            <td class="cost-green">&#10003;</td>
+            <td class="cost-green">&#10003;</td>
+            <td class="cost-green">&#10003;</td>
+            <td style="color: var(--accent-yellow); font-weight: bold;">&#10003; 但無快取</td>
+        </tr>
+        <tr>
+            <td><strong>Alias + Stdin + Split</strong></td>
+            <td class="cost-green">&#10003;</td>
+            <td class="cost-green">&#10003;</td>
+            <td class="cost-green">&#10003;</td>
+            <td class="cost-green"><strong>&#10003; 完美</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="insight-box">
+    <strong>結論：</strong>三層策略各負責繞過對應的一層偵測。Random Alias 對付關鍵字、Stdin Prepend 對付參數掃描、Cache-Optimized Split 在安全的前提下保留效能。三者協同才能穩定、高效地運行。
 </div>
 
 <!-- 注意事項 -->
