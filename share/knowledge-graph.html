@@ -105,6 +105,22 @@ network.once('stabilizationIterationsDone', () => {
   network.setOptions({ physics: { enabled: false } });
 });
 
+const SOURCE_URLS = {
+  "cross-strait-ai-entrepreneurship": "ai-mentor-day1.html",
+  "china-ai-models-2026": "china-ai-comparison.html",
+  "ai-mentor-workshop": "ai-mentor-slides.html",
+  "ai-prompt-guide": "ai-prompt-guide.html",
+  "openclaw-claude-bridge": "openclaw-claude-bridge-guide.html",
+  "context-engineering": "context-engineering.html",
+};
+
+function getSourceUrl(sourceFile) {
+  if (!sourceFile) return null;
+  const stem = sourceFile.replace('share-public/', '').replace('.md', '');
+  const page = SOURCE_URLS[stem];
+  return page ? '/share/' + page : null;
+}
+
 function showInfo(nodeId) {
   const n = nodesDS.get(nodeId);
   if (!n) return;
@@ -114,11 +130,15 @@ function showInfo(nodeId) {
     const color = nb ? nb.color.background : '#555';
     return `<span class="neighbor-link" style="border-left-color:${color}" onclick="focusNode('${nid}')">${nb ? nb.label : nid}</span>`;
   }).join('');
+  const url = getSourceUrl(n._source_file);
+  const sourceHtml = url
+    ? `<a href="${url}" target="_blank" style="color:#4E79A7;text-decoration:none;border-bottom:1px dashed #4E79A7">閱讀原文 →</a>`
+    : (n._source_file || '-');
   document.getElementById('info-content').innerHTML = `
     <div class="field"><b>${n.label}</b></div>
     <div class="field">Type: ${n._file_type || 'unknown'}</div>
     <div class="field">Community: ${n._community_name}</div>
-    <div class="field">Source: ${n._source_file || '-'}</div>
+    <div class="field">Source: ${sourceHtml}</div>
     <div class="field">Degree: ${n._degree}</div>
     ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
   `;
