@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>時光智造 AI 知識圖譜 | Timux Knowledge Graph</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
+  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: #2a2a4e; }
+  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: #e0e0e0; }
+  #info-content .empty { color: #555; font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
+  .neighbor-link:hover { background: #2a2a4e; }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: #666; font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
+</style>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>Node Info</h3>
+    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>Communities</h3>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">38 nodes &middot; 24 edges &middot; 17 communities</div>
+</div>
+<script>
+const RAW_NODES = [{"id": "cross-strait-ai-entrepreneurship_iteration_space", "label": "\u8fed\u4ee3\u7a7a\u9593 (Iteration Space)", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "\u8fed\u4ee3\u7a7a\u9593 (Iteration Space)", "community": 4, "community_name": "\u5169\u5cb8\u5275\u696d\u8207\u76e3\u7ba1", "source_file": "share-public/cross-strait-ai-entrepreneurship.md", "file_type": "document", "degree": 2}, {"id": "cross-strait-ai-entrepreneurship_competition_intensity", "label": "\u7af6\u722d\u5f37\u5ea6 (Competition Intensity)", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u7af6\u722d\u5f37\u5ea6 (Competition Intensity)", "community": 5, "community_name": "\u76f4\u64ad\u96fb\u5546\u7af6\u722d", "source_file": "share-public/cross-strait-ai-entrepreneurship.md", "file_type": "document", "degree": 1}, {"id": "cross-strait-ai-entrepreneurship_wuhan_choice", "label": "\u70ba\u4ec0\u9ebc\u9078\u6b66\u6f22", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u70ba\u4ec0\u9ebc\u9078\u6b66\u6f22", "community": 1, "community_name": "AI \u5be6\u6230\u5de5\u4f5c\u574a", "source_file": "share-public/cross-strait-ai-entrepreneurship.md", "file_type": "document", "degree": 1}, {"id": "cross-strait-ai-entrepreneurship_regulation_philosophy", "label": "\u76e3\u7ba1\u54f2\u5b78\u5dee\u7570 (Regulation Philosophy)", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u76e3\u7ba1\u54f2\u5b78\u5dee\u7570 (Regulation Philosophy)", "community": 4, "community_name": "\u5169\u5cb8\u5275\u696d\u8207\u76e3\u7ba1", "source_file": "share-public/cross-strait-ai-entrepreneurship.md", "file_type": "document", "degree": 1}, {"id": "cross-strait-ai-entrepreneurship_ai_three_principles", "label": "AI \u4f7f\u7528\u4e09\u539f\u5247", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 32.5, "font": {"size": 12, "color": "#ffffff"}, "title": "AI \u4f7f\u7528\u4e09\u539f\u5247", "community": 1, "community_name": "AI \u5be6\u6230\u5de5\u4f5c\u574a", "source_file": "share-public/cross-strait-ai-entrepreneurship.md", "file_type": "document", "degree": 3}, {"id": "cross-strait-ai-entrepreneurship_livestream_ecommerce", "label": "\u76f4\u64ad\u96fb\u5546\u5c0d\u6bd4", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u76f4\u64ad\u96fb\u5546\u5c0d\u6bd4", "community": 5, "community_name": "\u76f4\u64ad\u96fb\u5546\u7af6\u722d", "source_file": "share-public/cross-strait-ai-entrepreneurship.md", "file_type": "document", "degree": 1}, {"id": "china-ai-models-2026_overview", "label": "\u4e2d\u570b AI \u5927\u6a21\u578b\u5c0d\u6bd4 2026", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "\u4e2d\u570b AI \u5927\u6a21\u578b\u5c0d\u6bd4 2026", "community": 2, "community_name": "\u8de8\u9818\u57df AI \u5de5\u5177\u6a4b\u6a11", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 2}, {"id": "china-ai-models-2026_deepseek_v32", "label": "DeepSeek V3.2", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "DeepSeek V3.2", "community": 6, "community_name": "DeepSeek", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 0}, {"id": "china-ai-models-2026_kimi_k2", "label": "Kimi K2", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Kimi K2", "community": 7, "community_name": "Kimi", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 0}, {"id": "china-ai-models-2026_qwen3_max", "label": "Qwen3-Max", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Qwen3-Max", "community": 8, "community_name": "Qwen", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 0}, {"id": "china-ai-models-2026_wenxin", "label": "\u6587\u5fc3\u4e00\u8a00 (ERNIE Bot)", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u6587\u5fc3\u4e00\u8a00 (ERNIE Bot)", "community": 9, "community_name": "\u6587\u5fc3\u4e00\u8a00", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 0}, {"id": "china-ai-models-2026_doubao", "label": "\u8c46\u5305 (Doubao)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u8c46\u5305 (Doubao)", "community": 10, "community_name": "\u8c46\u5305", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 0}, {"id": "china-ai-models-2026_glm", "label": "\u667a\u8b5c GLM", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u667a\u8b5c GLM", "community": 11, "community_name": "\u667a\u8b5c GLM", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 0}, {"id": "china-ai-models-2026_model_selection", "label": "\u6a21\u578b\u9078\u578b\u5efa\u8b70", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u6a21\u578b\u9078\u578b\u5efa\u8b70", "community": 4, "community_name": "\u5169\u5cb8\u5275\u696d\u8207\u76e3\u7ba1", "source_file": "share-public/china-ai-models-2026.md", "file_type": "document", "degree": 1}, {"id": "ai-mentor-workshop_overview", "label": "AI \u5be6\u6230\u5bc6\u6280\u5de5\u4f5c\u574a", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "AI \u5be6\u6230\u5bc6\u6280\u5de5\u4f5c\u574a", "community": 1, "community_name": "AI \u5be6\u6230\u5de5\u4f5c\u574a", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 2}, {"id": "ai-mentor-workshop_curiosity_principle", "label": "\u597d\u5947\u5fc3\u6838\u5fc3\u7406\u5ff5", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u597d\u5947\u5fc3\u6838\u5fc3\u7406\u5ff5", "community": 12, "community_name": "\u597d\u5947\u5fc3\u7406\u5ff5", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 0}, {"id": "ai-mentor-workshop_ai_studio_automation", "label": "AI Studio \u81ea\u5a92\u9ad4\u81ea\u52d5\u5316", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "AI Studio \u81ea\u5a92\u9ad4\u81ea\u52d5\u5316", "community": 1, "community_name": "AI \u5be6\u6230\u5de5\u4f5c\u574a", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 1}, {"id": "ai-mentor-workshop_openclaw_virtual_team", "label": "OpenClaw \u865b\u64ec\u5718\u968a", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "OpenClaw \u865b\u64ec\u5718\u968a", "community": 2, "community_name": "\u8de8\u9818\u57df AI \u5de5\u5177\u6a4b\u6a11", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 1}, {"id": "ai-mentor-workshop_trading_bot", "label": "\u5c0f\u91d1\u4ea4\u6613 Bot", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u5c0f\u91d1\u4ea4\u6613 Bot", "community": 13, "community_name": "\u4ea4\u6613 Bot", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 0}, {"id": "ai-mentor-workshop_three_principles", "label": "\u5de5\u4f5c\u574a\u4e09\u5927\u539f\u5247", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "\u5de5\u4f5c\u574a\u4e09\u5927\u539f\u5247", "community": 1, "community_name": "AI \u5be6\u6230\u5de5\u4f5c\u574a", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 2}, {"id": "ai-mentor-workshop_training_products", "label": "\u57f9\u8a13\u7522\u54c1\u7dda", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u57f9\u8a13\u7522\u54c1\u7dda", "community": 14, "community_name": "\u57f9\u8a13\u7522\u54c1", "source_file": "share-public/ai-mentor-workshop.md", "file_type": "document", "degree": 0}, {"id": "ai-prompt-guide_prism_findings", "label": "PRISM \u8ad6\u6587\u6838\u5fc3\u767c\u73fe", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "PRISM \u8ad6\u6587\u6838\u5fc3\u767c\u73fe", "community": 3, "community_name": "PRISM Prompt \u7814\u7a76", "source_file": "share-public/ai-prompt-guide.md", "file_type": "document", "degree": 2}, {"id": "ai-prompt-guide_role_tradeoff", "label": "\u89d2\u8272\u8a2d\u5b9a\u6e96\u78ba\u7387 vs \u54c1\u8cea\u6b0a\u8861", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 32.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u89d2\u8272\u8a2d\u5b9a\u6e96\u78ba\u7387 vs \u54c1\u8cea\u6b0a\u8861", "community": 3, "community_name": "PRISM Prompt \u7814\u7a76", "source_file": "share-public/ai-prompt-guide.md", "file_type": "document", "degree": 3}, {"id": "ai-prompt-guide_tcos_framework", "label": "TCO+S Prompt \u6846\u67b6", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "TCO+S Prompt \u6846\u67b6", "community": 2, "community_name": "\u8de8\u9818\u57df AI \u5de5\u5177\u6a4b\u6a11", "source_file": "share-public/ai-prompt-guide.md", "file_type": "document", "degree": 4}, {"id": "ai-prompt-guide_two_step_method", "label": "\u5169\u6b65\u6cd5 (Two-Step Method)", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u5169\u6b65\u6cd5 (Two-Step Method)", "community": 3, "community_name": "PRISM Prompt \u7814\u7a76", "source_file": "share-public/ai-prompt-guide.md", "file_type": "document", "degree": 1}, {"id": "ai-prompt-guide_prism_paper", "label": "PRISM \u8ad6\u6587 (arXiv:2603.18507)", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "PRISM \u8ad6\u6587 (arXiv:2603.18507)", "community": 3, "community_name": "PRISM Prompt \u7814\u7a76", "source_file": "share-public/ai-prompt-guide.md", "file_type": "paper", "degree": 1}, {"id": "openclaw-claude-bridge_overview", "label": "OpenClaw + Claude Bridge \u6307\u5357", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "OpenClaw + Claude Bridge \u6307\u5357", "community": 2, "community_name": "\u8de8\u9818\u57df AI \u5de5\u5177\u6a4b\u6a11", "source_file": "share-public/openclaw-claude-bridge.md", "file_type": "document", "degree": 2}, {"id": "openclaw-claude-bridge_architecture", "label": "Bridge \u67b6\u69cb (Gateway \u2192 Bridge \u2192 CLI \u2192 API)", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Bridge \u67b6\u69cb (Gateway \u2192 Bridge \u2192 CLI \u2192 API)", "community": 15, "community_name": "Bridge \u67b6\u69cb", "source_file": "share-public/openclaw-claude-bridge.md", "file_type": "document", "degree": 0}, {"id": "openclaw-claude-bridge_three_layer_protection", "label": "\u4e09\u5c64 Context \u9632\u8b77", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "\u4e09\u5c64 Context \u9632\u8b77", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/openclaw-claude-bridge.md", "file_type": "document", "degree": 1}, {"id": "openclaw-claude-bridge_kv_cache_optimization", "label": "KV-Cache \u512a\u5316 (25s \u2192 7.8s)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "KV-Cache \u512a\u5316 (25s \u2192 7.8s)", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/openclaw-claude-bridge.md", "file_type": "document", "degree": 1}, {"id": "openclaw-claude-bridge_context_compression", "label": "61% Context \u58d3\u7e2e", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "61% Context \u58d3\u7e2e", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/openclaw-claude-bridge.md", "file_type": "document", "degree": 1}, {"id": "openclaw-claude-bridge_dashboard", "label": "\u5373\u6642\u76e3\u63a7\u9762\u677f (Dashboard)", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "\u5373\u6642\u76e3\u63a7\u9762\u677f (Dashboard)", "community": 16, "community_name": "\u76e3\u63a7\u9762\u677f", "source_file": "share-public/openclaw-claude-bridge.md", "file_type": "document", "degree": 0}, {"id": "context-engineering_core_concept", "label": "Context Engineering \u6838\u5fc3\u89c0\u9ede", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 32.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Context Engineering \u6838\u5fc3\u89c0\u9ede", "community": 2, "community_name": "\u8de8\u9818\u57df AI \u5de5\u5177\u6a4b\u6a11", "source_file": "share-public/context-engineering.md", "file_type": "document", "degree": 3}, {"id": "context-engineering_manus_kv_cache", "label": "Manus KV-Cache \u7b56\u7565", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Manus KV-Cache \u7b56\u7565", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/context-engineering.md", "file_type": "document", "degree": 2}, {"id": "context-engineering_anthropic_four_dimensions", "label": "Anthropic \u56db\u7dad\u7b56\u7565", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Anthropic \u56db\u7dad\u7b56\u7565", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/context-engineering.md", "file_type": "document", "degree": 2}, {"id": "context-engineering_skillreducer", "label": "SkillReducer \u8ad6\u6587 (\u5c11\u5373\u662f\u591a)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "SkillReducer \u8ad6\u6587 (\u5c11\u5373\u662f\u591a)", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/context-engineering.md", "file_type": "document", "degree": 2}, {"id": "context-engineering_google_adk", "label": "Google ADK \u6700\u5c0f\u7bc4\u570d\u539f\u5247", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Google ADK \u6700\u5c0f\u7bc4\u570d\u539f\u5247", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/context-engineering.md", "file_type": "document", "degree": 1}, {"id": "context-engineering_priority_plan", "label": "\u4e94\u7d1a\u512a\u5148\u884c\u52d5\u65b9\u6848", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "\u4e94\u7d1a\u512a\u5148\u884c\u52d5\u65b9\u6848", "community": 0, "community_name": "Context \u512a\u5316\u751f\u614b\u7cfb", "source_file": "share-public/context-engineering.md", "file_type": "document", "degree": 4}];
+const RAW_EDGES = [{"from": "cross-strait-ai-entrepreneurship_iteration_space", "to": "cross-strait-ai-entrepreneurship_regulation_philosophy", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cross-strait-ai-entrepreneurship_iteration_space", "to": "china-ai-models-2026_model_selection", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "cross-strait-ai-entrepreneurship_competition_intensity", "to": "cross-strait-ai-entrepreneurship_livestream_ecommerce", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cross-strait-ai-entrepreneurship_wuhan_choice", "to": "ai-mentor-workshop_overview", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "cross-strait-ai-entrepreneurship_ai_three_principles", "to": "ai-mentor-workshop_overview", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cross-strait-ai-entrepreneurship_ai_three_principles", "to": "ai-mentor-workshop_three_principles", "label": "semantically_similar_to", "title": "semantically_similar_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "cross-strait-ai-entrepreneurship_ai_three_principles", "to": "ai-mentor-workshop_ai_studio_automation", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "china-ai-models-2026_overview", "to": "context-engineering_core_concept", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "china-ai-models-2026_overview", "to": "ai-prompt-guide_tcos_framework", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "ai-mentor-workshop_openclaw_virtual_team", "to": "openclaw-claude-bridge_overview", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "ai-mentor-workshop_three_principles", "to": "ai-prompt-guide_tcos_framework", "label": "semantically_similar_to", "title": "semantically_similar_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "ai-prompt-guide_prism_findings", "to": "ai-prompt-guide_prism_paper", "label": "cites", "title": "cites [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "ai-prompt-guide_prism_findings", "to": "ai-prompt-guide_role_tradeoff", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "ai-prompt-guide_role_tradeoff", "to": "ai-prompt-guide_tcos_framework", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "ai-prompt-guide_role_tradeoff", "to": "ai-prompt-guide_two_step_method", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "ai-prompt-guide_tcos_framework", "to": "context-engineering_core_concept", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "openclaw-claude-bridge_overview", "to": "context-engineering_core_concept", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "openclaw-claude-bridge_three_layer_protection", "to": "context-engineering_anthropic_four_dimensions", "label": "semantically_similar_to", "title": "semantically_similar_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "openclaw-claude-bridge_kv_cache_optimization", "to": "context-engineering_manus_kv_cache", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "openclaw-claude-bridge_context_compression", "to": "context-engineering_skillreducer", "label": "semantically_similar_to", "title": "semantically_similar_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "context-engineering_manus_kv_cache", "to": "context-engineering_priority_plan", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "context-engineering_anthropic_four_dimensions", "to": "context-engineering_priority_plan", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "context-engineering_skillreducer", "to": "context-engineering_priority_plan", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "context-engineering_google_adk", "to": "context-engineering_priority_plan", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "Context \u512a\u5316\u751f\u614b\u7cfb", "count": 8}, {"cid": 1, "color": "#F28E2B", "label": "AI \u5be6\u6230\u5de5\u4f5c\u574a", "count": 5}, {"cid": 2, "color": "#E15759", "label": "\u8de8\u9818\u57df AI \u5de5\u5177\u6a4b\u6a11", "count": 5}, {"cid": 3, "color": "#76B7B2", "label": "PRISM Prompt \u7814\u7a76", "count": 4}, {"cid": 4, "color": "#59A14F", "label": "\u5169\u5cb8\u5275\u696d\u8207\u76e3\u7ba1", "count": 3}, {"cid": 5, "color": "#EDC948", "label": "\u76f4\u64ad\u96fb\u5546\u7af6\u722d", "count": 2}, {"cid": 6, "color": "#B07AA1", "label": "DeepSeek", "count": 1}, {"cid": 7, "color": "#FF9DA7", "label": "Kimi", "count": 1}, {"cid": 8, "color": "#9C755F", "label": "Qwen", "count": 1}, {"cid": 9, "color": "#BAB0AC", "label": "\u6587\u5fc3\u4e00\u8a00", "count": 1}, {"cid": 10, "color": "#4E79A7", "label": "\u8c46\u5305", "count": 1}, {"cid": 11, "color": "#F28E2B", "label": "\u667a\u8b5c GLM", "count": 1}, {"cid": 12, "color": "#E15759", "label": "\u597d\u5947\u5fc3\u7406\u5ff5", "count": 1}, {"cid": 13, "color": "#76B7B2", "label": "\u4ea4\u6613 Bot", "count": 1}, {"cid": 14, "color": "#59A14F", "label": "\u57f9\u8a13\u7522\u54c1", "count": 1}, {"cid": 15, "color": "#EDC948", "label": "Bridge \u67b6\u69cb", "count": 1}, {"cid": 16, "color": "#B07AA1", "label": "\u76e3\u63a7\u9762\u677f", "count": 1}];
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  _community: n.community, _community_name: n.community_name,
+  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${color}" onclick="focusNode('${nid}')">${nb ? nb.label : nid}</span>`;
+  }).join('');
+  document.getElementById('info-content').innerHTML = `
+    <div class="field"><b>${n.label}</b></div>
+    <div class="field">Type: ${n._file_type || 'unknown'}</div>
+    <div class="field">Community: ${n._community_name}</div>
+    <div class="field">Source: ${n._source_file || '-'}</div>
+    <div class="field">Degree: ${n._degree}</div>
+    ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
+  `;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+network.on('click', params => {
+  if (params.nodes.length > 0) showInfo(params.nodes[0]);
+  else document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.onclick = () => {
+    if (hiddenCommunities.has(c.cid)) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: hiddenCommunities.has(c.cid) }));
+    nodesDS.update(updates);
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [{"id": "context_optimization_ecosystem", "label": "Context Optimization Ecosystem", "nodes": ["context-engineering_core_concept", "context-engineering_manus_kv_cache", "context-engineering_anthropic_four_dimensions", "context-engineering_skillreducer", "context-engineering_google_adk", "openclaw-claude-bridge_three_layer_protection", "openclaw-claude-bridge_context_compression"], "relation": "participate_in", "confidence": "INFERRED", "confidence_score": 0.85, "source_file": "share-public/context-engineering.md"}, {"id": "ai_practical_methodology", "label": "AI \u5be6\u6230\u65b9\u6cd5\u8ad6\u9ad4\u7cfb", "nodes": ["cross-strait-ai-entrepreneurship_ai_three_principles", "ai-mentor-workshop_three_principles", "ai-prompt-guide_tcos_framework", "ai-mentor-workshop_curiosity_principle"], "relation": "form", "confidence": "INFERRED", "confidence_score": 0.78, "source_file": "share-public/ai-mentor-workshop.md"}, {"id": "china_ai_model_tier1", "label": "\u4e2d\u570b AI \u7b2c\u4e00\u68af\u968a\u6a21\u578b", "nodes": ["china-ai-models-2026_deepseek_v32", "china-ai-models-2026_kimi_k2", "china-ai-models-2026_qwen3_max"], "relation": "form", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "share-public/china-ai-models-2026.md"}];
+function drawHyperedges() {
+    const canvas = network.canvas.frame.canvas;
+    const ctx = canvas.getContext('2d');
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        // Draw convex hull as filled polygon
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        const scale = network.getScale();
+        const offset = network.getViewPosition();
+        const toCanvas = (p) => ({
+            x: (p.x - offset.x) * scale + canvas.width / 2,
+            y: (p.y - offset.y) * scale + canvas.height / 2
+        });
+        const pts = positions.map(toCanvas);
+        // Expand hull slightly
+        const cx = pts.reduce((s, p) => s + p.x, 0) / pts.length;
+        const cy = pts.reduce((s, p) => s + p.y, 0) / pts.length;
+        const expanded = pts.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+}
+network.on('afterDrawing', drawHyperedges);
+</script>
+</body>
+</html>
