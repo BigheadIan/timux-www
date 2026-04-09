@@ -152,13 +152,6 @@
         .reveal img {
             max-height: 45vh; max-width: 100%; object-fit: contain; border-radius: 8px;
         }
-        .img-placeholder {
-            border: 2px dashed rgba(79, 195, 247, 0.15);
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            background: rgba(79, 195, 247, 0.05);
-            color: var(--muted); font-size: 0.58em; text-align: center;
-            padding: 14px; min-height: 100px; max-height: 45vh;
-        }
         .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; }
         .compare-table th { background: rgba(232,59,59,0.15); color: var(--lobster); padding: 10px 16px; font-size: 0.7em; }
         .compare-table th:first-child { background: rgba(79,195,247,0.1); color: var(--accent); }
@@ -174,12 +167,28 @@
         .arrow { display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.2em; }
         .slide-number { color: var(--accent) !important; background: rgba(0,0,0,0.5) !important; padding: 6px 12px !important; border-radius: 20px !important; font-size: 14px !important; }
         .reveal .progress { color: var(--lobster); }
-        .source-tag { font-size: 0.48em; color: var(--muted); font-style: italic; }
         .tip-box {
             background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2);
             border-radius: 12px; padding: 12px 18px; margin: 10px 0;
         }
         .tip-box p { margin: 3px 0; font-size: 0.7em; }
+        /* Agent architecture diagram */
+        .arch-node {
+            text-align: center; padding: 12px 10px;
+            border-radius: 14px; position: relative;
+        }
+        .arch-node .node-icon { font-size: 1.6em; }
+        .arch-node .node-name { font-size: 0.65em; font-weight: 700; margin: 4px 0 2px; }
+        .arch-node .node-role { font-size: 0.48em; color: var(--muted); }
+        .arch-owner {
+            background: rgba(232,59,59,0.1); border: 2px solid rgba(232,59,59,0.3);
+        }
+        .arch-agent {
+            background: var(--glass); border: 1px solid var(--glass-border);
+        }
+        .arch-connector {
+            text-align: center; font-size: 0.7em; color: var(--accent); padding: 2px 0;
+        }
     </style>
 </head>
 <body>
@@ -216,8 +225,8 @@
                             <p class="muted" style="margin:3px 0 0; font-size:0.55em;">5 分钟让龙虾跑起来</p>
                         </div>
                         <div class="glass-card" style="padding:14px 18px;">
-                            <p style="margin:0;"><span class="purple" style="font-size:0.9em;">03</span> <span style="font-size:0.8em;">Agent 智能体设置</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">创建你的专属 AI 助手</p>
+                            <p style="margin:0;"><span class="purple" style="font-size:0.9em;">03</span> <span style="font-size:0.8em;">Agent 智能体创建</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">用团队架构思维打造 AI 助手群</p>
                         </div>
                     </div>
                     <div>
@@ -230,8 +239,8 @@
                             <p class="muted" style="margin:3px 0 0; font-size:0.55em;">股票分析 / 文档处理 / PPT 生成</p>
                         </div>
                         <div class="glass-card" style="padding:14px 18px;">
-                            <p style="margin:0;"><span class="pink" style="font-size:0.9em;">06</span> <span style="font-size:0.8em;">定时任务 & IM 远控</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">7×24 自动工作</p>
+                            <p style="margin:0;"><span class="pink" style="font-size:0.9em;">06</span> <span style="font-size:0.8em;">定时任务 & 记忆 & IM 远控</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">7×24 自动工作 + 持久记忆</p>
                         </div>
                     </div>
                 </div>
@@ -394,32 +403,153 @@
                 </div>
             </section>
 
-            <!-- ===== 09 Agent 智能体 ===== -->
+            <!-- ===== 09 Agent 概览 ===== -->
             <section>
                 <span class="section-divider">03 Agent 智能体</span>
-                <h2 style="margin-top:12px;">你的专属 <span class="grad-blue">AI 助手</span></h2>
+                <h2 style="margin-top:12px;">你的专属 <span class="grad-blue">AI 助手团队</span></h2>
                 <div class="grid-2">
                     <div>
                         <p style="font-size:0.72em; color:var(--accent); margin-bottom:8px;">Agent = 有人设和能力的 AI 助手</p>
                         <ul>
-                            <li>📝 <span class="accent">System Prompt</span> — 定义角色和行为</li>
-                            <li>🧰 <span class="purple">工具权限</span> — 能操作哪些东西</li>
-                            <li>📂 <span class="gold">工作目录</span> — 工作的文件夹范围</li>
+                            <li>📝 <span class="accent">基础信息</span> — 名字、身份、性格</li>
+                            <li>🧠 <span class="purple">System Prompt</span> — 定义角色和行为</li>
+                            <li>🎭 <span class="gold">身份档案</span> — Identity / Soul / User</li>
                             <li>🔌 <span class="green">Skill 绑定</span> — 自动加载技能包</li>
                         </ul>
                         <div class="tip-box" style="margin-top:12px;">
-                            <p>💡 可以创建多个 Agent：</p>
-                            <p><span class="accent">写作助手</span> / <span class="purple">数据分析师</span> / <span class="gold">编程助手</span> / <span class="pink">PPT 大师</span></p>
+                            <p>💡 龙虾内置 <span class="gold">6 个预设 Agent</span>，也可以自己创建！</p>
                         </div>
                     </div>
                     <div style="text-align:center;">
-                        <img src="lobsterai-assets/agent-config.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
-                        <p class="muted" style="font-size:0.5em;">设置 → Agent 配置</p>
+                        <img src="lobsterai-assets/my-agent.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
+                        <p class="muted" style="font-size:0.5em;">我的 Agent — 预设 + 自建</p>
                     </div>
                 </div>
             </section>
 
-            <!-- ===== 10 System Prompt 技巧 ===== -->
+            <!-- ===== 10 Agent 架构图 ===== -->
+            <section>
+                <span class="section-divider">03 团队架构思维</span>
+                <h2 style="margin-top:12px;">像组建团队一样 <span class="lobster">创建 Agent</span></h2>
+                <p class="muted" style="font-size:0.6em; margin-bottom:14px;">以时光智造「小mini 团队」为例 — 每个 Agent 有明确分工</p>
+                <div style="display:grid; grid-template-columns: 1fr; gap:8px;">
+                    <!-- Owner row -->
+                    <div style="text-align:center;">
+                        <div class="arch-node arch-owner" style="display:inline-block; padding:8px 30px;">
+                            <span class="node-icon">👨‍💼</span>
+                            <span class="node-name lobster" style="margin-left:8px;">头头（老板）</span>
+                        </div>
+                    </div>
+                    <div class="arch-connector">↓ 指挥 ↓</div>
+                    <!-- Agent row -->
+                    <div class="grid-4">
+                        <div class="arch-node arch-agent" style="border-color:var(--accent);">
+                            <div class="node-icon">🤠</div>
+                            <div class="node-name accent">小mini</div>
+                            <div class="node-role">AI PM & 创意夥伴</div>
+                            <div style="margin-top:4px;"><span class="pill" style="font-size:0.4em; padding:2px 8px;">主管 Agent</span></div>
+                        </div>
+                        <div class="arch-node arch-agent" style="border-color:var(--gold);">
+                            <div class="node-icon">🖋️</div>
+                            <div class="node-name gold">小墨</div>
+                            <div class="node-role">AI 课程设计师</div>
+                            <div style="margin-top:4px;"><span class="pill pill-gold" style="font-size:0.4em; padding:2px 8px;">课程 Skill</span></div>
+                        </div>
+                        <div class="arch-node arch-agent" style="border-color:var(--green);">
+                            <div class="node-icon">📋</div>
+                            <div class="node-name green">产品 PM</div>
+                            <div class="node-role">产品规划与管理</div>
+                            <div style="margin-top:4px;"><span class="pill pill-green" style="font-size:0.4em; padding:2px 8px;">计划 Skill</span></div>
+                        </div>
+                        <div class="arch-node arch-agent" style="border-color:var(--accent3);">
+                            <div class="node-icon">💻</div>
+                            <div class="node-name pink">开发工程师</div>
+                            <div class="node-role">全栈开发 & 部署</div>
+                            <div style="margin-top:4px;"><span class="pill pill-purple" style="font-size:0.4em; padding:2px 8px;">开发 Skill</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tip-box" style="margin-top:12px; text-align:center;">
+                    <p>💡 每个 Agent 专注一个领域，<span class="gold">互不干扰、各司其职</span></p>
+                </div>
+            </section>
+
+            <!-- ===== 11 Agent 创建实战 ===== -->
+            <section>
+                <span class="section-divider">03 实战：创建 Agent</span>
+                <h2 style="margin-top:12px;">4 步创建 <span class="accent">产品 PM</span> Agent</h2>
+                <div class="grid-2" style="margin-top:10px;">
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div class="glass-card" style="padding:12px 18px; border-color:var(--lobster);">
+                            <p style="margin:0; font-size:0.7em;"><span class="lobster">1️⃣ 基础信息</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">Name: 产品小P<br>Creature: 产品经理 — 需求分析与规划<br>Vibe: 逻辑清晰、注重细节</p>
+                        </div>
+                        <div class="glass-card" style="padding:12px 18px; border-color:var(--accent);">
+                            <p style="margin:0; font-size:0.7em;"><span class="accent">2️⃣ System Prompt</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">「你是一个资深产品经理，擅长需求分析、用户故事撰写、PRD 文档、竞品分析。回答结构化，善用表格。」</p>
+                        </div>
+                        <div class="glass-card" style="padding:12px 18px; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.7em;"><span class="gold">3️⃣ 身份档案</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">Identity.md + Soul.md + User.md → 让 Agent 认识你</p>
+                        </div>
+                        <div class="glass-card" style="padding:12px 18px; border-color:var(--green);">
+                            <p style="margin:0; font-size:0.7em;"><span class="green">4️⃣ 选择技能</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">绑定 create-plan + social-media-content Skill</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;">
+                        <img src="lobsterai-assets/agent-config.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
+                        <p class="muted" style="font-size:0.5em;">Agent 设定页 — 身份 / 人格 / 用户档案</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 12 Agent 创建：开发工程师 ===== -->
+            <section>
+                <span class="section-divider">03 再来一个</span>
+                <h2 style="margin-top:12px;">创建 <span class="pink">开发工程师</span> Agent</h2>
+                <div class="grid-2" style="margin-top:10px;">
+                    <div>
+                        <div class="glass-card" style="padding:14px 20px; margin-bottom:10px;">
+                            <p style="margin:0; font-size:0.7em;">📝 <span class="pink">基础信息</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
+                                Name: 码仔<br>
+                                Creature: 全栈工程师 — 前后端开发与部署<br>
+                                Vibe: 务实高效、代码整洁
+                            </p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 20px; margin-bottom:10px;">
+                            <p style="margin:0; font-size:0.7em;">🧠 <span class="accent">System Prompt</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
+                                「你是一名资深全栈工程师。技术栈：React/Vue + Node.js + Python。写代码前先看现有代码风格。遵循 Git 规范。每个功能写完先测试。」
+                            </p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 20px;">
+                            <p style="margin:0; font-size:0.7em;">🔌 <span class="green">绑定 Skill</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
+                                fullstack-dev + gcp-deploy → 自动获得编程 + 部署能力
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="glass-card" style="padding:16px 20px; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.72em;">🎯 <span class="gold">Agent 创建要点</span></p>
+                            <div style="margin-top:8px; font-size:0.6em; line-height:1.7;">
+                                <p style="margin:2px 0;">✅ 角色定位要 <span class="green">明确具体</span></p>
+                                <p style="margin:2px 0;">✅ Prompt 写清 <span class="green">能力边界</span></p>
+                                <p style="margin:2px 0;">✅ 身份档案让 AI <span class="green">认识你</span></p>
+                                <p style="margin:2px 0;">✅ Skill 绑定 <span class="green">按需分配</span></p>
+                                <p style="margin:2px 0;">❌ 不要一个 Agent <span class="red">什么都做</span></p>
+                            </div>
+                        </div>
+                        <div class="tip-box" style="margin-top:12px;">
+                            <p>💡 <span class="gold">先从 1-2 个 Agent 开始</span>，熟悉后再扩展团队</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 13 System Prompt 技巧 ===== -->
             <section>
                 <span class="section-divider">03 System Prompt</span>
                 <h2 style="margin-top:12px;">写好人设，Agent 更 <span class="gold">聪明</span></h2>
@@ -443,7 +573,7 @@
                 </div>
             </section>
 
-            <!-- ===== 11 Skill 系统 ===== -->
+            <!-- ===== 14 Skill 系统 ===== -->
             <section>
                 <span class="section-divider">04 Skill 技能系统</span>
                 <h2 style="margin-top:12px;">给龙虾装 <span class="gold">「技能包」</span></h2>
@@ -473,7 +603,7 @@
                 </div>
             </section>
 
-            <!-- ===== 12 Skill 触发流程 ===== -->
+            <!-- ===== 15 Skill 触发流程 ===== -->
             <section>
                 <span class="section-divider">04 Skill 触发机制</span>
                 <h2 style="margin-top:12px;">如何 <span class="accent">自动</span> 触发？</h2>
@@ -504,7 +634,37 @@
                 </div>
             </section>
 
-            <!-- ===== 13 时光智造技能包 ===== -->
+            <!-- ===== 16 Skill 安装：远程导入 ===== -->
+            <section>
+                <span class="section-divider">04 安装 Skill</span>
+                <h2 style="margin-top:12px;">从 GitHub <span class="accent">一键导入</span></h2>
+                <div class="grid-2">
+                    <div>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px;">
+                            <p style="margin:0; font-size:0.75em;">1️⃣ 技能 → 点击 <span class="accent">「添加」</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px;">
+                            <p style="margin:0; font-size:0.75em;">2️⃣ 选择 <span class="gold">「远程导入」→ GitHub</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px;">
+                            <p style="margin:0; font-size:0.75em;">3️⃣ 输入仓库地址</p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">例：BigheadIan/timux-skills</p>
+                        </div>
+                        <div class="glass-card" style="padding:14px 18px;">
+                            <p style="margin:0; font-size:0.75em;">4️⃣ 点击 <span class="green">「导入」</span> → 自动安装所有 Skill</p>
+                        </div>
+                        <div class="tip-box" style="margin-top:12px;">
+                            <p>💡 也支持 <span class="gold">ClawHub</span> 技能市场一键安装</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;">
+                        <img src="lobsterai-assets/skill-import.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
+                        <p class="muted" style="font-size:0.5em;">技能 → 远程导入 → GitHub URL</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 17 时光智造技能包 ===== -->
             <section>
                 <span class="section-divider">04 时光智造技能包</span>
                 <h2 style="margin-top:12px;">实用 Skill 扩展 🔌</h2>
@@ -529,7 +689,7 @@
                 </div>
             </section>
 
-            <!-- ===== 14 实战：实际工作截图 ===== -->
+            <!-- ===== 18 实战：实际工作截图 ===== -->
             <section>
                 <span class="section-divider">05 实战演示</span>
                 <h2 style="margin-top:12px;">龙虾在 <span class="lobster">实际工作</span> 中的样子</h2>
@@ -556,7 +716,7 @@
                 </div>
             </section>
 
-            <!-- ===== 15 实战场景 ===== -->
+            <!-- ===== 19 实战场景 ===== -->
             <section>
                 <span class="section-divider">05 实战场景</span>
                 <h2 style="margin-top:12px;">你可以让龙虾做什么？</h2>
@@ -584,43 +744,74 @@
                 </div>
             </section>
 
-            <!-- ===== 16 定时任务 ===== -->
+            <!-- ===== 20 定时任务：AI 新闻日报 ===== -->
             <section>
                 <span class="section-divider">06 定时任务</span>
-                <h2 style="margin-top:12px;">睡觉时龙虾 <span class="gold">自动工作</span></h2>
-                <div style="margin-top:14px; display:flex; flex-direction:column; gap:12px;">
-                    <div class="glass-card" style="padding:14px 20px; display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:1.2em;">⏰</span>
-                        <div style="flex:1;">
-                            <p style="margin:0; font-size:0.75em;"><span class="gold">每天早上 8:00</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.6em;">自动查看股市行情，生成分析报告</p>
+                <h2 style="margin-top:12px;">实战：<span class="gold">AI 新闻日报</span> 自动生成</h2>
+                <div class="grid-2" style="margin-top:10px;">
+                    <div>
+                        <div class="glass-card-lobster" style="padding:16px 20px; margin-bottom:12px;">
+                            <p style="margin:0; font-size:0.75em;">📰 <span class="lobster">每天早上 8:00 自动执行</span></p>
+                            <p class="muted" style="margin:6px 0 0; font-size:0.58em;">
+                                1. 搜索最新 AI 行业新闻<br>
+                                2. 筛选 5-8 条重要消息<br>
+                                3. 整理成结构化日报<br>
+                                4. 保存为 Markdown 文件<br>
+                                5. 通过微信/飞书推送给你
+                            </p>
+                        </div>
+                        <div class="glass-card" style="padding:12px 18px;">
+                            <p style="margin:0; font-size:0.65em;">💡 <span class="accent">更多定时任务灵感：</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
+                                ⏰ 每日股市行情分析<br>
+                                📧 每周邮件周报生成<br>
+                                📊 每月销售数据汇总<br>
+                                🔍 每小时竞品价格监控
+                            </p>
                         </div>
                     </div>
-                    <div class="glass-card" style="padding:14px 20px; display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:1.2em;">📧</span>
-                        <div style="flex:1;">
-                            <p style="margin:0; font-size:0.75em;"><span class="accent">每周一上午</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.6em;">整理上周工作邮件，生成周报草稿</p>
-                        </div>
-                    </div>
-                    <div class="glass-card" style="padding:14px 20px; display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:1.2em;">📊</span>
-                        <div style="flex:1;">
-                            <p style="margin:0; font-size:0.75em;"><span class="purple">每月 1 号</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.6em;">汇总销售数据，生成月度报表</p>
-                        </div>
-                    </div>
-                    <div class="glass-card" style="padding:14px 20px; display:flex; align-items:center; gap:16px;">
-                        <span style="font-size:1.2em;">🔍</span>
-                        <div style="flex:1;">
-                            <p style="margin:0; font-size:0.75em;"><span class="pink">每小时一次</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.6em;">监控竞品价格变动，发现异常就通知</p>
+                    <div>
+                        <div class="glass-card" style="padding:16px 20px; border-color:var(--gold);">
+                            <p style="margin:0; font-size:0.72em;">📋 <span class="gold">AI 日报示例输出</span></p>
+                            <div style="margin-top:10px; font-size:0.55em; line-height:1.7; font-family: monospace; color:var(--muted);">
+                                <p style="margin:2px 0; color:var(--accent);"># 🤖 AI 速报 — 2026.04.09</p>
+                                <p style="margin:2px 0;">1. 🔬 <span style="color:var(--text);">DeepSeek V4 灰度测试开启</span></p>
+                                <p style="margin:2px 0;">2. 🛡️ <span style="color:var(--text);">12家大厂联合 AI 安全联盟</span></p>
+                                <p style="margin:2px 0;">3. 🎬 <span style="color:var(--text);">Tubi x ChatGPT 推荐引擎</span></p>
+                                <p style="margin:2px 0;">4. 🖼️ <span style="color:var(--text);">Meta Muse Spark 图像生成</span></p>
+                                <p style="margin:2px 0;">5. ⚡ <span style="color:var(--text);">MegaTrain 120B 单卡训练</span></p>
+                                <p style="margin:6px 0 2px; color:var(--gold); font-size:0.9em;">→ 自动搜索 + 整理 + 推送</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ===== 17 IM 远控 ===== -->
+            <!-- ===== 21 记忆系统 ===== -->
+            <section>
+                <span class="section-divider">06 记忆系统</span>
+                <h2 style="margin-top:12px;">龙虾能 <span class="accent">记住</span> 你说过的话</h2>
+                <div class="grid-2">
+                    <div>
+                        <ul>
+                            <li>🧠 <span class="accent">持久记忆</span> — 跨对话记住重要信息</li>
+                            <li>🏢 <span class="gold">公司信息</span> — 公司名、官网、口号</li>
+                            <li>👤 <span class="purple">用户偏好</span> — CEO 是谁、怎么称呼</li>
+                            <li>📋 <span class="green">工作记录</span> — 客户名单、合作历史</li>
+                            <li>✏️ <span class="pink">可编辑</span> — 随时新增、修改、删除</li>
+                        </ul>
+                        <div class="tip-box" style="margin-top:12px;">
+                            <p>💡 记忆让 AI <span class="gold">越用越懂你</span>，不用每次重新介绍</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;">
+                        <img src="lobsterai-assets/memory.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
+                        <p class="muted" style="font-size:0.5em;">设置 → 记忆管理</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 22 IM 远控 ===== -->
             <section>
                 <span class="section-divider">06 IM 远程控制</span>
                 <h2 style="margin-top:12px;">用手机 <span class="accent">随时随地</span> 控制龙虾</h2>
@@ -656,7 +847,7 @@
                 </div>
             </section>
 
-            <!-- ===== 18 使用技巧 ===== -->
+            <!-- ===== 23 使用技巧 ===== -->
             <section>
                 <h2>💡 使用技巧</h2>
                 <div class="grid-2" style="margin-top:12px;">
@@ -690,30 +881,7 @@
                 </div>
             </section>
 
-            <!-- ===== 19 常见问题 ===== -->
-            <section>
-                <h2>❓ 常见问题</h2>
-                <div style="margin-top:12px; display:flex; flex-direction:column; gap:12px;">
-                    <div class="glass-card" style="padding:14px 20px;">
-                        <p style="margin:0; font-size:0.75em;"><span class="accent">Q: 龙虾会泄露我的数据吗？</span></p>
-                        <p class="muted" style="margin:4px 0 0; font-size:0.6em;">A: 龙虾在本地运行，数据不出你的电脑。只有调用 LLM 时会发送对话内容。</p>
-                    </div>
-                    <div class="glass-card" style="padding:14px 20px;">
-                        <p style="margin:0; font-size:0.75em;"><span class="accent">Q: API 费用大概多少？</span></p>
-                        <p class="muted" style="margin:4px 0 0; font-size:0.6em;">A: DeepSeek V3 非常便宜，日常使用每天几毛钱。</p>
-                    </div>
-                    <div class="glass-card" style="padding:14px 20px;">
-                        <p style="margin:0; font-size:0.75em;"><span class="accent">Q: 可以同时运行多个任务吗？</span></p>
-                        <p class="muted" style="margin:4px 0 0; font-size:0.6em;">A: 可以！龙虾支持多个 Agent 并行工作。</p>
-                    </div>
-                    <div class="glass-card" style="padding:14px 20px;">
-                        <p style="margin:0; font-size:0.75em;"><span class="accent">Q: 断网了还能用吗？</span></p>
-                        <p class="muted" style="margin:4px 0 0; font-size:0.6em;">A: 需要网络连接 LLM API。但可以用本地模型（Ollama）离线运行。</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== 20 学习资源 ===== -->
+            <!-- ===== 24 学习资源 ===== -->
             <section>
                 <h2>📚 学习资源</h2>
                 <div style="margin-top:14px; display:flex; flex-direction:column; gap:12px;">
@@ -748,7 +916,7 @@
                 </div>
             </section>
 
-            <!-- ===== 21 结尾 ===== -->
+            <!-- ===== 25 结尾 ===== -->
             <section class="center">
                 <br>
                 <h1 style="font-size:2.5em;">🦞</h1>
