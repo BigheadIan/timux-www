@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動相簿 — 時光智造 Timux</title>
+    <meta name="description" content="時光智造 Timux 活動與演講相簿">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gallery-item {
+            transition: all 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-dark text-white min-h-screen">
+
+    <!-- Header -->
+    <nav class="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex justify-between items-center">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="text-2xl font-bold gradient-text">⚡ Timux</span>
+            <span class="text-sm text-gray-400" data-i18n="brand">時光智造</span>
+        </a>
+        <a href="index.html#about" class="text-gray-300 hover:text-white transition text-sm" data-i18n="gallery.back">← 返回官網</a>
+    </nav>
+
+    <!-- Gallery -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="gallery.title">活動相簿</h1>
+            <p class="text-xl text-gray-400" data-i18n="gallery.subtitle">時光智造的活動、演講與合作紀錄</p>
+        </div>
+
+        <!-- Event: 武漢青創營 -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-2" data-i18n="gallery.wuhan_title">2026 台灣青年自媒體創業加速營</h2>
+            <p class="text-gray-400 mb-6" data-i18n="gallery.wuhan_subtitle">暨武漢深度考察營 — AI 創業分享</p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="gallery-item glass rounded-2xl overflow-hidden cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+                    <img src="images/team/speaking-wuhan-1.jpg" alt="" class="w-full h-56 object-cover">
+                    <div class="p-4">
+                        <p class="text-sm text-gray-400" data-i18n="gallery.wuhan_1">青創營會議全景</p>
+                    </div>
+                </div>
+                <div class="gallery-item glass rounded-2xl overflow-hidden cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+                    <img src="images/team/speaking-wuhan-2.jpg" alt="" class="w-full h-56 object-cover">
+                    <div class="p-4">
+                        <p class="text-sm text-gray-400" data-i18n="gallery.wuhan_2">AI 創業分享 — OpenClaw 私人 AI 管家</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Placeholder for future events -->
+        <!--
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-2">活動名稱</h2>
+            <p class="text-gray-400 mb-6">描述</p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="gallery-item glass rounded-2xl overflow-hidden cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+                    <img src="images/..." alt="" class="w-full h-56 object-cover">
+                    <div class="p-4"><p class="text-sm text-gray-400">說明</p></div>
+                </div>
+            </div>
+        </section>
+        -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400 text-sm">
+            © 2026 Timux. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300" onclick="closeLightbox()">&times;</button>
+        <img id="lightbox-img" src="" alt="" class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl">
+    </div>
+
+    <script>
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = src;
+            lb.classList.remove('hidden');
+            lb.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('hidden');
+            lb.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js?v=20260303"></script>
+</body>
+</html>
