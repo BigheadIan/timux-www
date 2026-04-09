@@ -47,7 +47,7 @@
     position: relative; z-index: 10;
     width: 100%; height: 100%;
     display: flex; flex-direction: column;
-    padding: 50px 55px 45px;
+    padding: 48px 55px 40px;
   }
 
   /* Top badge */
@@ -55,56 +55,74 @@
     display: inline-flex; align-items: center; gap: 10px;
     background: rgba(220, 38, 38, 0.15);
     border: 1px solid rgba(220, 38, 38, 0.3);
-    border-radius: 50px; padding: 10px 26px;
-    font-size: 24px; font-weight: 500; color: #ff6b6b;
+    border-radius: 50px; padding: 12px 30px;
+    font-size: 28px; font-weight: 500; color: #ff6b6b;
     width: fit-content; letter-spacing: 2px;
   }
 
   /* Lobster + Title */
   .hero-row {
     display: flex; align-items: center; justify-content: center;
-    gap: 20px; margin: 25px 0 10px;
+    gap: 20px; margin: 22px 0 8px;
   }
   .lobster-emoji { font-size: 100px; filter: drop-shadow(0 0 30px rgba(220,38,38,0.4)); }
   .title-area { text-align: center; }
   .title-main {
-    font-size: 64px; font-weight: 900;
+    font-size: 72px; font-weight: 900;
     background: linear-gradient(135deg, #fff 0%, #ff6b6b 50%, #ff8c42 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text; line-height: 1.25; letter-spacing: 3px;
   }
   .title-sub {
-    font-size: 30px; font-weight: 400;
+    font-size: 34px; font-weight: 400;
     color: rgba(255,255,255,0.6); margin-top: 8px; letter-spacing: 4px;
+  }
+
+  /* Install info */
+  .install-info {
+    text-align: center; margin-top: 18px;
+    display: flex; flex-direction: column; gap: 8px; align-items: center;
+  }
+  .install-line {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 28px; font-weight: 500; color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+  }
+  .install-line .highlight-text {
+    color: #5eead4; font-weight: 700;
+  }
+  .install-platforms {
+    font-size: 24px; color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
   }
 
   /* Architecture diagram */
   .arch-section {
-    margin: 28px 0 22px;
+    margin: 28px 0 24px;
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 24px;
-    padding: 30px 36px 26px;
+    padding: 30px 36px 28px;
   }
   .arch-title {
-    text-align: center; font-size: 26px; font-weight: 700;
+    text-align: center; font-size: 30px; font-weight: 700;
     color: #ff8c42; margin-bottom: 22px; letter-spacing: 2px;
   }
   .arch-flow {
     display: flex; align-items: center; justify-content: center;
-    gap: 0; margin-bottom: 20px;
+    gap: 0; margin-bottom: 22px;
   }
   .arch-node {
     display: flex; flex-direction: column; align-items: center; gap: 8px;
-    min-width: 140px;
+    min-width: 150px;
   }
   .arch-node .node-icon {
-    width: 80px; height: 80px;
+    width: 88px; height: 88px;
     background: rgba(255,255,255,0.08);
     border: 2px solid rgba(255,255,255,0.15);
     border-radius: 20px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 40px;
+    font-size: 44px;
   }
   .arch-node .node-icon.highlight {
     background: rgba(220, 38, 38, 0.15);
@@ -112,42 +130,44 @@
     box-shadow: 0 0 20px rgba(220,38,38,0.2);
   }
   .arch-node .node-label {
-    font-size: 22px; font-weight: 600; color: rgba(255,255,255,0.8);
+    font-size: 26px; font-weight: 600; color: rgba(255,255,255,0.8);
   }
   .arch-node .node-sub {
-    font-size: 17px; color: rgba(255,255,255,0.4);
+    font-size: 20px; color: rgba(255,255,255,0.4);
   }
   .arch-arrow {
-    font-size: 36px; color: rgba(255,140,66,0.7);
-    margin: 0 16px; padding-bottom: 30px;
+    font-size: 40px; color: rgba(255,140,66,0.7);
+    margin: 0 18px; padding-bottom: 30px;
   }
 
-  /* Scenario pills */
+  /* Scenario pills - 2 rows of 5 */
   .scenarios {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
   }
   .scenario-pill {
     background: rgba(255,140,66,0.12);
     border: 1px solid rgba(255,140,66,0.25);
-    border-radius: 30px; padding: 10px 22px;
-    font-size: 22px; color: #ffb366;
-    display: flex; align-items: center; gap: 8px;
+    border-radius: 30px; padding: 12px 0;
+    font-size: 24px; color: #ffb366;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
 
   /* Feature cards - compact single row */
   .features {
-    display: flex; gap: 16px; margin: 22px 0;
+    display: flex; gap: 16px; margin: 24px 0;
   }
   .feature-card {
     flex: 1;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 18px; padding: 22px 16px;
+    border-radius: 18px; padding: 24px 16px;
     text-align: center;
   }
-  .feature-card .icon { font-size: 38px; margin-bottom: 10px; display: block; }
-  .feature-card .label { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 5px; }
-  .feature-card .desc { font-size: 19px; color: rgba(255,255,255,0.45); line-height: 1.4; }
+  .feature-card .icon { font-size: 42px; margin-bottom: 10px; display: block; }
+  .feature-card .label { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .feature-card .desc { font-size: 21px; color: rgba(255,255,255,0.45); line-height: 1.4; }
 
   /* Bottom: QR + CTA */
   .bottom-section {
@@ -157,7 +177,7 @@
   }
   .qr-area {
     flex-shrink: 0;
-    width: 260px; height: 260px;
+    width: 280px; height: 280px;
     background: #fff;
     border-radius: 20px;
     padding: 12px;
@@ -171,26 +191,26 @@
   }
   .cta-right { text-align: left; }
   .date-value {
-    font-size: 52px; font-weight: 900;
+    font-size: 58px; font-weight: 900;
     background: linear-gradient(135deg, #ff6b6b, #ff8c42);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text; letter-spacing: 2px;
   }
   .date-label {
-    font-size: 24px; color: rgba(255,255,255,0.5);
+    font-size: 26px; color: rgba(255,255,255,0.5);
     margin-bottom: 6px;
   }
   .cta-action {
     margin-top: 16px;
     background: linear-gradient(135deg, #dc2626, #ff6b35);
-    border-radius: 50px; padding: 16px 40px;
-    font-size: 28px; font-weight: 700; color: #fff;
+    border-radius: 50px; padding: 18px 44px;
+    font-size: 32px; font-weight: 700; color: #fff;
     letter-spacing: 3px; display: inline-block;
     box-shadow: 0 6px 24px rgba(220,38,38,0.4);
   }
   .cta-hint {
     margin-top: 12px;
-    font-size: 20px; color: rgba(255,255,255,0.35);
+    font-size: 22px; color: rgba(255,255,255,0.35);
   }
 
   /* Footer */
@@ -199,7 +219,7 @@
     gap: 16px; margin-top: 24px; padding-top: 18px;
     border-top: 1px solid rgba(255,255,255,0.06);
   }
-  .footer-logo { font-size: 20px; color: rgba(255,255,255,0.25); letter-spacing: 3px; }
+  .footer-logo { font-size: 22px; color: rgba(255,255,255,0.25); letter-spacing: 3px; }
   .footer-dot { color: rgba(255,255,255,0.12); }
 
   .particle { position: absolute; width: 4px; height: 4px; background: rgba(255,107,107,0.4); border-radius: 50%; z-index: 2; }
@@ -234,6 +254,12 @@
     <div class="title-sub">你的第一个 AI 团队，从这里开始</div>
   </div>
 
+  <!-- Install info -->
+  <div class="install-info">
+    <div class="install-line">⚡ <span class="highlight-text">五分钟内安装好开始使用</span></div>
+    <div class="install-platforms">macOS、Windows 皆可快速使用</div>
+  </div>
+
   <!-- Architecture Diagram -->
   <div class="arch-section">
     <div class="arch-title">🏗️ 走在路上，用手机指挥 AI 干活</div>
@@ -263,6 +289,10 @@
       <div class="scenario-pill">🎮 做游戏</div>
       <div class="scenario-pill">💬 AI 客服</div>
       <div class="scenario-pill">📅 自动日报</div>
+      <div class="scenario-pill">🔍 数据分析</div>
+      <div class="scenario-pill">🛒 电商运营</div>
+      <div class="scenario-pill">📧 自动邮件</div>
+      <div class="scenario-pill">🎨 生成图片</div>
     </div>
   </div>
 
@@ -276,7 +306,7 @@
     <div class="feature-card">
       <span class="icon">🇨🇳</span>
       <div class="label">适合内地</div>
-      <div class="desc">无需翻墙<br>支持 DeepSeek</div>
+      <div class="desc">无需科学上网<br>支持 DeepSeek</div>
     </div>
     <div class="feature-card">
       <span class="icon">✨</span>
