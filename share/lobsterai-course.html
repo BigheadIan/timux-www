@@ -345,25 +345,63 @@
                 <h2 style="margin-top:12px;">选择你的 <span class="grad-blue">AI 大脑</span></h2>
                 <div class="grid-2">
                     <div>
-                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px; border-color:var(--green);">
-                            <p style="margin:0;"><span class="green" style="font-size:0.9em;">⭐ DeepSeek V3</span> <span class="muted" style="font-size:0.6em;">日常首选</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">国产最强 · 按量计费 · 1元≈100万token</p>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px; border-color:var(--lobster);">
+                            <p style="margin:0;"><span class="lobster" style="font-size:0.9em;">🧠 DeepSeek Reasoner</span> <span class="muted" style="font-size:0.6em;">⭐ 最强推荐</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">思维链推理 · 准确率最高 · 适合所有需要「深度思考」的任务</p>
                         </div>
-                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px;">
-                            <p style="margin:0;"><span class="accent" style="font-size:0.9em;">🧠 DeepSeek Reasoner</span> <span class="muted" style="font-size:0.6em;">复杂分析</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">思维链推理 · 准确率更高 · 适合关键任务</p>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:12px; border-color:var(--green);">
+                            <p style="margin:0;"><span class="green" style="font-size:0.9em;">⚡ DeepSeek Chat</span> <span class="muted" style="font-size:0.6em;">日常快速</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">速度快 · 按量计费 · 1元≈100万token · 适合简单对话</p>
                         </div>
                         <div class="glass-card" style="padding:14px 18px;">
                             <p style="margin:0;"><span class="gold" style="font-size:0.9em;">🌐 GPT-4o / Claude</span> <span class="muted" style="font-size:0.6em;">海外模型</span></p>
                             <p class="muted" style="margin:3px 0 0; font-size:0.55em;">需海外 API Key · 功能强但价格贵</p>
                         </div>
                         <div class="tip-box" style="margin-top:12px;">
-                            <p>💡 <span class="gold">推荐国内用户首选 DeepSeek V3</span></p>
+                            <p>💡 <span class="gold">追求最强效果 → Reasoner</span></p>
+                            <p style="font-size:0.6em;">想省钱跑简单任务 → Chat</p>
                         </div>
                     </div>
                     <div style="text-align:center;">
                         <img src="lobsterai-assets/model-config.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
                         <p class="muted" style="font-size:0.5em;">设置 → 模型配置</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 07b 常用模型 ID 速查 ===== -->
+            <section>
+                <span class="section-divider">02 模型 ID 速查</span>
+                <h2 style="margin-top:12px;">如何新增模型？<span class="accent">先找到模型 ID</span></h2>
+                <div class="grid-2" style="margin-top:10px;">
+                    <div>
+                        <p style="font-size:0.68em; color:var(--accent); margin-bottom:8px;">📋 常用模型 ID 一览</p>
+                        <table class="compare-table" style="margin:0;">
+                            <tr><th style="width:50%;">模型名称</th><th>模型 ID</th></tr>
+                            <tr><td class="lobster">DeepSeek Reasoner</td><td style="font-family:monospace; font-size:0.85em;">deepseek-reasoner</td></tr>
+                            <tr><td class="green">DeepSeek Chat</td><td style="font-family:monospace; font-size:0.85em;">deepseek-chat</td></tr>
+                            <tr><td class="gold">GPT-4o</td><td style="font-family:monospace; font-size:0.85em;">gpt-4o</td></tr>
+                            <tr><td class="gold">GPT-4o-mini</td><td style="font-family:monospace; font-size:0.85em;">gpt-4o-mini</td></tr>
+                            <tr><td class="accent">Claude Sonnet</td><td style="font-family:monospace; font-size:0.85em;">claude-sonnet-4-6</td></tr>
+                            <tr><td class="purple">Qwen Max</td><td style="font-family:monospace; font-size:0.85em;">qwen-max</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <p style="font-size:0.68em; color:var(--gold); margin-bottom:8px;">🔍 怎么知道模型 ID？</p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">1️⃣ 打开模型提供商的 <span class="accent">API 文档</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.5em;">如 platform.deepseek.com/api-docs</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">2️⃣ 找到 <span class="gold">Model List</span> 或「可用模型」页面</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">3️⃣ 复制模型 ID → 填入龙虾 <span class="green">模型配置</span></p>
+                        </div>
+                        <div class="tip-box" style="margin-top:8px;">
+                            <p style="font-size:0.6em;">💡 龙虾兼容所有 <span class="gold">OpenAI 格式 API</span> 的模型</p>
+                            <p style="font-size:0.55em;">只需填写：API Key + Base URL + 模型 ID</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -403,74 +441,105 @@
                 </div>
             </section>
 
-            <!-- ===== 09 Agent 概览 ===== -->
+            <!-- ===== 09 Agent 概览：团队架构 ===== -->
             <section>
                 <span class="section-divider">03 Agent 智能体</span>
-                <h2 style="margin-top:12px;">你的专属 <span class="grad-blue">AI 助手团队</span></h2>
-                <div class="grid-2">
-                    <div>
-                        <p style="font-size:0.72em; color:var(--accent); margin-bottom:8px;">Agent = 有人设和能力的 AI 助手</p>
-                        <ul>
-                            <li>📝 <span class="accent">基础信息</span> — 名字、身份、性格</li>
-                            <li>🧠 <span class="purple">System Prompt</span> — 定义角色和行为</li>
-                            <li>🎭 <span class="gold">身份档案</span> — Identity / Soul / User</li>
-                            <li>🔌 <span class="green">Skill 绑定</span> — 自动加载技能包</li>
-                        </ul>
-                        <div class="tip-box" style="margin-top:12px;">
-                            <p>💡 龙虾内置 <span class="gold">6 个预设 Agent</span>，也可以自己创建！</p>
-                        </div>
+                <h2 style="margin-top:12px;">龙虾 + 最顶级 AI = <span class="lobster">N 人虚拟团队</span></h2>
+                <p class="muted" style="font-size:0.6em; margin-bottom:10px;">以时光智造「小mini 团队」为例 — 10 个 Agent 各司其职</p>
+                <!-- Commander -->
+                <div style="text-align:center; margin-bottom:6px;">
+                    <div style="display:inline-block; background:rgba(79,195,247,0.1); border:2px solid rgba(79,195,247,0.3); border-radius:14px; padding:8px 28px;">
+                        <span style="font-size:1.2em;">🤠</span>
+                        <span class="accent" style="font-size:0.8em; font-weight:700; margin-left:6px;">小mini — Claude Opus 4 (总指挥)</span>
                     </div>
-                    <div style="text-align:center;">
-                        <img src="lobsterai-assets/my-agent.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
-                        <p class="muted" style="font-size:0.5em;">我的 Agent — 预设 + 自建</p>
+                </div>
+                <div style="text-align:center; font-size:0.7em; color:var(--accent); margin-bottom:6px;">↓ 调度 ↓</div>
+                <!-- Agent grid: 2 rows x 5 -->
+                <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:10px;">
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">📋 <span class="accent" style="font-weight:700;">PM</span></div>
+                        <div class="node-role">需求分析</div>
                     </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">💻 <span class="green" style="font-weight:700;">Dev</span></div>
+                        <div class="node-role">全栈开发</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">🔍 <span class="gold" style="font-weight:700;">QA</span></div>
+                        <div class="node-role">测试找 Bug</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">🎨 <span class="pink" style="font-weight:700;">UI</span></div>
+                        <div class="node-role">设计审查</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">🔬 <span class="purple" style="font-weight:700;">Research</span></div>
+                        <div class="node-role">调研竞品</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">📢 <span class="lobster" style="font-weight:700;">Social</span></div>
+                        <div class="node-role">社群策略</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">✏️ <span class="orange" style="font-weight:700;">Content</span></div>
+                        <div class="node-role">行销文案</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">💗 <span class="accent" style="font-weight:700;">CS</span></div>
+                        <div class="node-role">客户追踪</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">🌐 <span class="gold" style="font-weight:700;">Explorer</span></div>
+                        <div class="node-role">搜索整理</div>
+                    </div>
+                    <div class="arch-node arch-agent" style="padding:8px 6px;">
+                        <div style="font-size:0.55em;">🛠️ <span class="green" style="font-weight:700;">Helper</span></div>
+                        <div class="node-role">杂务</div>
+                    </div>
+                </div>
+                <!-- Bottom legend -->
+                <div style="display:flex; gap:14px; justify-content:center;">
+                    <span class="pill pill-lobster" style="font-size:0.45em;">⚡ 总指挥 = 最强模型</span>
+                    <span class="pill pill-green" style="font-size:0.45em;">🧠 手下 = 便宜模型（省 80%）</span>
+                    <span class="pill" style="font-size:0.45em;">🚀 并行多任务同时跑</span>
                 </div>
             </section>
 
-            <!-- ===== 10 Agent 架构图 ===== -->
+            <!-- ===== 10 Agent 调用机制 ===== -->
             <section>
-                <span class="section-divider">03 团队架构思维</span>
-                <h2 style="margin-top:12px;">像组建团队一样 <span class="lobster">创建 Agent</span></h2>
-                <p class="muted" style="font-size:0.6em; margin-bottom:14px;">以时光智造「小mini 团队」为例 — 每个 Agent 有明确分工</p>
-                <div style="display:grid; grid-template-columns: 1fr; gap:8px;">
-                    <!-- Owner row -->
-                    <div style="text-align:center;">
-                        <div class="arch-node arch-owner" style="display:inline-block; padding:8px 30px;">
-                            <span class="node-icon">👨‍💼</span>
-                            <span class="node-name lobster" style="margin-left:8px;">头头（老板）</span>
+                <span class="section-divider">03 Agent 如何协作？</span>
+                <h2 style="margin-top:12px;">自动选择 + <span class="accent">互相调用</span></h2>
+                <div class="grid-2" style="margin-top:12px;">
+                    <div>
+                        <p style="font-size:0.72em; color:var(--accent); margin-bottom:8px;">🤖 Agent 自动选择</p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">1️⃣ 你对龙虾说「<span class="accent">帮我写篇公众号文章</span>」</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">2️⃣ 龙虾根据任务描述 → 自动匹配 <span class="gold">Content Agent</span></p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">3️⃣ Content Agent 需要素材 → 调用 <span class="green">Explorer Agent</span> 搜索</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px;">
+                            <p style="margin:0; font-size:0.6em;">4️⃣ 完成后交回总指挥 → <span class="lobster">汇报结果</span></p>
                         </div>
                     </div>
-                    <div class="arch-connector">↓ 指挥 ↓</div>
-                    <!-- Agent row -->
-                    <div class="grid-4">
-                        <div class="arch-node arch-agent" style="border-color:var(--accent);">
-                            <div class="node-icon">🤠</div>
-                            <div class="node-name accent">小mini</div>
-                            <div class="node-role">AI PM & 创意夥伴</div>
-                            <div style="margin-top:4px;"><span class="pill" style="font-size:0.4em; padding:2px 8px;">主管 Agent</span></div>
+                    <div>
+                        <p style="font-size:0.72em; color:var(--gold); margin-bottom:8px;">💡 关键机制</p>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:10px; border-color:var(--lobster);">
+                            <p style="margin:0; font-size:0.65em;"><span class="lobster">自动匹配</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.5em;">每个 Agent 有 <code>description</code> 描述自己能做什么。龙虾根据你的问题，自动选最合适的 Agent</p>
                         </div>
-                        <div class="arch-node arch-agent" style="border-color:var(--gold);">
-                            <div class="node-icon">🖋️</div>
-                            <div class="node-name gold">小墨</div>
-                            <div class="node-role">AI 课程设计师</div>
-                            <div style="margin-top:4px;"><span class="pill pill-gold" style="font-size:0.4em; padding:2px 8px;">课程 Skill</span></div>
+                        <div class="glass-card" style="padding:14px 18px; margin-bottom:10px; border-color:var(--accent);">
+                            <p style="margin:0; font-size:0.65em;"><span class="accent">Sub-Agent 调用</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.5em;">总指挥 Agent 可以把子任务分配给专业 Agent，像老板分工给部门主管</p>
                         </div>
-                        <div class="arch-node arch-agent" style="border-color:var(--green);">
-                            <div class="node-icon">📋</div>
-                            <div class="node-name green">产品 PM</div>
-                            <div class="node-role">产品规划与管理</div>
-                            <div style="margin-top:4px;"><span class="pill pill-green" style="font-size:0.4em; padding:2px 8px;">计划 Skill</span></div>
-                        </div>
-                        <div class="arch-node arch-agent" style="border-color:var(--accent3);">
-                            <div class="node-icon">💻</div>
-                            <div class="node-name pink">开发工程师</div>
-                            <div class="node-role">全栈开发 & 部署</div>
-                            <div style="margin-top:4px;"><span class="pill pill-purple" style="font-size:0.4em; padding:2px 8px;">开发 Skill</span></div>
+                        <div class="glass-card" style="padding:14px 18px; border-color:var(--green);">
+                            <p style="margin:0; font-size:0.65em;"><span class="green">并行执行</span></p>
+                            <p class="muted" style="margin:4px 0 0; font-size:0.5em;">多个 Agent 可以同时工作，不用排队等，效率翻倍</p>
                         </div>
                     </div>
-                </div>
-                <div class="tip-box" style="margin-top:12px; text-align:center;">
-                    <p>💡 每个 Agent 专注一个领域，<span class="gold">互不干扰、各司其职</span></p>
                 </div>
             </section>
 
