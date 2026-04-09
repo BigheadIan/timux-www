@@ -115,8 +115,12 @@ const translations = {
         'clients.aics': '智能客服客戶',
         'founder.title': '創辦人',
         'founder.name': '黃昱仁',
-        'founder.role': '創辦人 & CEO',
-        'founder.bio': '擁有多年軟體開發與 AI 產品經驗，致力於以科技改善傳統產業效率，讓人們有更多時間專注於真正重要的事。'
+        'founder.role': '創辦人暨執行長｜時光智造科技',
+        'founder.title2': '共同創辦人｜UpFront Investment 美股 AI 分析平台',
+        'founder.title3': 'AI 智能客服系統 專家顧問｜台灣',
+        'founder.title4': 'AI 創業生態 特聘導師｜武漢',
+        'founder.bio': '擁有多年軟體開發與 AI 產品經驗，致力於以科技改善傳統產業效率，讓人們有更多時間專注於真正重要的事。',
+        'founder.line': 'Line ID: bigheadian'
     },
     'zh-CN': {
         brand: '时光智造',
@@ -232,8 +236,12 @@ const translations = {
         'clients.aics': '智能客服客户',
         'founder.title': '创办人',
         'founder.name': '黄昱仁',
-        'founder.role': '创办人 & CEO',
-        'founder.bio': '拥有多年软件开发与 AI 产品经验，致力于以科技改善传统产业效率，让人们有更多时间专注于真正重要的事。'
+        'founder.role': '创办人暨执行长｜时光智造科技',
+        'founder.title2': '共同创办人｜UpFront Investment 美股 AI 分析平台',
+        'founder.title3': 'AI 智能客服系统 专家顾问｜台湾',
+        'founder.title4': 'AI 创业生态 特聘导师｜武汉',
+        'founder.bio': '拥有多年软件开发与 AI 产品经验，致力于以科技改善传统产业效率，让人们有更多时间专注于真正重要的事。',
+        'founder.line': 'Line ID: bigheadian'
     },
     'en': {
         brand: 'Timux',
@@ -349,8 +357,12 @@ const translations = {
         'clients.aics': 'AI Customer Service Clients',
         'founder.title': 'Founder',
         'founder.name': 'Ian Huang',
-        'founder.role': 'Founder & CEO',
-        'founder.bio': 'With years of software development and AI product experience, dedicated to improving traditional industry efficiency through technology, giving people more time to focus on what truly matters.'
+        'founder.role': 'Founder & CEO, Timux Technology',
+        'founder.title2': 'Co-Founder, UpFront Investment — AI-Powered US Stock Analytics',
+        'founder.title3': 'Senior AI Consultant — Intelligent Customer Service Systems, Taiwan',
+        'founder.title4': 'AI Entrepreneurship Advisor — Wuhan Innovation Ecosystem',
+        'founder.bio': 'With years of software development and AI product experience, dedicated to improving traditional industry efficiency through technology, giving people more time to focus on what truly matters.',
+        'founder.line': 'Line ID: bigheadian'
     }
 };
 
