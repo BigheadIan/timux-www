@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>龙虾管家 AI 课程海报</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #0a0a1a;
+    color: #fff;
+    position: relative;
+  }
+
+  /* Background gradient layers */
+  .bg-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(220, 38, 38, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+      linear-gradient(180deg, #0a0a1a 0%, #111133 50%, #0a0a1a 100%);
+    z-index: 0;
+  }
+
+  /* Decorative grid lines */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 1;
+  }
+
+  /* Glowing orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 1;
+  }
+  .orb-1 { width: 400px; height: 400px; background: rgba(220, 38, 38, 0.2); top: -100px; right: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(255, 165, 0, 0.12); bottom: 300px; left: -80px; }
+  .orb-3 { width: 250px; height: 250px; background: rgba(139, 92, 246, 0.15); bottom: -50px; right: -50px; }
+
+  .content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 70px 65px 60px;
+  }
+
+  /* Top badge */
+  .top-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(220, 38, 38, 0.15);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-size: 26px;
+    font-weight: 500;
+    color: #ff6b6b;
+    width: fit-content;
+    letter-spacing: 2px;
+  }
+
+  /* Lobster emoji area */
+  .lobster-hero {
+    text-align: center;
+    margin: 35px 0 20px;
+    font-size: 140px;
+    line-height: 1;
+    filter: drop-shadow(0 0 40px rgba(220, 38, 38, 0.4));
+  }
+
+  /* Title */
+  .title-area {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .title-main {
+    font-size: 72px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, #ff6b6b 50%, #ff8c42 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.3;
+    letter-spacing: 4px;
+  }
+  .title-sub {
+    font-size: 38px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 12px;
+    letter-spacing: 6px;
+  }
+
+  /* Feature cards */
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 30px 0 35px;
+  }
+  .feature-row {
+    display: flex;
+    gap: 20px;
+  }
+  .feature-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 28px 24px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .feature-card .icon {
+    font-size: 48px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .feature-card .label {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .feature-card .desc {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+  }
+
+  /* Highlight strip */
+  .highlight-strip {
+    background: linear-gradient(90deg, rgba(220, 38, 38, 0.2), rgba(255, 140, 66, 0.2), rgba(220, 38, 38, 0.2));
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    border-radius: 16px;
+    padding: 24px 32px;
+    text-align: center;
+    margin-bottom: 35px;
+  }
+  .highlight-strip .line1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ff8c42;
+    margin-bottom: 6px;
+  }
+  .highlight-strip .line2 {
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Date & CTA area */
+  .cta-area {
+    margin-top: auto;
+    text-align: center;
+  }
+  .date-block {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .date-label {
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+  }
+  .date-value {
+    font-size: 64px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b6b, #ff8c42);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 3px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #dc2626, #ff6b35);
+    border-radius: 60px;
+    padding: 24px 70px;
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 4px;
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.4), 0 0 60px rgba(220, 38, 38, 0.15);
+    margin-bottom: 22px;
+  }
+
+  .cta-hint {
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 2px;
+  }
+
+  /* Footer */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 30px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .footer-logo {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 3px;
+  }
+  .footer-dot {
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Decorative particles */
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 107, 107, 0.4);
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .p1 { top: 15%; left: 8%; }
+  .p2 { top: 25%; right: 12%; width: 6px; height: 6px; background: rgba(255, 140, 66, 0.3); }
+  .p3 { top: 55%; left: 5%; width: 5px; height: 5px; }
+  .p4 { top: 70%; right: 7%; width: 3px; height: 3px; background: rgba(139, 92, 246, 0.4); }
+  .p5 { top: 40%; left: 15%; width: 3px; height: 3px; background: rgba(255, 255, 255, 0.2); }
+</style>
+</head>
+<body>
+
+<div class="bg-gradient"></div>
+<div class="grid-overlay"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="particle p1"></div>
+<div class="particle p2"></div>
+<div class="particle p3"></div>
+<div class="particle p4"></div>
+<div class="particle p5"></div>
+
+<div class="content">
+
+  <div class="top-badge">🔥 免费公开课</div>
+
+  <div class="lobster-hero">🦞</div>
+
+  <div class="title-area">
+    <div class="title-main">龙虾管家<br>AI 助手实战课</div>
+    <div class="title-sub">你的第一个 AI 团队，从这里开始</div>
+  </div>
+
+  <div class="features">
+    <div class="feature-row">
+      <div class="feature-card">
+        <span class="icon">🛡️</span>
+        <div class="label">更安全</div>
+        <div class="desc">本地部署<br>数据不外泄</div>
+      </div>
+      <div class="feature-card">
+        <span class="icon">🇨🇳</span>
+        <div class="label">更适合</div>
+        <div class="desc">适配内地环境<br>支持 DeepSeek</div>
+      </div>
+      <div class="feature-card">
+        <span class="icon">✨</span>
+        <div class="label">更简单</div>
+        <div class="desc">桌面端 GUI<br>零代码上手</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-card">
+        <span class="icon">📱</span>
+        <div class="label">多端互通</div>
+        <div class="desc">微信 · 飞书 · Telegram<br>手机随时对话 AI</div>
+      </div>
+      <div class="feature-card">
+        <span class="icon">🤖</span>
+        <div class="label">AI 团队</div>
+        <div class="desc">10 个 Agent 协作<br>自动分工执行</div>
+      </div>
+      <div class="feature-card">
+        <span class="icon">⏰</span>
+        <div class="label">定时任务</div>
+        <div class="desc">自动巡检提醒<br>7×24 小时运转</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-strip">
+    <div class="line1">📱 微信 · 飞书 · Telegram · Signal — 哪里方便哪里聊</div>
+    <div class="line2">手机 APP 直连你的 AI 助手，无需翻墙</div>
+  </div>
+
+  <div class="cta-area">
+    <div class="date-block">
+      <span class="date-label">开课日期</span>
+      <span class="date-value">4 月 12 日</span>
+    </div>
+    <div class="cta-btn">👉 扫码进群 · 获取详情</div>
+    <div class="cta-hint">详细时间与课程链接将在群内发布</div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">时光智造 TIMUX</span>
+    <span class="footer-dot">·</span>
+    <span class="footer-logo">智造交给 AI，时光留给所爱</span>
+  </div>
+
+</div>
+
+</body>
+</html>
