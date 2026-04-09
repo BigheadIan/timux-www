@@ -529,40 +529,53 @@
                 </div>
             </section>
 
-            <!-- ===== 10 Agent 调用机制 ===== -->
+            <!-- ===== 10 Agent 使用方式对比 ===== -->
             <section>
-                <span class="section-divider">03 Agent 如何协作？</span>
-                <h2 style="margin-top:12px;">自动选择 + <span class="accent">互相调用</span></h2>
+                <span class="section-divider">03 Agent 怎么用？</span>
+                <h2 style="margin-top:12px;">两种平台，<span class="accent">两种协作方式</span></h2>
                 <div class="grid-2" style="margin-top:12px;">
-                    <div>
-                        <p style="font-size:0.72em; color:var(--accent); margin-bottom:8px;">🤖 Agent 自动选择</p>
-                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
-                            <p style="margin:0; font-size:0.6em;">1️⃣ 你对龙虾说「<span class="accent">帮我写篇公众号文章</span>」</p>
+                    <div class="glass-card" style="padding:16px 20px; border-color:var(--lobster);">
+                        <p style="margin:0; font-size:0.8em; text-align:center;">🦞 <span class="lobster">LobsterAI</span></p>
+                        <p class="muted" style="margin:6px 0 8px; font-size:0.55em; text-align:center;">手动选择 Agent</p>
+                        <div class="glass-card" style="padding:8px 14px; margin-bottom:6px;">
+                            <p style="margin:0; font-size:0.55em;">1️⃣ 你在界面上<span class="accent">选择一个 Agent</span></p>
                         </div>
-                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
-                            <p style="margin:0; font-size:0.6em;">2️⃣ 龙虾根据任务描述 → 自动匹配 <span class="gold">Content Agent</span></p>
+                        <div class="glass-card" style="padding:8px 14px; margin-bottom:6px;">
+                            <p style="margin:0; font-size:0.55em;">2️⃣ 该 Agent 加载自己的 Prompt + Skill</p>
                         </div>
-                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
-                            <p style="margin:0; font-size:0.6em;">3️⃣ Content Agent 需要素材 → 调用 <span class="green">Explorer Agent</span> 搜索</p>
+                        <div class="glass-card" style="padding:8px 14px; margin-bottom:6px;">
+                            <p style="margin:0; font-size:0.55em;">3️⃣ 对话中<span class="gold">自动匹配 Skill</span> 来完成任务</p>
                         </div>
-                        <div class="glass-card" style="padding:10px 16px;">
-                            <p style="margin:0; font-size:0.6em;">4️⃣ 完成后交回总指挥 → <span class="lobster">汇报结果</span></p>
+                        <div class="glass-card" style="padding:8px 14px;">
+                            <p style="margin:0; font-size:0.55em;">4️⃣ 换任务类型？<span class="lobster">切换到另一个 Agent</span></p>
+                        </div>
+                        <div class="tip-box" style="margin-top:8px; padding:6px 12px;">
+                            <p style="font-size:0.48em;">💡 每个 Agent 像一个<span class="gold">独立岗位</span>，你是调度员</p>
                         </div>
                     </div>
-                    <div>
-                        <p style="font-size:0.72em; color:var(--gold); margin-bottom:8px;">💡 关键机制</p>
-                        <div class="glass-card" style="padding:14px 18px; margin-bottom:10px; border-color:var(--lobster);">
-                            <p style="margin:0; font-size:0.65em;"><span class="lobster">自动匹配</span></p>
-                            <p class="muted" style="margin:4px 0 0; font-size:0.5em;">每个 Agent 有 <code>description</code> 描述自己能做什么。龙虾根据你的问题，自动选最合适的 Agent</p>
+                    <div class="glass-card" style="padding:16px 20px; border-color:var(--accent);">
+                        <p style="margin:0; font-size:0.8em; text-align:center;">🐙 <span class="accent">OpenClaw</span></p>
+                        <p class="muted" style="margin:6px 0 8px; font-size:0.55em; text-align:center;">自动调度 + Agent 互调</p>
+                        <div class="glass-card" style="padding:8px 14px; margin-bottom:6px;">
+                            <p style="margin:0; font-size:0.55em;">1️⃣ 你对主 Agent 说任务</p>
                         </div>
-                        <div class="glass-card" style="padding:14px 18px; margin-bottom:10px; border-color:var(--accent);">
-                            <p style="margin:0; font-size:0.65em;"><span class="accent">Sub-Agent 调用</span></p>
-                            <p class="muted" style="margin:4px 0 0; font-size:0.5em;">总指挥 Agent 可以把子任务分配给专业 Agent，像老板分工给部门主管</p>
+                        <div class="glass-card" style="padding:8px 14px; margin-bottom:6px;">
+                            <p style="margin:0; font-size:0.55em;">2️⃣ 主 Agent <span class="accent">自动 spawn Sub-Agent</span></p>
                         </div>
-                        <div class="glass-card" style="padding:14px 18px; border-color:var(--green);">
-                            <p style="margin:0; font-size:0.65em;"><span class="green">并行执行</span></p>
-                            <p class="muted" style="margin:4px 0 0; font-size:0.5em;">多个 Agent 可以同时工作，不用排队等，效率翻倍</p>
+                        <div class="glass-card" style="padding:8px 14px; margin-bottom:6px;">
+                            <p style="margin:0; font-size:0.55em;">3️⃣ 多个 Agent <span class="green">并行执行</span>子任务</p>
                         </div>
+                        <div class="glass-card" style="padding:8px 14px;">
+                            <p style="margin:0; font-size:0.55em;">4️⃣ 完成后<span class="gold">自动汇报</span>给主 Agent</p>
+                        </div>
+                        <div class="tip-box" style="margin-top:8px; padding:6px 12px;">
+                            <p style="font-size:0.48em;">💡 主 Agent 像<span class="gold">项目经理</span>，自动分工协调</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <div class="glass-card" style="display:inline-block; padding:8px 24px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:0.6em;"><span class="gold">共同点：</span>每个 Agent 都能自动匹配和触发自己绑定的 Skill</p>
                     </div>
                 </div>
             </section>
