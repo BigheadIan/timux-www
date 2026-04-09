@@ -474,77 +474,62 @@
                 </div>
             </section>
 
-            <!-- ===== 11 Agent 创建实战 ===== -->
+            <!-- ===== 11 Agent 创建实战：基础信息 + Prompt ===== -->
             <section>
                 <span class="section-divider">03 实战：创建 Agent</span>
-                <h2 style="margin-top:12px;">4 步创建 <span class="accent">产品 PM</span> Agent</h2>
+                <h2 style="margin-top:12px;">以「<span class="accent">内容创作</span>」Agent 为例</h2>
                 <div class="grid-2" style="margin-top:10px;">
                     <div style="display:flex; flex-direction:column; gap:10px;">
                         <div class="glass-card" style="padding:12px 18px; border-color:var(--lobster);">
                             <p style="margin:0; font-size:0.7em;"><span class="lobster">1️⃣ 基础信息</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">Name: 产品小P<br>Creature: 产品经理 — 需求分析与规划<br>Vibe: 逻辑清晰、注重细节</p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">名称：内容创作<br>描述：一站式内容创作 — 选题、撰写、排版、润色</p>
                         </div>
                         <div class="glass-card" style="padding:12px 18px; border-color:var(--accent);">
                             <p style="margin:0; font-size:0.7em;"><span class="accent">2️⃣ System Prompt</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">「你是一个资深产品经理，擅长需求分析、用户故事撰写、PRD 文档、竞品分析。回答结构化，善用表格。」</p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">「你是一名专业内容创作助手，擅长微信公众号和自媒体内容。」<br>明确列出核心能力 + 对应 Skill 名称</p>
                         </div>
                         <div class="glass-card" style="padding:12px 18px; border-color:var(--gold);">
                             <p style="margin:0; font-size:0.7em;"><span class="gold">3️⃣ 身份档案</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">Identity.md + Soul.md + User.md → 让 Agent 认识你</p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">IDENTITY.md → 让 Agent 有自己的人格</p>
                         </div>
                         <div class="glass-card" style="padding:12px 18px; border-color:var(--green);">
-                            <p style="margin:0; font-size:0.7em;"><span class="green">4️⃣ 选择技能</span></p>
-                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">绑定 create-plan + social-media-content Skill</p>
+                            <p style="margin:0; font-size:0.7em;"><span class="green">4️⃣ 选择模型</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.55em;">DeepSeek Reasoner — 内容创作需要深度思考</p>
                         </div>
                     </div>
                     <div style="text-align:center;">
-                        <img src="lobsterai-assets/agent-config.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
-                        <p class="muted" style="font-size:0.5em;">Agent 设定页 — 身份 / 人格 / 用户档案</p>
+                        <img src="lobsterai-assets/agent-create-prompt.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
+                        <p class="muted" style="font-size:0.5em;">创建 Agent — 基础信息 + System Prompt</p>
                     </div>
                 </div>
             </section>
 
-            <!-- ===== 12 Agent 创建：开发工程师 ===== -->
+            <!-- ===== 12 Agent 创建实战：技能绑定 ===== -->
             <section>
-                <span class="section-divider">03 再来一个</span>
-                <h2 style="margin-top:12px;">创建 <span class="pink">开发工程师</span> Agent</h2>
+                <span class="section-divider">03 绑定 Skill</span>
+                <h2 style="margin-top:12px;">给 Agent <span class="green">装上技能</span></h2>
                 <div class="grid-2" style="margin-top:10px;">
                     <div>
-                        <div class="glass-card" style="padding:14px 20px; margin-bottom:10px;">
-                            <p style="margin:0; font-size:0.7em;">📝 <span class="pink">基础信息</span></p>
-                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
-                                Name: 码仔<br>
-                                Creature: 全栈工程师 — 前后端开发与部署<br>
-                                Vibe: 务实高效、代码整洁
-                            </p>
+                        <p style="font-size:0.72em; color:var(--accent); margin-bottom:10px;">「内容创作」Agent 的 4 个核心技能：</p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.65em;">✅ <span class="accent">content-planner</span> — 选题规划、内容日历</p>
                         </div>
-                        <div class="glass-card" style="padding:14px 20px; margin-bottom:10px;">
-                            <p style="margin:0; font-size:0.7em;">🧠 <span class="accent">System Prompt</span></p>
-                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
-                                「你是一名资深全栈工程师。技术栈：React/Vue + Node.js + Python。写代码前先看现有代码风格。遵循 Git 规范。每个功能写完先测试。」
-                            </p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.65em;">✅ <span class="gold">article-writer</span> — 5 种风格多体裁写作</p>
                         </div>
-                        <div class="glass-card" style="padding:14px 20px;">
-                            <p style="margin:0; font-size:0.7em;">🔌 <span class="green">绑定 Skill</span></p>
-                            <p class="muted" style="margin:4px 0 0; font-size:0.55em;">
-                                fullstack-dev + gcp-deploy → 自动获得编程 + 部署能力
-                            </p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.65em;">✅ <span class="pink">daily-trending</span> — 多平台热搜追踪</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px;">
+                            <p style="margin:0; font-size:0.65em;">✅ <span class="purple">web-search</span> — 素材搜索与事实验证</p>
+                        </div>
+                        <div class="tip-box" style="margin-top:10px;">
+                            <p>💡 <span class="gold">勾选即生效</span>，Agent 会根据问题自动匹配合适的 Skill</p>
                         </div>
                     </div>
-                    <div>
-                        <div class="glass-card" style="padding:16px 20px; border-color:var(--gold);">
-                            <p style="margin:0; font-size:0.72em;">🎯 <span class="gold">Agent 创建要点</span></p>
-                            <div style="margin-top:8px; font-size:0.6em; line-height:1.7;">
-                                <p style="margin:2px 0;">✅ 角色定位要 <span class="green">明确具体</span></p>
-                                <p style="margin:2px 0;">✅ Prompt 写清 <span class="green">能力边界</span></p>
-                                <p style="margin:2px 0;">✅ 身份档案让 AI <span class="green">认识你</span></p>
-                                <p style="margin:2px 0;">✅ Skill 绑定 <span class="green">按需分配</span></p>
-                                <p style="margin:2px 0;">❌ 不要一个 Agent <span class="red">什么都做</span></p>
-                            </div>
-                        </div>
-                        <div class="tip-box" style="margin-top:12px;">
-                            <p>💡 <span class="gold">先从 1-2 个 Agent 开始</span>，熟悉后再扩展团队</p>
-                        </div>
+                    <div style="text-align:center;">
+                        <img src="lobsterai-assets/agent-create-skills.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
+                        <p class="muted" style="font-size:0.5em;">创建 Agent — 技能选择页</p>
                     </div>
                 </div>
             </section>
