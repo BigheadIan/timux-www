@@ -249,12 +249,12 @@
             <!-- ===== 02b DotGem vs LobsterAI ===== -->
             <section>
                 <span class="section-divider">00 先搞清楚</span>
-                <h2 style="margin-top:12px;"><span class="accent">DotGem</span> vs <span class="lobster">有道龙虾</span> — 有什么不同？</h2>
+                <h2 style="margin-top:12px;"><span class="accent">OpenClaw</span> vs <span class="lobster">有道龙虾</span> — 有什么不同？</h2>
                 <p class="muted" style="font-size:0.58em; margin-bottom:10px;">两个都是 AI Agent 平台，核心概念相同，定位不同</p>
                 <table class="compare-table" style="margin-top:8px;">
                     <tr>
                         <th style="width:20%;">对比项</th>
-                        <th style="width:40%;"><span style="color:var(--accent);">DotGem (OpenClaw)</span></th>
+                        <th style="width:40%;"><span style="color:var(--accent);">OpenClaw (龙虾管家)</span></th>
                         <th style="width:40%;"><span style="color:var(--lobster);">🦞 LobsterAI (有道龙虾)</span></th>
                     </tr>
                     <tr><td class="accent">开发团队</td><td>OpenClaw 开源社区</td><td class="lobster">网易有道（大厂出品）</td></tr>
@@ -624,6 +624,90 @@
                         <img src="lobsterai-assets/agent-create-skills.png" style="border: 1px solid rgba(79,195,247,0.3); border-radius:12px; max-height:42vh;">
                         <p class="muted" style="font-size:0.5em;">创建 Agent — 技能选择页</p>
                     </div>
+                </div>
+            </section>
+
+            <!-- ===== 12b Agent vs Skill：核心区别 ===== -->
+            <section>
+                <span class="section-divider">03 核心概念</span>
+                <h2 style="margin-top:12px;"><span class="accent">Agent</span> vs <span class="gold">Skill</span> — 到底有什么区别？</h2>
+                <div class="grid-2" style="margin-top:12px;">
+                    <div class="glass-card" style="padding:18px 22px; border-color:var(--accent);">
+                        <p style="margin:0; font-size:0.9em; text-align:center;">🤖 <span class="accent">Agent（智能体）</span></p>
+                        <p class="muted" style="margin:8px 0 4px; font-size:0.6em; text-align:center;">= 一个<span class="accent">「人」</span></p>
+                        <ul style="margin-top:8px;">
+                            <li style="font-size:0.6em;">有<span class="accent">名字和身份</span>（像员工有工号）</li>
+                            <li style="font-size:0.6em;">有<span class="accent">性格和行为准则</span>（System Prompt）</li>
+                            <li style="font-size:0.6em;">可以选择<span class="accent">用哪个 AI 大脑</span>（模型）</li>
+                            <li style="font-size:0.6em;">可以装备<span class="accent">多个 Skill</span></li>
+                        </ul>
+                        <div class="tip-box" style="margin-top:8px; padding:8px 12px;">
+                            <p style="font-size:0.55em;">🧑‍💼 类比：Agent = <span class="gold">公司里的某个员工</span></p>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="padding:18px 22px; border-color:var(--gold);">
+                        <p style="margin:0; font-size:0.9em; text-align:center;">🔌 <span class="gold">Skill（技能）</span></p>
+                        <p class="muted" style="margin:8px 0 4px; font-size:0.6em; text-align:center;">= 一本<span class="gold">「操作手册」</span></p>
+                        <ul style="margin-top:8px;">
+                            <li style="font-size:0.6em;">是一个<span class="gold">文件夹</span>（包含 SKILL.md 指令文件）</li>
+                            <li style="font-size:0.6em;">定义<span class="gold">具体怎么做某件事</span>的步骤</li>
+                            <li style="font-size:0.6em;">可以被<span class="gold">多个 Agent 共享</span></li>
+                            <li style="font-size:0.6em;">可以从 <span class="gold">GitHub 一键导入</span></li>
+                        </ul>
+                        <div class="tip-box" style="margin-top:8px; padding:8px 12px;">
+                            <p style="font-size:0.55em;">📖 类比：Skill = <span class="gold">员工手上的 SOP 手册</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:12px;">
+                    <div class="glass-card" style="display:inline-block; padding:10px 30px; border-color:var(--lobster);">
+                        <p style="margin:0; font-size:0.72em;"><span class="lobster">Agent 决定「谁来做」</span> &nbsp;·&nbsp; <span class="gold">Skill 决定「怎么做」</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== 12c Agent × Skill 关系与使用时机 ===== -->
+            <section>
+                <span class="section-divider">03 使用时机</span>
+                <h2 style="margin-top:12px;">什么时候建 Agent？什么时候建 Skill？</h2>
+                <div class="grid-2" style="margin-top:12px;">
+                    <div>
+                        <p style="font-size:0.72em; color:var(--accent); margin-bottom:8px;">🤖 需要新建 <span class="accent">Agent</span> 的场景：</p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">✅ 需要一个<span class="accent">不同角色</span>的 AI 助手</p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.48em;">例：PM、开发、客服、文案 → 各建一个 Agent</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">✅ 需要<span class="accent">不同的性格/语气</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.48em;">例：对客户温柔、对团队直接 → 两个 Agent</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px;">
+                            <p style="margin:0; font-size:0.6em;">✅ 需要<span class="accent">不同的 AI 模型</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.48em;">例：创作用 Reasoner、杂务用 Chat → 各选不同模型</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="font-size:0.72em; color:var(--gold); margin-bottom:8px;">🔌 需要新建 <span class="gold">Skill</span> 的场景：</p>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">✅ 需要 AI 学会一项<span class="gold">新能力</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.48em;">例：做 PPT、写公众号文章、爬取数据</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px; margin-bottom:8px;">
+                            <p style="margin:0; font-size:0.6em;">✅ 有一套<span class="gold">标准化的操作流程</span></p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.48em;">例：每次做周报的固定格式、固定数据源</p>
+                        </div>
+                        <div class="glass-card" style="padding:10px 16px;">
+                            <p style="margin:0; font-size:0.6em;">✅ 需要<span class="gold">多个 Agent 共用</span>同一能力</p>
+                            <p class="muted" style="margin:3px 0 0; font-size:0.48em;">例：web-search 技能 → PM、内容、研究都需要</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tip-box" style="margin-top:10px;">
+                    <p style="font-size:0.65em;">💡 <span class="gold">简单记忆：</span>
+                        Agent = <span class="accent">招一个人</span> &nbsp;|&nbsp;
+                        Skill = <span class="gold">给他一本手册</span> &nbsp;|&nbsp;
+                        Agent + Skill = <span class="green">有能力的专业员工</span>
+                    </p>
                 </div>
             </section>
 
