@@ -930,6 +930,23 @@
         </div>
       </div>
     </div>
+    <div class="glass-card mt-2" style="border-left:4px solid var(--accent);">
+      <div style="font-size:0.65em;font-weight:700;color:var(--accent);margin-bottom:10px;">📋 Day 1 部署流程（IT 管理員視角）</div>
+      <div class="grid-2" style="gap:14px;">
+        <div>
+          <div style="font-size:0.6em;color:var(--muted);line-height:1.8;">
+            <span style="color:var(--accent2);font-weight:600;">① 批次部署</span>｜IT 管理員透過 GPO 推送 MSI 安裝包，支援 Silent Install，2,000 台電腦靜默安裝完成，無需員工介入<br>
+            <span style="color:var(--accent2);font-weight:600;">② 自動登入</span>｜員工首次開啟，系統透過 AD/LDAP 自動識別身份，綁定員工編號與部門，免填帳號密碼<br>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.6em;color:var(--muted);line-height:1.8;">
+            <span style="color:var(--gold);font-weight:600;">③ 預載範本</span>｜系統自動下載該部門 SOP 範本庫（機電組：72 份、站務組：48 份），讓 AI 立即有參考基礎<br>
+            <span style="color:var(--gold);font-weight:600;">④ 第一天開始累積</span>｜員工正常使用 AI 助手查 SOP、詢問操作問題，知識在對話中<strong style="color:var(--text);">自動累積</strong>，零額外工作
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section>
@@ -958,12 +975,31 @@
         <div class="flow-step-desc">wiki-sync</div>
       </div>
     </div>
-    <div class="scenario">
-      <div class="scenario-title">📌 實際範例：機電工程師 張志明</div>
-      <div class="scenario-body">
-        張志明用龍蝦管家查詢「<em>第三軌接地故障的檢測步驟</em>」→ AI 回答後，系統自動萃取為一篇 Wiki 頁面《接地故障檢測與處理》，包含故障碼、處理步驟、注意事項。<br><br>
-        經過 3 個月日常使用，張志明的個人 Wiki 累積了 <em>56 個知識節點</em>，涵蓋電聯車巡檢、號誌故障、軌道供電等 <em>6 大知識社群</em>。<br><br>
-        <span style="color:var(--accent);font-weight:600;">→ 零額外工作量，正常使用就自然累積。</span>
+    <div class="grid-2" style="gap:14px;margin-top:12px;">
+      <div class="scenario" style="margin:0;">
+        <div class="scenario-title">📌 實際範例：機電工程師 張志明</div>
+        <div class="scenario-body">
+          張志明用龍蝦管家查詢「<em>第三軌接地故障的檢測步驟</em>」→ AI 回答後，系統自動萃取為一篇 Wiki 頁面《接地故障檢測與處理》。<br><br>
+          經過 3 個月日常使用，累積了 <em>56 個知識節點</em>，涵蓋電聯車巡檢、號誌故障、軌道供電等 <em>6 大知識社群</em>。<br><br>
+          <span style="color:var(--accent);font-weight:600;">→ 零額外工作量，正常使用就自然累積。</span>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:16px;background:rgba(10,22,40,0.6);border-color:rgba(79,195,247,0.25);">
+        <div style="font-size:0.55em;color:var(--accent);font-weight:700;margin-bottom:8px;letter-spacing:0.05em;">🗂️ 自動產生的 Wiki 頁面預覽</div>
+        <div style="font-family:'Courier New',monospace;font-size:0.5em;color:var(--muted);line-height:1.7;background:rgba(0,0,0,0.3);border-radius:10px;padding:12px;border:1px solid rgba(79,195,247,0.15);">
+          <span style="color:var(--accent2);font-weight:700;"># 月台門 E-315 對位超時故障排除</span><br>
+          <span style="color:var(--muted);">&gt; 來源：張志明 × 龍蝦管家 | 2026-03-15</span><br>
+          <span style="color:var(--green);">&gt; 信心分數：0.92 | 已審核：✓</span><br><br>
+          <span style="color:var(--gold);font-weight:700;">## 故障現象</span><br>
+          <span style="color:var(--text);">月台門開啟/關閉時序與列車門不同步，</span><br>
+          <span style="color:var(--text);">PSC 回報 E-315 對位超時警報...</span><br><br>
+          <span style="color:var(--gold);font-weight:700;">## 處理步驟</span><br>
+          <span style="color:var(--text);">1. 進入診斷：</span><span style="color:var(--accent2);">PSC &gt; DIAG --door [編號]</span><br>
+          <span style="color:var(--text);">2. 查看近 20 筆：</span><span style="color:var(--accent2);">PSC &gt; LOG --last 20</span><br>
+          <span style="color:var(--text);">3. 判斷根因（見下表）...</span><br><br>
+          <span style="color:var(--gold);font-weight:700;">## 相關知識</span><br>
+          <span style="color:var(--accent);">[[月台門維修作業]] [[號誌故障排除指南]]</span>
+        </div>
       </div>
     </div>
   </section>
@@ -993,6 +1029,54 @@
         <div class="layer-info">
           <div class="layer-name">公司圖譜 <span class="pill pill-gold" style="font-size:0.7em;">組織級全景</span></div>
           <div class="layer-detail">跨部門知識流動、核心知識節點（God Nodes）、組織知識健康度</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">graphify 分析報告實例</span></h2>
+    <p>每天凌晨圖譜更新後，系統自動產出 <span class="grad-blue" style="font-weight:700;">GRAPH_REPORT.md</span> — 主管看得懂的行動建議</p>
+    <div class="grid-2 mt-1" style="gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="glass-card" style="padding:14px 16px;background:rgba(232,59,59,0.07);border-color:rgba(232,59,59,0.25);">
+          <div style="font-size:0.6em;color:var(--lobster);font-weight:700;margin-bottom:6px;">⚠️ God Nodes 風險清單</div>
+          <div style="font-size:0.55em;color:var(--muted);line-height:1.75;">
+            <span style="color:var(--red);font-weight:600;">【高風險】</span> <span style="color:var(--text);">號誌系統故障排除指南</span> — 連結 16 節點，<strong style="color:var(--red);">唯一掌握人：張志明</strong><br>
+            建議：立即安排 2 名備援人員交叉訓練，完成期限 30 天<br><br>
+            <span style="color:var(--orange);font-weight:600;">【中風險】</span> <span style="color:var(--text);">站務值班緊急應變 SOP</span> — 連結 17 節點，王建國 + 李美玲共同掌握<br>
+            建議：補充書面化，降低口傳依賴
+          </div>
+        </div>
+        <div class="glass-card" style="padding:14px 16px;background:rgba(251,191,36,0.07);border-color:rgba(251,191,36,0.25);">
+          <div style="font-size:0.6em;color:var(--gold);font-weight:700;margin-bottom:6px;">🔍 知識缺口偵測</div>
+          <div style="font-size:0.55em;color:var(--muted);line-height:1.75;">
+            <span style="color:var(--text);">發現 3 個孤立節點群，與主圖譜無連結：</span><br>
+            ▸ 「西門子 Inspiro MHI-B 新型月台門」— 近零知識<br>
+            ▸ 「ISO 45001 職安法規更新」— 僅一篇過時文件<br>
+            ▸ 「CBTC 2.0 通訊協定」— 尚未有人記錄<br>
+            <strong style="color:var(--gold);">→ 建議優先安排對應訓練課程</strong>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="glass-card" style="padding:14px 16px;background:rgba(79,195,247,0.07);border-color:rgba(79,195,247,0.25);">
+          <div style="font-size:0.6em;color:var(--accent);font-weight:700;margin-bottom:6px;">✨ 驚喜關聯發現</div>
+          <div style="font-size:0.55em;color:var(--muted);line-height:1.75;">
+            AI 發現原先分屬不同部門的知識，有隱性連結：<br>
+            ▸ 機電組「月台門 DCU 通訊故障」↔ 站務組「誤觸開門申告」<br>
+            <strong style="color:var(--accent2);">→ 兩件事是同一個根因，可統一解決方案</strong><br><br>
+            ▸ 李美玲的「旅客服務話術」↔ 王建國的「緊急疏散廣播」<br>
+            <strong style="color:var(--accent2);">→ 整合為「緊急情況旅客溝通指南」效果更好</strong>
+          </div>
+        </div>
+        <div class="glass-card" style="padding:14px 16px;background:rgba(34,197,94,0.07);border-color:rgba(34,197,94,0.25);">
+          <div style="font-size:0.6em;color:var(--green);font-weight:700;margin-bottom:6px;">✅ 本月建議行動（AI 生成）</div>
+          <div style="font-size:0.55em;color:var(--muted);line-height:1.75;">
+            1. <strong style="color:var(--text);">【緊急】</strong> 張志明號誌知識 → 指定陳大偉接班，本月啟動 shadowing<br>
+            2. <strong style="color:var(--text);">【本季】</strong> 安排全體機電人員「新型月台門」廠商培訓<br>
+            3. <strong style="color:var(--text);">【建議】</strong> 月台門 + 號誌跨組合辦知識分享會（已識別知識交集）
+          </div>
         </div>
       </div>
     </div>
@@ -1375,6 +1459,152 @@
       </div>
     </div>
   </section>
+
+  <section>
+    <h2><span class="grad-blue">操作指南｜管理者日常工作流程</span></h2>
+    <p>部門主管每週 <span class="grad-blue" style="font-weight:700;">10 分鐘</span>，掌握全部門知識健康狀況</p>
+    <div class="grid-2 mt-1" style="gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="glass-card" style="padding:12px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">① 登入 Web 儀表板</div>
+          <div style="font-size:0.56em;color:var(--muted);line-height:1.65;">瀏覽器開啟內網網址 <span style="color:var(--accent2);">krtc-wiki.internal</span>，AD 帳號自動 SSO 登入，首頁即顯示部門知識健康分數</div>
+        </div>
+        <div class="glass-card" style="padding:12px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">② 查看知識健康分數</div>
+          <div style="font-size:0.56em;color:var(--muted);line-height:1.65;">
+            <span style="color:var(--green);font-weight:600;">● 綠色（80+）</span>｜知識分布健康，備援充足<br>
+            <span style="color:var(--gold);font-weight:600;">● 黃色（60-79）</span>｜有單點風險，建議處理<br>
+            <span style="color:var(--red);font-weight:600;">● 紅色（&lt;60）</span>｜立即行動，知識高度集中
+          </div>
+        </div>
+        <div class="glass-card" style="padding:12px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">③ 檢視 God Nodes 風險</div>
+          <div style="font-size:0.56em;color:var(--muted);line-height:1.65;">點選「知識風險」頁籤，查看哪些關鍵知識的掌握者少於 2 人，安排備援培訓計畫</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="glass-card" style="padding:12px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--gold);margin-bottom:6px;">④ 查看知識缺口</div>
+          <div style="font-size:0.56em;color:var(--muted);line-height:1.65;">「孤立節點」報告列出未連結的知識主題，直接連結到 HR 系統填寫訓練需求申請單</div>
+        </div>
+        <div class="glass-card" style="padding:12px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--gold);margin-bottom:6px;">⑤ 生成月報</div>
+          <div style="font-size:0.56em;color:var(--muted);line-height:1.65;">一鍵匯出「部門知識月報 PDF」，含知識成長趨勢圖、風險變化、新增知識節點數，自動寄送主管及 HR</div>
+        </div>
+        <div class="glass-card" style="padding:12px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--gold);margin-bottom:6px;">⑥ 設定警報閾值</div>
+          <div style="font-size:0.56em;color:var(--muted);line-height:1.65;">設定「若某員工成為 3 個以上 God Node 的唯一掌握者」自動發送 Email 警報給主管，提前介入</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">操作指南｜員工一天的使用流程</span></h2>
+    <p>完全融入日常工作，<span class="grad-gold" style="font-weight:700;">不需要改變習慣</span>，知識自然累積</p>
+    <div class="flow mt-1" style="flex-wrap:nowrap;gap:6px;">
+      <div class="flow-step" style="min-width:90px;padding:10px 10px;">
+        <div class="flow-step-icon" style="font-size:1.3em;">🌅</div>
+        <div class="flow-step-label" style="font-size:0.58em;">早上開機</div>
+        <div class="flow-step-desc" style="font-size:0.5em;">龍蝦管家自動啟動<br>同步最新 SOP</div>
+      </div>
+      <div class="flow-arrow" style="font-size:1em;">→</div>
+      <div class="flow-step" style="min-width:90px;padding:10px 10px;">
+        <div class="flow-step-icon" style="font-size:1.3em;">❓</div>
+        <div class="flow-step-label" style="font-size:0.58em;">查詢 SOP</div>
+        <div class="flow-step-desc" style="font-size:0.5em;">「E-315 月台門<br>故障怎麼辦？」</div>
+      </div>
+      <div class="flow-arrow" style="font-size:1em;">→</div>
+      <div class="flow-step highlight" style="min-width:90px;padding:10px 10px;">
+        <div class="flow-step-icon" style="font-size:1.3em;">📝</div>
+        <div class="flow-step-label" style="font-size:0.58em;">自動記錄</div>
+        <div class="flow-step-desc" style="font-size:0.5em;">AI 背景萃取<br>知識片段</div>
+      </div>
+      <div class="flow-arrow" style="font-size:1em;">→</div>
+      <div class="flow-step" style="min-width:90px;padding:10px 10px;">
+        <div class="flow-step-icon" style="font-size:1.3em;">🔧</div>
+        <div class="flow-step-label" style="font-size:0.58em;">處理完回報</div>
+        <div class="flow-step-desc" style="font-size:0.5em;">告訴 AI 最終<br>怎麼解決的</div>
+      </div>
+      <div class="flow-arrow" style="font-size:1em;">→</div>
+      <div class="flow-step" style="min-width:90px;padding:10px 10px;">
+        <div class="flow-step-icon" style="font-size:1.3em;">🌙</div>
+        <div class="flow-step-label" style="font-size:0.58em;">下班同步</div>
+        <div class="flow-step-desc" style="font-size:0.5em;">知識自動上傳<br>到中央圖譜</div>
+      </div>
+    </div>
+    <div class="grid-2 mt-1" style="gap:14px;">
+      <div class="glass-card" style="padding:14px 16px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:8px;">員工對自己的 Wiki 有完整控制權</div>
+        <ul class="styled-list" style="margin:0;">
+          <li>可以<strong>查看</strong>所有自己的 Wiki 頁面，確認 AI 記了什麼</li>
+          <li>可以<strong>編輯</strong>補充細節或修正 AI 理解錯誤的地方</li>
+          <li>可以<strong>刪除</strong>任何不想留存的知識記錄</li>
+          <li>可以設定<strong>不記錄模式</strong>，讓該對話不被萃取</li>
+          <li>可以標記<strong>敏感對話</strong>，確保不進入公司知識庫</li>
+        </ul>
+      </div>
+      <div class="tip-box" style="display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-size:0.65em;font-weight:700;margin-bottom:10px;">💡 平均每天節省時間估算</div>
+        <div style="font-size:0.6em;line-height:2;">
+          查資料時間：<strong style="color:var(--text);">-15 分鐘</strong>（有 AI 直接回答）<br>
+          問同事時間：<strong style="color:var(--text);">-10 分鐘</strong>（AI 先試回答）<br>
+          撰寫交接文件：<strong style="color:var(--text);">-5 分鐘</strong>（AI 自動生成）<br>
+          <span style="color:var(--gold);font-weight:700;">合計每人每天節省約 30 分鐘</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">操作指南｜知識審核機制</span></h2>
+    <p>三層審核確保知識品質，<span class="grad-blue" style="font-weight:700;">自動化為主、人工介入為輔</span></p>
+    <div class="flow mt-1" style="gap:8px;">
+      <div class="flow-step" style="padding:14px 16px;">
+        <div class="flow-step-icon">🤖</div>
+        <div class="flow-step-label">① 自動萃取</div>
+        <div class="flow-step-desc">AI 從對話抽取<br>知識草稿</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight" style="padding:14px 16px;">
+        <div class="flow-step-icon">👤</div>
+        <div class="flow-step-label">② 員工確認</div>
+        <div class="flow-step-desc">本人審閱，可編輯<br>或拒絕收入 Wiki</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="padding:14px 16px;">
+        <div class="flow-step-icon">👔</div>
+        <div class="flow-step-label">③ 主管審核</div>
+        <div class="flow-step-desc">（可選）敏感 SOP<br>需主管批准公開</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight-lobster" style="padding:14px 16px;">
+        <div class="flow-step-icon">📚</div>
+        <div class="flow-step-label">④ 進入圖譜</div>
+        <div class="flow-step-desc">通過審核後<br>自動納入圖譜</div>
+      </div>
+    </div>
+    <div class="grid-3 mt-1" style="gap:14px;">
+      <div class="glass-card" style="padding:14px 16px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--green);margin-bottom:6px;">🔒 隱私保護機制</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.7;">
+          員工可標記「敏感模式」，該對話內容完全不進入任何知識庫，僅供本人參考
+        </div>
+      </div>
+      <div class="glass-card" style="padding:14px 16px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">📋 版本控制</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.7;">
+          每次修改自動留存版本歷史，可回溯任意時間點的 Wiki 內容，誰改了什麼一目了然
+        </div>
+      </div>
+      <div class="glass-card" style="padding:14px 16px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--gold);margin-bottom:6px;">⭐ 信心分數機制</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.7;">
+          每篇 Wiki 標注 0–1 信心分數。低於 0.7 自動加上 ⚠️ 標記，提示使用者二次確認
+        </div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <!-- ====== SECTION 7: 部署架構 ====== -->
@@ -1574,14 +1804,157 @@
   </section>
 </section>
 
-<!-- ====== SECTION 9: 時程 ====== -->
+<!-- ====== SECTION 9: FAQ 常見問題 ====== -->
 <section>
   <section class="section-slide">
+    <div class="orb orb-cyan" style="top:-60px;right:-60px;width:240px;height:240px;filter:blur(50px);"></div>
+    <div class="orb orb-pink" style="bottom:-40px;left:-40px;width:200px;height:200px;filter:blur(45px);"></div>
+
     <div style="position:relative;z-index:1;">
       <div class="section-number">09</div>
       <div style="margin-top:80px;">
         <div class="section-number-ring">
           <span class="section-number-ring-inner">09</span>
+        </div>
+        <div class="section-divider">常見問題</div>
+        <div class="section-title">FAQ — 客戶最常問的問題</div>
+        <div class="section-desc">員工疑慮・IT 資安・成本 ROI — 全部有答案</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">FAQ ①｜員工端疑慮</span></h2>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
+      <div class="glass-card" style="padding:14px 18px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.7em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.7em;font-weight:700;color:var(--text);margin-bottom:4px;">員工會不會排斥被記錄？</div>
+            <div style="font-size:0.6em;color:var(--muted);line-height:1.7;"><span style="color:var(--green);font-weight:600;">A：</span>完全自願制。員工可隨時切換「不記錄模式」、刪除任何已記錄內容、標記敏感對話不進入知識庫。系統記錄的是「知識」不是「監控行為」— 主管看不到對話內容，只能看到匿名化的知識圖譜統計。<strong style="color:var(--text);">記錄讓員工自己更方便，而不是用來考核員工。</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:14px 18px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.7em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.7em;font-weight:700;color:var(--text);margin-bottom:4px;">會不會增加員工工作量？</div>
+            <div style="font-size:0.6em;color:var(--muted);line-height:1.7;"><span style="color:var(--green);font-weight:600;">A：</span>零額外工作量。員工正常使用 AI 助手幫忙查 SOP、計算排班、翻譯文件，知識在背景自動累積。<strong style="color:var(--text);">反而減少每天 15–30 分鐘重複問同事的時間。</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:14px 18px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.7em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.7em;font-weight:700;color:var(--text);margin-bottom:4px;">我的個人知識，別人看得到嗎？</div>
+            <div style="font-size:0.6em;color:var(--muted);line-height:1.7;"><span style="color:var(--green);font-weight:600;">A：</span>預設僅自己可見。員工可選擇分享到部門或公司層級，完全自主決定。管理層只能看到<strong style="color:var(--text);">匿名化的圖譜統計（哪個知識主題的整體覆蓋率）</strong>，無法看到個人對話內容或對應到特定員工。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">FAQ ②｜管理層 / IT 疑慮</span></h2>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+      <div class="glass-card" style="padding:12px 16px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.65em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.65em;font-weight:700;color:var(--text);margin-bottom:3px;">資安風險？資料會不會外洩？</div>
+            <div style="font-size:0.57em;color:var(--muted);line-height:1.65;"><span style="color:var(--green);font-weight:600;">A：</span><strong style="color:var(--text);">100% 內網部署。</strong> LLM、向量資料庫、知識圖譜引擎全在 KRTC 機房運行，零外部 API 呼叫。員工對話不經任何雲端服務。可配合年度資安稽核提供完整操作日誌。</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:12px 16px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.65em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.65em;font-weight:700;color:var(--text);margin-bottom:3px;">需要多少 IT 人力維護？</div>
+            <div style="font-size:0.57em;color:var(--muted);line-height:1.65;"><span style="color:var(--green);font-weight:600;">A：</span>日常維護接近零。系統自動運行（凌晨圖譜更新、每日健康巡檢、異常自動告警）。<strong style="color:var(--text);">只需 1 位 IT 負責人</strong>定期查看儀表板即可，每週不超過 2 小時。</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:12px 16px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.65em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.65em;font-weight:700;color:var(--text);margin-bottom:3px;">如果 AI 回答錯了怎麼辦？</div>
+            <div style="font-size:0.57em;color:var(--muted);line-height:1.65;"><span style="color:var(--green);font-weight:600;">A：</span>每個回答標注來源 Wiki 頁面與信心分數。<strong style="color:var(--text);">低於 0.7 分自動標示 ⚠️</strong>，提示使用者二次確認。員工可回報錯誤，系統自動修正並更新知識庫，正確率隨使用時間持續提升。</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:12px 16px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--lobster);font-weight:700;font-size:0.65em;white-space:nowrap;margin-top:2px;">Q</span>
+          <div>
+            <div style="font-size:0.65em;font-weight:700;color:var(--text);margin-bottom:3px;">現有的 SMART IT 和 ERP 會衝突嗎？</div>
+            <div style="font-size:0.57em;color:var(--muted);line-height:1.65;"><span style="color:var(--green);font-weight:600;">A：</span><strong style="color:var(--text);">完全獨立運行，不碰現有系統。</strong> 第一階段只是在旁邊新增一套知識管理層，不修改任何現有系統。第二階段可選擇性串接 SMART IT 設備數據，但非必須，完全由 KRTC 決定。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">FAQ ③｜成本與 ROI</span></h2>
+    <div class="grid-2 mt-1" style="gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="glass-card-gold" style="padding:14px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--gold);margin-bottom:6px;">Q：總成本多少？</div>
+          <div style="font-size:0.57em;color:var(--muted);line-height:1.75;">
+            <span style="color:var(--green);font-weight:600;">硬體成本 = 0</span>｜使用現有 NVIDIA Spark，無需新增硬體<br>
+            <span style="color:var(--green);font-weight:600;">軟體授權 = 0</span>｜全部採用開源技術（Apache 2.0）<br>
+            <span style="color:var(--gold);font-weight:600;">主要成本</span>｜導入服務費 + 客製化開發 + 教育訓練<br>
+            <strong style="color:var(--text);">→ 對比傳統知識管理系統動輒千萬採購，成本大幅降低</strong>
+          </div>
+        </div>
+        <div class="glass-card" style="padding:14px 16px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">Q：多久能看到效果？</div>
+          <div style="font-size:0.57em;color:var(--muted);line-height:1.8;">
+            <span style="color:var(--accent2);font-weight:600;">第 1 個月</span>｜個人 Wiki 初步成形，員工感受 AI 助手便利<br>
+            <span style="color:var(--accent2);font-weight:600;">第 3 個月</span>｜知識圖譜有意義，開始發現知識缺口<br>
+            <span style="color:var(--accent2);font-weight:600;">第 6 個月</span>｜全面效益顯現，可量化 ROI 數字
+          </div>
+        </div>
+      </div>
+      <div class="glass-card-lobster" style="padding:16px 18px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--lobster);margin-bottom:10px;">Q：ROI 怎麼算？核心指標</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:10px 12px;">
+            <div style="font-size:0.56em;color:var(--muted);line-height:1.75;">
+              <span style="color:var(--text);font-weight:600;">新人上手時間</span>｜3 個月 → 1 個月<br>
+              <span style="color:var(--green);">節省培訓成本 66%</span>，2,000 人規模下效益巨大
+            </div>
+          </div>
+          <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:10px 12px;">
+            <div style="font-size:0.56em;color:var(--muted);line-height:1.75;">
+              <span style="color:var(--text);font-weight:600;">緊急故障應變時間</span>｜縮短 50%<br>
+              <span style="color:var(--green);">直接減少營運中斷損失</span>（捷運每小時損失可觀）
+            </div>
+          </div>
+          <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:10px 12px;">
+            <div style="font-size:0.56em;color:var(--muted);line-height:1.75;">
+              <span style="color:var(--text);font-weight:600;">退休知識傳承率</span>｜&lt;30% → &gt;95%<br>
+              <span style="color:var(--green);">每位員工每天節省約 30 分鐘</span>查資料時間
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 10: 時程 ====== -->
+<section>
+  <section class="section-slide">
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">10</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">10</span>
         </div>
         <div class="section-divider">執行計畫</div>
         <div class="section-title">Demo 進度與下一步</div>
@@ -1608,30 +1981,30 @@
         </div>
       </div>
       <div class="timeline-item">
-        <div class="timeline-phase current">Phase 2 🔥</div>
+        <div class="timeline-phase done">Phase 2 ✓</div>
         <div class="timeline-content">
-          <div class="timeline-title">Web UI 開發（進行中）</div>
-          <div class="timeline-desc">Vue3 + D3.js 力導向圖 + AI 問答 · 知識儀表板 · 圖譜瀏覽器 · 員工檔案</div>
+          <div class="timeline-title">Web UI 開發（已完成）</div>
+          <div class="timeline-desc">Vue3 + D3.js 力導向圖 + AI 問答 · 知識儀表板 · 圖譜瀏覽器 · 員工檔案 — 線上可 Demo</div>
         </div>
       </div>
       <div class="timeline-item">
-        <div class="timeline-phase">Phase 3</div>
+        <div class="timeline-phase done">Phase 3 ✓</div>
         <div class="timeline-content">
           <div class="timeline-title">龍蝦對話 Demo 素材</div>
-          <div class="timeline-desc">模擬員工日常使用 AI 助手的完整對話場景，展示知識萃取全過程</div>
+          <div class="timeline-desc">模擬員工日常使用 AI 助手的完整對話場景，展示知識萃取全過程 — 素材齊備</div>
         </div>
       </div>
     </div>
     <div class="grid-2 mt-1">
-      <div class="glass-card" style="text-align:center;">
-        <div style="font-size:0.6em;color:var(--accent);font-weight:600;">Demo 環境</div>
-        <div style="font-size:0.85em;font-weight:700;color:var(--text);margin-top:4px;">GCP 雲端部署</div>
-        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">正式環境轉移至 KRTC 內網</div>
+      <div class="glass-card-gold" style="text-align:center;padding:14px 20px;">
+        <div style="font-size:0.6em;color:var(--gold);font-weight:600;">Demo 環境</div>
+        <div style="font-size:0.85em;font-weight:700;color:var(--text);margin-top:4px;">線上可立即存取</div>
+        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">正式上線後轉移至 KRTC 內網</div>
       </div>
-      <div class="glass-card" style="text-align:center;">
-        <div style="font-size:0.6em;color:var(--accent);font-weight:600;">預計交付</div>
-        <div style="font-size:0.85em;font-weight:700;color:var(--text);margin-top:4px;">10 個工作天</div>
-        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">完整可互動 Demo + 對話展示</div>
+      <div class="glass-card-gold" style="text-align:center;padding:14px 20px;">
+        <div style="font-size:0.6em;color:var(--gold);font-weight:600;">現狀</div>
+        <div style="font-size:0.85em;font-weight:700;color:var(--green);margin-top:4px;">全部階段完成 ✓</div>
+        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">完整可互動 Demo，隨時可展示</div>
       </div>
     </div>
   </section>
