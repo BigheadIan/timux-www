@@ -1,0 +1,1726 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>KRTC 高雄捷運 — AI 員工知識生態系統</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #0a1628;
+      --bg2: #0d2137;
+      --accent: #4fc3f7;
+      --accent2: #00e5ff;
+      --accent3: #f472b6;
+      --gold: #fbbf24;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f97316;
+      --lobster: #e83b3b;
+      --lobster-glow: rgba(232, 59, 59, 0.3);
+      --glass: rgba(79, 195, 247, 0.06);
+      --glass-border: rgba(79, 195, 247, 0.15);
+      --glow: 0 0 40px rgba(79, 195, 247, 0.15);
+    }
+
+    /* ===== REVEAL BASE RESETS (replaces black.css) ===== */
+    .reveal-viewport { background: var(--bg1); }
+    .reveal { background: linear-gradient(135deg, #0a1628 0%, #0d2137 40%, #0a1628 100%); }
+    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; letter-spacing: 0; }
+    .reveal .progress { height: 3px; }
+
+    /* ===== KEYFRAME ANIMATIONS ===== */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes glow-pulse {
+      0%, 100% { opacity: .6; }
+      50% { opacity: 1; }
+    }
+    @keyframes shimmer-bg {
+      0% { background-position: -400% 0; }
+      100% { background-position: 400% 0; }
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -15px) scale(1.05); }
+      66% { transform: translate(-15px, 8px) scale(.97); }
+    }
+    @keyframes rotate-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes border-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(79,195,247,.2); }
+      50% { box-shadow: 0 0 40px rgba(79,195,247,.5), 0 0 80px rgba(79,195,247,.15); }
+    }
+    @keyframes number-appear {
+      from { opacity: 0; transform: translateX(-50%) scale(0.5); }
+      to { opacity: 0.12; transform: translateX(-50%) scale(1); }
+    }
+    @keyframes line-expand {
+      from { width: 0; opacity: 0; }
+      to { width: 60%; opacity: 1; }
+    }
+    @keyframes card-fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== BASE STYLES ===== */
+    .reveal {
+      font-family: 'Noto Sans TC', -apple-system, sans-serif;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section { padding: 30px 50px; }
+    .reveal h1 { font-size: 2.0em; font-weight: 900; line-height: 1.15; text-shadow: 0 0 30px rgba(79,195,247,0.3); }
+    .reveal h2 { font-size: 1.35em; font-weight: 700; line-height: 1.2; margin-bottom: 20px; color: var(--text); }
+    .reveal h3 { font-size: 1.05em; font-weight: 600; color: var(--muted); margin-bottom: 12px; }
+    .reveal p { font-size: 0.85em; color: var(--muted); line-height: 1.55; }
+    .reveal ul, .reveal li { font-size: 0.85em; }
+
+    /* Multi-layer background */
+    .reveal .slides section::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 10% 20%, rgba(79,195,247,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(0,229,255,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(244,114,182,0.03) 0%, transparent 60%);
+      pointer-events: none; z-index: -1;
+    }
+
+    /* Grid pattern overlay */
+    .reveal::before {
+      content: '';
+      position: fixed; top: 0; left: 0; width: 300px; height: 300px;
+      background:
+        linear-gradient(rgba(79,195,247,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,195,247,0.04) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.3; pointer-events: none; z-index: 0;
+    }
+    .reveal::after {
+      content: '';
+      position: fixed; bottom: 0; right: 0; width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(79,195,247,0.06) 1px, transparent 1px);
+      background-size: 25px 25px;
+      opacity: 0.25; pointer-events: none; z-index: 0;
+    }
+
+    /* ===== SHIMMER HEADING ===== */
+    .shimmer-heading {
+      background: linear-gradient(90deg, #4fc3f7, #00e5ff, #f472b6, #00e5ff, #4fc3f7);
+      background-size: 400% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer-bg 5s linear infinite;
+    }
+
+    /* ===== SECTION NUMBER RING ===== */
+    .section-number-ring {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 2px solid rgba(79,195,247,.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+      animation: border-glow 3s ease-in-out infinite;
+      background: rgba(79,195,247,0.04);
+    }
+    .section-number-ring::before {
+      content: '';
+      position: absolute; inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(79,195,247,.15);
+      animation: rotate-slow 10s linear infinite;
+      border-top-color: rgba(79,195,247,.4);
+    }
+    .section-number-ring::after {
+      content: '';
+      position: absolute; inset: -16px;
+      border-radius: 50%;
+      border: 1px solid rgba(244,114,182,.08);
+      animation: rotate-slow 15s linear infinite reverse;
+      border-right-color: rgba(244,114,182,.25);
+    }
+    .section-number-ring-inner {
+      font-size: 2.6em;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    /* ===== GLASS CARDS ===== */
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 22px 26px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--glow);
+      transition: all 0.3s;
+      animation: card-fade-in 0.6s ease-out both;
+    }
+    .glass-card:hover {
+      border-color: rgba(79,195,247,0.3);
+      box-shadow: 0 0 50px rgba(79,195,247,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Glass card lobster variant */
+    .glass-card-lobster {
+      background: rgba(232, 59, 59, 0.06);
+      border: 1px solid rgba(232, 59, 59, 0.2);
+      border-radius: 16px;
+      padding: 22px 26px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 40px var(--lobster-glow);
+      transition: all 0.3s;
+    }
+    .glass-card-lobster:hover {
+      border-color: rgba(232,59,59,0.4);
+      box-shadow: 0 0 60px rgba(232,59,59,0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Glass card pink variant */
+    .glass-card-pink {
+      background: rgba(244, 114, 182, 0.06);
+      border: 1px solid rgba(244, 114, 182, 0.2);
+      border-radius: 16px;
+      padding: 22px 26px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 40px rgba(244, 114, 182, 0.15);
+      transition: all 0.3s;
+    }
+    .glass-card-pink:hover {
+      border-color: rgba(244,114,182,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Glass card gold variant */
+    .glass-card-gold {
+      background: rgba(251, 191, 36, 0.06);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 16px;
+      padding: 22px 26px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.1);
+      transition: all 0.3s;
+    }
+    .glass-card-gold:hover {
+      border-color: rgba(251,191,36,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* ===== GRADIENT TEXT ===== */
+    .grad-text { background: linear-gradient(135deg, var(--lobster), #ff6b6b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .grad-blue { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .grad-pink { background: linear-gradient(135deg, var(--accent3), #fb7185); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .grad-gold { background: linear-gradient(135deg, var(--gold), var(--orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* ===== PILLS ===== */
+    .pill {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.65em;
+      font-weight: 600;
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.2);
+      color: var(--accent);
+    }
+    .pill-lobster { background: rgba(232,59,59,0.1); border-color: rgba(232,59,59,0.2); color: var(--lobster); }
+    .pill-gold { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.2); color: var(--gold); }
+    .pill-green { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); color: var(--green); }
+    .pill-pink { background: rgba(244,114,182,0.1); border-color: rgba(244,114,182,0.2); color: var(--accent3); }
+
+    /* ===== SECTION DIVIDER TAG ===== */
+    .section-divider {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(232,59,59,0.15), rgba(232,59,59,0.1));
+      border: 1px solid rgba(232,59,59,0.3);
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: 0.7em;
+      font-weight: 600;
+      color: var(--lobster);
+      margin-bottom: 16px;
+    }
+
+    /* ===== GRIDS ===== */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+    .center { text-align: center !important; }
+
+    /* ===== CARD INNER ===== */
+    .card-icon { font-size: 2em; margin-bottom: 10px; animation: float 4s ease-in-out infinite; display: inline-block; }
+    .card-title { font-size: 0.9em; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .card-desc { font-size: 0.65em; color: var(--muted); line-height: 1.65; }
+    .card-desc strong { color: var(--text); }
+
+    /* ===== STAT BOXES (bigger numbers) ===== */
+    .stat-box { text-align: center; }
+    .stat-number {
+      font-size: 3em;
+      font-weight: 900;
+      line-height: 1;
+      animation: glow-pulse 3s ease-in-out infinite;
+      display: block;
+    }
+    .stat-label { font-size: 0.6em; color: var(--muted); margin-top: 6px; }
+
+    /* ===== FLOW ===== */
+    .flow { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 24px 0; flex-wrap: wrap; }
+    .flow-step {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      text-align: center;
+      min-width: 110px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .flow-step:hover { border-color: rgba(79,195,247,0.3); transform: translateY(-3px); }
+    .flow-step-icon { font-size: 1.6em; margin-bottom: 4px; }
+    .flow-step-label { font-size: 0.65em; color: var(--text); font-weight: 600; }
+    .flow-step-desc { font-size: 0.5em; color: var(--muted); margin-top: 3px; }
+    .flow-arrow { font-size: 1.3em; color: var(--accent); animation: glow-pulse 2s ease-in-out infinite; }
+    .flow-step.highlight {
+      background: rgba(79,195,247,0.12);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(79,195,247,0.2);
+    }
+    .flow-step.highlight-lobster {
+      background: rgba(232,59,59,0.1);
+      border-color: rgba(232,59,59,0.3);
+      box-shadow: 0 0 20px var(--lobster-glow);
+    }
+
+    /* ===== LAYER DIAGRAM ===== */
+    .layer-diagram { display: flex; flex-direction: column; gap: 10px; margin: 16px auto; max-width: 700px; }
+    .layer {
+      border-radius: 14px; padding: 16px 22px;
+      display: flex; align-items: center; gap: 16px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .layer:hover { transform: translateX(4px); }
+    .layer-personal { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
+    .layer-dept { background: rgba(79,195,247,0.08); border: 1px solid rgba(79,195,247,0.25); }
+    .layer-company { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
+    .layer-icon { font-size: 1.8em; }
+    .layer-info { text-align: left; flex: 1; }
+    .layer-name { font-size: 0.85em; font-weight: 700; color: var(--text); }
+    .layer-detail { font-size: 0.6em; color: var(--muted); margin-top: 3px; }
+    .layer-arrow { text-align: center; color: var(--muted); font-size: 1em; }
+
+    /* ===== SCENARIO ===== */
+    .scenario {
+      background: rgba(79,195,247,0.04);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin: 14px 0;
+      border-left: 4px solid var(--accent);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 0 30px rgba(79,195,247,0.03);
+    }
+    .scenario-title { font-size: 0.85em; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+    .scenario-body { font-size: 0.68em; color: var(--muted); line-height: 1.7; }
+    .scenario-body em { color: var(--accent2); font-style: normal; font-weight: 500; }
+
+    /* ===== QUOTES ===== */
+    .big-quote {
+      font-size: 1.3em;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .quote-block {
+      background: rgba(79,195,247,0.06);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 14px 14px 0;
+      padding: 18px 22px;
+      margin: 16px 0;
+      font-size: 0.8em;
+      color: var(--muted);
+      font-style: italic;
+      backdrop-filter: blur(6px);
+    }
+
+    /* ===== TIP BOX ===== */
+    .tip-box {
+      background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 0.7em;
+      color: var(--gold);
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline { margin: 16px 0; }
+    .timeline-item { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+    .timeline-phase {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: var(--bg1); font-weight: 700;
+      padding: 5px 14px; border-radius: 20px; font-size: 0.6em; white-space: nowrap;
+    }
+    .timeline-phase.done { background: linear-gradient(135deg, var(--green), #06b6d4); }
+    .timeline-phase.current { background: linear-gradient(135deg, var(--gold), var(--orange)); animation: glow-pulse 2s ease-in-out infinite; }
+    .timeline-content { flex: 1; }
+    .timeline-title { font-size: 0.75em; font-weight: 600; color: var(--text); }
+    .timeline-desc { font-size: 0.6em; color: var(--muted); margin-top: 2px; }
+
+    /* ===== TECH GRID ===== */
+    .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .tech-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s;
+    }
+    .tech-item:hover { border-color: rgba(79,195,247,0.3); transform: translateY(-2px); }
+    .tech-category { font-size: 0.55em; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tech-name { font-size: 0.75em; font-weight: 700; color: var(--text); margin-top: 3px; }
+    .tech-note { font-size: 0.55em; color: var(--muted); margin-top: 2px; }
+
+    /* ===== ARCHITECTURE ===== */
+    .arch-container { display: flex; gap: 18px; margin: 16px 0; align-items: stretch; }
+    .arch-col {
+      flex: 1;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .arch-col:hover { transform: translateY(-3px); }
+    .arch-col.arch-owner {
+      background: rgba(232,59,59,0.06);
+      border-color: rgba(232,59,59,0.2);
+    }
+    .arch-col-title { font-size: 0.65em; font-weight: 700; color: var(--accent); margin-bottom: 10px; text-align: center; }
+    .arch-col.arch-owner .arch-col-title { color: var(--lobster); }
+    .arch-item { font-size: 0.6em; color: var(--muted); padding: 5px 0; border-bottom: 1px solid rgba(79,195,247,0.06); }
+    .arch-item:last-child { border-bottom: none; }
+    .arch-item strong { color: var(--text); }
+
+    /* ===== COMPARE TABLE ===== */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 0.65em;
+      margin-top: 16px;
+    }
+    .compare-table th {
+      padding: 10px 14px;
+      background: rgba(232,59,59,0.1);
+      color: var(--lobster);
+      font-weight: 600;
+      text-align: left;
+    }
+    .compare-table th:first-child { background: rgba(79,195,247,0.08); color: var(--accent); }
+    .compare-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(79,195,247,0.06);
+      color: var(--muted);
+    }
+    .compare-table tr:nth-child(even) td { background: rgba(79,195,247,0.02); }
+    .compare-table td strong { color: var(--text); }
+
+    /* ===== COVER SLIDE ===== */
+    .cover-slide {
+      text-align: center !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover-slide::before {
+      content: '' !important;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 30% 70%, rgba(79,195,247,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(0,229,255,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(244,114,182,0.05) 0%, transparent 60%) !important;
+      pointer-events: none; z-index: -1;
+    }
+
+    /* ===== SECTION SLIDES ===== */
+    .section-slide {
+      text-align: center !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-slide::before {
+      content: '' !important;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(79,195,247,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(0,229,255,0.06) 0%, transparent 50%) !important;
+      pointer-events: none; z-index: -1;
+    }
+    .section-number {
+      font-size: 4em; font-weight: 900; opacity: 0.12;
+      position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: number-appear 0.8s ease-out both;
+    }
+    .section-title {
+      font-size: 2em; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: fade-up 0.6s ease-out 0.2s both;
+    }
+    .section-desc { font-size: 0.9em; color: var(--muted); margin-top: 0.5em; animation: fade-up 0.6s ease-out 0.4s both; }
+
+    /* ===== ANIMATED ORB ELEMENT ===== */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(40px);
+    }
+    .orb-cyan {
+      background: radial-gradient(circle, rgba(79,195,247,.18), transparent 70%);
+      animation: orb-float 8s ease-in-out infinite;
+    }
+    .orb-pink {
+      background: radial-gradient(circle, rgba(244,114,182,.15), transparent 70%);
+      animation: orb-float 10s ease-in-out infinite;
+      animation-delay: -4s;
+    }
+    .orb-blue {
+      background: radial-gradient(circle, rgba(0,229,255,.12), transparent 70%);
+      animation: orb-float 12s ease-in-out infinite;
+      animation-delay: -8s;
+    }
+
+    /* ===== STYLED LIST ===== */
+    .styled-list { list-style: none; padding: 0; margin: 14px 0; }
+    .styled-list li {
+      padding: 8px 0 8px 28px; position: relative;
+      font-size: 0.75em; color: var(--muted); border-bottom: 1px solid rgba(79,195,247,0.06);
+    }
+    .styled-list li::before {
+      content: '▸'; position: absolute; left: 8px; color: var(--accent); font-weight: bold;
+    }
+    .styled-list li strong { color: var(--text); }
+
+    /* ===== END SLIDE ===== */
+    .end-tagline { font-size: 1.1em; color: var(--muted); font-weight: 300; margin-top: 1em; }
+
+    /* ===== SLIDE NUMBER / PROGRESS ===== */
+    .reveal .slide-number { color: var(--accent); background: rgba(10,22,40,0.8); border-radius: 20px; font-size: 14px; padding: 4px 10px; }
+    .reveal .progress span { background: var(--lobster); }
+
+    small { font-size: 0.6em; color: var(--muted); }
+
+    /* ===== UTILITY ===== */
+    .mb-0 { margin-bottom: 0 !important; }
+    .mt-0 { margin-top: 0 !important; }
+    .mt-1 { margin-top: 12px !important; }
+    .mt-2 { margin-top: 24px !important; }
+    .text-accent { color: var(--accent); }
+    .text-lobster { color: var(--lobster); }
+    .text-gold { color: var(--gold); }
+    .text-green { color: var(--green); }
+    .text-pink { color: var(--accent3); }
+
+    /* ===== FRAGMENT ANIMATIONS ===== */
+    .reveal .fragment.fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal .fragment.fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== ANIMATED DIVIDER LINE ===== */
+    .animated-line {
+      display: block;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+      border-radius: 1px;
+      margin: 28px auto;
+      animation: line-expand 1s ease-out 0.3s both;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ====== COVER ====== -->
+<section class="cover-slide">
+  <!-- Animated orbs -->
+  <div class="orb orb-cyan" style="top:-80px;left:-80px;width:350px;height:350px;"></div>
+  <div class="orb orb-pink" style="bottom:-60px;right:-60px;width:280px;height:280px;"></div>
+  <div class="orb orb-blue" style="top:40%;right:-40px;width:200px;height:200px;filter:blur(50px);"></div>
+
+  <div style="position:relative;z-index:1;">
+    <div style="margin-bottom:16px;">
+      <span class="pill pill-lobster" style="font-size:0.6em;">時光智造 TIMUX × 高雄捷運 KRTC</span>
+    </div>
+    <h1 style="margin-bottom:12px;">
+      <span class="shimmer-heading">AI 員工知識生態系統</span>
+    </h1>
+    <p style="font-size:0.95em;color:var(--muted);text-align:center;margin-bottom:8px;">
+      員工 Wiki × 知識圖譜 × AI 代理人
+    </p>
+    <p style="font-size:0.75em;color:var(--muted);text-align:center;">
+      讓每位員工的知識，成為組織的永恆資產
+    </p>
+    <span class="animated-line" style="width:60%;"></span>
+    <div style="display:flex;gap:24px;justify-content:center;margin-top:20px;">
+      <div class="glass-card" style="padding:12px 20px;text-align:center;">
+        <div style="font-size:0.55em;color:var(--accent);font-weight:600;">提案對象</div>
+        <div style="font-size:0.7em;font-weight:700;color:var(--text);margin-top:3px;">高雄捷運 KRTC</div>
+      </div>
+      <div class="glass-card" style="padding:12px 20px;text-align:center;">
+        <div style="font-size:0.55em;color:var(--accent);font-weight:600;">適用規模</div>
+        <div style="font-size:0.7em;font-weight:700;color:var(--text);margin-top:3px;">2,000+ 員工</div>
+      </div>
+      <div class="glass-card" style="padding:12px 20px;text-align:center;">
+        <div style="font-size:0.55em;color:var(--accent);font-weight:600;">提案方</div>
+        <div style="font-size:0.7em;font-weight:700;color:var(--text);margin-top:3px;">時光智造科技</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.55em;color:var(--muted);margin-top:24px;">2026 年 4 月</p>
+  </div>
+</section>
+
+<!-- ====== SECTION 1: 痛點 ====== -->
+<section>
+  <section class="section-slide">
+    <!-- Animated orbs -->
+    <div class="orb orb-cyan" style="top:-60px;right:-60px;width:250px;height:250px;filter:blur(50px);"></div>
+    <div class="orb orb-pink" style="bottom:-40px;left:-40px;width:200px;height:200px;filter:blur(45px);"></div>
+
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">01</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">01</span>
+        </div>
+        <div class="section-divider">問題定義</div>
+        <div class="section-title">企業知識的隱形危機</div>
+        <div class="section-desc">為什麼 KRTC 需要 AI 員工知識系統？</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">捷運營運的知識挑戰</span></h2>
+    <div class="grid-3 mt-1">
+      <div class="glass-card" data-fragment-index="1" class="fragment fade-up">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">知識散落各處</div>
+        <div class="card-desc">SOP 在紙本、經驗在腦中、技巧在 LINE 群組。找一個資訊要問三個人，等半天。<br><br><span class="text-accent">→ 搜尋效率低落</span></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">🚪</div>
+        <div class="card-title">人員異動斷層</div>
+        <div class="card-desc">資深工程師退休、站務員調職，帶走的不只是人，是十幾年累積的<strong>經驗判斷力</strong>。<br><br><span class="text-pink">→ 知識流失不可逆</span></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">⏰</div>
+        <div class="card-title">緊急時找不到人</div>
+        <div class="card-desc">凌晨號誌故障，唯一會處理的人在休假。翻 SOP 只有標準流程，<strong>沒有實戰經驗</strong>。<br><br><span class="text-gold">→ 應變時間拉長</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">數字說話</span></h2>
+    <div style="display:flex;gap:30px;justify-content:center;margin:28px 0;">
+      <div class="stat-box glass-card" style="padding:20px 28px;">
+        <span class="stat-number grad-blue">2,000+</span>
+        <div class="stat-label">員工人數</div>
+      </div>
+      <div class="stat-box glass-card" style="padding:20px 28px;">
+        <span class="stat-number grad-pink">70%</span>
+        <div class="stat-label">知識僅存於個人經驗</div>
+      </div>
+      <div class="stat-box glass-card" style="padding:20px 28px;">
+        <span class="stat-number grad-gold">3 個月</span>
+        <div class="stat-label">新人平均上手時間</div>
+      </div>
+      <div class="stat-box glass-card" style="padding:20px 28px;">
+        <span class="stat-number grad-text">48 hr</span>
+        <div class="stat-label">離職後知識查詢時效</div>
+      </div>
+    </div>
+    <div class="quote-block" style="text-align:center;">
+      「如果張志明明天退休，他 12 年的機電維修經驗會留下什麼？」<br>
+      <span style="color:var(--accent);font-style:normal;font-size:0.9em;">答案是：<strong>幾乎什麼都不會留下。</strong></span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">傳統做法 vs. AI 知識系統</span></h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>傳統知識管理</th>
+          <th>AI 員工知識生態系統</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>知識記錄</strong></td>
+          <td>手動撰寫、靠自覺</td>
+          <td><strong>日常對話自動萃取</strong>，員工零負擔</td>
+        </tr>
+        <tr>
+          <td><strong>搜尋方式</strong></td>
+          <td>關鍵字搜尋 + 問同事</td>
+          <td><strong>自然語言問答 + 圖譜導航</strong></td>
+        </tr>
+        <tr>
+          <td><strong>知識關聯</strong></td>
+          <td>手動分類、各自為政</td>
+          <td><strong>AI 自動發現跨領域關聯</strong></td>
+        </tr>
+        <tr>
+          <td><strong>離職交接</strong></td>
+          <td>2 週交接、遺漏嚴重</td>
+          <td><strong>AI 代理人永久保留</strong>，隨時可查</td>
+        </tr>
+        <tr>
+          <td><strong>健康度量</strong></td>
+          <td>無法量化</td>
+          <td><strong>God Nodes 分析</strong>、知識缺口儀表板</td>
+        </tr>
+        <tr>
+          <td><strong>資安合規</strong></td>
+          <td>雲端文件 = 外洩風險</td>
+          <td><strong>完全內網部署</strong>，資料不出公司</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>
+
+<!-- ====== SECTION 2: 解決方案 ====== -->
+<section>
+  <section class="section-slide">
+    <!-- Animated orbs -->
+    <div class="orb orb-blue" style="top:-50px;left:-50px;width:220px;height:220px;filter:blur(45px);"></div>
+    <div class="orb orb-cyan" style="bottom:-50px;right:-50px;width:260px;height:260px;filter:blur(50px);"></div>
+
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">02</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">02</span>
+        </div>
+        <div class="section-divider">解決方案</div>
+        <div class="section-title">AI 員工知識生態系統</div>
+        <div class="section-desc">不只是工具，而是一整套知識循環體系</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">核心概念：知識漏斗</span></h2>
+    <p>把散落的經驗，<span class="grad-blue" style="font-weight:700;">自動</span>變成可查詢、可傳承的組織資產</p>
+    <div class="flow mt-2">
+      <div class="flow-step">
+        <div class="flow-step-icon">💬</div>
+        <div class="flow-step-label">日常對話</div>
+        <div class="flow-step-desc">員工 × AI 助手</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🎤</div>
+        <div class="flow-step-label">會議紀錄</div>
+        <div class="flow-step-desc">STT + 摘要</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">📝</div>
+        <div class="flow-step-label">Wiki 萃取</div>
+        <div class="flow-step-desc">LLM 自動整理</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight">
+        <div class="flow-step-icon">🕸️</div>
+        <div class="flow-step-label">知識圖譜</div>
+        <div class="flow-step-desc">graphify 建構</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight-lobster">
+        <div class="flow-step-icon">🤖</div>
+        <div class="flow-step-label">AI 代理人</div>
+        <div class="flow-step-desc">任何人可查詢</div>
+      </div>
+    </div>
+    <div class="tip-box mt-1" style="text-align:center;">
+      💡 員工不需要刻意「寫文件」— 正常工作就自然累積知識
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">三重知識來源</span></h2>
+    <div class="grid-3 mt-1">
+      <div class="glass-card-lobster">
+        <div class="card-icon">🗣️</div>
+        <div class="card-title"><span class="grad-text">主動產出</span></div>
+        <div class="card-desc">
+          員工日常使用 <strong>龍蝦管家 AI 助手</strong>查 SOP、排班計算、翻譯文件<br><br>
+          對話中的知識<strong>自動萃取</strong>為 Wiki 頁面<br><br>
+          <span class="pill pill-lobster">🦞 LobsterAI</span>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">🎤</div>
+        <div class="card-title"><span class="grad-blue">會議沉澱</span></div>
+        <div class="card-desc">
+          會議語音 → <strong>自動轉文字</strong><br>
+          LLM 摘要重點 + 行動項目<br><br>
+          討論內容<strong>自動關聯</strong>到所有參會者的 Wiki<br><br>
+          <span class="pill">🎙️ FunASR</span>
+        </div>
+      </div>
+      <div class="glass-card-pink">
+        <div class="card-icon">💬</div>
+        <div class="card-title"><span class="grad-pink">群組萃取</span></div>
+        <div class="card-desc">
+          公司群組中有價值的<strong>技術討論</strong><br>
+          AI 自動識別、分類<br><br>
+          關聯到參與者的 Wiki<br><br>
+          <span class="pill pill-pink">📱 LINE / Teams</span>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.7em;color:var(--accent);margin-top:16px;font-weight:500;">三條管道匯聚成每位員工獨特的知識檔案</p>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">三大子系統整合</span></h2>
+    <p>不是三個獨立系統，是一個 <span class="grad-blue" style="font-weight:700;">員工知識生態系統</span></p>
+    <div class="grid-3 mt-1">
+      <div class="glass-card" style="border-top:3px solid var(--accent);">
+        <div style="text-align:center;margin-bottom:10px;">
+          <span class="pill">子系統 ①</span>
+        </div>
+        <div class="card-title" style="text-align:center;">⚙️ 設備管理系統</div>
+        <div class="card-desc">
+          <strong>設備狀態</strong>即時監控<br>
+          <strong>檢測紀錄</strong>數位化<br>
+          <strong>折舊預警</strong>自動計算<br>
+          <strong>預測性維護</strong> AI 建議<br><br>
+          串接 <span class="text-accent">SMART IT</span> 現有系統
+        </div>
+      </div>
+      <div class="glass-card-lobster" style="border-top:3px solid var(--lobster);">
+        <div style="text-align:center;margin-bottom:10px;">
+          <span class="pill pill-lobster">子系統 ②</span>
+        </div>
+        <div class="card-title" style="text-align:center;">🎤 會議紀錄系統</div>
+        <div class="card-desc">
+          <strong>語音轉文字</strong>（STT）<br>
+          <strong>LLM 摘要</strong>重點與決議<br>
+          <strong>行動項目</strong>追蹤<br>
+          <strong>方向驗證</strong>與回顧<br><br>
+          自動歸入 <span class="text-lobster">員工 Wiki</span>
+        </div>
+      </div>
+      <div class="glass-card-gold" style="border-top:3px solid var(--gold);">
+        <div style="text-align:center;margin-bottom:10px;">
+          <span class="pill pill-gold">子系統 ③ 核心</span>
+        </div>
+        <div class="card-title" style="text-align:center;">📚 員工個人 Wiki</div>
+        <div class="card-desc">
+          <strong>AI 職務代理人</strong><br>
+          <strong>知識傳承</strong>零斷層<br>
+          <strong>離職/請假</strong>即時查詢<br>
+          <strong>知識圖譜</strong>視覺化<br><br>
+          <span class="text-gold">本次 Demo 核心</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 3: 建立員工分身 ====== -->
+<section>
+  <section class="section-slide">
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">03</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">03</span>
+        </div>
+        <div class="section-divider">建構流程</div>
+        <div class="section-title">如何建立員工 AI 分身</div>
+        <div class="section-desc">從零到一的四步驟知識累積</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">Step 1：安裝 AI 助手</span></h2>
+    <div class="grid-2 mt-1">
+      <div>
+        <div class="glass-card-lobster" style="margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <span style="font-size:2em;animation:float 3s ease-in-out infinite;display:inline-block;">🦞</span>
+            <div>
+              <div class="card-title"><span class="grad-text">龍蝦管家 LobsterAI</span></div>
+              <div class="card-desc">桌面版 AI 工作助手</div>
+            </div>
+          </div>
+          <ul class="styled-list" style="margin:0;">
+            <li>安裝在<strong>每位員工的電腦</strong>上</li>
+            <li>日常查 SOP、計算排班、翻譯文件</li>
+            <li>背景自動記錄<strong>知識片段</strong></li>
+            <li>員工可設定記錄準則（記什麼、不記什麼）</li>
+            <li>支持<strong>完全離線</strong>運作</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="glass-card" style="height:100%;display:flex;flex-direction:column;justify-content:center;text-align:center;">
+          <div style="font-size:3.5em;margin-bottom:14px;animation:float 4s ease-in-out infinite;display:inline-block;">🦞 💻</div>
+          <div style="font-size:0.85em;font-weight:700;color:var(--text);">每位員工電腦</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
+            <span class="pill pill-green">✅ 本地 AI 對話</span>
+            <span class="pill pill-green">✅ 自動萃取</span>
+            <span class="pill pill-green">✅ 隱私不出電腦</span>
+          </div>
+          <div style="margin-top:16px;font-size:0.6em;color:var(--muted);">
+            Skill 擴充架構，可客製化功能<br>
+            wiki-sync 模組負責知識同步到中央
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">Step 2：自動生成個人 Wiki</span></h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-step-icon">💬</div>
+        <div class="flow-step-label">AI 對話</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🔍</div>
+        <div class="flow-step-label">LLM 萃取</div>
+        <div class="flow-step-desc">識別有價值知識</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">📄</div>
+        <div class="flow-step-label">Markdown Wiki</div>
+        <div class="flow-step-desc">結構化頁面</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight">
+        <div class="flow-step-icon">☁️</div>
+        <div class="flow-step-label">同步到中央</div>
+        <div class="flow-step-desc">wiki-sync</div>
+      </div>
+    </div>
+    <div class="scenario">
+      <div class="scenario-title">📌 實際範例：機電工程師 張志明</div>
+      <div class="scenario-body">
+        張志明用龍蝦管家查詢「<em>第三軌接地故障的檢測步驟</em>」→ AI 回答後，系統自動萃取為一篇 Wiki 頁面《接地故障檢測與處理》，包含故障碼、處理步驟、注意事項。<br><br>
+        經過 3 個月日常使用，張志明的個人 Wiki 累積了 <em>56 個知識節點</em>，涵蓋電聯車巡檢、號誌故障、軌道供電等 <em>6 大知識社群</em>。<br><br>
+        <span style="color:var(--accent);font-weight:600;">→ 零額外工作量，正常使用就自然累積。</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">Step 3：知識圖譜自動建構</span></h2>
+    <p>每天凌晨，<span class="grad-blue" style="font-weight:700;">graphify</span> 自動掃描所有 Wiki，建構三層知識圖譜</p>
+    <div class="layer-diagram mt-1">
+      <div class="layer layer-personal">
+        <div class="layer-icon">👤</div>
+        <div class="layer-info">
+          <div class="layer-name">個人圖譜 <span class="pill pill-green" style="font-size:0.7em;">每位員工獨立</span></div>
+          <div class="layer-detail">看出個人專長和知識盲點 → 「張志明擅長號誌，但對空調系統不熟」</div>
+        </div>
+      </div>
+      <div class="layer-arrow">▼ 按部門合併</div>
+      <div class="layer layer-dept">
+        <div class="layer-icon">👥</div>
+        <div class="layer-info">
+          <div class="layer-name">部門圖譜 <span class="pill" style="font-size:0.7em;">團隊知識地圖</span></div>
+          <div class="layer-detail">知識重疊與互補分析 → 找出知識斷層和備援人力缺口</div>
+        </div>
+      </div>
+      <div class="layer-arrow">▼ 全公司合併</div>
+      <div class="layer layer-company">
+        <div class="layer-icon">🏢</div>
+        <div class="layer-info">
+          <div class="layer-name">公司圖譜 <span class="pill pill-gold" style="font-size:0.7em;">組織級全景</span></div>
+          <div class="layer-detail">跨部門知識流動、核心知識節點（God Nodes）、組織知識健康度</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">Step 4：AI 代理人上線</span></h2>
+    <p>知識圖譜建構完成，每位員工自動擁有一個 <span class="grad-blue" style="font-weight:700;">AI 代理人</span></p>
+    <div class="grid-2 mt-1">
+      <div class="glass-card">
+        <div class="card-icon">🔎</div>
+        <div class="card-title">智慧知識搜尋</div>
+        <div class="card-desc">
+          直接用自然語言提問：<br><br>
+          「<em style="color:var(--accent2);">張志明通常怎麼處理月台門故障？</em>」<br>
+          「<em style="color:var(--accent2);">機電組有誰會處理號誌 E-315 錯誤？</em>」<br>
+          「<em style="color:var(--accent2);">站務值班時遇到旅客暈倒怎麼辦？</em>」<br><br>
+          AI 根據知識圖譜精準回答，並標示<strong>知識來源</strong>
+        </div>
+      </div>
+      <div class="glass-card-lobster">
+        <div class="card-icon">🧑‍💼</div>
+        <div class="card-title">職務代理人</div>
+        <div class="card-desc">
+          員工休假、調職或離職時：<br><br>
+          「<em style="color:var(--accent2);">我是新來的，接手張志明的工作</em>」<br><br>
+          AI 代理人提供：<br>
+          ▸ 完整<strong>職務交接清單</strong><br>
+          ▸ 常見問題與解法<br>
+          ▸ 關鍵聯絡人與資源<br>
+          ▸ 過去處理過的<strong>異常案例</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 4: 知識圖譜技術 ====== -->
+<section>
+  <section class="section-slide">
+    <!-- Animated orbs -->
+    <div class="orb orb-pink" style="top:-60px;right:-40px;width:230px;height:230px;filter:blur(50px);"></div>
+    <div class="orb orb-blue" style="bottom:-40px;left:-60px;width:240px;height:240px;filter:blur(45px);"></div>
+
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">04</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">04</span>
+        </div>
+        <div class="section-divider">核心技術</div>
+        <div class="section-title">知識圖譜技術架構</div>
+        <div class="section-desc">graphify — 從文件到可視化圖譜的全自動流程</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">graphify 處理流程</span></h2>
+    <div class="flow mt-1">
+      <div class="flow-step">
+        <div class="flow-step-icon">📁</div>
+        <div class="flow-step-label">Wiki 文件</div>
+        <div class="flow-step-desc">Markdown</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🧠</div>
+        <div class="flow-step-label">LLM 抽取</div>
+        <div class="flow-step-desc">實體 + 關係</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🔗</div>
+        <div class="flow-step-label">圖譜建構</div>
+        <div class="flow-step-desc">NetworkX</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🎨</div>
+        <div class="flow-step-label">社群偵測</div>
+        <div class="flow-step-desc">Leiden 演算法</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight">
+        <div class="flow-step-icon">🌐</div>
+        <div class="flow-step-label">互動圖譜</div>
+        <div class="flow-step-desc">HTML 可視化</div>
+      </div>
+    </div>
+    <div class="grid-2 mt-2">
+      <div class="glass-card">
+        <div class="card-title">📊 圖譜產出物</div>
+        <div class="card-desc">
+          <strong>graph.html</strong> — 互動式可視化（搜尋、篩選、點擊探索）<br>
+          <strong>graph.json</strong> — 結構化數據（節點 + 邊 + 社群 + 超邊）<br>
+          <strong>GRAPH_REPORT.md</strong> — 分析報告（God Nodes、知識缺口、驚喜關聯）
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">🔬 智慧分析能力</div>
+        <div class="card-desc">
+          <strong>God Nodes</strong> — 連結最多的核心知識，組織最不能丟失的<br>
+          <strong>社群偵測</strong> — 自動發現知識主題群組<br>
+          <strong>驚喜關聯</strong> — 發現隱藏的跨領域知識連結<br>
+          <strong>孤立節點</strong> — 找出知識缺口和未連結的資訊
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">AI 問答運作原理：GraphRAG</span></h2>
+    <p>結合<span class="grad-blue" style="font-weight:700;">知識圖譜</span> + <span class="grad-pink" style="font-weight:700;">向量檢索</span>的混合架構，比純 RAG 更準確</p>
+    <div class="flow mt-1">
+      <div class="flow-step">
+        <div class="flow-step-icon">❓</div>
+        <div class="flow-step-label">使用者提問</div>
+        <div class="flow-step-desc">自然語言</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🕸️</div>
+        <div class="flow-step-label">圖譜定位</div>
+        <div class="flow-step-desc">找到相關節點</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🔍</div>
+        <div class="flow-step-label">向量檢索</div>
+        <div class="flow-step-desc">取回原始 Wiki</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight-lobster">
+        <div class="flow-step-icon">🤖</div>
+        <div class="flow-step-label">LLM 生成</div>
+        <div class="flow-step-desc">帶來源的回答</div>
+      </div>
+    </div>
+    <div class="grid-2 mt-1">
+      <div class="glass-card">
+        <div class="card-title">💎 為什麼比純 RAG 好？</div>
+        <div class="card-desc">
+          純 RAG 只做<strong>文字匹配</strong>，問「誰負責什麼」找不到答案<br><br>
+          GraphRAG 有<strong>結構化導航</strong>：<br>
+          ▸ 人 → 負責 → 設備 → 相關故障<br>
+          ▸ 能回答「A 和 B 有什麼關係」這類問題
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">🔐 可追溯 = 可信任</div>
+        <div class="card-desc">
+          每個回答都標記<strong>來源</strong>：<br><br>
+          ▸ 來自哪位員工的 Wiki<br>
+          ▸ 引用的具體知識頁面<br>
+          ▸ 相關度信心分數<br><br>
+          使用者可以<strong>驗證</strong>每一條資訊
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 5: Demo 成果 ====== -->
+<section>
+  <section class="section-slide">
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">05</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">05</span>
+        </div>
+        <div class="section-divider">Demo 展示</div>
+        <div class="section-title">實際成果展示</div>
+        <div class="section-desc">3 位模擬員工 × 45 篇 Wiki → 5 張知識圖譜</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">模擬員工檔案</span></h2>
+    <div class="grid-3 mt-1">
+      <div class="glass-card" style="text-align:center;">
+        <div style="font-size:2.5em;margin-bottom:8px;animation:float 4s ease-in-out infinite;display:inline-block;">👨‍🔧</div>
+        <div class="card-title">張志明</div>
+        <div class="card-desc" style="text-align:center;">
+          <span class="pill pill-lobster">機電維修工程師</span><br><br>
+          資歷 12 年<br>
+          專長：電聯車、號誌系統<br>
+          知識節點：<strong style="color:var(--accent2);">56 個</strong><br>
+          知識關聯：<strong style="color:var(--accent2);">133 條</strong><br>
+          知識社群：<strong style="color:var(--accent2);">6 個</strong>
+        </div>
+      </div>
+      <div class="glass-card" style="text-align:center;">
+        <div style="font-size:2.5em;margin-bottom:8px;animation:float 4s ease-in-out 1s infinite;display:inline-block;">👩‍💼</div>
+        <div class="card-title">李美玲</div>
+        <div class="card-desc" style="text-align:center;">
+          <span class="pill pill-pink">票務站務員</span><br><br>
+          資歷 7 年<br>
+          專長：票務系統、旅客服務<br>
+          知識節點：<strong style="color:var(--accent2);">34 個</strong><br>
+          知識關聯：<strong style="color:var(--accent2);">87 條</strong><br>
+          知識社群：<strong style="color:var(--accent2);">8 個</strong>
+        </div>
+      </div>
+      <div class="glass-card" style="text-align:center;">
+        <div style="font-size:2.5em;margin-bottom:8px;animation:float 4s ease-in-out 2s infinite;display:inline-block;">👨‍✈️</div>
+        <div class="card-title">王建國</div>
+        <div class="card-desc" style="text-align:center;">
+          <span class="pill pill-gold">美麗島站站長</span><br><br>
+          資歷 15 年<br>
+          專長：站務管理、緊急應變<br>
+          知識節點：<strong style="color:var(--accent2);">33 個</strong><br>
+          知識關聯：<strong style="color:var(--accent2);">68 條</strong><br>
+          知識社群：<strong style="color:var(--accent2);">6 個</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">五層圖譜數據總覽</span></h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>圖譜層級</th>
+          <th style="text-align:center;">知識節點</th>
+          <th style="text-align:center;">知識關聯</th>
+          <th style="text-align:center;">知識社群</th>
+          <th>說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>👤 張志明</td>
+          <td style="text-align:center;"><strong>56</strong></td>
+          <td style="text-align:center;">133</td>
+          <td style="text-align:center;">6</td>
+          <td>機電維修 × 12 年經驗</td>
+        </tr>
+        <tr>
+          <td>👤 李美玲</td>
+          <td style="text-align:center;"><strong>34</strong></td>
+          <td style="text-align:center;">87</td>
+          <td style="text-align:center;">8</td>
+          <td>票務站務 × 7 年經驗</td>
+        </tr>
+        <tr>
+          <td>👤 王建國</td>
+          <td style="text-align:center;"><strong>33</strong></td>
+          <td style="text-align:center;">68</td>
+          <td style="text-align:center;">6</td>
+          <td>站長管理 × 15 年經驗</td>
+        </tr>
+        <tr>
+          <td>👥 站務票務組</td>
+          <td style="text-align:center;"><strong>67</strong></td>
+          <td style="text-align:center;">163</td>
+          <td style="text-align:center;">10</td>
+          <td>李美玲 + 王建國合併</td>
+        </tr>
+        <tr>
+          <td>🏢 <strong style="color:var(--gold);">全公司圖譜</strong></td>
+          <td style="text-align:center;"><strong style="color:var(--accent2);">123</strong></td>
+          <td style="text-align:center;"><strong style="color:var(--accent2);">303</strong></td>
+          <td style="text-align:center;"><strong style="color:var(--accent2);">7</strong></td>
+          <td><strong>含 15 條跨員工關聯</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tip-box mt-1" style="text-align:center;">
+      💡 僅 3 位員工、45 篇 Wiki 就產生 123 個節點和 303 條關聯 — 想像 2,000 人的威力
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">God Nodes — 組織最核心的知識</span></h2>
+    <p>God Nodes = 連結最多的節點，是整個組織知識網路的<span class="grad-text" style="font-weight:700;">樞紐</span></p>
+    <div class="grid-3 mt-1">
+      <div class="glass-card-lobster" style="text-align:center;">
+        <div style="font-size:2em;margin-bottom:6px;animation:float 3s ease-in-out infinite;display:inline-block;">🏆</div>
+        <div class="card-title">站務值班注意事項</div>
+        <div style="font-size:3em;font-weight:900;margin:10px 0;line-height:1;"><span class="grad-text">17</span></div>
+        <div class="card-desc" style="text-align:center;">條知識關聯<br><span style="color:var(--lobster);">跨三位員工共享</span></div>
+      </div>
+      <div class="glass-card" style="text-align:center;">
+        <div style="font-size:2em;margin-bottom:6px;animation:float 3s ease-in-out 1s infinite;display:inline-block;">🥈</div>
+        <div class="card-title">號誌系統故障排除指南</div>
+        <div style="font-size:3em;font-weight:900;margin:10px 0;line-height:1;"><span class="grad-blue">16</span></div>
+        <div class="card-desc" style="text-align:center;">條知識關聯<br><span style="color:var(--accent);">機電 ↔ 站務核心交集</span></div>
+      </div>
+      <div class="glass-card-gold" style="text-align:center;">
+        <div style="font-size:2em;margin-bottom:6px;animation:float 3s ease-in-out 2s infinite;display:inline-block;">🥉</div>
+        <div class="card-title">Q1 設備異常統計</div>
+        <div style="font-size:3em;font-weight:900;margin:10px 0;line-height:1;"><span class="grad-gold">14</span></div>
+        <div class="card-desc" style="text-align:center;">條知識關聯<br><span style="color:var(--gold);">串聯所有設備維護知識</span></div>
+      </div>
+    </div>
+    <div class="quote-block mt-1">
+      God Nodes = 組織中最不能丟失的知識。如果這些知識的唯一擁有者離開，衝擊最大。<br>
+      <strong style="color:var(--accent);font-style:normal;">→ 優先確保有多人備援，並建立完整的知識傳承路徑。</strong>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 6: 使用情境 ====== -->
+<section>
+  <section class="section-slide">
+    <!-- Animated orbs -->
+    <div class="orb orb-cyan" style="top:-70px;left:-70px;width:260px;height:260px;filter:blur(50px);"></div>
+    <div class="orb orb-pink" style="bottom:-50px;right:-50px;width:220px;height:220px;filter:blur(45px);"></div>
+
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">06</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">06</span>
+        </div>
+        <div class="section-divider">應用場景</div>
+        <div class="section-title">實際使用情境</div>
+        <div class="section-desc">從一線站務員到管理層，每個角色都有用</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">情境 ①｜緊急故障排除</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">🚨 凌晨 2:00 — 號誌系統 E-315 故障</div>
+      <div class="scenario-body">
+        值班站務員發現號誌異常，但負責的機電工程師張志明在休假。<br><br>
+        ▸ 開啟 AI 代理人，詢問：<em>「號誌故障 E-315 月台門對位超時怎麼處理？」</em><br>
+        ▸ AI 根據張志明的知識圖譜回答：檢查 PSC 控制器 → 確認 DCU 通訊 → 手動對位步驟<br>
+        ▸ 同時標示：<em>知識來源：《號誌系統故障排除指南》+《月台門維修作業》</em><br><br>
+        <strong style="color:var(--green);">✅ 不需要半夜打電話叫人，值班人員自行排除故障</strong>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">情境 ②｜新人快速上手</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">🎓 新進機電工程師 — 第一個月</div>
+      <div class="scenario-body">
+        新人小陳剛到機電組，需要學習大量 SOP 和實務經驗。<br><br>
+        ▸ 查看張志明的<em>個人知識圖譜</em> → 6 大知識社群一目了然<br>
+        ▸ 每個社群都有完整 Wiki：電聯車巡檢、號誌故障、軌道供電、空調維修...<br>
+        ▸ AI 代理人隨時回答：<em>「轉向架檢查的重點有哪些？」</em><br><br>
+        <strong style="color:var(--green);">✅ 新人上手時間從 3 個月 → 1 個月</strong>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">情境 ③｜知識健康檢查</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">📊 部門主管 — 每月知識報告</div>
+      <div class="scenario-body">
+        站務處長打開知識儀表板：<br><br>
+        ▸ <em>God Nodes 報告</em>：「號誌故障排除」知識只有張志明一人掌握 → ⚠️ 高風險<br>
+        ▸ <em>知識缺口分析</em>：新購「西門子 Inspiro MHI-B」相關知識為零 → 需要訓練<br>
+        ▸ <em>跨部門關聯</em>：站務組和機電組在「月台門異常」有大量知識交集 → 可強化協作<br><br>
+        <strong style="color:var(--green);">✅ 資料驅動的人才培育決策，不再靠感覺</strong>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">情境 ④｜退休知識傳承</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">👴 張志明即將退休 — 知識搶救計畫</div>
+      <div class="scenario-body">
+        張志明計畫明年退休，部門啟動知識傳承流程：<br><br>
+        ▸ 系統已累積 <em>56 個知識節點、133 條關聯</em><br>
+        ▸ 導出報告，標記<strong>僅他一人掌握</strong>的知識 → 單點風險清單<br>
+        ▸ 安排接班人閱讀 Wiki，搭配 AI 代理人進行 Q&A 模擬訓練<br>
+        ▸ 退休後，AI 代理人<em>永久保留</em>，新同事隨時查詢<br><br>
+        <strong style="color:var(--green);">✅ 人走了，12 年經驗留下來。知識不會消失。</strong>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 7: 部署架構 ====== -->
+<section>
+  <section class="section-slide">
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">07</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">07</span>
+        </div>
+        <div class="section-divider">技術架構</div>
+        <div class="section-title">AI 串接與部署架構</div>
+        <div class="section-desc">完全自建・資料不出公司・符合合規要求</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">系統架構總覽</span></h2>
+    <div class="arch-container mt-1">
+      <div class="arch-col arch-owner">
+        <div class="arch-col-title">🖥️ 員工端（2000台）</div>
+        <div class="arch-item"><strong>龍蝦管家</strong> 桌面版</div>
+        <div class="arch-item">本地 AI 對話引擎</div>
+        <div class="arch-item">Wiki 自動萃取模組</div>
+        <div class="arch-item"><strong>wiki-sync</strong> 同步</div>
+        <div class="arch-item">可配置記錄準則</div>
+      </div>
+      <div class="arch-col" style="border-color:var(--accent);box-shadow:0 0 30px rgba(79,195,247,0.15);">
+        <div class="arch-col-title">⚡ 中央服務器（KRTC 內網）</div>
+        <div class="arch-item"><strong>NVIDIA Spark</strong> GPU 叢集</div>
+        <div class="arch-item"><strong>vLLM</strong> LLM 推理引擎</div>
+        <div class="arch-item"><strong>graphify</strong> 圖譜引擎</div>
+        <div class="arch-item"><strong>Milvus</strong> 向量資料庫</div>
+        <div class="arch-item"><strong>FunASR</strong> 語音辨識</div>
+        <div class="arch-item">Web UI 服務</div>
+      </div>
+      <div class="arch-col">
+        <div class="arch-col-title">🌐 管理介面</div>
+        <div class="arch-item"><strong>知識儀表板</strong></div>
+        <div class="arch-item">圖譜瀏覽器（三視角）</div>
+        <div class="arch-item">員工知識檔案</div>
+        <div class="arch-item">AI 代理人問答</div>
+        <div class="arch-item">知識健康報告</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px;">
+      <span class="pill pill-gold" style="font-size:0.6em;">⚠️ 完全內網部署 — 資料不出公司，符合設備廠商合約保密要求</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">技術選型</span></h2>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-category">大語言模型</div>
+        <div class="tech-name">Qwen 2.5-72B / Qwen 3</div>
+        <div class="tech-note">中英雙語最強開源 · Apache 2.0 · 商用免費</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">推理引擎</div>
+        <div class="tech-name">vLLM</div>
+        <div class="tech-note">生產級 · PagedAttention · 高並發</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">嵌入模型</div>
+        <div class="tech-name">BGE-M3</div>
+        <div class="tech-note">中英混合語義檢索 · 1024 維向量</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">向量資料庫</div>
+        <div class="tech-name">Milvus</div>
+        <div class="tech-note">分散式向量搜尋 · 百萬級文件</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">知識圖譜</div>
+        <div class="tech-name">graphify + NetworkX</div>
+        <div class="tech-note">LLM 驅動抽取 · Leiden 社群偵測</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">語音辨識</div>
+        <div class="tech-name">FunASR (Paraformer-zh)</div>
+        <div class="tech-note">中文最強 STT · 即時串流轉寫</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">前端框架</div>
+        <div class="tech-name">Vue 3 + D3.js</div>
+        <div class="tech-note">力導向圖 · 互動式圖譜瀏覽</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-category">桌面端 AI 助手</div>
+        <div class="tech-name">龍蝦管家 LobsterAI</div>
+        <div class="tech-note">Skill 擴充 · 自動知識萃取</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.6em;color:var(--accent);margin-top:10px;font-weight:500;">全部開源或自研技術，零外部服務依賴</p>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">安全與隱私設計</span></h2>
+    <div class="grid-2 mt-1">
+      <div class="glass-card">
+        <div class="card-title">🔒 資料安全</div>
+        <div class="card-desc">
+          ▸ <strong>完全內網部署</strong>，無雲端依賴<br>
+          ▸ LLM、向量 DB、圖譜引擎<strong>全在 KRTC 機房</strong><br>
+          ▸ 員工對話<strong>不經任何外部 API</strong><br>
+          ▸ 符合設備廠商合約保密要求<br>
+          ▸ 可配合資安稽核需求
+        </div>
+      </div>
+      <div class="glass-card-lobster">
+        <div class="card-title">👁️ 權限控管</div>
+        <div class="card-desc">
+          ▸ 個人 Wiki <strong>預設僅自己可見</strong><br>
+          ▸ 部門圖譜<strong>僅部門成員可見</strong><br>
+          ▸ 公司圖譜<strong>管理層可查看</strong><br>
+          ▸ 員工可標記<strong>不記錄</strong>的敏感對話<br>
+          ▸ 完整的<strong>操作稽核記錄</strong>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box mt-1" style="text-align:center;">
+      🛡️ 核心原則：員工的隱私與公司的資安，一個都不能少
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 8: 規模化 ====== -->
+<section>
+  <section class="section-slide">
+    <!-- Animated orbs -->
+    <div class="orb orb-blue" style="top:-60px;right:-60px;width:240px;height:240px;filter:blur(50px);"></div>
+    <div class="orb orb-cyan" style="bottom:-40px;left:-40px;width:200px;height:200px;filter:blur(45px);"></div>
+
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">08</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">08</span>
+        </div>
+        <div class="section-divider">規模化</div>
+        <div class="section-title">2,000 人規模分析</div>
+        <div class="section-desc">從 3 人 Demo 到全公司部署</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">規模化效能評估</span></h2>
+    <div class="grid-2 mt-1">
+      <div class="glass-card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">圖譜生成效能</div>
+        <div class="card-desc">
+          graphify 使用 CPU，<strong>不吃 GPU 資源</strong><br><br>
+          ▸ 每人圖譜 3-5 秒<br>
+          ▸ 10 並發處理<br>
+          ▸ <strong style="color:var(--accent2);">2,000 人 ≈ 15-20 分鐘</strong><br>
+          ▸ 每天凌晨<strong>增量更新</strong>，非全量重建
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">💾</div>
+        <div class="card-title">儲存需求</div>
+        <div class="card-desc">
+          <strong style="color:var(--accent2);">極低</strong> — 現有設備完全足夠<br><br>
+          ▸ 60,000 節點 ≈ 50-100MB JSON<br>
+          ▸ 向量索引 ≈ 2-5GB<br>
+          ▸ Wiki 原始文件 ≈ 1-3GB<br>
+          ▸ NVIDIA Spark <strong>綽綽有餘</strong>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">大圖譜瀏覽策略</div>
+        <div class="card-desc">
+          ▸ 預設看<strong>個人圖譜</strong>（幾十節點，秒開）<br>
+          ▸ 部門圖譜<strong>按需載入</strong><br>
+          ▸ 公司圖譜用<strong>搜尋導航</strong>，不全渲染<br>
+          ▸ God Nodes 儀表板<strong>摘要呈現</strong>
+        </div>
+      </div>
+      <div class="glass-card-gold">
+        <div class="card-icon">💰</div>
+        <div class="card-title">成本效益</div>
+        <div class="card-desc">
+          已有 NVIDIA Spark GPU → <strong>無新增硬體成本</strong><br><br>
+          ▸ 全開源技術 = 零授權費<br>
+          ▸ 員工零學習曲線<br>
+          ▸ 知識傳承時間 <strong style="color:var(--gold);">-66%</strong><br>
+          ▸ 緊急故障應變 <strong style="color:var(--gold);">-50%</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== SECTION 9: 時程 ====== -->
+<section>
+  <section class="section-slide">
+    <div style="position:relative;z-index:1;">
+      <div class="section-number">09</div>
+      <div style="margin-top:80px;">
+        <div class="section-number-ring">
+          <span class="section-number-ring-inner">09</span>
+        </div>
+        <div class="section-divider">執行計畫</div>
+        <div class="section-title">Demo 進度與下一步</div>
+        <div class="section-desc">我們在哪裡，接下來做什麼</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">Demo 執行計畫</span></h2>
+    <div class="timeline mt-1">
+      <div class="timeline-item">
+        <div class="timeline-phase done">Phase 0 ✓</div>
+        <div class="timeline-content">
+          <div class="timeline-title">模擬數據建立</div>
+          <div class="timeline-desc">3 位虛擬員工 × 15 篇 Wiki = 45 篇知識頁面，涵蓋機電、票務、站務管理</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-phase done">Phase 1 ✓</div>
+        <div class="timeline-content">
+          <div class="timeline-title">知識圖譜生成</div>
+          <div class="timeline-desc">個人 ×3 + 部門 ×1 + 公司 ×1 = 5 張圖譜，123 節點 / 303 關聯 / 7 社群，全繁中介面</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-phase current">Phase 2 🔥</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Web UI 開發（進行中）</div>
+          <div class="timeline-desc">Vue3 + D3.js 力導向圖 + AI 問答 · 知識儀表板 · 圖譜瀏覽器 · 員工檔案</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-phase">Phase 3</div>
+        <div class="timeline-content">
+          <div class="timeline-title">龍蝦對話 Demo 素材</div>
+          <div class="timeline-desc">模擬員工日常使用 AI 助手的完整對話場景，展示知識萃取全過程</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2 mt-1">
+      <div class="glass-card" style="text-align:center;">
+        <div style="font-size:0.6em;color:var(--accent);font-weight:600;">Demo 環境</div>
+        <div style="font-size:0.85em;font-weight:700;color:var(--text);margin-top:4px;">GCP 雲端部署</div>
+        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">正式環境轉移至 KRTC 內網</div>
+      </div>
+      <div class="glass-card" style="text-align:center;">
+        <div style="font-size:0.6em;color:var(--accent);font-weight:600;">預計交付</div>
+        <div style="font-size:0.85em;font-weight:700;color:var(--text);margin-top:4px;">10 個工作天</div>
+        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">完整可互動 Demo + 對話展示</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="grad-blue">正式導入規劃</span></h2>
+    <div class="grid-2 mt-1">
+      <div class="glass-card">
+        <div class="card-title">📋 第一階段：試點部門</div>
+        <div class="card-desc">
+          ▸ 選定 1-2 個部門（建議：機電組 + 站務組）<br>
+          ▸ 30-50 位員工先行導入<br>
+          ▸ 安裝龍蝦管家桌面版<br>
+          ▸ 2 個月知識累積期<br>
+          ▸ 建立初始知識圖譜
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">🚀 第二階段：全面推廣</div>
+        <div class="card-desc">
+          ▸ 根據試點經驗優化<br>
+          ▸ 擴展至全公司 2,000 員工<br>
+          ▸ 整合 SMART IT 設備系統<br>
+          ▸ 建立知識健康度 KPI<br>
+          ▸ 定期知識報告自動生成
+        </div>
+      </div>
+    </div>
+    <div class="glass-card-gold mt-1">
+      <div class="card-title" style="text-align:center;"><span class="grad-gold">🎯 最終目標</span></div>
+      <div class="card-desc" style="text-align:center;font-size:0.75em;">
+        每位員工都有 AI 分身 → 知識即時傳承 → 組織記憶永不消失<br>
+        <strong style="color:var(--gold);">讓高雄捷運成為全台最具知識管理能力的公共運輸機構</strong>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ====== ENDING ====== -->
+<section class="cover-slide">
+  <!-- Animated orbs -->
+  <div class="orb orb-cyan" style="top:-80px;left:-80px;width:380px;height:380px;"></div>
+  <div class="orb orb-pink" style="bottom:-70px;right:-70px;width:320px;height:320px;"></div>
+  <div class="orb orb-blue" style="top:30%;left:30%;width:180px;height:180px;filter:blur(60px);"></div>
+
+  <div style="position:relative;z-index:1;">
+    <div style="margin-bottom:16px;">
+      <span class="pill pill-lobster" style="font-size:0.55em;">時光智造 TIMUX</span>
+    </div>
+    <h1 style="margin-bottom:12px;">
+      <span class="shimmer-heading">讓每位員工的知識</span><br>
+      <span class="grad-pink">成為組織的永恆資產</span>
+    </h1>
+    <span class="animated-line" style="width:50%;"></span>
+    <p class="big-quote" style="color:var(--muted);font-weight:300;font-size:1.1em;">
+      「智造交給 AI，時光留給所愛」
+    </p>
+    <div style="display:flex;gap:20px;justify-content:center;margin-top:28px;">
+      <div class="glass-card" style="padding:12px 20px;text-align:center;">
+        <div style="font-size:0.55em;color:var(--accent);font-weight:600;">官網</div>
+        <div style="font-size:0.7em;font-weight:600;color:var(--text);margin-top:3px;">www.timux.site</div>
+      </div>
+      <div class="glass-card-lobster" style="padding:12px 20px;text-align:center;">
+        <div style="font-size:0.55em;color:var(--lobster);font-weight:600;">聯繫我們</div>
+        <div style="font-size:0.7em;font-weight:600;color:var(--text);margin-top:3px;">開始打造員工知識生態系統</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.5em;color:var(--muted);margin-top:24px;">時光智造科技有限公司 · 2026</p>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    width: 1180,
+    height: 660,
+    margin: 0.06,
+    plugins: [RevealHighlight],
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    slideNumber: 'c/t',
+    autoAnimateEasing: 'ease-out',
+    autoAnimateDuration: 0.6,
+  });
+</script>
+</body>
+</html>

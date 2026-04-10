@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分享資源 | 時光智造 Timux</title>
+    <meta name="description" content="時光智造的投影片、課程、指南與研究報告。">
+    <link rel="icon" type="image/png" href="../images/logo-icon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+        }
+        .tag {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="https://www.timux.site" class="flex items-center gap-3">
+                <img src="../images/logo-icon.png" alt="Timux" class="w-8 h-8">
+                <span class="text-lg font-semibold">時光智造</span>
+            </a>
+            <nav class="text-sm text-slate-400">
+                <a href="https://www.timux.site" class="hover:text-white transition">首頁</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">分享資源</span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="max-w-6xl mx-auto px-6 pt-16 pb-10">
+        <h1 class="text-4xl font-bold mb-3">
+            <span class="gradient-text">分享資源</span>
+        </h1>
+        <p class="text-slate-400 text-lg">投影片、課程、指南與研究報告</p>
+    </section>
+
+    <!-- Filter Tags -->
+    <section class="max-w-6xl mx-auto px-6 pb-8">
+        <div class="flex flex-wrap gap-2" id="filters">
+            <button data-filter="all" class="tag bg-primary/20 text-primary border border-primary/30 cursor-pointer hover:bg-primary/30 transition active-filter">全部</button>
+            <button data-filter="slides" class="tag bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer hover:bg-slate-700 transition">投影片</button>
+            <button data-filter="course" class="tag bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer hover:bg-slate-700 transition">課程</button>
+            <button data-filter="guide" class="tag bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer hover:bg-slate-700 transition">指南</button>
+            <button data-filter="research" class="tag bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer hover:bg-slate-700 transition">研究</button>
+            <button data-filter="proposal" class="tag bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer hover:bg-slate-700 transition">提案</button>
+        </div>
+    </section>
+
+    <!-- Cards Grid -->
+    <section class="max-w-6xl mx-auto px-6 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="cards">
+        </div>
+        <p id="empty-msg" class="text-slate-500 text-center py-12 hidden">沒有符合條件的資源</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
+        &copy; 2026 時光智造科技有限公司 Timux &mdash; 智造交給 AI，時光留給所愛
+    </footer>
+
+<script>
+const items = [
+    {
+        title: "KRTC 高雄捷運 — AI 員工知識生態系統",
+        desc: "員工 Wiki × 知識圖譜 × AI 代理人，為高雄捷運打造的 AI 員工知識生態系統提案簡報。",
+        url: "krtc-employee-wiki.html",
+        tags: ["proposal", "slides"],
+        date: "2026-04-10",
+        icon: "🚇"
+    },
+    {
+        title: "LobsterAI 入門培訓課程",
+        desc: "龍蝦管家 AI 桌面助手完整培訓教材，涵蓋安裝、設定到進階使用技巧。",
+        url: "lobsterai-course.html",
+        tags: ["course", "slides"],
+        date: "2026-03-28",
+        icon: "🦞"
+    },
+    {
+        title: "AI 實戰密技：讓機器人幫你賺錢",
+        desc: "AI 應用實戰分享投影片，商業化 AI 的策略與案例。",
+        url: "ai-mentor-slides.html",
+        tags: ["slides"],
+        date: "2026-03-28",
+        icon: "💡"
+    },
+    {
+        title: "AI 不只是聊天機器人",
+        desc: "2026-03-28 AI 分享會投影片，探討 AI 在各行業的應用場景。",
+        url: "ai-mentor-0328.html",
+        tags: ["slides"],
+        date: "2026-03-28",
+        icon: "🤖"
+    },
+    {
+        title: "上午場：一個台灣人，為什麼留在武漢創業？",
+        desc: "創業故事分享 — 從台灣到武漢的創業旅程。",
+        url: "ai-mentor-day1.html",
+        tags: ["slides"],
+        date: "2026-03-28",
+        icon: "🌏"
+    },
+    {
+        title: "下午場：AI 不只是聊天機器人",
+        desc: "深入探討 AI 的多元應用，超越傳統聊天機器人的框架。",
+        url: "ai-mentor-day2.html",
+        tags: ["slides"],
+        date: "2026-03-28",
+        icon: "🎯"
+    },
+    {
+        title: "AI Prompt 使用指南 — PRISM 論文實證",
+        desc: "基於 PRISM 論文的 AI Prompt 工程最佳實踐指南。",
+        url: "ai-prompt-guide.html",
+        tags: ["guide"],
+        date: "2026-03-25",
+        icon: "📝"
+    },
+    {
+        title: "Context Engineering 深度研究",
+        desc: "AI Agent 的記憶與效率革命 — Context Engineering 技術深度分析。",
+        url: "context-engineering.html",
+        tags: ["research"],
+        date: "2026-04-05",
+        icon: "🧠"
+    },
+    {
+        title: "中國大陸主流 AI 大模型深度對比",
+        desc: "2026 年 3 月中國大陸主流 AI 模型全面評測與對比分析。",
+        url: "china-ai-comparison.html",
+        tags: ["research"],
+        date: "2026-03-20",
+        icon: "📊"
+    },
+    {
+        title: "時光智造 AI 知識圖譜",
+        desc: "基於 graphify 的知識圖譜互動展示，視覺化呈現知識脈絡。",
+        url: "knowledge-graph.html",
+        tags: ["guide"],
+        date: "2026-04-01",
+        icon: "🕸️"
+    },
+    {
+        title: "OpenClaw + Claude Bridge 安裝指南",
+        desc: "完整的 OpenClaw 與 Claude Bridge 安裝配置教學。",
+        url: "openclaw-claude-bridge-guide.html",
+        tags: ["guide"],
+        date: "2026-03-15",
+        icon: "🔧"
+    },
+    {
+        title: "LobsterAI 課程海報",
+        desc: "龍蝦管家培訓課程的宣傳海報設計。",
+        url: "lobsterai-poster.html",
+        tags: ["slides"],
+        date: "2026-03-28",
+        icon: "🎨"
+    },
+    {
+        title: "梅芷萱 — 自我介紹",
+        desc: "AI 虛擬助理梅芷萱的自我介紹投影片。",
+        url: "mei-zhixuan-slides.html",
+        tags: ["slides"],
+        date: "2026-03-10",
+        icon: "👩‍💼"
+    }
+];
+
+const tagLabels = { slides: "投影片", course: "課程", guide: "指南", research: "研究", proposal: "提案" };
+const tagColors = {
+    slides: "bg-indigo-500/20 text-indigo-300",
+    course: "bg-emerald-500/20 text-emerald-300",
+    guide: "bg-amber-500/20 text-amber-300",
+    research: "bg-cyan-500/20 text-cyan-300",
+    proposal: "bg-pink-500/20 text-pink-300"
+};
+
+function renderCards(filter) {
+    const container = document.getElementById('cards');
+    const filtered = filter === 'all' ? items : items.filter(i => i.tags.includes(filter));
+    const emptyMsg = document.getElementById('empty-msg');
+
+    if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyMsg.classList.remove('hidden');
+        return;
+    }
+    emptyMsg.classList.add('hidden');
+
+    container.innerHTML = filtered.map(item => `
+        <a href="${item.url}" class="card block bg-slate-900 border border-slate-800 rounded-xl p-5 no-underline">
+            <div class="flex items-start justify-between mb-3">
+                <span class="text-2xl">${item.icon}</span>
+                <span class="text-xs text-slate-500">${item.date}</span>
+            </div>
+            <h3 class="text-white font-semibold mb-2 leading-snug">${item.title}</h3>
+            <p class="text-slate-400 text-sm mb-3 leading-relaxed">${item.desc}</p>
+            <div class="flex flex-wrap gap-1.5">
+                ${item.tags.map(t => `<span class="tag ${tagColors[t]}">${tagLabels[t]}</span>`).join('')}
+            </div>
+        </a>
+    `).join('');
+}
+
+// Filter click handlers
+document.getElementById('filters').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-filter]');
+    if (!btn) return;
+    const filter = btn.dataset.filter;
+
+    document.querySelectorAll('#filters button').forEach(b => {
+        b.className = 'tag bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer hover:bg-slate-700 transition';
+    });
+    btn.className = 'tag bg-primary/20 text-primary border border-primary/30 cursor-pointer hover:bg-primary/30 transition active-filter';
+
+    renderCards(filter);
+});
+
+// Initial render
+renderCards('all');
+</script>
+</body>
+</html>
