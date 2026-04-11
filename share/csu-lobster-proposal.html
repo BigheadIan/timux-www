@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>正修龍蝦 CSU Lobster — AI 安全教育校園品牌提案</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #0a1628;
+      --bg2: #0d2137;
+      --accent: #4fc3f7;
+      --accent2: #00e5ff;
+      --accent3: #f472b6;
+      --gold: #fbbf24;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f97316;
+      --lobster: #e83b3b;
+      --lobster-glow: rgba(232, 59, 59, 0.3);
+      --glass: rgba(79, 195, 247, 0.06);
+      --glass-border: rgba(79, 195, 247, 0.15);
+      --glow: 0 0 40px rgba(79, 195, 247, 0.15);
+      --csu-blue: #1a5fb4;
+      --csu-glow: rgba(26, 95, 180, 0.3);
+    }
+
+    .reveal-viewport { background: var(--bg1); }
+    .reveal { background: linear-gradient(135deg, #0a1628 0%, #0d2137 40%, #0a1628 100%); }
+    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; letter-spacing: 0; }
+    .reveal .progress { height: 3px; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes glow-pulse { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+    @keyframes shimmer-bg { 0% { background-position: -400% 0; } 100% { background-position: 400% 0; } }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes border-glow { 0%, 100% { box-shadow: 0 0 20px rgba(79,195,247,.2); } 50% { box-shadow: 0 0 40px rgba(79,195,247,.5); } }
+
+    .reveal {
+      font-family: 'Noto Sans TC', -apple-system, sans-serif;
+      font-weight: 400; line-height: 1.55; color: var(--text);
+    }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section { padding: 24px 36px; box-sizing: border-box; overflow: hidden; }
+    .reveal h1 { font-size: 2.2em; font-weight: 900; line-height: 1.15; text-shadow: 0 0 30px rgba(79,195,247,0.3); }
+    .reveal h2 { font-size: 1.5em; font-weight: 700; line-height: 1.2; margin-bottom: 16px; color: var(--text); }
+    .reveal h3 { font-size: 1.15em; font-weight: 600; color: var(--muted); margin-bottom: 10px; }
+    .reveal p { font-size: 0.95em; color: var(--muted); line-height: 1.6; }
+    .reveal ul, .reveal li { font-size: 0.95em; }
+
+    .reveal .slides section::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 10% 20%, rgba(79,195,247,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(0,229,255,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(244,114,182,0.03) 0%, transparent 60%);
+      pointer-events: none; z-index: -1;
+    }
+
+    /* ===== COMPONENTS ===== */
+    .accent { color: var(--accent); }
+    .accent2 { color: var(--accent2); }
+    .accent3 { color: var(--accent3); }
+    .gold { color: var(--gold); }
+    .lobster-red { color: var(--lobster); }
+    .green { color: var(--green); }
+    .muted { color: var(--muted); }
+
+    .subtitle {
+      font-size: 1.15em; color: var(--muted); font-weight: 300;
+      margin-top: 12px; letter-spacing: 1px;
+    }
+    .tagline {
+      font-size: 0.85em; color: var(--gold); font-style: italic;
+      margin-top: 20px; opacity: 0.9;
+    }
+
+    /* Cards */
+    .card-grid { display: grid; gap: 14px; margin-top: 14px; }
+    .card-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .card-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .card-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+    .card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 12px; padding: 16px 18px;
+      transition: all .3s ease;
+    }
+    .card:hover { border-color: var(--accent); box-shadow: var(--glow); transform: translateY(-2px); }
+    .card-icon { font-size: 1.6em; margin-bottom: 6px; }
+    .card-title { font-size: 0.95em; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .card-desc { font-size: 0.75em; color: var(--muted); line-height: 1.5; }
+
+    /* Stats */
+    .stat-row { display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+    .stat-box {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 12px; padding: 14px 20px; text-align: center; min-width: 140px;
+    }
+    .stat-number { font-size: 1.8em; font-weight: 900; color: var(--accent); }
+    .stat-label { font-size: 0.7em; color: var(--muted); margin-top: 4px; }
+
+    /* Table */
+    .reveal table { width: 100%; border-collapse: collapse; font-size: 0.78em; margin-top: 10px; }
+    .reveal table th {
+      background: rgba(79,195,247,0.12); color: var(--accent); font-weight: 600;
+      padding: 8px 12px; text-align: left; border-bottom: 2px solid rgba(79,195,247,0.3);
+    }
+    .reveal table td {
+      padding: 7px 12px; border-bottom: 1px solid rgba(79,195,247,0.08); color: var(--text);
+    }
+    .reveal table tr:hover td { background: rgba(79,195,247,0.04); }
+
+    /* Pills */
+    .pill {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 0.7em; font-weight: 600; margin: 2px;
+    }
+    .pill-blue { background: rgba(79,195,247,0.15); color: var(--accent); }
+    .pill-gold { background: rgba(251,191,36,0.15); color: var(--gold); }
+    .pill-green { background: rgba(34,197,94,0.15); color: var(--green); }
+    .pill-red { background: rgba(232,59,59,0.15); color: var(--lobster); }
+    .pill-pink { background: rgba(244,114,182,0.15); color: var(--accent3); }
+
+    /* Flow */
+    .flow-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 14px 0; flex-wrap: wrap; }
+    .flow-step {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 10px; padding: 10px 14px; text-align: center; min-width: 90px;
+    }
+    .flow-step-icon { font-size: 1.3em; }
+    .flow-step-label { font-size: 0.75em; font-weight: 600; color: var(--text); margin-top: 4px; }
+    .flow-step-desc { font-size: 0.6em; color: var(--muted); }
+    .flow-arrow { font-size: 1.2em; color: var(--accent); opacity: 0.5; }
+
+    /* Quote */
+    .quote-block {
+      border-left: 3px solid var(--gold); padding: 12px 18px;
+      background: rgba(251,191,36,0.05); border-radius: 0 8px 8px 0;
+      font-size: 0.9em; margin: 12px 0; font-style: italic; color: var(--gold);
+    }
+
+    /* Source citation */
+    .source {
+      font-size: 0.55em; color: var(--muted); opacity: 0.7;
+      margin-top: 8px; font-style: italic;
+    }
+    .source a { color: var(--accent); text-decoration: none; opacity: 0.8; }
+    .source a:hover { opacity: 1; text-decoration: underline; }
+
+    /* Timeline */
+    .timeline { position: relative; margin: 16px 0 16px 20px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--accent), var(--accent3));
+    }
+    .timeline-item { position: relative; padding: 8px 0 8px 24px; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -5px; top: 14px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--bg1);
+    }
+    .timeline-time { font-size: 0.7em; color: var(--accent); font-weight: 600; }
+    .timeline-text { font-size: 0.8em; color: var(--text); }
+
+    /* Section divider */
+    .section-divider {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%;
+    }
+    .section-divider h2 {
+      font-size: 2em; text-align: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-number {
+      font-size: 5em; font-weight: 900; opacity: 0.08;
+      position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+    }
+
+    /* VS table */
+    .vs-table td:nth-child(2) { color: var(--green); font-weight: 600; }
+    .vs-table td:nth-child(3) { color: var(--muted); opacity: 0.7; }
+
+    /* Org chart */
+    .org-tree { text-align: center; margin-top: 14px; }
+    .org-root {
+      display: inline-block; background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: var(--bg1); padding: 10px 24px; border-radius: 10px;
+      font-weight: 700; font-size: 0.9em;
+    }
+    .org-branches { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .org-branch {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 10px; padding: 10px 14px; min-width: 160px; text-align: center;
+    }
+    .org-branch-title { font-size: 0.8em; font-weight: 700; color: var(--accent); }
+    .org-branch-desc { font-size: 0.65em; color: var(--muted); margin-top: 4px; }
+    .org-connector { text-align: center; color: var(--accent); opacity: 0.4; font-size: 1.2em; }
+
+    /* Demo section */
+    .demo-box {
+      background: linear-gradient(135deg, rgba(232,59,59,0.08), rgba(79,195,247,0.08));
+      border: 1px solid rgba(232,59,59,0.2); border-radius: 14px;
+      padding: 16px 20px; margin: 8px 0;
+    }
+    .demo-title { font-size: 0.9em; font-weight: 700; color: var(--lobster); }
+    .demo-desc { font-size: 0.75em; color: var(--text); margin-top: 4px; }
+    .demo-url { font-size: 0.65em; color: var(--accent); opacity: 0.8; }
+
+    /* Highlight box */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(79,195,247,0.1), rgba(0,229,255,0.05));
+      border: 1px solid rgba(79,195,247,0.25); border-radius: 12px;
+      padding: 14px 18px; margin: 10px 0;
+    }
+
+    /* Cover lobster */
+    .lobster-hero { font-size: 4em; animation: float 3s ease-in-out infinite; display: inline-block; }
+
+    /* Footer watermark */
+    .watermark {
+      position: fixed; bottom: 12px; right: 20px;
+      font-size: 0.55em; color: var(--muted); opacity: 0.3;
+      font-family: 'Noto Sans TC', sans-serif; z-index: 999;
+    }
+  </style>
+</head>
+<body>
+<div class="watermark">正修科大 × 時光智造</div>
+<div class="reveal">
+<div class="slides">
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<section>
+  <div style="text-align:center;">
+    <div class="lobster-hero">🦞</div>
+    <h1 style="margin-top:10px;">
+      <span class="lobster-red">正修龍蝦</span>
+      <span style="font-size:0.5em;color:var(--muted);font-weight:300;">CSU Lobster</span>
+    </h1>
+    <div class="subtitle">AI 安全教育的校園品牌</div>
+    <p class="tagline">「AI 再聰明，也要穿盔甲」</p>
+    <div style="margin-top:30px;">
+      <span class="pill pill-blue">正修科技大學</span>
+      <span class="pill pill-red">× 時光智造</span>
+    </div>
+    <p style="font-size:0.6em;color:var(--muted);margin-top:20px;">2026 產學合作提案</p>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 2: WHY NOW ==================== -->
+<section>
+  <h2>為什麼是<span class="accent">現在</span>？</h2>
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-number">20%+</div>
+      <div class="stat-label">台灣 65 歲以上人口<br>2025 正式超高齡社會</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">87%</div>
+      <div class="stat-label">企業表示需要<br>AI 人才但找不到</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">0</div>
+      <div class="stat-label">台灣專注「AI 安全」<br>的大學品牌</div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px;">
+    <p style="font-size:0.85em;color:var(--text);margin:0;">
+      <span class="gold">機會：</span>台灣目前沒有任何大學有<span class="accent">以 AI 安全為核心的教育品牌</span>。
+      正修科大可以成為台灣第一個。
+    </p>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 3: SECTION DIVIDER ==================== -->
+<section>
+  <div class="section-divider">
+    <div>
+      <div class="section-number">01</div>
+      <h2>國際標竿</h2>
+      <p style="text-align:center;font-size:0.9em;">美國頂尖大學怎麼做 AI 中心？</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 4: STANFORD HAI ==================== -->
+<section>
+  <h2>🏛️ Stanford HAI</h2>
+  <h3>Human-Centered Artificial Intelligence</h3>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <div class="card-title">成立與規模</div>
+      <div class="card-desc">
+        2019 年由李飛飛、John Etchemendy 創立<br>
+        跨 7 學院、200+ 教授參與<br>
+        專注「以人為本」的 AI 研究
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">國會 AI 訓練營</div>
+      <div class="card-desc">
+        2019 年起每年為國會幕僚舉辦 AI Boot Camp<br>
+        已訓練 80+ 位國會工作人員<br>
+        讓政策制定者理解 AI 能力與風險
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">AI4ALL 計畫</div>
+      <div class="card-desc">
+        2015 年啟動（前身為 SAILORS）<br>
+        面向弱勢/代表性不足的高中生<br>
+        85% 學員後來選讀 CS 相關科系
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">AI Index 年度報告</div>
+      <div class="card-desc">
+        全球最權威的 AI 產業報告之一<br>
+        2024 報告超過 500 頁<br>
+        被各國政府、企業廣泛引用
+      </div>
+    </div>
+  </div>
+  <div class="source">
+    Source: hai.stanford.edu | AI Index Report 2024 | AI4ALL.org
+  </div>
+</section>
+
+<!-- ==================== SLIDE 5: STANFORD → CSU ==================== -->
+<section>
+  <h2>Stanford 模式 → <span class="lobster-red">正修在地化</span></h2>
+  <table>
+    <thead><tr><th>Stanford 做法</th><th>正修版本</th><th>為什麼可行</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>國會 AI Boot Camp<br><span style="font-size:0.8em;color:var(--muted)">訓練 80+ 國會幕僚</span></td>
+        <td><span class="accent">南部民代 AI 體驗營</span><br><span style="font-size:0.8em;color:var(--muted)">市議員、里長、區公所主管</span></td>
+        <td>政治資本 + 標案機會</td>
+      </tr>
+      <tr>
+        <td>AI4ALL 高中生夏令營<br><span style="font-size:0.8em;color:var(--muted)">弱勢學生 AI 入門</span></td>
+        <td><span class="accent">龍蝦 AI 夏令營</span><br><span style="font-size:0.8em;color:var(--muted)">高雄偏鄉/弱勢高中生</span></td>
+        <td>招生引流 + 社會責任</td>
+      </tr>
+      <tr>
+        <td>AI Index 年度報告<br><span style="font-size:0.8em;color:var(--muted)">全球 AI 趨勢分析</span></td>
+        <td><span class="accent">台灣 AI 安全年報</span><br><span style="font-size:0.8em;color:var(--muted)">台灣 AI 應用安全現況調查</span></td>
+        <td>建立學術影響力</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== SLIDE 6: MIT ==================== -->
+<section>
+  <h2>🏛️ MIT Schwarzman College</h2>
+  <h3>Computing + Ethics 深度融合</h3>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <div class="card-title">史上最大單筆捐款</div>
+      <div class="card-desc">
+        2018 年 Stephen Schwarzman 捐贈 <span class="gold">3.5 億美元</span><br>
+        2019 年正式成立 MIT Schwarzman College of Computing<br>
+        目標：將 AI 融入 MIT 所有學科
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">SERC — 社會倫理責任</div>
+      <div class="card-desc">
+        Social and Ethical Responsibilities of Computing<br>
+        <span class="accent">不是開一門「AI 倫理」選修</span><br>
+        而是在<span class="gold">每門技術課嵌入倫理案例</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Day of AI 計畫</div>
+      <div class="card-desc">
+        面向 K-12 學校的 AI 素養推廣<br>
+        2023 年已覆蓋 <span class="gold">數千所學校</span><br>
+        提供免費教材與教師培訓
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">RAISE — AI 教育研究</div>
+      <div class="card-desc">
+        Responsible AI for Social Empowerment and Education<br>
+        開發 AI 教學工具與課程<br>
+        專注公平性與包容性
+      </div>
+    </div>
+  </div>
+  <div class="source">
+    Source: computing.mit.edu | SERC @ MIT | dayofai.org | raise.mit.edu
+  </div>
+</section>
+
+<!-- ==================== SLIDE 7: MIT → CSU ==================== -->
+<section>
+  <h2>MIT 模式 → <span class="lobster-red">正修在地化</span></h2>
+  <div class="highlight-box">
+    <p style="font-size:0.85em;color:var(--text);margin:0;">
+      <span class="gold">核心啟示：</span>AI 倫理/安全不是一門課，而是<span class="accent">嵌入每門課的思維</span>
+    </p>
+  </div>
+  <table style="margin-top:14px;">
+    <thead><tr><th>MIT 做法</th><th>正修版本</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>SERC 倫理嵌入每門技術課</td>
+        <td><span class="accent">台灣版 AI 安全 Case Studies</span><br>
+        deepfake 換臉詐騙 / AI 面試歧視 / LINE 假訊息<br>
+        <span style="font-size:0.8em;color:var(--gold)">→ 開放全台教師免費使用</span></td>
+      </tr>
+      <tr>
+        <td>Day of AI（K-12 推廣）</td>
+        <td><span class="accent">正修 AI Day</span><br>
+        高雄高中職巡迴體驗，用正修龍蝦做 Demo</td>
+      </tr>
+      <tr>
+        <td>RAISE 教學工具開發</td>
+        <td><span class="accent">正修龍蝦教育模組</span><br>
+        銀髮族 / 學生 / 教師三個版本</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== SLIDE 8: CMU ==================== -->
+<section>
+  <h2>🏛️ Carnegie Mellon University</h2>
+  <h3>AI 教育 + 產業轉化的先驅</h3>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <div class="card-title">全美第一個 AI 學位</div>
+      <div class="card-desc">
+        2018 年成為全美第一個開設<br>
+        <span class="gold">AI 本科學位</span>的大學<br>
+        設有 6 個 AI 相關研究中心
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">National Robotics Engineering Center</div>
+      <div class="card-desc">
+        將學術研究轉化為產業應用<br>
+        與 100+ 企業合作開發 AI 解決方案<br>
+        學生直接參與企業專案
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">AI Maker Space</div>
+      <div class="card-desc">
+        開放給全校學生使用<br>
+        提供 GPU、工具、導師<br>
+        鼓勵跨系合作 AI 專案
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">社區 AI 教育</div>
+      <div class="card-desc">
+        與匹茲堡社區合作<br>
+        面向在職人士的 AI 課程<br>
+        與地方政府共建智慧城市
+      </div>
+    </div>
+  </div>
+  <div class="source">
+    Source: cs.cmu.edu | cmu.edu/ai | nrec.ri.cmu.edu
+  </div>
+</section>
+
+<!-- ==================== SLIDE 9: BERKELEY ==================== -->
+<section>
+  <h2>🏛️ UC Berkeley CDSS</h2>
+  <h3>Computing, Data Science, and Society</h3>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <div class="card-title">學院級重組</div>
+      <div class="card-desc">
+        2023 年將 Data Science 從系升格為<br>
+        <span class="gold">獨立學院 CDSS</span><br>
+        整合 CS、統計、資訊學院
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Data 8 — 全校通識</div>
+      <div class="card-desc">
+        「Foundations of Data Science」<br>
+        每學期 <span class="gold">2,000+ 學生</span>修課<br>
+        非 CS 學生也能學 AI/DS
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Berkeley AI Research Lab (BAIR)</div>
+      <div class="card-desc">
+        30+ 教授、200+ 研究生<br>
+        研究成果開源回饋社會<br>
+        定期舉辦公開講座
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">社區資料科學計畫</div>
+      <div class="card-desc">
+        與灣區社區組織合作<br>
+        學生幫 NGO 做資料分析<br>
+        Service Learning 模式
+      </div>
+    </div>
+  </div>
+  <div class="source">
+    Source: cdss.berkeley.edu | bair.berkeley.edu | data.berkeley.edu
+  </div>
+</section>
+
+<!-- ==================== SLIDE 10: CUNY + ASU ==================== -->
+<section>
+  <h2>🏛️ 其他值得參考的模式</h2>
+  <div class="card-grid cols-2">
+    <div class="card" style="border-color:rgba(251,191,36,0.3);">
+      <div class="card-icon">🗽</div>
+      <div class="card-title">CUNY — 城市大學系統</div>
+      <div class="card-desc">
+        紐約市立大學系統（25 校、27 萬學生）<br>
+        <span class="gold">AI 工作力發展計畫</span><br>
+        面向社區大學學生 + 在職人士<br>
+        與紐約市府合作 AI 公務員培訓<br>
+        <span class="accent">→ 最接近正修的定位</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(244,114,182,0.3);">
+      <div class="card-icon">🌵</div>
+      <div class="card-title">ASU — 亞利桑那州立</div>
+      <div class="card-desc">
+        與 OpenAI 戰略合作（2024）<br>
+        全校 <span class="gold">8 萬學生</span> 免費使用 ChatGPT Edu<br>
+        AI 融入 100+ 門課程<br>
+        重點：不是禁用 AI，而是「負責任地使用」<br>
+        <span class="accent">→ 大規模部署的典範</span>
+      </div>
+    </div>
+  </div>
+  <div class="source">
+    Source: cuny.edu/ai | asu.edu | OpenAI + ASU Partnership (2024)
+  </div>
+</section>
+
+<!-- ==================== SLIDE 11: KEY INSIGHTS ==================== -->
+<section>
+  <h2>四大啟示</h2>
+  <div class="card-grid cols-2">
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <div class="card-title"><span class="accent">01</span> 跨學科而非獨立學院</div>
+      <div class="card-desc">
+        頂尖大學的 AI 中心都是<span class="accent">跨院系平台</span>，<br>
+        不是封閉的獨立單位。正修 AI 中心應整合全校資源。
+      </div>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--gold);">
+      <div class="card-title"><span class="gold">02</span> 安全/倫理是內建，不是選修</div>
+      <div class="card-desc">
+        MIT SERC 模式：AI 安全嵌入每門課。<br>
+        正修可以做台灣第一個實踐這個理念的大學。
+      </div>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--green);">
+      <div class="card-title"><span class="green">03</span> 社區連結是核心任務</div>
+      <div class="card-desc">
+        不是象牙塔研究，而是服務社區。<br>
+        CUNY 模式最適合正修：<span class="accent">從社區開始做起</span>。
+      </div>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--accent3);">
+      <div class="card-title"><span class="accent3">04</span> 需要實體空間 + 品牌辨識</div>
+      <div class="card-desc">
+        每個成功的 AI 中心都有<span class="accent">自己的品牌和空間</span>。<br>
+        正修需要「正修龍蝦」品牌 + 一個看得見的 AI 中心。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 12: SECTION DIVIDER ==================== -->
+<section>
+  <div class="section-divider">
+    <div>
+      <div class="section-number">02</div>
+      <h2>正修龍蝦是什麼？</h2>
+      <p style="text-align:center;font-size:0.9em;">AI 安全教育的校園品牌</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 13: PRODUCT CONCEPT ==================== -->
+<section>
+  <h2>🦞 正修龍蝦 = <span class="accent">有安全意識的 AI 管家</span></h2>
+  <div class="card-grid cols-3" style="margin-top:16px;">
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🛡️</div>
+      <div class="card-title">硬殼保護</div>
+      <div class="card-desc">AI 安全防線<br>隱私保護 / 事實查核<br>詐騙偵測</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🦐</div>
+      <div class="card-title">觸鬚感知</div>
+      <div class="card-desc">智慧助理能力<br>學習輔助 / 校園導覽<br>行政諮詢</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">脫殼成長</div>
+      <div class="card-desc">持續學習進化<br>個人知識庫 / 記憶系統<br>越用越懂你</div>
+    </div>
+  </div>
+  <div class="quote-block" style="margin-top:18px;">
+    正修龍蝦 ≠ ChatGPT。它是「懂得保護你的 AI 管家」—— 每次回答都帶安全意識。
+  </div>
+  <div style="text-align:center;margin-top:12px;">
+    <span class="pill pill-blue">正修科大出品</span>
+    <span class="pill pill-red">時光智造技術支持</span>
+    <span class="pill pill-gold">台灣第一個 AI 安全品牌</span>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 14: FOUR AGENTS ==================== -->
+<section>
+  <h2>四大 Agent 人格</h2>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <div class="card-title">安安 SafeShell — 安全守護者</div>
+      <div class="card-desc">
+        每次回答附帶<span class="accent">可信度指標</span><br>
+        遇到可疑資訊自動標註<br>
+        <span class="pill pill-green" style="font-size:0.6em;">可信度 92%</span>
+        <span class="pill pill-red" style="font-size:0.6em;">疑似假訊息</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <div class="card-title">學長/學姐 — 學業助理</div>
+      <div class="card-desc">
+        防止學術抄襲、引用查核<br>
+        AI 使用透明聲明產生器<br>
+        <span class="gold">讓學生學會「正確地用 AI」</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">👴</div>
+      <div class="card-title">慢慢來 — 銀髮族專屬</div>
+      <div class="card-desc">
+        大字體友善介面<br>
+        防詐騙偵測 + LINE 假訊息查核<br>
+        <span class="gold">耐心、語速慢、不嫌煩</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💼</div>
+      <div class="card-title">小正修 — 校園導覽</div>
+      <div class="card-desc">
+        課程推薦 / 行政諮詢<br>
+        校園安全通報<br>
+        <span class="gold">正修校園生活的 AI 嚮導</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 15: SAFETY SKILLS ==================== -->
+<section>
+  <h2>五大安全 Skill 模組</h2>
+  <table>
+    <thead><tr><th>Skill</th><th>功能</th><th>應用場景</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-blue">ai-safety-101</span></td>
+        <td>AI 安全基礎素養</td>
+        <td>識別 deepfake、理解幻覺、資料隱私</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-green">fact-checker</span></td>
+        <td>事實查核助手</td>
+        <td>交叉比對多來源，標註可信度</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-red">scam-detector</span></td>
+        <td>詐騙偵測</td>
+        <td>LINE/簡訊/email 詐騙模式辨識</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-pink">privacy-guardian</span></td>
+        <td>隱私保護</td>
+        <td>PII 偵測、安全分享建議</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-gold">academic-integrity</span></td>
+        <td>學術誠信</td>
+        <td>AI 使用聲明、引用格式化</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="highlight-box" style="margin-top:14px;">
+    <p style="font-size:0.8em;color:var(--text);margin:0;">
+      每個 Skill 都是<span class="accent">可插拔模組</span>，能嵌入任何 Agent。
+      其他學校可以直接授權使用，形成正修的<span class="gold">智慧財產</span>。
+    </p>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 16: SECTION DIVIDER ==================== -->
+<section>
+  <div class="section-divider">
+    <div>
+      <div class="section-number">03</div>
+      <h2>銀髮龍蝦計畫</h2>
+      <p style="text-align:center;font-size:0.9em;">退休人口再教育，煥發新生</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 17: SILVER LOBSTER ==================== -->
+<section>
+  <h2>👴 台灣超高齡社會的挑戰與機會</h2>
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-number">2025</div>
+      <div class="stat-label">台灣正式進入<br>超高齡社會</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">408 萬</div>
+      <div class="stat-label">65 歲以上人口<br>且持續增長</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">68%</div>
+      <div class="stat-label">銀髮族有智慧型手機<br>但不知如何用 AI</div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:14px;">
+    <p style="font-size:0.85em;color:var(--text);margin:0;">
+      高雄尤其嚴重：年輕人口外流、傳產缺工。<br>
+      <span class="gold">銀髮龍蝦計畫 = 讓退休人口用 AI 重返社會</span>
+    </p>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 18: THREE-STAGE COURSE ==================== -->
+<section>
+  <h2>三階段課程設計</h2>
+  <div class="flow-row">
+    <div class="flow-step" style="border-color:rgba(34,197,94,0.3);">
+      <div class="flow-step-icon">🐣</div>
+      <div class="flow-step-label">Level 1 認識龍蝦</div>
+      <div class="flow-step-desc">2 週 / 6 小時</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(79,195,247,0.3);">
+      <div class="flow-step-icon">🦞</div>
+      <div class="flow-step-label">Level 2 馴服龍蝦</div>
+      <div class="flow-step-desc">4 週 / 12 小時</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(251,191,36,0.3);">
+      <div class="flow-step-icon">🏆</div>
+      <div class="flow-step-label">Level 3 龍蝦達人</div>
+      <div class="flow-step-desc">4 週 / 12 小時</div>
+    </div>
+  </div>
+  <table style="margin-top:14px;">
+    <thead><tr><th>階段</th><th>學什麼</th><th>畢業成果</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-green">Level 1</span></td>
+        <td>什麼是 AI、安全使用、安裝正修龍蝦</td>
+        <td>能跟 AI 對話、辨識假訊息</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">Level 2</span></td>
+        <td>用 AI 寫信、做表格、找資料、客服應答</td>
+        <td>具備 AI 輔助工作能力</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-gold">Level 3</span></td>
+        <td>建立自己的 Agent、教其他銀髮族</td>
+        <td>成為社區 AI 種子教師</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="quote-block" style="margin-top:10px;">
+    Level 3 畢業生 → 社區 AI 志工 → 教下一批銀髮族 = 自我複製的推廣網絡
+  </div>
+</section>
+
+<!-- ==================== SLIDE 19: POLICY ==================== -->
+<section>
+  <h2>政策對接 — 經費來源</h2>
+  <div class="card-grid cols-3">
+    <div class="card" style="border-color:rgba(34,197,94,0.3);">
+      <div class="card-icon">💼</div>
+      <div class="card-title">勞動部</div>
+      <div class="card-desc">
+        中高齡者及高齡者<br>就業促進法<br>
+        <span class="green">→ 補助培訓費用</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(79,195,247,0.3);">
+      <div class="card-icon">📚</div>
+      <div class="card-title">教育部</div>
+      <div class="card-desc">
+        樂齡學習計畫<br>
+        正修樂齡大學現有通路<br>
+        <span class="accent">→ 課程補助 + 場地</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(244,114,182,0.3);">
+      <div class="card-icon">🏥</div>
+      <div class="card-title">衛福部</div>
+      <div class="card-desc">
+        社區照顧關懷據點<br>
+        長照 2.0 體系<br>
+        <span class="accent3">→ AI 志工進駐社區</span>
+      </div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:14px;">
+    <p style="font-size:0.8em;color:var(--text);margin:0;">
+      <span class="gold">重點：</span>銀髮龍蝦計畫可以同時對接三個部會的補助，大幅降低正修的經費壓力。
+    </p>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 20: SECTION DIVIDER ==================== -->
+<section>
+  <div class="section-divider">
+    <div>
+      <div class="section-number">04</div>
+      <h2>校園 AI 中心</h2>
+      <p style="text-align:center;font-size:0.9em;">組織架構 × 社區推廣</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 21: ORG CHART ==================== -->
+<section>
+  <h2>校園 AI 中心組織架構</h2>
+  <div class="org-tree">
+    <div class="org-root">🏛️ 正修 AI 中心（直屬校長室 / 研發處）</div>
+    <div class="org-connector">┃</div>
+    <div class="org-branches">
+      <div class="org-branch">
+        <div class="org-branch-title">🔬 AI 安全研究組</div>
+        <div class="org-branch-desc">對標 MIT SERC<br>台灣 AI 安全 Case Studies</div>
+      </div>
+      <div class="org-branch">
+        <div class="org-branch-title">📚 AI 教育推廣組</div>
+        <div class="org-branch-desc">校內跨系課程<br>銀髮龍蝦 + K-12 夏令營</div>
+      </div>
+      <div class="org-branch">
+        <div class="org-branch-title">🏭 產業合作組</div>
+        <div class="org-branch-desc">高雄傳產 AI 轉型<br>企業輔導 + 實習安排</div>
+      </div>
+      <div class="org-branch">
+        <div class="org-branch-title">🦞 正修龍蝦產品組</div>
+        <div class="org-branch-desc">技術合作：時光智造<br>Agent/Skill 開發維護</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 22: COMMUNITY OUTREACH ==================== -->
+<section>
+  <h2>社區推廣路徑 — 同心圓擴散</h2>
+  <div style="text-align:center;margin-top:16px;">
+    <div class="flow-row" style="flex-direction:column;gap:10px;">
+      <div class="flow-step" style="min-width:300px;border-color:rgba(232,59,59,0.4);background:rgba(232,59,59,0.06);">
+        <div class="flow-step-label" style="color:var(--lobster);">🏫 正修校園（核心）</div>
+        <div class="flow-step-desc">跨系 AI 課程、學生 Agent 實作</div>
+      </div>
+      <div style="color:var(--accent);opacity:0.4;">↓</div>
+      <div class="flow-step" style="min-width:350px;border-color:rgba(79,195,247,0.3);">
+        <div class="flow-step-label">📍 鳥松區（步行圈）</div>
+        <div class="flow-step-desc">里民活動中心、長照站、社區大學</div>
+      </div>
+      <div style="color:var(--accent);opacity:0.4;">↓</div>
+      <div class="flow-step" style="min-width:400px;border-color:rgba(251,191,36,0.3);">
+        <div class="flow-step-label">🚗 鳳山 / 大寮（車程圈）</div>
+        <div class="flow-step-desc">社區大學、勞工局據點、高中職</div>
+      </div>
+      <div style="color:var(--accent);opacity:0.4;">↓</div>
+      <div class="flow-step" style="min-width:450px;border-color:rgba(34,197,94,0.3);">
+        <div class="flow-step-label">🌏 高雄全市 → 全台 → 線上</div>
+        <div class="flow-step-desc">高雄市數位發展局合作 → 線上課程 + 品牌授權</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 23: SECTION DIVIDER ==================== -->
+<section>
+  <div class="section-divider">
+    <div>
+      <div class="section-number">05</div>
+      <h2>為什麼是時光智造？</h2>
+      <p style="text-align:center;font-size:0.9em;">技術護城河 × 深度綁定</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 24: TECH MOAT ==================== -->
+<section>
+  <h2>技術能力比較</h2>
+  <table class="vs-table">
+    <thead><tr><th>能力</th><th>時光智造 ✅</th><th>一般 SI 廠商 ❌</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>AI Agent 核心引擎</td>
+        <td>OpenClaw 已商用，多客戶驗證</td>
+        <td>只會裝 ChatGPT</td>
+      </tr>
+      <tr>
+        <td>Agent 人格設計</td>
+        <td>3+ 成熟人格 + 設計 SOP</td>
+        <td>只會寫 system prompt</td>
+      </tr>
+      <tr>
+        <td>多通訊平台整合</td>
+        <td>LINE/Discord/微信等 8 平台</td>
+        <td>頂多做一個網頁 chatbot</td>
+      </tr>
+      <tr>
+        <td>知識圖譜 + Wiki</td>
+        <td>Graphify 自動建構已驗證</td>
+        <td>不知道這是什麼</td>
+      </tr>
+      <tr>
+        <td>AI 安全機制</td>
+        <td>TrustBridge 架構已規劃</td>
+        <td>沒有安全概念</td>
+      </tr>
+      <tr>
+        <td>持續迭代維護</td>
+        <td>月租模式，長期陪跑</td>
+        <td>一次性外包做完走人</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== SLIDE 25: BINDING ==================== -->
+<section>
+  <h2>五重綁定機制</h2>
+  <div class="card-grid cols-3" style="margin-top:6px;">
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🔧</div>
+      <div class="card-title">技術綁定</div>
+      <div class="card-desc">
+        正修龍蝦核心跑在<br>OpenClaw 引擎上<br>
+        <span class="accent">只有我們能維護</span>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">👨‍🎓</div>
+      <div class="card-title">人才綁定</div>
+      <div class="card-desc">
+        正修學生在時光智造實習<br>畢業後成為合作夥伴<br>
+        <span class="accent">供應鏈源頭</span>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">📊</div>
+      <div class="card-title">數據綁定</div>
+      <div class="card-desc">
+        Agent 訓練數據<br>使用數據、知識庫<br>
+        <span class="accent">都在我們的平台</span>
+      </div>
+    </div>
+  </div>
+  <div class="card-grid cols-2" style="margin-top:10px;">
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🏷️</div>
+      <div class="card-title">品牌綁定</div>
+      <div class="card-desc">
+        「正修龍蝦 <span class="accent">powered by 時光智造</span>」<br>
+        外推時同步曝光，雙贏
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">生態綁定</div>
+      <div class="card-desc">
+        AI 中心所有工具鏈<br>建立在我們的技術棧上<br>
+        <span class="accent">遷移成本極高</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 26: CONTRACT ==================== -->
+<section>
+  <h2>合約架構與收入模式</h2>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <div class="card-title">合作架構</div>
+      <div class="card-desc" style="font-size:0.8em;">
+        <span class="accent">正修科大（甲方）</span><br>
+        ↕ 產學合作協議（3-5 年）<br>
+        <span class="lobster-red">時光智造（乙方 — 唯一技術合作廠商）</span><br><br>
+        <strong>正修負責：</strong>場地、師資、學生、補助申請、品牌<br>
+        <strong>時光智造：</strong>技術研發、平台維護、迭代、商業化
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">四條收入線</div>
+      <div class="card-desc" style="font-size:0.8em;">
+        <span class="pill pill-blue" style="font-size:0.8em;">1</span> <strong>技術服務費</strong> — 年約，穩定收入<br>
+        <span class="pill pill-green" style="font-size:0.8em;">2</span> <strong>教育分潤</strong> — 培訓收入分成<br>
+        <span class="pill pill-gold" style="font-size:0.8em;">3</span> <strong>品牌授權</strong> — 外推抽成<br>
+        <span class="pill pill-red" style="font-size:0.8em;">4</span> <strong>企業輔導</strong> — 正修背書 + 我們執行
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 27: SECTION DIVIDER ==================== -->
+<section>
+  <div class="section-divider">
+    <div>
+      <div class="section-number">06</div>
+      <h2>技術 Demo</h2>
+      <p style="text-align:center;font-size:0.9em;">已驗證的完整技術能力</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 28: DEMO OVERVIEW ==================== -->
+<section>
+  <h2>四大 Demo 展示</h2>
+  <p style="font-size:0.8em;color:var(--muted);margin-bottom:14px;">以下皆為已上線的真實系統，非概念圖</p>
+  <div class="card-grid cols-2">
+    <div class="demo-box">
+      <div class="demo-title">Demo 1 — AI 知識管理系統</div>
+      <div class="demo-desc">
+        員工 Wiki 自動建構 + AI 問答<br>
+        <span class="accent">輸入自然對話 → 自動生成知識條目</span>
+      </div>
+      <div class="demo-url">krtc-demo.timux.site/web-ui/</div>
+    </div>
+    <div class="demo-box">
+      <div class="demo-title">Demo 2 — 知識圖譜視覺化</div>
+      <div class="demo-desc">
+        Graphify 自動分群 + 社群結構分析<br>
+        <span class="accent">組織知識一目了然</span>
+      </div>
+      <div class="demo-url">krtc-demo.timux.site/demo-guide/</div>
+    </div>
+    <div class="demo-box">
+      <div class="demo-title">Demo 3 — 會議紀錄 AI</div>
+      <div class="demo-desc">
+        語音辨識 → 逐字稿 → AI 摘要 → 行動項目<br>
+        <span class="accent">自動關聯到 Wiki 知識庫</span>
+      </div>
+      <div class="demo-url">krtc-demo.timux.site/meeting-demo/</div>
+    </div>
+    <div class="demo-box">
+      <div class="demo-title">Demo 4 — AI 龍蝦管家</div>
+      <div class="demo-desc">
+        個人 AI 助理，已上線運作中<br>
+        <span class="accent">多平台整合 + 記憶系統 + 安全機制</span>
+      </div>
+      <div class="demo-url">龍蝦管家 Live Demo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 29: DEMO STRATEGY ==================== -->
+<section>
+  <h2>Demo 展示策略</h2>
+  <h3>讓校方感受到「技術已經到位」</h3>
+  <div class="timeline" style="margin-top:14px;">
+    <div class="timeline-item">
+      <div class="timeline-time">Step 1 — 開場（5 分鐘）</div>
+      <div class="timeline-text">
+        展示正修龍蝦 Agent 對話<br>
+        <span class="muted">現場讓校方提問 → AI 即時回答，帶安全標註</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Step 2 — 知識管理（10 分鐘）</div>
+      <div class="timeline-text">
+        展示 KRTC 已上線系統：Wiki + 知識圖譜 + 會議 AI<br>
+        <span class="muted">強調「已經在幫真實企業使用」</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Step 3 — 銀髮族場景（5 分鐘）</div>
+      <div class="timeline-text">
+        展示「慢慢來」Agent 大字體介面 + 防詐騙偵測<br>
+        <span class="muted">模擬銀髮族收到詐騙訊息 → AI 即時攔截</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Step 4 — 技術底層（5 分鐘）</div>
+      <div class="timeline-text">
+        展示 OpenClaw 後台：Agent 管理 / Skill 安裝 / 多模型切換<br>
+        <span class="muted">讓校方看到「管理面」的成熟度</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Step 5 — 願景（5 分鐘）</div>
+      <div class="timeline-text">
+        PPT 收尾：正修龍蝦完整藍圖 + 路線圖 + 合作方案<br>
+        <span class="muted">留下 QR Code 讓校方直接體驗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 30: ROADMAP ==================== -->
+<section>
+  <h2>執行路線圖</h2>
+  <table>
+    <thead><tr><th>時間</th><th>里程碑</th><th>重點交付</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-green">Month 1-3</span></td>
+        <td>PoC 展示</td>
+        <td>4 個 Agent + 5 個安全 Skill 包 Demo</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">Month 4-6</span></td>
+        <td>銀髮試辦</td>
+        <td>鳥松區 30 位銀髮族 Level 1 課程</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-gold">Month 6-9</span></td>
+        <td>AI 中心掛牌</td>
+        <td>實體空間 + 組織架構 + 跨系課程</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-pink">Month 9-12</span></td>
+        <td>社區擴散</td>
+        <td>3 據點 + 民代體驗營 + 高中夏令營</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-red">Year 2</span></td>
+        <td>品牌外推</td>
+        <td>線上課程 + 他校授權 + 教育基金會</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);">Year 3-5</td>
+        <td>生態系</td>
+        <td>全台 10+ 校 / 100+ 社區 / 傳產 AI 轉型</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== SLIDE 31: CLOSING ==================== -->
+<section>
+  <div style="text-align:center;">
+    <div class="lobster-hero" style="font-size:3em;">🦞</div>
+    <h1 style="margin-top:10px;">
+      <span class="lobster-red">正修龍蝦</span>
+    </h1>
+    <p class="subtitle" style="font-size:1em;">台灣第一個以 AI 安全為核心的校園品牌</p>
+    <div class="quote-block" style="text-align:center;margin-top:20px;display:inline-block;">
+      AI 再聰明，也要穿盔甲
+    </div>
+    <div style="margin-top:24px;">
+      <p style="font-size:0.85em;color:var(--text);">
+        <span class="accent">正修科技大學</span> × <span class="lobster-red">時光智造科技</span>
+      </p>
+      <p style="font-size:0.7em;color:var(--muted);">智造交給 AI，時光留給所愛</p>
+      <p style="font-size:0.6em;color:var(--muted);margin-top:12px;">www.timux.site</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    width: 960,
+    height: 540,
+    margin: 0.04,
+    center: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    plugins: [RevealHighlight]
+  });
+</script>
+</body>
+</html>
