@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timux Logo Concepts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 40px;
+        }
+        h1 { text-align: center; margin-bottom: 40px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+        }
+        .card h3 { margin: 20px 0 8px; font-size: 18px; }
+        .card p { color: #94a3b8; font-size: 14px; margin: 0; }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+        }
+        .variants {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        .variant-label { font-size: 12px; color: #64748b; margin-top: 8px; }
+        .dark-bg { background: #0f172a; padding: 16px; border-radius: 12px; }
+        .light-bg { background: #f8fafc; padding: 16px; border-radius: 12px; }
+    </style>
+</head>
+<body>
+    <h1>時光智造 Timux — Logo 設計方案</h1>
+
+    <div class="grid">
+        <!-- Concept A: 閃電+時鐘 -->
+        <div class="card">
+            <div class="logo-area">
+                <svg width="200" height="80" viewBox="0 0 200 80">
+                    <defs>
+                        <linearGradient id="gradA" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Lightning bolt integrated with clock hand -->
+                    <g transform="translate(10, 5)">
+                        <!-- Circle (time) -->
+                        <circle cx="30" cy="35" r="28" fill="none" stroke="url(#gradA)" stroke-width="3"/>
+                        <!-- Lightning bolt inside circle -->
+                        <path d="M26 18 L20 38 L28 36 L24 52 L38 30 L30 32 Z" fill="url(#gradA)"/>
+                        <!-- Small dots like clock marks -->
+                        <circle cx="30" cy="9" r="2" fill="url(#gradA)"/>
+                        <circle cx="30" cy="61" r="2" fill="url(#gradA)"/>
+                        <circle cx="4" cy="35" r="2" fill="url(#gradA)"/>
+                        <circle cx="56" cy="35" r="2" fill="url(#gradA)"/>
+                    </g>
+                    <!-- Text -->
+                    <text x="78" y="32" font-family="Inter" font-weight="700" font-size="28" fill="white">Timux</text>
+                    <text x="78" y="52" font-family="Inter" font-weight="400" font-size="14" fill="#94a3b8">時光智造</text>
+                </svg>
+            </div>
+            <h3>方案 A — 時光閃電</h3>
+            <p>時鐘圓環 + 閃電，象徵「用 AI 加速時間價值」</p>
+        </div>
+
+        <!-- Concept B: Abstract T + Lightning -->
+        <div class="card">
+            <div class="logo-area">
+                <svg width="200" height="80" viewBox="0 0 200 80">
+                    <defs>
+                        <linearGradient id="gradB" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Abstract T with lightning stroke -->
+                    <g transform="translate(8, 8)">
+                        <rect x="2" y="8" width="50" height="6" rx="3" fill="url(#gradB)"/>
+                        <path d="M27 14 L22 32 L28 30 L20 56 L34 28 L28 30 L33 14" fill="url(#gradB)"/>
+                    </g>
+                    <!-- Text -->
+                    <text x="72" y="32" font-family="Inter" font-weight="800" font-size="28" fill="url(#gradB)">TIMUX</text>
+                    <text x="72" y="52" font-family="Inter" font-weight="300" font-size="14" fill="#94a3b8">時光智造科技</text>
+                </svg>
+            </div>
+            <h3>方案 B — 字母 T 閃電</h3>
+            <p>T 字母頂部 + 閃電筆畫，簡潔有力</p>
+        </div>
+
+        <!-- Concept C: Hourglass + AI Circuit -->
+        <div class="card">
+            <div class="logo-area">
+                <svg width="200" height="80" viewBox="0 0 200 80">
+                    <defs>
+                        <linearGradient id="gradC" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Modern hourglass shape -->
+                    <g transform="translate(12, 6)">
+                        <!-- Top triangle -->
+                        <path d="M10 8 L40 8 L27 32 Z" fill="none" stroke="url(#gradC)" stroke-width="2.5" stroke-linejoin="round"/>
+                        <!-- Bottom triangle -->
+                        <path d="M10 60 L40 60 L27 36 Z" fill="url(#gradC)" opacity="0.3" stroke="url(#gradC)" stroke-width="2.5" stroke-linejoin="round"/>
+                        <!-- Center spark -->
+                        <circle cx="27" cy="34" r="3" fill="url(#gradC)"/>
+                        <!-- Circuit lines -->
+                        <line x1="40" y1="20" x2="50" y2="20" stroke="url(#gradC)" stroke-width="1.5"/>
+                        <circle cx="52" cy="20" r="2" fill="url(#gradC)"/>
+                        <line x1="40" y1="48" x2="50" y2="48" stroke="url(#gradC)" stroke-width="1.5"/>
+                        <circle cx="52" cy="48" r="2" fill="url(#gradC)"/>
+                        <line x1="10" y1="34" x2="2" y2="34" stroke="url(#gradC)" stroke-width="1.5"/>
+                        <circle cx="0" cy="34" r="2" fill="url(#gradC)"/>
+                    </g>
+                    <!-- Text -->
+                    <text x="78" y="30" font-family="Inter" font-weight="700" font-size="26" fill="white">Timux</text>
+                    <text x="78" y="50" font-family="Inter" font-weight="400" font-size="13" fill="#94a3b8">時光智造</text>
+                </svg>
+            </div>
+            <h3>方案 C — 沙漏電路</h3>
+            <p>沙漏（時光）+ 電路節點（智造），科技感強</p>
+        </div>
+
+        <!-- Concept D: Minimalist Bolt Mark -->
+        <div class="card">
+            <div class="logo-area">
+                <svg width="200" height="80" viewBox="0 0 200 80">
+                    <defs>
+                        <linearGradient id="gradD" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Rounded square with bolt -->
+                    <g transform="translate(8, 6)">
+                        <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#gradD)"/>
+                        <!-- White lightning bolt -->
+                        <path d="M28 12 L18 36 L28 33 L22 52 L42 28 L32 31 Z" fill="white"/>
+                    </g>
+                    <!-- Text -->
+                    <text x="82" y="32" font-family="Inter" font-weight="700" font-size="28" fill="white">Timux</text>
+                    <text x="82" y="52" font-family="Inter" font-weight="400" font-size="14" fill="#94a3b8">時光智造</text>
+                </svg>
+            </div>
+            <h3>方案 D — 極簡閃電徽章</h3>
+            <p>漸變圓角方塊 + 白色閃電，App icon 風格</p>
+        </div>
+
+        <!-- Concept E: Flowing Time + Spark -->
+        <div class="card">
+            <div class="logo-area">
+                <svg width="220" height="80" viewBox="0 0 220 80">
+                    <defs>
+                        <linearGradient id="gradE" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#6366f1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Flowing wave with spark -->
+                    <g transform="translate(6, 10)">
+                        <!-- Wave path representing flow of time -->
+                        <path d="M4 30 Q15 10, 28 30 Q41 50, 54 30" fill="none" stroke="url(#gradE)" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Spark at the end -->
+                        <circle cx="54" cy="30" r="6" fill="url(#gradE)"/>
+                        <line x1="54" y1="20" x2="54" y2="16" stroke="url(#gradE)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="54" y1="40" x2="54" y2="44" stroke="url(#gradE)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="44" y1="30" x2="40" y2="30" stroke="url(#gradE)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="64" y1="30" x2="68" y2="30" stroke="url(#gradE)" stroke-width="2" stroke-linecap="round"/>
+                    </g>
+                    <!-- Text with gradient -->
+                    <text x="86" y="32" font-family="Inter" font-weight="800" font-size="28" fill="url(#gradE)">TIMUX</text>
+                    <text x="86" y="52" font-family="Inter" font-weight="300" font-size="13" fill="#64748b">智造交給 AI，時光留給所愛</text>
+                </svg>
+            </div>
+            <h3>方案 E — 時光流動</h3>
+            <p>波浪線代表時間流動，終點的光點象徵 AI 智造</p>
+        </div>
+
+        <!-- Concept F: Hexagon Tech -->
+        <div class="card">
+            <div class="logo-area">
+                <svg width="200" height="80" viewBox="0 0 200 80">
+                    <defs>
+                        <linearGradient id="gradF" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1"/>
+                            <stop offset="50%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Hexagon -->
+                    <g transform="translate(8, 6)">
+                        <polygon points="30,2 55,16 55,48 30,62 5,48 5,16" fill="none" stroke="url(#gradF)" stroke-width="2.5"/>
+                        <!-- T + X combined mark inside -->
+                        <text x="30" y="42" font-family="Inter" font-weight="800" font-size="28" fill="url(#gradF)" text-anchor="middle">T</text>
+                        <!-- Small lightning accent -->
+                        <path d="M40 18 L36 28 L40 27 L37 34" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                    <!-- Text -->
+                    <text x="74" y="30" font-family="Inter" font-weight="700" font-size="24" fill="white">timux</text>
+                    <text x="74" y="50" font-family="Inter" font-weight="500" font-size="14" fill="url(#gradF)">時光智造</text>
+                </svg>
+            </div>
+            <h3>方案 F — 六角科技</h3>
+            <p>六角形框 + T 字母 + 閃電點綴，科技感十足</p>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin-top:48px; color:#64748b; font-size:14px;">
+        <p>所有方案使用品牌漸變色系：#6366f1 → #8b5cf6 → #06b6d4</p>
+        <p>選定方向後可以進一步精修細節、製作不同尺寸版本</p>
+    </div>
+</body>
+</html>
