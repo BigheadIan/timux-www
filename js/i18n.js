@@ -127,7 +127,7 @@ const translations = {
         'founder.title2': '共同創辦人｜Upfront Investment 美股 AI 分析平台',
         'founder.title3': 'AI 智能客服系統 專家顧問｜台灣',
         'founder.title4': 'AI 創業生態 特聘導師｜武漢',
-        'founder.bio': '擁有多年軟體開發與 AI 產品經驗，致力於以科技改善傳統產業效率，讓人們有更多時間專注於真正重要的事。',
+        'founder.bio': '連續創業者，10+ 年軟體與 AI 產品實戰經驗。曾主導台南共享充電寶新創（技術負責人）、擔任成功大學 APP 創業導師，後赴上海深耕有機電商 MarTech 技術行銷。2024 年創辦時光智造科技（台灣），2025 年於武漢設立時光智造，致力以 AI 賦能企業數位轉型。',
         'founder.line': 'Line ID: bigheadian'
     },
     'zh-CN': {
@@ -256,7 +256,7 @@ const translations = {
         'founder.title2': '共同创办人｜Upfront Investment 美股 AI 分析平台',
         'founder.title3': 'AI 智能客服系统 专家顾问｜台湾',
         'founder.title4': 'AI 创业生态 特聘导师｜武汉',
-        'founder.bio': '拥有多年软件开发与 AI 产品经验，致力于以科技改善传统产业效率，让人们有更多时间专注于真正重要的事。',
+        'founder.bio': '连续创业者，10+ 年软件与 AI 产品实战经验。曾主导台南共享充电宝新创（技术负责人）、担任成功大学 APP 创业导师，后赴上海深耕有机电商 MarTech 技术营销。2024 年创办时光智造科技（台湾），2025 年于武汉设立时光智造，致力以 AI 赋能企业数字化转型。',
         'founder.line': 'Line ID: bigheadian'
     },
     'en': {
@@ -385,7 +385,7 @@ const translations = {
         'founder.title2': 'Co-Founder, Upfront Investment — AI-Powered US Stock Analytics',
         'founder.title3': 'Senior AI Consultant — Intelligent Customer Service Systems, Taiwan',
         'founder.title4': 'AI Entrepreneurship Advisor — Wuhan Innovation Ecosystem',
-        'founder.bio': 'With years of software development and AI product experience, dedicated to improving traditional industry efficiency through technology, giving people more time to focus on what truly matters.',
+        'founder.bio': 'Serial entrepreneur with 10+ years of software and AI product experience. Led a shared power bank startup in Tainan (CTO) and served as APP startup mentor at NCKU; later headed MarTech at a Shanghai organic e-commerce platform. Founded Timux Technology in Taiwan (2024) and Timux Wuhan (2025), dedicated to driving enterprise digital transformation through AI.',
         'founder.line': 'Line ID: bigheadian'
     }
 };
