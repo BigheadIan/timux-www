@@ -1,14 +1,6 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-NDPR2LSFQ3');
-    </script>
   <meta charset="utf-8">
   <title>KRTC 高雄捷運 — AI 員工知識生態系統</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
@@ -91,12 +83,12 @@
       color: var(--text);
     }
     .reveal .slides { text-align: left; }
-    .reveal .slides section { padding: 30px 50px; }
-    .reveal h1 { font-size: 2.0em; font-weight: 900; line-height: 1.15; text-shadow: 0 0 30px rgba(79,195,247,0.3); }
-    .reveal h2 { font-size: 1.35em; font-weight: 700; line-height: 1.2; margin-bottom: 20px; color: var(--text); }
-    .reveal h3 { font-size: 1.05em; font-weight: 600; color: var(--muted); margin-bottom: 12px; }
-    .reveal p { font-size: 0.85em; color: var(--muted); line-height: 1.55; }
-    .reveal ul, .reveal li { font-size: 0.85em; }
+    .reveal .slides section { padding: 24px 36px; box-sizing: border-box; overflow: hidden; }
+    .reveal h1 { font-size: 2.2em; font-weight: 900; line-height: 1.15; text-shadow: 0 0 30px rgba(79,195,247,0.3); }
+    .reveal h2 { font-size: 1.5em; font-weight: 700; line-height: 1.2; margin-bottom: 20px; color: var(--text); }
+    .reveal h3 { font-size: 1.15em; font-weight: 600; color: var(--muted); margin-bottom: 12px; }
+    .reveal p { font-size: 0.95em; color: var(--muted); line-height: 1.6; }
+    .reveal ul, .reveal li { font-size: 0.95em; }
 
     /* Multi-layer background */
     .reveal .slides section::before {
@@ -283,9 +275,9 @@
     .center { text-align: center !important; }
 
     /* ===== CARD INNER ===== */
-    .card-icon { font-size: 2em; margin-bottom: 10px; animation: float 4s ease-in-out infinite; display: inline-block; }
-    .card-title { font-size: 0.9em; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-    .card-desc { font-size: 0.65em; color: var(--muted); line-height: 1.65; }
+    .card-icon { font-size: 2.2em; margin-bottom: 12px; animation: float 4s ease-in-out infinite; display: inline-block; }
+    .card-title { font-size: 1.0em; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .card-desc { font-size: 0.75em; color: var(--muted); line-height: 1.7; }
     .card-desc strong { color: var(--text); }
 
     /* ===== STAT BOXES (bigger numbers) ===== */
@@ -297,7 +289,7 @@
       animation: glow-pulse 3s ease-in-out infinite;
       display: block;
     }
-    .stat-label { font-size: 0.6em; color: var(--muted); margin-top: 6px; }
+    .stat-label { font-size: 0.7em; color: var(--muted); margin-top: 8px; }
 
     /* ===== FLOW ===== */
     .flow { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 24px 0; flex-wrap: wrap; }
@@ -312,9 +304,9 @@
       transition: all 0.3s;
     }
     .flow-step:hover { border-color: rgba(79,195,247,0.3); transform: translateY(-3px); }
-    .flow-step-icon { font-size: 1.6em; margin-bottom: 4px; }
-    .flow-step-label { font-size: 0.65em; color: var(--text); font-weight: 600; }
-    .flow-step-desc { font-size: 0.5em; color: var(--muted); margin-top: 3px; }
+    .flow-step-icon { font-size: 1.8em; margin-bottom: 6px; }
+    .flow-step-label { font-size: 0.75em; color: var(--text); font-weight: 600; }
+    .flow-step-desc { font-size: 0.6em; color: var(--muted); margin-top: 4px; }
     .flow-arrow { font-size: 1.3em; color: var(--accent); animation: glow-pulse 2s ease-in-out infinite; }
     .flow-step.highlight {
       background: rgba(79,195,247,0.12);
@@ -373,7 +365,7 @@
       border-radius: 0 14px 14px 0;
       padding: 18px 22px;
       margin: 16px 0;
-      font-size: 0.8em;
+      font-size: 0.9em;
       color: var(--muted);
       font-style: italic;
       backdrop-filter: blur(6px);
@@ -384,8 +376,8 @@
       background: rgba(251,191,36,0.08);
       border: 1px solid rgba(251,191,36,0.25);
       border-radius: 12px;
-      padding: 16px 20px;
-      font-size: 0.7em;
+      padding: 18px 22px;
+      font-size: 0.8em;
       color: var(--gold);
     }
 
@@ -447,11 +439,11 @@
       border-spacing: 0;
       border-radius: 12px;
       overflow: hidden;
-      font-size: 0.65em;
+      font-size: 0.78em;
       margin-top: 16px;
     }
     .compare-table th {
-      padding: 10px 14px;
+      padding: 12px 16px;
       background: rgba(232,59,59,0.1);
       color: var(--lobster);
       font-weight: 600;
@@ -459,7 +451,7 @@
     }
     .compare-table th:first-child { background: rgba(79,195,247,0.08); color: var(--accent); }
     .compare-table td {
-      padding: 8px 14px;
+      padding: 10px 16px;
       border-bottom: 1px solid rgba(79,195,247,0.06);
       color: var(--muted);
     }
@@ -630,9 +622,109 @@
   </div>
 </section>
 
-<!-- ====== SECTION 1: 痛點 ====== -->
+<!-- ====== PREFACE: 研究引言 ====== -->
 <section>
-  <section class="section-slide">
+  <div style="text-align:center;margin-bottom:8px;">
+    <span class="pill pill-lobster" style="font-size:0.6em;">全球 6 大捷運系統調研・2024–2025</span>
+    <h2 style="margin:6px 0 2px;"><span class="grad-blue">捷運業 AI 化浪潮——我們研究了全球在做什麼</span></h2>
+    <p style="font-size:0.62em;color:var(--muted);margin:0;">我們沒有重新造輪子，而是找到了別人都忽略的藍海</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+
+    <!-- Left: Research findings -->
+    <div>
+      <div style="font-size:0.58em;font-weight:700;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">📡 業界主流 AI 投資方向</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="glass-card" style="padding:6px 10px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:0.9em;">🇹🇼</span>
+          <div>
+            <div style="font-size:0.52em;font-weight:700;color:var(--text);">台北捷運 TRTC</div>
+            <div style="font-size:0.48em;color:var(--muted);">AI 客服・裸視 3D 廣告・旅客流量監控</div>
+          </div>
+          <span class="pill" style="margin-left:auto;font-size:0.43em;background:rgba(99,220,180,0.15);color:#63dcb4;">硬體 + 客服</span>
+        </div>
+        <div class="glass-card" style="padding:6px 10px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:0.9em;">🇭🇰</span>
+          <div>
+            <div style="font-size:0.52em;font-weight:700;color:var(--text);">香港 MTR</div>
+            <div style="font-size:0.48em;color:var(--muted);">10 億筆數據・數位孿生預測旅客流量</div>
+          </div>
+          <span class="pill" style="margin-left:auto;font-size:0.43em;background:rgba(99,220,180,0.15);color:#63dcb4;">大數據</span>
+        </div>
+        <div class="glass-card" style="padding:6px 10px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:0.9em;">🇬🇧</span>
+          <div>
+            <div style="font-size:0.52em;font-weight:700;color:var(--text);">倫敦 TfL</div>
+            <div style="font-size:0.48em;color:var(--muted);">電腦視覺月台安全・LiDAR 軌道掃描，年省 £1.2 億</div>
+          </div>
+          <span class="pill" style="margin-left:auto;font-size:0.43em;background:rgba(99,220,180,0.15);color:#63dcb4;">安全監控</span>
+        </div>
+        <div class="glass-card" style="padding:6px 10px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:0.9em;">🇯🇵</span>
+          <div>
+            <div style="font-size:0.52em;font-weight:700;color:var(--text);">東京地鐵</div>
+            <div style="font-size:0.48em;color:var(--muted);">Azure AI 軌道異常偵測・準確率 90%+</div>
+          </div>
+          <span class="pill" style="margin-left:auto;font-size:0.43em;background:rgba(99,220,180,0.15);color:#63dcb4;">預測維護</span>
+        </div>
+        <div class="glass-card" style="padding:6px 10px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:0.9em;">🇺🇸</span>
+          <div>
+            <div style="font-size:0.52em;font-weight:700;color:var(--text);">紐約 MTA × Google</div>
+            <div style="font-size:0.48em;color:var(--muted);">3.35 億筆感測器數據・缺陷識別重疊率 92%</div>
+          </div>
+          <span class="pill" style="margin-left:auto;font-size:0.43em;background:rgba(99,220,180,0.15);color:#63dcb4;">設備感測</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Blue ocean insight -->
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:0.58em;font-weight:700;color:var(--pink);letter-spacing:0.08em;margin-bottom:4px;">🔵 我們發現的藍海</div>
+
+      <div style="background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(168,85,247,0.08));border:1px solid rgba(168,85,247,0.25);border-radius:12px;padding:10px 12px;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.49em;">
+          <thead>
+            <tr style="color:var(--muted);font-size:0.9em;">
+              <th style="text-align:left;padding:3px 5px;font-weight:600;">AI 應用領域</th>
+              <th style="text-align:center;padding:3px 5px;font-weight:600;">成熟度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:4px 5px;color:var(--text);">設備預測性維護</td><td style="text-align:center;padding:4px 5px;color:#63dcb4;">🟢 成熟</td></tr>
+            <tr><td style="padding:4px 5px;color:var(--text);">旅客安全監控</td><td style="text-align:center;padding:4px 5px;color:#63dcb4;">🟢 普及中</td></tr>
+            <tr><td style="padding:4px 5px;color:var(--text);">旅客流量預測</td><td style="text-align:center;padding:4px 5px;color:#f5a623;">🟡 部分成熟</td></tr>
+            <tr><td style="padding:4px 5px;color:var(--text);">AI 客服 / 翻譯</td><td style="text-align:center;padding:4px 5px;color:#f5a623;">🟡 有資安疑慮</td></tr>
+            <tr style="background:rgba(99,102,241,0.15);border-radius:6px;">
+              <td style="padding:5px 7px;font-weight:700;color:var(--accent);">員工知識管理 AI</td>
+              <td style="text-align:center;padding:5px 7px;font-weight:700;color:#a78bfa;">🔵 幾乎空白</td>
+            </tr>
+            <tr style="background:rgba(99,102,241,0.15);">
+              <td style="padding:5px 7px;font-weight:700;color:var(--accent);">會議紀錄 AI</td>
+              <td style="text-align:center;padding:5px 7px;font-weight:700;color:#a78bfa;">🔵 幾乎空白</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:rgba(99,102,241,0.1);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:8px 12px;">
+        <div style="font-size:0.5em;color:var(--accent);font-weight:700;margin-bottom:3px;">🎯 我們的定位</div>
+        <div style="font-size:0.48em;color:var(--text);line-height:1.55;">全球捷運業者幾乎沒有將 AI 用於<strong>員工內部知識管理</strong>。KRTC 可成為業界<strong>標竿案例</strong>——不需要追趕已成熟的賽道，而是開創新的。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom quote -->
+  <div style="margin-top:8px;text-align:center;padding:7px 16px;background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.2);border-radius:10px;">
+    <span style="font-size:0.53em;color:var(--muted);">研究洞察 ·</span>
+    <span style="font-size:0.56em;color:var(--text);font-style:italic;margin:0 6px;">「個人化 AI 製造混亂，機構化 AI 創造協同」</span>
+    <span style="font-size:0.48em;color:var(--muted);">— 我們提供的，正是這套機構化架構</span>
+  </div>
+</section>
+
+<!-- ====== SECTION 1: 痛點 ====== -->
+<section class="section-slide">
     <!-- Animated orbs -->
     <div class="orb orb-cyan" style="top:-60px;right:-60px;width:250px;height:250px;filter:blur(50px);"></div>
     <div class="orb orb-pink" style="bottom:-40px;left:-40px;width:200px;height:200px;filter:blur(45px);"></div>
@@ -648,12 +740,12 @@
         <div class="section-desc">為什麼 KRTC 需要 AI 員工知識系統？</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">捷運營運的知識挑戰</span></h2>
     <div class="grid-3 mt-1">
-      <div class="glass-card" data-fragment-index="1" class="fragment fade-up">
+      <div class="glass-card">
         <div class="card-icon">🧠</div>
         <div class="card-title">知識散落各處</div>
         <div class="card-desc">SOP 在紙本、經驗在腦中、技巧在 LINE 群組。找一個資訊要問三個人，等半天。<br><br><span class="text-accent">→ 搜尋效率低落</span></div>
@@ -669,9 +761,9 @@
         <div class="card-desc">凌晨號誌故障，唯一會處理的人在休假。翻 SOP 只有標準流程，<strong>沒有實戰經驗</strong>。<br><br><span class="text-gold">→ 應變時間拉長</span></div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">數字說話</span></h2>
     <div style="display:flex;gap:30px;justify-content:center;margin:28px 0;">
       <div class="stat-box glass-card" style="padding:20px 28px;">
@@ -695,9 +787,9 @@
       「如果張志明明天退休，他 12 年的機電維修經驗會留下什麼？」<br>
       <span style="color:var(--accent);font-style:normal;font-size:0.9em;">答案是：<strong>幾乎什麼都不會留下。</strong></span>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">傳統做法 vs. AI 知識系統</span></h2>
     <table class="compare-table">
       <thead>
@@ -740,12 +832,10 @@
         </tr>
       </tbody>
     </table>
-  </section>
 </section>
 
 <!-- ====== SECTION 2: 解決方案 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <!-- Animated orbs -->
     <div class="orb orb-blue" style="top:-50px;left:-50px;width:220px;height:220px;filter:blur(45px);"></div>
     <div class="orb orb-cyan" style="bottom:-50px;right:-50px;width:260px;height:260px;filter:blur(50px);"></div>
@@ -761,9 +851,9 @@
         <div class="section-desc">不只是工具，而是一整套知識循環體系</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">核心概念：知識漏斗</span></h2>
     <p>把散落的經驗，<span class="grad-blue" style="font-weight:700;">自動</span>變成可查詢、可傳承的組織資產</p>
     <div class="flow mt-2">
@@ -779,10 +869,11 @@
         <div class="flow-step-desc">STT + 摘要</div>
       </div>
       <div class="flow-arrow">→</div>
-      <div class="flow-step">
+      <div class="flow-step" style="border-color:rgba(0,229,255,0.35);">
         <div class="flow-step-icon">📝</div>
         <div class="flow-step-label">Wiki 萃取</div>
-        <div class="flow-step-desc">LLM 自動整理</div>
+        <div class="flow-step-desc">LLM 信號篩選</div>
+        <div style="font-size:0.45em;color:var(--accent2);margin-top:4px;font-weight:600;">🎯 信號</div>
       </div>
       <div class="flow-arrow">→</div>
       <div class="flow-step highlight">
@@ -800,45 +891,75 @@
     <div class="tip-box mt-1" style="text-align:center;">
       💡 員工不需要刻意「寫文件」— 正常工作就自然累積知識
     </div>
-  </section>
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:8px;">
+      <div style="font-size:0.5em;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:20px;padding:4px 14px;color:var(--accent2);">
+        <strong>🎯 信號</strong>：LLM 自動從對話中篩選有價值知識，過濾噪音
+      </div>
+      <div style="font-size:0.5em;background:rgba(244,114,182,0.08);border:1px solid rgba(244,114,182,0.25);border-radius:20px;padding:4px 14px;color:var(--accent3);">
+        <strong>⚡ 主動性</strong>：AI 背景執行，無需員工主動提示或填寫
+      </div>
+    </div>
+</section>
 
-  <section>
-    <h2><span class="grad-blue">三重知識來源</span></h2>
-    <div class="grid-3 mt-1">
-      <div class="glass-card-lobster">
-        <div class="card-icon">🗣️</div>
-        <div class="card-title"><span class="grad-text">主動產出</span></div>
-        <div class="card-desc">
-          員工日常使用 <strong>龍蝦管家 AI 助手</strong>查 SOP、排班計算、翻譯文件<br><br>
+<section>
+    <h2><span class="grad-blue">四重知識來源</span></h2>
+    <div class="grid-2 mt-1" style="gap:10px;">
+      <div class="glass-card-lobster" style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:1.5em;">🗣️</span>
+          <div class="card-title" style="margin:0;"><span class="grad-text">主動產出</span></div>
+        </div>
+        <div class="card-desc" style="font-size:0.6em;line-height:1.55;">
+          員工日常使用 <strong>龍蝦管家</strong> 查 SOP、排班計算、翻譯文件<br>
           對話中的知識<strong>自動萃取</strong>為 Wiki 頁面<br><br>
           <span class="pill pill-lobster">🦞 LobsterAI</span>
+          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span style="font-size:0.9em;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:12px;padding:2px 10px;color:var(--accent);">☁️ 外部 LLM — 更聰明</span>
+            <span style="font-size:0.9em;background:rgba(79,195,247,0.08);border:1px solid rgba(79,195,247,0.25);border-radius:12px;padding:2px 10px;color:var(--accent2);">🔒 內部離線 LLM — 保護數據</span>
+          </div>
         </div>
       </div>
-      <div class="glass-card">
-        <div class="card-icon">🎤</div>
-        <div class="card-title"><span class="grad-blue">會議沉澱</span></div>
-        <div class="card-desc">
+      <div class="glass-card" style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:1.5em;">🎤</span>
+          <div class="card-title" style="margin:0;"><span class="grad-blue">會議沉澱</span></div>
+        </div>
+        <div class="card-desc" style="font-size:0.6em;line-height:1.55;">
           會議語音 → <strong>自動轉文字</strong><br>
-          LLM 摘要重點 + 行動項目<br><br>
-          討論內容<strong>自動關聯</strong>到所有參會者的 Wiki<br><br>
+          LLM 摘要重點 + 行動項目<br>
+          討論內容<strong>自動關聯</strong>到所有參會者 Wiki<br><br>
           <span class="pill">🎙️ FunASR</span>
         </div>
       </div>
-      <div class="glass-card-pink">
-        <div class="card-icon">💬</div>
-        <div class="card-title"><span class="grad-pink">群組萃取</span></div>
-        <div class="card-desc">
+      <div class="glass-card-pink" style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:1.5em;">💬</span>
+          <div class="card-title" style="margin:0;"><span class="grad-pink">群組萃取</span></div>
+        </div>
+        <div class="card-desc" style="font-size:0.6em;line-height:1.55;">
           公司群組中有價值的<strong>技術討論</strong><br>
-          AI 自動識別、分類<br><br>
+          AI 自動識別、分類<br>
           關聯到參與者的 Wiki<br><br>
           <span class="pill pill-pink">📱 LINE / Teams</span>
         </div>
       </div>
+      <div class="glass-card" style="padding:14px 16px;border-color:rgba(250,204,21,0.35);background:rgba(250,204,21,0.05);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:1.5em;">📂</span>
+          <div class="card-title" style="margin:0;"><span class="grad-gold">文件萃取</span></div>
+        </div>
+        <div class="card-desc" style="font-size:0.6em;line-height:1.55;">
+          員工上傳 <strong>SOP / 規範 / 報告</strong><br>
+          AI 自動解析 → 結構化 Wiki 頁面<br>
+          <span style="color:var(--gold);font-weight:600;">主動產出</span>建議關聯節點與補充說明<br><br>
+          <span class="pill pill-gold">📄 PDF / Word / 圖片</span>
+        </div>
+      </div>
     </div>
-    <p style="text-align:center;font-size:0.7em;color:var(--accent);margin-top:16px;font-weight:500;">三條管道匯聚成每位員工獨特的知識檔案</p>
-  </section>
+    <p style="text-align:center;font-size:0.62em;color:var(--accent);margin-top:8px;font-weight:500;">四條管道匯聚成每位員工獨特的知識檔案 — 正常工作就自然累積</p>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">三大子系統整合</span></h2>
     <p>不是三個獨立系統，是一個 <span class="grad-blue" style="font-weight:700;">員工知識生態系統</span></p>
     <div class="grid-3 mt-1">
@@ -882,12 +1003,14 @@
         </div>
       </div>
     </div>
-  </section>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:12px;background:rgba(79,195,247,0.05);border:1px solid rgba(79,195,247,0.15);border-radius:10px;padding:8px 16px;">
+      <span style="font-size:0.5em;color:var(--muted);font-style:italic;flex:1;">💬 「個人化 AI 製造混亂，機構化 AI 創造<span style="color:var(--accent2);font-weight:700;">協同</span>」— 機構化 AI 研究框架</span>
+      <span style="font-size:0.45em;background:rgba(79,195,247,0.12);color:var(--accent);border:1px solid rgba(79,195,247,0.25);border-radius:20px;padding:3px 10px;white-space:nowrap;font-weight:600;">🔗 機構AI支柱 · 協同</span>
+    </div>
 </section>
 
 <!-- ====== SECTION 3: 建立員工分身 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <div style="position:relative;z-index:1;">
       <div class="section-number">03</div>
       <div style="margin-top:80px;">
@@ -899,21 +1022,21 @@
         <div class="section-desc">從零到一的四步驟知識累積</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">Step 1：安裝 AI 助手</span></h2>
-    <div class="grid-2 mt-1">
+    <div class="grid-2" style="margin-top:8px;">
       <div>
-        <div class="glass-card-lobster" style="margin-bottom:14px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-            <span style="font-size:2em;animation:float 3s ease-in-out infinite;display:inline-block;">🦞</span>
+        <div class="glass-card-lobster" style="margin-bottom:10px;padding:14px 18px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <span style="font-size:1.6em;animation:float 3s ease-in-out infinite;display:inline-block;">🦞</span>
             <div>
               <div class="card-title"><span class="grad-text">龍蝦管家 LobsterAI</span></div>
               <div class="card-desc">桌面版 AI 工作助手</div>
             </div>
           </div>
-          <ul class="styled-list" style="margin:0;">
+          <ul class="styled-list" style="margin:0;font-size:0.85em;">
             <li>安裝在<strong>每位員工的電腦</strong>上</li>
             <li>日常查 SOP、計算排班、翻譯文件</li>
             <li>背景自動記錄<strong>知識片段</strong></li>
@@ -923,78 +1046,78 @@
         </div>
       </div>
       <div>
-        <div class="glass-card" style="height:100%;display:flex;flex-direction:column;justify-content:center;text-align:center;">
-          <div style="font-size:3.5em;margin-bottom:14px;animation:float 4s ease-in-out infinite;display:inline-block;">🦞 💻</div>
-          <div style="font-size:0.85em;font-weight:700;color:var(--text);">每位員工電腦</div>
-          <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;">
+        <div class="glass-card" style="height:100%;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:14px 18px;">
+          <div style="font-size:2.8em;margin-bottom:10px;animation:float 4s ease-in-out infinite;display:inline-block;">🦞 💻</div>
+          <div style="font-size:0.8em;font-weight:700;color:var(--text);">每位員工電腦</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
             <span class="pill pill-green">✅ 本地 AI 對話</span>
             <span class="pill pill-green">✅ 自動萃取</span>
             <span class="pill pill-green">✅ 隱私不出電腦</span>
           </div>
-          <div style="margin-top:16px;font-size:0.6em;color:var(--muted);">
+          <div style="margin-top:10px;font-size:0.55em;color:var(--muted);">
             Skill 擴充架構，可客製化功能<br>
             wiki-sync 模組負責知識同步到中央
           </div>
         </div>
       </div>
     </div>
-    <div class="glass-card mt-2" style="border-left:4px solid var(--accent);">
-      <div style="font-size:0.65em;font-weight:700;color:var(--accent);margin-bottom:10px;">📋 Day 1 部署流程（IT 管理員視角）</div>
-      <div class="grid-2" style="gap:14px;">
+    <div class="glass-card" style="border-left:4px solid var(--accent);margin-top:10px;padding:10px 16px;">
+      <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">📋 Day 1 部署流程（IT 管理員視角）</div>
+      <div class="grid-2" style="gap:10px;">
         <div>
-          <div style="font-size:0.6em;color:var(--muted);line-height:1.8;">
-            <span style="color:var(--accent2);font-weight:600;">① 批次部署</span>｜IT 管理員透過 GPO 推送 MSI 安裝包，支援 Silent Install，2,000 台電腦靜默安裝完成，無需員工介入<br>
-            <span style="color:var(--accent2);font-weight:600;">② 自動登入</span>｜員工首次開啟，系統透過 AD/LDAP 自動識別身份，綁定員工編號與部門，免填帳號密碼<br>
+          <div style="font-size:0.55em;color:var(--muted);line-height:1.6;">
+            <span style="color:var(--accent2);font-weight:600;">① 批次部署</span>｜GPO 推送 MSI，2,000 台靜默安裝，無需員工介入<br>
+            <span style="color:var(--accent2);font-weight:600;">② 自動登入</span>｜AD/LDAP 自動識別身份，綁定員工編號與部門<br>
           </div>
         </div>
         <div>
-          <div style="font-size:0.6em;color:var(--muted);line-height:1.8;">
-            <span style="color:var(--gold);font-weight:600;">③ 預載範本</span>｜系統自動下載該部門 SOP 範本庫（機電組：72 份、站務組：48 份），讓 AI 立即有參考基礎<br>
-            <span style="color:var(--gold);font-weight:600;">④ 第一天開始累積</span>｜員工正常使用 AI 助手查 SOP、詢問操作問題，知識在對話中<strong style="color:var(--text);">自動累積</strong>，零額外工作
+          <div style="font-size:0.55em;color:var(--muted);line-height:1.6;">
+            <span style="color:var(--gold);font-weight:600;">③ 預載範本</span>｜自動下載部門 SOP 範本庫（機電：72 份、站務：48 份）<br>
+            <span style="color:var(--gold);font-weight:600;">④ 開始累積</span>｜正常使用 AI 查 SOP，知識<strong style="color:var(--text);">自動累積</strong>，零額外工作
           </div>
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">Step 2：自動生成個人 Wiki</span></h2>
-    <div class="flow">
-      <div class="flow-step">
-        <div class="flow-step-icon">💬</div>
+    <div class="flow" style="margin:12px 0;">
+      <div class="flow-step" style="padding:10px 14px;">
+        <div class="flow-step-icon" style="font-size:1.4em;margin-bottom:4px;">💬</div>
         <div class="flow-step-label">AI 對話</div>
       </div>
       <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-step-icon">🔍</div>
+      <div class="flow-step" style="padding:10px 14px;">
+        <div class="flow-step-icon" style="font-size:1.4em;margin-bottom:4px;">🔍</div>
         <div class="flow-step-label">LLM 萃取</div>
         <div class="flow-step-desc">識別有價值知識</div>
       </div>
       <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-step-icon">📄</div>
+      <div class="flow-step" style="padding:10px 14px;">
+        <div class="flow-step-icon" style="font-size:1.4em;margin-bottom:4px;">📄</div>
         <div class="flow-step-label">Markdown Wiki</div>
         <div class="flow-step-desc">結構化頁面</div>
       </div>
       <div class="flow-arrow">→</div>
-      <div class="flow-step highlight">
-        <div class="flow-step-icon">☁️</div>
+      <div class="flow-step highlight" style="padding:10px 14px;">
+        <div class="flow-step-icon" style="font-size:1.4em;margin-bottom:4px;">☁️</div>
         <div class="flow-step-label">同步到中央</div>
         <div class="flow-step-desc">wiki-sync</div>
       </div>
     </div>
-    <div class="grid-2" style="gap:14px;margin-top:12px;">
-      <div class="scenario" style="margin:0;">
-        <div class="scenario-title">📌 實際範例：機電工程師 張志明</div>
-        <div class="scenario-body">
+    <div class="grid-2" style="gap:12px;margin-top:8px;">
+      <div class="scenario" style="margin:0;padding:14px 18px;">
+        <div class="scenario-title" style="font-size:0.78em;">📌 實際範例：機電工程師 張志明</div>
+        <div class="scenario-body" style="font-size:0.62em;line-height:1.55;">
           張志明用龍蝦管家查詢「<em>第三軌接地故障的檢測步驟</em>」→ AI 回答後，系統自動萃取為一篇 Wiki 頁面《接地故障檢測與處理》。<br><br>
-          經過 3 個月日常使用，累積了 <em>56 個知識節點</em>，涵蓋電聯車巡檢、號誌故障、軌道供電等 <em>6 大知識社群</em>。<br><br>
+          經過 3 個月日常使用，累積了 <em>56 個知識節點</em>，涵蓋電聯車巡檢、號誌故障、軌道供電等 <em>6 大知識社群</em>。<br>
           <span style="color:var(--accent);font-weight:600;">→ 零額外工作量，正常使用就自然累積。</span>
         </div>
       </div>
-      <div class="glass-card" style="padding:16px;background:rgba(10,22,40,0.6);border-color:rgba(79,195,247,0.25);">
-        <div style="font-size:0.55em;color:var(--accent);font-weight:700;margin-bottom:8px;letter-spacing:0.05em;">🗂️ 自動產生的 Wiki 頁面預覽</div>
-        <div style="font-family:'Courier New',monospace;font-size:0.5em;color:var(--muted);line-height:1.7;background:rgba(0,0,0,0.3);border-radius:10px;padding:12px;border:1px solid rgba(79,195,247,0.15);">
+      <div class="glass-card" style="padding:12px;background:rgba(10,22,40,0.6);border-color:rgba(79,195,247,0.25);">
+        <div style="font-size:0.5em;color:var(--accent);font-weight:700;margin-bottom:6px;letter-spacing:0.05em;">🗂️ 自動產生的 Wiki 頁面預覽</div>
+        <div style="font-family:'Courier New',monospace;font-size:0.45em;color:var(--muted);line-height:1.55;background:rgba(0,0,0,0.3);border-radius:10px;padding:10px;border:1px solid rgba(79,195,247,0.15);">
           <span style="color:var(--accent2);font-weight:700;"># 月台門 E-315 對位超時故障排除</span><br>
           <span style="color:var(--muted);">&gt; 來源：張志明 × 龍蝦管家 | 2026-03-15</span><br>
           <span style="color:var(--green);">&gt; 信心分數：0.92 | 已審核：✓</span><br><br>
@@ -1010,9 +1133,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">Step 3：知識圖譜自動建構</span></h2>
     <p>每天凌晨，<span class="grad-blue" style="font-weight:700;">graphify</span> 自動掃描所有 Wiki，建構三層知識圖譜</p>
     <div class="layer-diagram mt-1">
@@ -1040,9 +1163,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">graphify 分析報告實例</span></h2>
     <p>每天凌晨圖譜更新後，系統自動產出 <span class="grad-blue" style="font-weight:700;">GRAPH_REPORT.md</span> — 主管看得懂的行動建議</p>
     <div class="grid-2 mt-1" style="gap:16px;">
@@ -1088,9 +1211,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">Step 4：AI 代理人上線</span></h2>
     <p>知識圖譜建構完成，每位員工自動擁有一個 <span class="grad-blue" style="font-weight:700;">AI 代理人</span></p>
     <div class="grid-2 mt-1">
@@ -1119,12 +1242,10 @@
         </div>
       </div>
     </div>
-  </section>
 </section>
 
 <!-- ====== SECTION 4: 知識圖譜技術 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <!-- Animated orbs -->
     <div class="orb orb-pink" style="top:-60px;right:-40px;width:230px;height:230px;filter:blur(50px);"></div>
     <div class="orb orb-blue" style="bottom:-40px;left:-60px;width:240px;height:240px;filter:blur(45px);"></div>
@@ -1140,9 +1261,9 @@
         <div class="section-desc">graphify — 從文件到可視化圖譜的全自動流程</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">graphify 處理流程</span></h2>
     <div class="flow mt-1">
       <div class="flow-step">
@@ -1194,9 +1315,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">AI 問答運作原理：GraphRAG</span></h2>
     <p>結合<span class="grad-blue" style="font-weight:700;">知識圖譜</span> + <span class="grad-pink" style="font-weight:700;">向量檢索</span>的混合架構，比純 RAG 更準確</p>
     <div class="flow mt-1">
@@ -1245,12 +1366,10 @@
         </div>
       </div>
     </div>
-  </section>
 </section>
 
 <!-- ====== SECTION 5: Demo 成果 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <div style="position:relative;z-index:1;">
       <div class="section-number">05</div>
       <div style="margin-top:80px;">
@@ -1262,9 +1381,9 @@
         <div class="section-desc">3 位模擬員工 × 45 篇 Wiki → 5 張知識圖譜</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">模擬員工檔案</span></h2>
     <div class="grid-3 mt-1">
       <div class="glass-card" style="text-align:center;">
@@ -1304,9 +1423,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">五層圖譜數據總覽</span></h2>
     <table class="compare-table">
       <thead>
@@ -1359,9 +1478,9 @@
     <div class="tip-box mt-1" style="text-align:center;">
       💡 僅 3 位員工、45 篇 Wiki 就產生 123 個節點和 303 條關聯 — 想像 2,000 人的威力
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">God Nodes — 組織最核心的知識</span></h2>
     <p>God Nodes = 連結最多的節點，是整個組織知識網路的<span class="grad-text" style="font-weight:700;">樞紐</span></p>
     <div class="grid-3 mt-1">
@@ -1388,12 +1507,10 @@
       God Nodes = 組織中最不能丟失的知識。如果這些知識的唯一擁有者離開，衝擊最大。<br>
       <strong style="color:var(--accent);font-style:normal;">→ 優先確保有多人備援，並建立完整的知識傳承路徑。</strong>
     </div>
-  </section>
 </section>
 
 <!-- ====== SECTION 6: 使用情境 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <!-- Animated orbs -->
     <div class="orb orb-cyan" style="top:-70px;left:-70px;width:260px;height:260px;filter:blur(50px);"></div>
     <div class="orb orb-pink" style="bottom:-50px;right:-50px;width:220px;height:220px;filter:blur(45px);"></div>
@@ -1409,66 +1526,9 @@
         <div class="section-desc">從一線站務員到管理層，每個角色都有用</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
-    <h2><span class="grad-blue">情境 ①｜緊急故障排除</span></h2>
-    <div class="scenario">
-      <div class="scenario-title">🚨 凌晨 2:00 — 號誌系統 E-315 故障</div>
-      <div class="scenario-body">
-        值班站務員發現號誌異常，但負責的機電工程師張志明在休假。<br><br>
-        ▸ 開啟 AI 代理人，詢問：<em>「號誌故障 E-315 月台門對位超時怎麼處理？」</em><br>
-        ▸ AI 根據張志明的知識圖譜回答：檢查 PSC 控制器 → 確認 DCU 通訊 → 手動對位步驟<br>
-        ▸ 同時標示：<em>知識來源：《號誌系統故障排除指南》+《月台門維修作業》</em><br><br>
-        <strong style="color:var(--green);">✅ 不需要半夜打電話叫人，值班人員自行排除故障</strong>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2><span class="grad-blue">情境 ②｜新人快速上手</span></h2>
-    <div class="scenario">
-      <div class="scenario-title">🎓 新進機電工程師 — 第一個月</div>
-      <div class="scenario-body">
-        新人小陳剛到機電組，需要學習大量 SOP 和實務經驗。<br><br>
-        ▸ 查看張志明的<em>個人知識圖譜</em> → 6 大知識社群一目了然<br>
-        ▸ 每個社群都有完整 Wiki：電聯車巡檢、號誌故障、軌道供電、空調維修...<br>
-        ▸ AI 代理人隨時回答：<em>「轉向架檢查的重點有哪些？」</em><br><br>
-        <strong style="color:var(--green);">✅ 新人上手時間從 3 個月 → 1 個月</strong>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2><span class="grad-blue">情境 ③｜知識健康檢查</span></h2>
-    <div class="scenario">
-      <div class="scenario-title">📊 部門主管 — 每月知識報告</div>
-      <div class="scenario-body">
-        站務處長打開知識儀表板：<br><br>
-        ▸ <em>God Nodes 報告</em>：「號誌故障排除」知識只有張志明一人掌握 → ⚠️ 高風險<br>
-        ▸ <em>知識缺口分析</em>：新購「西門子 Inspiro MHI-B」相關知識為零 → 需要訓練<br>
-        ▸ <em>跨部門關聯</em>：站務組和機電組在「月台門異常」有大量知識交集 → 可強化協作<br><br>
-        <strong style="color:var(--green);">✅ 資料驅動的人才培育決策，不再靠感覺</strong>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2><span class="grad-blue">情境 ④｜退休知識傳承</span></h2>
-    <div class="scenario">
-      <div class="scenario-title">👴 張志明即將退休 — 知識搶救計畫</div>
-      <div class="scenario-body">
-        張志明計畫明年退休，部門啟動知識傳承流程：<br><br>
-        ▸ 系統已累積 <em>56 個知識節點、133 條關聯</em><br>
-        ▸ 導出報告，標記<strong>僅他一人掌握</strong>的知識 → 單點風險清單<br>
-        ▸ 安排接班人閱讀 Wiki，搭配 AI 代理人進行 Q&A 模擬訓練<br>
-        ▸ 退休後，AI 代理人<em>永久保留</em>，新同事隨時查詢<br><br>
-        <strong style="color:var(--green);">✅ 人走了，12 年經驗留下來。知識不會消失。</strong>
-      </div>
-    </div>
-  </section>
-
-  <section>
+<section>
     <h2><span class="grad-blue">操作指南｜管理者日常工作流程</span></h2>
     <p>部門主管每週 <span class="grad-blue" style="font-weight:700;">10 分鐘</span>，掌握全部門知識健康狀況</p>
     <div class="grid-2 mt-1" style="gap:16px;">
@@ -1505,9 +1565,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">操作指南｜員工一天的使用流程</span></h2>
     <p>完全融入日常工作，<span class="grad-gold" style="font-weight:700;">不需要改變習慣</span>，知識自然累積</p>
     <div class="flow mt-1" style="flex-wrap:nowrap;gap:6px;">
@@ -1562,9 +1622,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">操作指南｜知識審核機制</span></h2>
     <p>三層審核確保知識品質，<span class="grad-blue" style="font-weight:700;">自動化為主、人工介入為輔</span></p>
     <div class="flow mt-1" style="gap:8px;">
@@ -1612,12 +1672,123 @@
         </div>
       </div>
     </div>
-  </section>
 </section>
 
-<!-- ====== SECTION 7: 部署架構 ====== -->
 <section>
-  <section class="section-slide">
+    <h2><span class="grad-blue">情境 ①｜緊急故障排除</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">🚨 凌晨 2:00 — 號誌系統 E-315 故障</div>
+      <div class="scenario-body">
+        值班站務員發現號誌異常，但負責的機電工程師張志明在休假。<br><br>
+        ▸ 開啟 AI 代理人，詢問：<em>「號誌故障 E-315 月台門對位超時怎麼處理？」</em><br>
+        ▸ AI 根據張志明的知識圖譜回答：檢查 PSC 控制器 → 確認 DCU 通訊 → 手動對位步驟<br>
+        ▸ 同時標示：<em>知識來源：《號誌系統故障排除指南》+《月台門維修作業》</em><br><br>
+        <strong style="color:var(--green);">✅ 不需要半夜打電話叫人，值班人員自行排除故障</strong>
+      </div>
+    </div>
+</section>
+
+<section>
+    <h2><span class="grad-blue">情境 ②｜新人快速上手</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">🎓 新進機電工程師 — 第一個月</div>
+      <div class="scenario-body">
+        新人小陳剛到機電組，需要學習大量 SOP 和實務經驗。<br><br>
+        ▸ 查看張志明的<em>個人知識圖譜</em> → 6 大知識社群一目了然<br>
+        ▸ 每個社群都有完整 Wiki：電聯車巡檢、號誌故障、軌道供電、空調維修...<br>
+        ▸ AI 代理人隨時回答：<em>「轉向架檢查的重點有哪些？」</em><br><br>
+        <strong style="color:var(--green);">✅ 新人上手時間從 3 個月 → 1 個月</strong>
+      </div>
+    </div>
+</section>
+
+<section>
+    <h2><span class="grad-blue">情境 ③｜知識健康檢查</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">📊 部門主管 — 每月知識報告</div>
+      <div class="scenario-body">
+        站務處長打開知識儀表板：<br><br>
+        ▸ <em>God Nodes 報告</em>：「號誌故障排除」知識只有張志明一人掌握 → ⚠️ 高風險<br>
+        ▸ <em>知識缺口分析</em>：新購「西門子 Inspiro MHI-B」相關知識為零 → 需要訓練<br>
+        ▸ <em>跨部門關聯</em>：站務組和機電組在「月台門異常」有大量知識交集 → 可強化協作<br><br>
+        <strong style="color:var(--green);">✅ 資料驅動的人才培育決策，不再靠感覺</strong>
+      </div>
+    </div>
+</section>
+
+<section>
+    <h2><span class="grad-blue">情境 ④｜退休知識傳承</span></h2>
+    <div class="scenario">
+      <div class="scenario-title">👴 張志明即將退休 — 知識搶救計畫</div>
+      <div class="scenario-body">
+        張志明計畫明年退休，部門啟動知識傳承流程：<br><br>
+        ▸ 系統已累積 <em>56 個知識節點、133 條關聯</em><br>
+        ▸ 導出報告，標記<strong>僅他一人掌握</strong>的知識 → 單點風險清單<br>
+        ▸ 安排接班人閱讀 Wiki，搭配 AI 代理人進行 Q&A 模擬訓練<br>
+        ▸ 退休後，AI 代理人<em>永久保留</em>，新同事隨時查詢<br><br>
+        <strong style="color:var(--green);">✅ 人走了，12 年經驗留下來。知識不會消失。</strong>
+      </div>
+    </div>
+</section>
+
+  <!-- Meeting Minutes Slide 1 -->
+<section>
+    <h2><span class="grad-blue">情境 ⑤｜會議紀錄 AI — 開會也在累積知識</span></h2>
+    <p style="color:var(--muted);font-size:0.75em;margin-bottom:6px;">會議錄音 / 白板照片 → 自動轉為結構化知識，並關聯到每位參與人的 Wiki</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;">
+      <div>
+        <div class="glass-card" style="margin-bottom:8px;padding:10px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--accent);margin-bottom:6px;">📥 輸入來源</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.55em;">
+              <span style="background:rgba(79,195,247,0.15);border-radius:6px;padding:3px 8px;color:var(--accent);">🎙️ 會議錄音</span>
+              <span style="color:var(--muted);">→ FunASR 語音辨識，標注說話者</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.55em;">
+              <span style="background:rgba(79,195,247,0.15);border-radius:6px;padding:3px 8px;color:var(--accent);">📷 白板照片</span>
+              <span style="color:var(--muted);">→ AI OCR 辨識，轉為結構化文字</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.55em;">
+              <span style="background:rgba(79,195,247,0.15);border-radius:6px;padding:3px 8px;color:var(--accent);">👥 參與名單</span>
+              <span style="color:var(--muted);">→ 選定與會人員，知識自動關聯</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card" style="padding:10px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--accent2);margin-bottom:6px;">📤 AI 自動輸出</div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:0.55em;color:var(--text);">
+            <div>✅ <strong>會議逐字稿</strong>（含說話者標記 + 時間戳）</div>
+            <div>✅ <strong>AI 摘要</strong>（關鍵決議 + 主要討論點）</div>
+            <div>✅ <strong>行動項目</strong>（自動分派給對應人員 + 截止日）</div>
+            <div>✅ <strong>知識關聯</strong>（相關 Wiki 頁面自動更新）</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="background:rgba(13,33,55,0.8);border:1px solid rgba(79,195,247,0.2);padding:10px 14px;">
+        <div style="font-size:0.55em;font-weight:700;color:var(--gold);margin-bottom:6px;">📋 月台門維修協調會（範例輸出）</div>
+        <div style="font-size:0.5em;color:var(--muted);line-height:1.55;">
+          <div style="color:var(--green);font-weight:600;margin-bottom:3px;">■ 關鍵決議（AI 摘取）</div>
+          <div>1. 4/8 23:00 夜間維修 E-315 感測器校正</div>
+          <div>2. DCU 升級判定標準改為 ALIGN_DELTA ≥ 2500ms</div>
+          <div>3. 緊急採購備品，今日完成站長簽核</div>
+          <div style="color:var(--accent);font-weight:600;margin-top:6px;margin-bottom:3px;">■ 行動項目（自動分派）</div>
+          <div>🔴 張志明：提交維修計畫書 → 截止 04/10</div>
+          <div>🔴 王建國：協調夜間疏導 → 截止 04/08 ✓</div>
+          <div>🟡 陳家豪：整理故障數據報告 → 截止 04/11</div>
+          <div style="color:var(--accent3);font-weight:600;margin-top:6px;margin-bottom:3px;">■ 知識關聯（自動更新）</div>
+          <div>張志明 Wiki：月台門維修作業 🆕、備品採購流程 🆕</div>
+          <div>王建國 Wiki：美麗島站特殊管理 🆕</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:8px;text-align:center;font-size:0.65em;padding:8px 14px;">
+      💡 一場 90 分鐘的會議 → AI 處理 7 秒 → 完整會議紀錄 + 6 頁 Wiki 自動更新
+    </div>
+</section>
+
+
+<!-- ====== SECTION 7<!-- ====== SECTION 7: 部署架構 ====== -->
+<section class="section-slide">
     <div style="position:relative;z-index:1;">
       <div class="section-number">07</div>
       <div style="margin-top:80px;">
@@ -1629,9 +1800,9 @@
         <div class="section-desc">完全自建・資料不出公司・符合合規要求</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">系統架構總覽</span></h2>
     <div class="arch-container mt-1">
       <div class="arch-col arch-owner">
@@ -1663,56 +1834,10 @@
     <div style="text-align:center;margin-top:12px;">
       <span class="pill pill-gold" style="font-size:0.6em;">⚠️ 完全內網部署 — 資料不出公司，符合設備廠商合約保密要求</span>
     </div>
-  </section>
+</section>
 
-  <section>
-    <h2><span class="grad-blue">技術選型</span></h2>
-    <div class="tech-grid">
-      <div class="tech-item">
-        <div class="tech-category">大語言模型</div>
-        <div class="tech-name">Qwen 2.5-72B / Qwen 3</div>
-        <div class="tech-note">中英雙語最強開源 · Apache 2.0 · 商用免費</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">推理引擎</div>
-        <div class="tech-name">vLLM</div>
-        <div class="tech-note">生產級 · PagedAttention · 高並發</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">嵌入模型</div>
-        <div class="tech-name">BGE-M3</div>
-        <div class="tech-note">中英混合語義檢索 · 1024 維向量</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">向量資料庫</div>
-        <div class="tech-name">Milvus</div>
-        <div class="tech-note">分散式向量搜尋 · 百萬級文件</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">知識圖譜</div>
-        <div class="tech-name">graphify + NetworkX</div>
-        <div class="tech-note">LLM 驅動抽取 · Leiden 社群偵測</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">語音辨識</div>
-        <div class="tech-name">FunASR (Paraformer-zh)</div>
-        <div class="tech-note">中文最強 STT · 即時串流轉寫</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">前端框架</div>
-        <div class="tech-name">Vue 3 + D3.js</div>
-        <div class="tech-note">力導向圖 · 互動式圖譜瀏覽</div>
-      </div>
-      <div class="tech-item">
-        <div class="tech-category">桌面端 AI 助手</div>
-        <div class="tech-name">龍蝦管家 LobsterAI</div>
-        <div class="tech-note">Skill 擴充 · 自動知識萃取</div>
-      </div>
-    </div>
-    <p style="text-align:center;font-size:0.6em;color:var(--accent);margin-top:10px;font-weight:500;">全部開源或自研技術，零外部服務依賴</p>
-  </section>
-
-  <section>
+<section>
+    <h2><span class="grad-blue">安全與隱私設計</span></h2><section>
     <h2><span class="grad-blue">安全與隱私設計</span></h2>
     <div class="grid-2 mt-1">
       <div class="glass-card">
@@ -1739,12 +1864,10 @@
     <div class="tip-box mt-1" style="text-align:center;">
       🛡️ 核心原則：員工的隱私與公司的資安，一個都不能少
     </div>
-  </section>
 </section>
 
 <!-- ====== SECTION 8: 規模化 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <!-- Animated orbs -->
     <div class="orb orb-blue" style="top:-60px;right:-60px;width:240px;height:240px;filter:blur(50px);"></div>
     <div class="orb orb-cyan" style="bottom:-40px;left:-40px;width:200px;height:200px;filter:blur(45px);"></div>
@@ -1760,36 +1883,31 @@
         <div class="section-desc">從 3 人 Demo 到全公司部署</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">規模化效能評估</span></h2>
-    <div class="grid-2 mt-1">
-      <div class="glass-card">
-        <div class="card-icon">⚡</div>
-        <div class="card-title">圖譜生成效能</div>
+    <div class="grid-2" style="gap:14px;margin-top:8px;">
+      <div class="glass-card" style="padding:14px 18px;">
+        <div class="card-title">⚡ 圖譜生成效能</div>
         <div class="card-desc">
-          graphify 使用 CPU，<strong>不吃 GPU 資源</strong><br><br>
-          ▸ 每人圖譜 3-5 秒<br>
-          ▸ 10 並發處理<br>
+          graphify 使用 CPU，<strong>不吃 GPU 資源</strong><br>
+          ▸ 每人圖譜 3-5 秒 · 10 並發處理<br>
           ▸ <strong style="color:var(--accent2);">2,000 人 ≈ 15-20 分鐘</strong><br>
           ▸ 每天凌晨<strong>增量更新</strong>，非全量重建
         </div>
       </div>
-      <div class="glass-card">
-        <div class="card-icon">💾</div>
-        <div class="card-title">儲存需求</div>
+      <div class="glass-card" style="padding:14px 18px;">
+        <div class="card-title">💾 儲存需求</div>
         <div class="card-desc">
-          <strong style="color:var(--accent2);">極低</strong> — 現有設備完全足夠<br><br>
+          <strong style="color:var(--accent2);">極低</strong> — 現有設備完全足夠<br>
           ▸ 60,000 節點 ≈ 50-100MB JSON<br>
-          ▸ 向量索引 ≈ 2-5GB<br>
-          ▸ Wiki 原始文件 ≈ 1-3GB<br>
+          ▸ 向量索引 ≈ 2-5GB · Wiki 原始 ≈ 1-3GB<br>
           ▸ NVIDIA Spark <strong>綽綽有餘</strong>
         </div>
       </div>
-      <div class="glass-card">
-        <div class="card-icon">🔍</div>
-        <div class="card-title">大圖譜瀏覽策略</div>
+      <div class="glass-card" style="padding:14px 18px;">
+        <div class="card-title">🔍 大圖譜瀏覽策略</div>
         <div class="card-desc">
           ▸ 預設看<strong>個人圖譜</strong>（幾十節點，秒開）<br>
           ▸ 部門圖譜<strong>按需載入</strong><br>
@@ -1797,24 +1915,19 @@
           ▸ God Nodes 儀表板<strong>摘要呈現</strong>
         </div>
       </div>
-      <div class="glass-card-gold">
-        <div class="card-icon">💰</div>
-        <div class="card-title">成本效益</div>
+      <div class="glass-card-gold" style="padding:14px 18px;">
+        <div class="card-title">💰 成本效益</div>
         <div class="card-desc">
-          已有 NVIDIA Spark GPU → <strong>無新增硬體成本</strong><br><br>
-          ▸ 全開源技術 = 零授權費<br>
-          ▸ 員工零學習曲線<br>
-          ▸ 知識傳承時間 <strong style="color:var(--gold);">-66%</strong><br>
-          ▸ 緊急故障應變 <strong style="color:var(--gold);">-50%</strong>
+          已有 NVIDIA Spark → <strong>無新增硬體成本</strong><br>
+          ▸ 全開源技術 = 零授權費 · 員工零學習曲線<br>
+          ▸ 知識傳承時間 <strong style="color:var(--gold);">-66%</strong> · 故障應變 <strong style="color:var(--gold);">-50%</strong>
         </div>
       </div>
     </div>
-  </section>
 </section>
 
 <!-- ====== SECTION 9: FAQ 常見問題 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <div class="orb orb-cyan" style="top:-60px;right:-60px;width:240px;height:240px;filter:blur(50px);"></div>
     <div class="orb orb-pink" style="bottom:-40px;left:-40px;width:200px;height:200px;filter:blur(45px);"></div>
 
@@ -1829,9 +1942,9 @@
         <div class="section-desc">員工疑慮・IT 資安・成本 ROI — 全部有答案</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">FAQ ①｜員工端疑慮</span></h2>
     <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
       <div class="glass-card" style="padding:14px 18px;">
@@ -1862,9 +1975,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">FAQ ②｜管理層 / IT 疑慮</span></h2>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
       <div class="glass-card" style="padding:12px 16px;">
@@ -1904,9 +2017,9 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">FAQ ③｜成本與 ROI</span></h2>
     <div class="grid-2 mt-1" style="gap:16px;">
       <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1952,12 +2065,10 @@
         </div>
       </div>
     </div>
-  </section>
 </section>
 
 <!-- ====== SECTION 10: 時程 ====== -->
-<section>
-  <section class="section-slide">
+<section class="section-slide">
     <div style="position:relative;z-index:1;">
       <div class="section-number">10</div>
       <div style="margin-top:80px;">
@@ -1969,55 +2080,10 @@
         <div class="section-desc">我們在哪裡，接下來做什麼</div>
       </div>
     </div>
-  </section>
+</section>
 
-  <section>
-    <h2><span class="grad-blue">Demo 執行計畫</span></h2>
-    <div class="timeline mt-1">
-      <div class="timeline-item">
-        <div class="timeline-phase done">Phase 0 ✓</div>
-        <div class="timeline-content">
-          <div class="timeline-title">模擬數據建立</div>
-          <div class="timeline-desc">3 位虛擬員工 × 15 篇 Wiki = 45 篇知識頁面，涵蓋機電、票務、站務管理</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-phase done">Phase 1 ✓</div>
-        <div class="timeline-content">
-          <div class="timeline-title">知識圖譜生成</div>
-          <div class="timeline-desc">個人 ×3 + 部門 ×1 + 公司 ×1 = 5 張圖譜，123 節點 / 303 關聯 / 7 社群，全繁中介面</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-phase done">Phase 2 ✓</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Web UI 開發（已完成）</div>
-          <div class="timeline-desc">Vue3 + D3.js 力導向圖 + AI 問答 · 知識儀表板 · 圖譜瀏覽器 · 員工檔案 — 線上可 Demo</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-phase done">Phase 3 ✓</div>
-        <div class="timeline-content">
-          <div class="timeline-title">龍蝦對話 Demo 素材</div>
-          <div class="timeline-desc">模擬員工日常使用 AI 助手的完整對話場景，展示知識萃取全過程 — 素材齊備</div>
-        </div>
-      </div>
-    </div>
-    <div class="grid-2 mt-1">
-      <div class="glass-card-gold" style="text-align:center;padding:14px 20px;">
-        <div style="font-size:0.6em;color:var(--gold);font-weight:600;">Demo 環境</div>
-        <div style="font-size:0.85em;font-weight:700;color:var(--text);margin-top:4px;">線上可立即存取</div>
-        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">正式上線後轉移至 KRTC 內網</div>
-      </div>
-      <div class="glass-card-gold" style="text-align:center;padding:14px 20px;">
-        <div style="font-size:0.6em;color:var(--gold);font-weight:600;">現狀</div>
-        <div style="font-size:0.85em;font-weight:700;color:var(--green);margin-top:4px;">全部階段完成 ✓</div>
-        <div style="font-size:0.6em;color:var(--muted);margin-top:4px;">完整可互動 Demo，隨時可展示</div>
-      </div>
-    </div>
-  </section>
 
-  <section>
+<section>
     <h2><span class="grad-blue">正式導入規劃</span></h2>
     <div class="grid-2 mt-1">
       <div class="glass-card">
@@ -2048,7 +2114,6 @@
         <strong style="color:var(--gold);">讓高雄捷運成為全台最具知識管理能力的公共運輸機構</strong>
       </div>
     </div>
-  </section>
 </section>
 
 <!-- ====== ENDING ====== -->
@@ -2087,21 +2152,75 @@
 </div>
 </div>
 
+<!-- Fullscreen Button -->
+<style>
+  #fullscreen-btn {
+    position: fixed;
+    bottom: 50px;
+    right: 18px;
+    z-index: 9999;
+    background: rgba(14,165,233,0.15);
+    border: 1px solid rgba(79,195,247,0.35);
+    color: #4fc3f7;
+    border-radius: 8px;
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    transition: background 0.2s, border-color 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  #fullscreen-btn:hover { background: rgba(14,165,233,0.3); border-color: rgba(79,195,247,0.7); }
+</style>
+<button id="fullscreen-btn" title="全屏展示 (F)">⛶</button>
+
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/zoom/zoom.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-menu@2/menu.css">
+<script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2/menu.js"></script>
 <script>
   Reveal.initialize({
     hash: true,
-    width: 1180,
-    height: 660,
-    margin: 0.06,
-    plugins: [RevealHighlight],
+    width: 960,
+    height: 540,
+    margin: 0.04,
+    center: true,
+    plugins: [RevealHighlight, RevealZoom, RevealMenu],
     transition: 'slide',
     backgroundTransition: 'fade',
     slideNumber: 'c/t',
     autoAnimateEasing: 'ease-out',
     autoAnimateDuration: 0.6,
+    overview: true,
+    menu: {
+      side: 'left',
+      width: 'normal',
+      numbers: true,
+      titleSelector: 'h1, h2, .section-title',
+      useTextContentForMissingTitles: true,
+      transitions: true,
+      openButton: true,
+      openSlideNumber: false,
+      themes: false,
+      custom: false,
+    },
   });
+
+  // Fullscreen button
+  const fsBtn = document.getElementById('fullscreen-btn');
+  function updateFsIcon() {
+    fsBtn.textContent = document.fullscreenElement ? '✕' : '⛶';
+    fsBtn.title = document.fullscreenElement ? '退出全屏 (Esc)' : '全屏展示 (F)';
+  }
+  fsBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener('fullscreenchange', updateFsIcon);
 </script>
 </body>
 </html>
