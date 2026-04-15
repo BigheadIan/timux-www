@@ -105,7 +105,7 @@
 <header>
     <h1>OpenClaw + Claude Bridge<br>完整安裝指南</h1>
     <p class="subtitle">讓 OpenClaw 透過 Claude Code CLI 使用 Max 訂閱（免費），並優化 Context 利用率</p>
-    <span class="badge">2026-04-07 | by 頭頭 + Claude</span>
+    <span class="badge">2026-04-07 初版 | 2026-04-15 更新 | by 頭頭 + Claude</span>
 </header>
 
 <!-- 成果 -->
@@ -127,6 +127,14 @@
     <div class="stat-item">
         <div class="number">3 層</div>
         <div class="label">自動防護<br>自檢 + 告警 + 壓縮</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">-43%</div>
+        <div class="label">Workspace 瘦身<br>5.3K → 3K tokens/turn</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">Auto</div>
+        <div class="label">記憶維護<br>Heartbeat 自動整理</div>
     </div>
 </div>
 
@@ -163,6 +171,7 @@
         <li><a href="#session-cleanup">五、清除污染 Session（400 錯誤處理）</a></li>
         <li><a href="#dashboard">六、Dashboard</a></li>
         <li><a href="#anti-detection">七、Bridge 反偵測原理</a></li>
+        <li><a href="#workspace-arch">八、Workspace 記憶架構</a></li>
         <li><a href="#notes">注意事項</a></li>
     </ol>
 </div>
@@ -527,6 +536,184 @@ claude sessions list
     <strong>結論：</strong>三層策略各負責繞過對應的一層偵測。Random Alias 對付關鍵字、Stdin Prepend 對付參數掃描、Cache-Optimized Split 在安全的前提下保留效能。三者協同才能穩定、高效地運行。
 </div>
 
+<!-- 八、Workspace 記憶架構 -->
+<h2 id="workspace-arch">八、Workspace 記憶架構</h2>
+
+<p>OpenClaw 的 workspace 檔案系統是 AI 跨 session 的持久記憶。每次 session 開始時自動載入，確保上下文連貫。</p>
+
+<h3>檔案結構</h3>
+
+<div class="card">
+    <h3>核心檔案（每次 session 載入）</h3>
+    <span class="tag">自動注入</span>
+    <span class="tag metric">有大小預算</span>
+    <table class="priority-table" style="margin-top: 0.8rem;">
+        <thead>
+            <tr>
+                <th>檔案</th>
+                <th>用途</th>
+                <th>預算</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>WORKLOG.md</code></td>
+                <td>🔥 任務狀態追蹤（最高優先級）</td>
+                <td>&lt; 2K chars</td>
+            </tr>
+            <tr>
+                <td><code>MEMORY.md</code></td>
+                <td>🧠 核心記憶 + 專案索引</td>
+                <td>&lt; 3K chars</td>
+            </tr>
+            <tr>
+                <td><code>CONTEXT.md</code></td>
+                <td>🔧 技術備忘（API Key、SSH、Cloudflare）</td>
+                <td>&lt; 5K chars</td>
+            </tr>
+            <tr>
+                <td><code>AGENTS.md</code></td>
+                <td>📋 Workspace 規則 + 任務分流</td>
+                <td>盡量精簡</td>
+            </tr>
+            <tr>
+                <td><code>SOUL.md</code> / <code>USER.md</code></td>
+                <td>🎭 AI 人設 + 用戶資訊</td>
+                <td>各 &lt; 500 chars</td>
+            </tr>
+            <tr>
+                <td><code>TOOLS.md</code></td>
+                <td>🛠️ 本地工具特殊設定</td>
+                <td>盡量精簡</td>
+            </tr>
+            <tr>
+                <td><code>HEARTBEAT.md</code></td>
+                <td>💓 定期健康檢查清單</td>
+                <td>盡量精簡</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>按需載入（提到才讀）</h3>
+    <span class="tag source">不佔啟動 context</span>
+    <ul style="margin-top: 0.8rem;">
+        <li><code>memory/projects/*.md</code> — 各專案獨立記憶（開發狀態、架構、已知問題）</li>
+        <li><code>memory/projects/lessons/*.md</code> — 踩坑記錄（🔴高/🟡中/🟢低信心等級）</li>
+        <li><code>memory/YYYY-MM-DD.md</code> — 每日工作日誌</li>
+        <li><code>memory/wiki/</code> — 知識圖譜（graphify 產出）</li>
+        <li><code>memory/references/</code> — 參考資料（頻道 ID、團隊流程等）</li>
+        <li><code>skills/</code> — 自定義技能（cloudflare-dns、gcp-deploy、nestjs-api 等）</li>
+    </ul>
+</div>
+
+<h3>自動維護機制</h3>
+
+<div class="card">
+    <h3>Heartbeat 自檢</h3>
+    <span class="tag metric">每次 heartbeat 觸發</span>
+    <p style="margin-top: 0.8rem;">每次 heartbeat 自動檢查核心檔案大小，超過預算立即壓縮：</p>
+    <ul style="margin-top: 0.5rem;">
+        <li><code>WORKLOG.md</code> 超標 → Done 項目歸檔到 daily note</li>
+        <li><code>MEMORY.md</code> 超標 → 合併重複教訓、移除過時資訊</li>
+        <li><code>CONTEXT.md</code> 超標 → 不活躍專案 context 移到 <code>projects/*.md</code></li>
+        <li>Daily notes 超過 7 天 → 精煉有價值的到 <code>MEMORY.md</code>，刪除原檔</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Compaction 鐵律（Session 壓縮前必做）</h3>
+    <span class="tag warn">不可跳過</span>
+    <ol style="margin-top: 0.8rem;">
+        <li>當前進度 → 對應 <code>memory/projects/*.md</code></li>
+        <li>新踩的坑 → 對應 <code>memory/projects/lessons/*.md</code></li>
+        <li>更新 <code>WORKLOG.md</code> 任務狀態</li>
+        <li>當天事件 → <code>memory/YYYY-MM-DD.md</code></li>
+    </ol>
+    <div class="insight-box" style="margin-top: 0.8rem;">
+        <strong>設計理念：</strong>AI 每次 session 都是重新開始，workspace 檔案是唯一的跨 session 記憶。壓縮前存檔 = 確保記憶不丟失。
+    </div>
+</div>
+
+<h3>任務分流（三層架構）</h3>
+
+<div class="card">
+    <h3>Task Routing</h3>
+    <table class="priority-table" style="margin-top: 0.8rem;">
+        <thead>
+            <tr>
+                <th>層級</th>
+                <th>模型</th>
+                <th>職責</th>
+                <th>目標用量</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Tier 1</strong></td>
+                <td>Opus（主腦）</td>
+                <td>決策諮詢、架構設計、跨專案協調、客戶審核</td>
+                <td>≤ 40%</td>
+            </tr>
+            <tr>
+                <td><strong>Tier 2</strong></td>
+                <td>Sonnet（執行）</td>
+                <td>功能開發、Bug 修復、測試、文檔、部署</td>
+                <td>≥ 50%</td>
+            </tr>
+            <tr>
+                <td><strong>Tier 3</strong></td>
+                <td>Isolated</td>
+                <td>定時任務、長時間 build/test、批量處理</td>
+                <td>背景執行</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h3>2026-04-15 瘦身優化成果</h3>
+
+<div class="card">
+    <h3>Workspace 檔案壓縮</h3>
+    <span class="tag metric">每輪省 ~2,000 tokens</span>
+    <table class="priority-table" style="margin-top: 0.8rem;">
+        <thead>
+            <tr>
+                <th>檔案</th>
+                <th>Before</th>
+                <th>After</th>
+                <th>節省</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>TOOLS.md</code></td>
+                <td>3,851 B</td>
+                <td>1,423 B</td>
+                <td><span class="highlight">-63%</span></td>
+            </tr>
+            <tr>
+                <td><code>CONTEXT.md</code></td>
+                <td>4,900 B</td>
+                <td>709 B</td>
+                <td><span class="highlight">-86%</span></td>
+            </tr>
+            <tr>
+                <td><code>AGENTS.md</code> Task Routing</td>
+                <td>~40 行</td>
+                <td>8 行</td>
+                <td><span class="highlight">~80%</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="insight-box" style="margin-top: 0.8rem;">
+        <strong>效果：</strong>Workspace 開銷從 ~5,300 tokens/turn 降至 ~3,000 tokens/turn，節省 ~43%。<br>
+        <strong>方法：</strong>移除模板、合併重複、敏感資料移至環境變數、不活躍 context 移到專案記憶。<br>
+        <strong>核心原則：</strong>每一行都必須 justify 它佔的 token — 不活躍的資訊不該每輪都載入。
+    </div>
+</div>
+
 <!-- 注意事項 -->
 <h2 id="notes">注意事項</h2>
 
@@ -543,7 +730,7 @@ claude sessions list
 <footer>
     <p>時光智造 Timux &mdash; 智造交給 AI，時光留給所愛</p>
     <p><a href="https://www.timux.site">www.timux.site</a></p>
-    <p style="margin-top: 0.5rem; font-size: 0.8rem;">指南發布時間：2026年4月7日</p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">指南發布：2026年4月7日 | 最後更新：2026年4月15日</p>
 </footer>
 
 </div>
