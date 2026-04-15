@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NDPR2LSFQ3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>為什麼 AI 總是說好話？三個方法讓 AI 對你說真話 | 時光智造 Timux</title>
+    <meta name="description" content="大部分人覺得 AI 太迎合、不敢反駁。本文分享三個關鍵方法，讓 AI 從「討好你」變成「幫助你」。">
+    <meta property="og:title" content="為什麼 AI 總是說好話？三個方法讓 AI 對你說真話">
+    <meta property="og:description" content="大部分人覺得 AI 太迎合、不敢反駁。本文分享三個實戰方法，讓 AI 從「討好你」變成「幫助你」。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.timux.site/share/ai-sycophancy-guide.html">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-code: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-heading: #f8fafc;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #fb923c;
+            --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--text-heading);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        header .meta {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        header .meta a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        header .meta a:hover { text-decoration: underline; }
+        h2 {
+            font-size: 1.4rem;
+            color: var(--text-heading);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        h3 {
+            font-size: 1.1rem;
+            color: var(--primary-light);
+            margin: 1.8rem 0 0.8rem;
+        }
+        p { margin-bottom: 1rem; }
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.2rem 0;
+            border: 1px solid var(--border);
+        }
+        .card.highlight {
+            border-left: 4px solid var(--primary);
+        }
+        .card.warning {
+            border-left: 4px solid var(--accent-yellow);
+        }
+        .card.danger {
+            border-left: 4px solid var(--accent-red);
+        }
+        .card.success {
+            border-left: 4px solid var(--accent-green);
+        }
+        blockquote {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            color: var(--text);
+        }
+        code {
+            background: var(--bg-code);
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        pre {
+            background: var(--bg-code);
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        .emoji-label {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+        @media (max-width: 600px) {
+            .comparison { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.4rem; }
+        }
+        .percentage-bar {
+            background: var(--bg-code);
+            border-radius: 8px;
+            height: 24px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+        .percentage-fill {
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .tip-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .footer a { color: var(--primary-light); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        .tag {
+            display: inline-block;
+            background: var(--bg-code);
+            color: var(--primary-light);
+            padding: 0.2em 0.6em;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0.2em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>為什麼 AI 總是說好話？</h1>
+    <p class="subtitle">三個方法讓 AI 從「討好你」變成「幫助你」</p>
+    <p class="meta">
+        作者：黃昱仁 · <a href="https://www.timux.site">時光智造 Timux</a> · 2026-04-15
+    </p>
+</header>
+
+<h2>問題：AI 的「好好先生」症候群</h2>
+
+<p>你有沒有這種經驗？</p>
+
+<div class="comparison">
+    <div class="card danger">
+        <strong>你：</strong>「我打算用 Excel 管理 500 人的客戶資料庫，你覺得怎麼樣？」<br><br>
+        <strong>普通 AI：</strong>「太棒了！Excel 是一個非常好的選擇！您可以利用 VLOOKUP 和樞紐分析表來...」
+    </div>
+    <div class="card success">
+        <strong>你：</strong> 同樣的問題<br><br>
+        <strong>調教過的 AI：</strong>「500 人的話 Excel 勉強可以，但超過後會很痛苦。建議直接用 Airtable 或 Notion 資料庫，未來擴展不用重建。」
+    </div>
+</div>
+
+<p>左邊的回應在<b>討好你</b>，右邊的在<b>幫助你</b>。</p>
+
+<p>這個現象叫做 <strong>Sycophancy（諂媚）</strong>——AI 預設傾向同意你、誇獎你、不反駁你。不是 AI 故意的，而是它在訓練過程中學到「順著用戶說 = 用戶開心 = 好評」。</p>
+
+<h2>為什麼會這樣？</h2>
+
+<div class="card highlight">
+    <p>AI 模型在訓練時被大量「人類偏好」數據影響。而人類有個本能：<strong>喜歡被認同</strong>。</p>
+    <p>所以模型學到了一個潛規則：「<em>同意用戶 = 高分，反駁用戶 = 低分</em>」。</p>
+    <p>結果就是，沒有額外引導的情況下，AI 會選擇最「安全」的回應方式——說好話。</p>
+</div>
+
+<h2>三個改變遊戲規則的方法</h2>
+
+<h3><span class="tip-number">1</span> 一句話破解：直接告訴 AI「別迎合我」</h3>
+
+<p>最簡單，也最有效。在對話開頭加上這一句：</p>
+
+<pre><code>不要迎合我，不要說好話，直接給你的真實判斷。
+如果我的想法有問題就直說。</code></pre>
+
+<p>光這一句就能改善 <strong>70%</strong> 的諂媚問題。</p>
+
+<div class="percentage-bar">
+    <div class="percentage-fill" style="width: 70%; background: var(--accent-green);">70% 改善</div>
+</div>
+
+<p>為什麼有效？因為 AI 的行為很大程度受「指令」驅動。當你明確告訴它「不要迎合」，它就會切換到另一種回應模式。</p>
+
+<h3><span class="tip-number">2</span> 中級技巧：定義角色關係</h3>
+
+<p>不要讓 AI 當你的「助手」，讓它當你的「同事」或「顧問」。</p>
+
+<div class="comparison">
+    <div class="card danger">
+        <strong>助手模式</strong><br>
+        「你是一個樂於助人的 AI 助手」<br>
+        <span style="color: var(--accent-red);">→ 服務、討好、不頂嘴</span>
+    </div>
+    <div class="card success">
+        <strong>同事模式</strong><br>
+        「你是團隊裡的資深技術顧問」<br>
+        <span style="color: var(--accent-green);">→ 專業、直接、該說不就說不</span>
+    </div>
+</div>
+
+<p>角色定位會深刻影響 AI 的行為模式。「助手」暗示服從，「同事」暗示平等對話。</p>
+
+<h3><span class="tip-number">3</span> 進階做法：建立完整互動框架</h3>
+
+<p>如果你經常使用 AI（例如透過 API 或自建系統），可以建立一套完整的「人設框架」：</p>
+
+<div class="card highlight">
+    <p><strong>四個核心模組：</strong></p>
+    <p>① <strong>身份設定</strong> — AI 是誰、怎麼說話、什麼語氣<br>
+    ② <strong>用戶設定</strong> — 跟誰說話、對方的背景和偏好<br>
+    ③ <strong>真誠原則</strong> — 不確定就說不確定、錯了就認錯、不辯解<br>
+    ④ <strong>行為禁令</strong> — 不說廢話、不迎合、要有自己的觀點</p>
+</div>
+
+<p>實際案例——我們團隊的 AI 助手設定中有這幾條規則：</p>
+
+<pre><code># 真誠原則
+- 不確定的事標注「⚠️ 未驗證」
+- 寧可說「我不確定」也不要編答案
+- 被指出錯誤直接修正，不辯解
+- 把確定的、大概率對的、猜測的分開說
+
+# 互動風格
+- 直接幫忙，不說「Great question!」之類的廢話
+- 有自己的觀點和偏好</code></pre>
+
+<p>效果？我們的 AI 會在你提出不靠譜方案時直接說「不建議」，分析完還會告訴你哪些是確定的、哪些是猜測的。</p>
+
+<h2>背後的原理</h2>
+
+<p>這三個方法對應三個不同層面的影響力：</p>
+
+<div class="card">
+    <p><strong>「別迎合我」指令</strong>（覆蓋預設行為）</p>
+    <div class="percentage-bar">
+        <div class="percentage-fill" style="width: 40%; background: var(--primary);">40%</div>
+    </div>
+    <p><strong>角色定位</strong>（改變互動框架）</p>
+    <div class="percentage-bar">
+        <div class="percentage-fill" style="width: 30%; background: var(--accent-green);">30%</div>
+    </div>
+    <p><strong>模型本身的進步</strong>（基礎能力）</p>
+    <div class="percentage-bar">
+        <div class="percentage-fill" style="width: 30%; background: var(--accent-yellow);">30%</div>
+    </div>
+</div>
+
+<p>好消息是，隨著模型迭代（Claude 4、GPT-5 等），AI 本身的「反諂媚」能力在持續提升。但<strong>如果你不主動引導，這些能力不會自動發揮到最大</strong>。</p>
+
+<h2>一個思維轉換</h2>
+
+<div class="card warning">
+    <p>大部分人跟 AI 互動是「裸聊」——打開對話框就直接問問題。</p>
+    <p>這就像走進一家公司，隨便拉了個人就問：「這個項目怎麼做？」</p>
+    <p>對方不知道你是誰、不知道你的背景、不知道你想要什麼程度的回答，只能用最安全的方式回應——<strong>說好話，不得罪人</strong>。</p>
+</div>
+
+<p>但如果你花 30 秒告訴 AI：</p>
+<blockquote>
+    我是做 XX 的，有 YY 年經驗，我需要你的真實意見而不是迎合。
+</blockquote>
+
+<p>你就會得到完全不一樣的互動品質。</p>
+
+<p>這不只是「提示詞工程」的問題，而是——</p>
+
+<div class="card success" style="text-align: center; font-size: 1.1rem;">
+    <strong>你怎麼定義你和 AI 的關係，決定了 AI 怎麼對你。</strong>
+</div>
+
+<h2>現在就試試</h2>
+
+<p>下次跟 AI 對話時，在開頭加上這段：</p>
+
+<pre><code>規則：
+1. 不要迎合我，給真實判斷
+2. 不確定的事就說不確定
+3. 如果我的想法有問題，直接指出
+4. 不要說「Great question」之類的客套話</code></pre>
+
+<p>然後問它一個你已經有預設立場的問題，看它會不會順著你說。</p>
+
+<p>如果它開始反駁你了——恭喜，你剛把一個「好好先生」變成了真正的「AI 顧問」。</p>
+
+<div class="footer">
+    <p>
+        <span class="tag">prompt-engineering</span>
+        <span class="tag">AI 互動</span>
+        <span class="tag">反諂媚</span>
+    </p>
+    <p style="margin-top: 1rem;">
+        <a href="https://www.timux.site">時光智造 Timux</a> · 智造交給 AI，時光留給所愛
+    </p>
+</div>
+
+</div>
+</body>
+</html>
