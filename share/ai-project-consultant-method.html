@@ -84,6 +84,34 @@
     .footer-note { position:absolute; bottom:22px; left:0; right:0; text-align:center; color:var(--muted); font-size:.30em; }
     .reveal pre { width:100%; font-size:.36em; box-shadow:none; }
     .reveal code { border-radius:14px; }
+
+    .diagram-board { position:relative; min-height:380px; margin-top:18px; }
+    .bubble { position:absolute; border-radius:22px; padding:16px 18px; background:white; border:1px solid var(--line); box-shadow:0 16px 36px rgba(15,23,42,.08); }
+    .bubble h3 { font-size:.58em; margin:0 0 6px; }
+    .bubble p { font-size:.36em; margin:0; color:#475569; }
+    .bubble.main { left:38%; top:36%; width:260px; text-align:center; border-color:#93c5fd; background:#eff6ff; }
+    .bubble.a { left:2%; top:6%; width:245px; }
+    .bubble.b { right:3%; top:6%; width:245px; }
+    .bubble.c { left:6%; bottom:4%; width:250px; }
+    .bubble.d { right:8%; bottom:4%; width:255px; }
+    .connector { position:absolute; height:2px; background:linear-gradient(90deg,#93c5fd,#cbd5e1); transform-origin:left center; opacity:.9; }
+    .matrix { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:18px; }
+    .matrix .cell { min-height:150px; border-radius:20px; padding:18px; border:1px solid var(--line); background:white; box-shadow:0 12px 28px rgba(15,23,42,.06); }
+    .cell h3 { font-size:.62em; }
+    .cell .tag { display:inline-block; font-size:.28em; font-weight:900; padding:5px 9px; border-radius:999px; margin-bottom:9px; background:#eef5ff; color:#1d4ed8; }
+    .swimlane { display:grid; grid-template-columns:140px repeat(4,1fr); border:1px solid var(--line); border-radius:20px; overflow:hidden; margin-top:18px; background:white; box-shadow:0 14px 34px rgba(15,23,42,.06); }
+    .swimlane div { padding:14px 12px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); font-size:.36em; color:#334155; }
+    .swimlane .head { background:#0f172a; color:white; font-weight:900; }
+    .swimlane .role { background:#eff6ff; color:#1d4ed8; font-weight:900; }
+    .map { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-top:18px; }
+    .map-card { background:white; border:1px solid var(--line); border-radius:18px; padding:16px; min-height:170px; box-shadow:0 12px 28px rgba(15,23,42,.06); }
+    .map-card .icon { font-size:1.05em; margin-bottom:8px; display:block; }
+    .map-card h3 { font-size:.52em; }
+    .map-card p { font-size:.34em; }
+    .case-card { background:linear-gradient(135deg,#ffffff,#f8fbff); border:1px solid #bfdbfe; border-radius:22px; padding:22px; box-shadow:0 18px 42px rgba(37,99,235,.10); }
+    .case-card h3 { color:#1d4ed8; }
+    .prompt-box { margin-top:16px; padding:16px 18px; border-radius:18px; background:#f8fafc; border:1px dashed #94a3b8; }
+    .prompt-box p { font-size:.40em; margin:.25em 0; }
   </style>
 </head>
 <body>
@@ -109,14 +137,15 @@
   </section>
 
   <section>
-    <div class="eyebrow">30 分钟精简版课程</div>
-    <h2>时间压缩到原方案约三分之一</h2>
-    <div class="timeline">
-      <div class="timeline-row"><div class="phase">5 min</div><div class="desc">心法：AI 不是许愿池，是需要管理的执行团队。</div></div>
-      <div class="timeline-row"><div class="phase">5 min</div><div class="desc">互动 1：模糊需求 → 访谈问题。</div></div>
-      <div class="timeline-row"><div class="phase">8 min</div><div class="desc">方法：需求探索、MVP 切片、项目母版复用。</div></div>
-      <div class="timeline-row"><div class="phase">7 min</div><div class="desc">互动 2：交代 AI 规划 MVP，并纠正错误方向。</div></div>
-      <div class="timeline-row"><div class="phase">5 min</div><div class="desc">稳定交付 SOP：本地测试、发布上线、复盘沉淀。</div></div>
+    <div class="eyebrow">课程大纲</div>
+    <h2>从“会用 AI”到“会带 AI 做项目”</h2>
+    <div class="grid-3">
+      <div class="mini-card"><span class="number">01</span><h3>顾问心法</h3><p>先听业务现场，别急着卖系统；把 AI 当执行团队管理。</p></div>
+      <div class="mini-card"><span class="number">02</span><h3>需求探索</h3><p>用结构化问题拆出业务轮廓、痛点排序和 Demo 切入点。</p></div>
+      <div class="mini-card"><span class="number">03</span><h3>MVP 切片</h3><p>从功能清单里选出“第一版最有感”的一段流程。</p></div>
+      <div class="mini-card"><span class="number">04</span><h3>AI 交代法</h3><p>背景、目标、约束、参考案例、交付格式、验收标准一次讲清。</p></div>
+      <div class="mini-card"><span class="number">05</span><h3>现场练习</h3><p>美伽职业学院、谷品生活 Gooduct Lab 两个案例现场演练。</p></div>
+      <div class="mini-card"><span class="number">06</span><h3>稳定交付</h3><p>产品架构 → 代码仓库 → 本地测试 → 发布上线 → 复盘沉淀。</p></div>
     </div>
   </section>
 
@@ -141,6 +170,19 @@
   </section>
 
   <section>
+    <div class="eyebrow">解释图｜访谈问题地图</div>
+    <h2>参考吊杆车访谈稿：问题要沿着业务链路问</h2>
+    <div class="map">
+      <div class="map-card"><span class="icon">🏢</span><h3>业务轮廓</h3><p>规模、客户、岗位、月单量、竞争优势。</p></div>
+      <div class="map-card"><span class="icon">🔧</span><h3>作业流程</h3><p>从接单、诊断、维修、验收到交付，每一步谁负责。</p></div>
+      <div class="map-card"><span class="icon">📍</span><h3>进度追踪</h3><p>状态怎么同步？客户怎么问？卡在哪一环？</p></div>
+      <div class="map-card"><span class="icon">📦</span><h3>库存/数据</h3><p>有没有账实不符、缺料、重复录入、资料散落。</p></div>
+      <div class="map-card"><span class="icon">💰</span><h3>报价/收款</h3><p>谁报价？怎么对账？哪里会漏单、低报、催款。</p></div>
+    </div>
+    <p class="muted small">重点：不是背问题清单，而是顺着“真实业务链路”一步步找痛点。</p>
+  </section>
+
+  <section>
     <div class="eyebrow">课堂互动 1</div>
     <h2>模糊需求 → 访谈问题</h2>
     <div class="card exercise">
@@ -157,13 +199,27 @@
   <section>
     <div class="eyebrow">方法 02</div>
     <h2>产品切片：先打最痛的一段流程</h2>
-    <div class="flow">
-      <div class="step">现场痛点</div><div class="arrow">→</div>
-      <div class="step">最短 Demo</div><div class="arrow">→</div>
-      <div class="step">MVP</div><div class="arrow">→</div>
-      <div class="step">后续扩展</div>
+    <div class="diagram-board">
+      <div class="connector" style="left:245px;top:115px;width:285px;transform:rotate(22deg)"></div>
+      <div class="connector" style="left:740px;top:128px;width:250px;transform:rotate(155deg)"></div>
+      <div class="connector" style="left:260px;top:310px;width:300px;transform:rotate(-18deg)"></div>
+      <div class="connector" style="left:725px;top:320px;width:290px;transform:rotate(205deg)"></div>
+      <div class="bubble main"><h3>第一版 MVP</h3><p>只做最能让客户“哇”的闭环</p></div>
+      <div class="bubble a"><h3>① 真实痛点</h3><p>最耗时、最常错、老板最痛。</p></div>
+      <div class="bubble b"><h3>② 数据来源</h3><p>纸质单据、照片、Excel、系统导出。</p></div>
+      <div class="bubble c"><h3>③ 最短 Demo</h3><p>一条能跑通、能现场演示的路径。</p></div>
+      <div class="bubble d"><h3>④ 后续扩展</h3><p>库存、报表、KPI 等放第二阶段。</p></div>
     </div>
-    <div class="card" style="margin-top:26px;"><p><strong>PoC 不是完整系统。</strong>PoC 是让客户一眼看出：“你懂我的业务，也能解决我的痛点”。</p></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">解释图｜MVP 取舍矩阵</div>
+    <h2>不是功能越多越好，而是第一版越准越好</h2>
+    <div class="matrix">
+      <div class="cell good"><span class="tag">第一版必做</span><h3>高痛点 × 高可展示</h3><p>能在 Demo 里跑通，客户马上懂价值。</p><p class="small">例：拍照工单 → AI 识别 → 客户版报价。</p></div>
+      <div class="cell warn"><span class="tag">第二版增强</span><h3>有价值 × 但链路较长</h3><p>等第一版稳定后，再补看板、库存、报表。</p><p class="small">例：低库存预警、自动采购草稿。</p></div>
+      <div class="cell bad"><span class="tag">先不做</span><h3>听起来完整 × 但不影响 Demo</h3><p>先记录，不要拖慢第一版上线。</p><p class="small">例：复杂 KPI、全面条码体系。</p></div>
+    </div>
   </section>
 
   <section>
@@ -219,6 +275,17 @@
       <div class="step">约束</div><div class="arrow">→</div>
       <div class="step">交付格式</div><div class="arrow">→</div>
       <div class="step">验收标准</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">解释图｜从一句话到可执行任务</div>
+    <h2>AI 沟通不是“命令”，是“补齐上下文”</h2>
+    <div class="swimlane">
+      <div class="head">层级</div><div class="head">客户原话</div><div class="head">顾问翻译</div><div class="head">交代 AI</div><div class="head">验收标准</div>
+      <div class="role">需求</div><div>我们想数字化</div><div>哪个流程最痛？谁最常用？</div><div>先整理访谈问题</div><div>问题可拿去现场问</div>
+      <div class="role">产品</div><div>功能都想要</div><div>先切 MVP，再排二期</div><div>输出模块/流程/数据表</div><div>能解释为什么取舍</div>
+      <div class="role">开发</div><div>尽快做出来</div><div>按 DB→API→前端推进</div><div>每层 build/测试</div><div>线上真实流程跑通</div>
     </div>
   </section>
 
@@ -300,14 +367,11 @@
   <section>
     <div class="eyebrow">稳定产品开发 SOP</div>
     <h2>AI 能加速，但不能跳过工程纪律</h2>
-    <div class="flow">
-      <div class="step">产品架构</div><div class="arrow">→</div>
-      <div class="step">代码仓库</div><div class="arrow">→</div>
-      <div class="step">本地开发</div><div class="arrow">→</div>
-      <div class="step">本地测试</div><div class="arrow">→</div>
-      <div class="step">发布上线</div><div class="arrow">→</div>
-      <div class="step">线上验证</div><div class="arrow">→</div>
-      <div class="step">复盘沉淀</div>
+    <div class="swimlane">
+      <div class="head">阶段</div><div class="head">先产出</div><div class="head">再开发</div><div class="head">验证方式</div><div class="head">沉淀物</div>
+      <div class="role">架构</div><div>角色/流程/边界</div><div>数据模型草案</div><div>客户能确认</div><div>方案文档</div>
+      <div class="role">本地</div><div>代码仓库</div><div>DB → API → 页面</div><div>build / curl / 浏览器</div><div>commit</div>
+      <div class="role">上线</div><div>部署清单</div><div>发布服务</div><div>线上 200 + 手机实测</div><div>复盘记录</div>
     </div>
   </section>
 
@@ -354,6 +418,43 @@ DB Schema
     <div class="grid-2">
       <div class="mini-card"><h3>上线前</h3><ul><li>Git 状态干净</li><li>本地 build 通过</li><li>接口测试通过</li><li>关键页面实测</li></ul></div>
       <div class="mini-card"><h3>上线后</h3><ul><li>服务状态正常</li><li>核心 API 200</li><li>浏览器打开新版</li><li>手机端入口跑通</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">现场练习 A｜美伽职业学院</div>
+    <h2>请把“招生与教学管理”拆成访谈问题</h2>
+    <div class="case-card">
+      <h3>情境设定</h3>
+      <p>美伽职业学院想导入 AI，提高招生转化、学员服务和教务管理效率。校方说“想做 AI 咨询/课程/管理系统”，但具体痛点还不清楚。</p>
+      <div class="prompt-box">
+        <p><strong>练习任务：</strong>请交代 AI 产出一份 6 分钟可用的访谈提纲。</p>
+        <p><strong>必须覆盖：</strong>招生来源、咨询话术、报名转化、课程排班、学员跟进、就业/证书、老师工作量。</p>
+        <p><strong>输出格式：</strong>按“必问 / 建议 / 补充”分层，并标出可能的 Demo 切入点。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">现场练习 B｜谷品生活 Gooduct Lab</div>
+    <h2>请把“生活品牌运营”拆成 AI 项目机会</h2>
+    <div class="case-card">
+      <h3>情境设定</h3>
+      <p>谷品生活 Gooduct Lab 做生活方式/选品/内容与社群运营，希望用 AI 提高内容产出、选品决策、客户互动和复购运营效率。</p>
+      <div class="prompt-box">
+        <p><strong>练习任务：</strong>请交代 AI 先做需求探索，不要直接设计系统。</p>
+        <p><strong>必须覆盖：</strong>选品流程、内容生产、渠道分发、用户画像、订单/库存、社群互动、复购与会员。</p>
+        <p><strong>输出格式：</strong>痛点排序 + MVP 切入建议 + 一条能现场演示的 Demo 路径。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">现场练习｜分组产出</div>
+    <h2>每组只交一个“可执行 AI 指令”</h2>
+    <div class="grid-2">
+      <div class="mini-card good"><span class="label good-label">合格输出</span><h3>能直接复制给 AI</h3><p>包含背景、目标、问题分层、输出格式、不要做什么、验收标准。</p></div>
+      <div class="mini-card warn"><span class="label warn-label">现场点评</span><h3>看三件事</h3><p>有没有问到真实业务链路？有没有找最痛流程？有没有避免“一上来做大系统”？</p></div>
     </div>
   </section>
 
