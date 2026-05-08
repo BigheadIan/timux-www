@@ -1,547 +1,406 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI 專案顧問方法論｜時光智造內部 SOP</title>
+  <title>AI 项目顾问方法论｜时光智造内部 SOP</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
     :root {
-      --bg: #070b1a;
-      --panel: rgba(15, 23, 42, 0.78);
-      --line: rgba(148, 163, 184, 0.22);
-      --cyan: #06b6d4;
-      --blue: #3b82f6;
-      --purple: #8b5cf6;
-      --green: #22c55e;
-      --yellow: #facc15;
-      --red: #fb7185;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --navy: #0f172a;
+      --navy-2: #111827;
+      --blue: #2563eb;
+      --blue-2: #1d4ed8;
+      --cyan: #0891b2;
+      --slate: #475569;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --bg: #f6f8fb;
+      --card: rgba(255,255,255,.94);
+      --green: #059669;
+      --amber: #b45309;
+      --red: #dc2626;
     }
     .reveal {
-      font-family: 'Noto Sans TC', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--text);
+      font-family: 'Inter','Noto Sans SC','Microsoft YaHei','PingFang SC',system-ui,sans-serif;
+      color: var(--navy);
       background:
-        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.28), transparent 28%),
-        radial-gradient(circle at 85% 20%, rgba(59, 130, 246, 0.22), transparent 25%),
-        radial-gradient(circle at 55% 85%, rgba(139, 92, 246, 0.18), transparent 26%),
-        linear-gradient(135deg, #050816 0%, #07111f 50%, #020617 100%);
+        linear-gradient(135deg, rgba(37,99,235,.08), transparent 34%),
+        radial-gradient(circle at 86% 12%, rgba(8,145,178,.12), transparent 28%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
     }
     .reveal::before {
       content: "";
       position: fixed;
       inset: 0;
+      background-image: linear-gradient(rgba(15,23,42,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
       pointer-events: none;
-      background-image:
-        linear-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
-      background-size: 44px 44px;
-      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      mask-image: linear-gradient(180deg, rgba(0,0,0,.8), rgba(0,0,0,.16));
     }
     .reveal .slides { text-align: left; }
-    .reveal section { box-sizing: border-box; }
-    .reveal h1, .reveal h2, .reveal h3 {
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.08;
-      text-transform: none;
-      margin: 0 0 0.45em;
-    }
-    .reveal h1 { font-size: 2.05em; }
-    .reveal h2 { font-size: 1.45em; }
-    .reveal h3 { font-size: 0.9em; color: #dbeafe; }
-    .reveal p, .reveal li { font-size: 0.58em; line-height: 1.55; }
-    .reveal ul, .reveal ol { margin-left: 1.1em; }
-    .reveal strong { color: #fff; }
-    .muted { color: var(--muted); }
-    .center { text-align: center; }
-    .gradient-text {
-      background: linear-gradient(135deg, #67e8f9, #60a5fa, #c4b5fd);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .brand-logo { width: 210px; margin-bottom: 36px; filter: drop-shadow(0 14px 36px rgba(6, 182, 212, .35)); }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 15px;
-      border: 1px solid rgba(103, 232, 249, 0.36);
-      border-radius: 999px;
-      color: #a5f3fc;
-      background: rgba(8, 47, 73, 0.46);
-      font-size: 0.38em;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-bottom: 22px;
-    }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 24px 28px;
-      box-shadow: 0 24px 80px rgba(2, 6, 23, 0.42);
-      backdrop-filter: blur(12px);
-    }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .mini-card {
-      background: rgba(15, 23, 42, 0.66);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px 20px;
-    }
-    .mini-card h3 { margin-bottom: 10px; }
-    .big-number {
-      display: inline-grid;
-      place-items: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--cyan), var(--blue));
-      color: #fff;
-      font-weight: 900;
-      margin-bottom: 12px;
-      box-shadow: 0 14px 34px rgba(37, 99, 235, 0.28);
-    }
-    .pill-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
-    .pill {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(96, 165, 250, 0.28);
-      color: #dbeafe;
-      font-size: 0.42em;
-      font-weight: 700;
-    }
-    .flow { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 22px; }
-    .flow .step {
-      min-width: 112px;
-      min-height: 70px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 10px 14px;
-      font-size: 0.43em;
-      font-weight: 800;
-      color: #fff;
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.72), rgba(59, 130, 246, 0.72));
-      border: 1px solid rgba(255,255,255,.18);
-    }
-    .arrow { color: #67e8f9; font-size: 0.9em; font-weight: 900; }
-    .quote {
-      font-size: 0.72em !important;
-      line-height: 1.45 !important;
-      font-weight: 800;
-      color: #e0f2fe;
-      border-left: 5px solid var(--cyan);
-      padding-left: 24px;
-      margin: 24px 0;
-    }
-    .bad { border-color: rgba(251, 113, 133, 0.55); background: rgba(127, 29, 29, 0.22); }
-    .good { border-color: rgba(34, 197, 94, 0.48); background: rgba(20, 83, 45, 0.22); }
-    .warn { border-color: rgba(250, 204, 21, 0.5); background: rgba(113, 63, 18, 0.2); }
-    .label {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.32em;
-      font-weight: 900;
-      letter-spacing: 0.06em;
-      margin-bottom: 10px;
-    }
-    .label.bad-label { background: rgba(251, 113, 133, .2); color: #fecdd3; }
-    .label.good-label { background: rgba(34, 197, 94, .2); color: #bbf7d0; }
-    .label.warn-label { background: rgba(250, 204, 21, .18); color: #fef08a; }
-    .small { font-size: 0.48em !important; }
-    .tiny { font-size: 0.36em !important; }
-    .timeline { display: grid; gap: 14px; margin-top: 20px; }
-    .timeline-row { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; }
-    .timeline-row .phase { color: #67e8f9; font-weight: 900; font-size: 0.48em; }
-    .timeline-row .desc { font-size: 0.48em; color: #e2e8f0; }
-    .footer-note { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; font-size: 0.32em; color: var(--muted); }
-    .kicker { font-size: 0.52em !important; color: #bae6fd; font-weight: 800; }
-    .checklist li::marker { color: var(--cyan); }
-    .exercise {
-      border: 1px solid rgba(103, 232, 249, 0.36);
-      background: linear-gradient(135deg, rgba(8, 47, 73, 0.44), rgba(30, 41, 59, 0.58));
-    }
-    .reveal pre { width: 100%; font-size: 0.38em; box-shadow: none; }
-    .reveal code { border-radius: 14px; }
-    @media print {
-      .reveal .slides section { background: #070b1a !important; }
-    }
+    .reveal h1,.reveal h2,.reveal h3 { text-transform:none; letter-spacing:-.04em; line-height:1.08; font-weight:900; color:var(--navy); margin:0 0 .45em; }
+    .reveal h1 { font-size:2.02em; }
+    .reveal h2 { font-size:1.36em; }
+    .reveal h3 { font-size:.78em; letter-spacing:-.02em; }
+    .reveal p,.reveal li { font-size:.53em; line-height:1.55; color:#334155; }
+    .reveal ul,.reveal ol { margin-left:1.05em; }
+    .reveal strong { color:var(--navy); font-weight:800; }
+    .muted { color:var(--muted)!important; }
+    .center { text-align:center; }
+    .logo { width:210px; margin-bottom:34px; filter:drop-shadow(0 10px 28px rgba(15,23,42,.12)); }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; padding:8px 14px; border-radius:999px; background:#eaf2ff; color:#1d4ed8; font-size:.34em; font-weight:800; letter-spacing:.08em; margin-bottom:20px; border:1px solid #c7d9ff; }
+    .title-accent { color:var(--blue); }
+    .kicker { font-size:.54em!important; font-weight:700; color:#334155!important; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px 28px; box-shadow:0 18px 46px rgba(15,23,42,.08); }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .mini-card { background:rgba(255,255,255,.92); border:1px solid var(--line); border-radius:18px; padding:18px 20px; box-shadow:0 10px 26px rgba(15,23,42,.06); }
+    .mini-card h3 { margin-bottom:10px; }
+    .number { display:inline-grid; place-items:center; width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,var(--blue),var(--cyan)); color:white; font-size:.48em; font-weight:900; margin-bottom:12px; }
+    .quote { border-left:5px solid var(--blue); padding-left:22px; margin:20px 0; font-size:.66em!important; line-height:1.45!important; font-weight:800; color:#1e293b!important; }
+    .pill-row { display:flex; flex-wrap:wrap; gap:11px; margin-top:18px; }
+    .pill { padding:9px 13px; border-radius:999px; background:#eef5ff; border:1px solid #c9ddff; color:#1d4ed8; font-size:.38em; font-weight:800; }
+    .flow { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:20px; }
+    .step { min-width:104px; min-height:62px; display:grid; place-items:center; text-align:center; padding:10px 13px; border-radius:16px; background:#eef5ff; border:1px solid #c9ddff; color:#1d4ed8; font-size:.38em; font-weight:900; }
+    .arrow { color:#94a3b8; font-size:.72em; font-weight:900; }
+    .label { display:inline-block; padding:6px 10px; border-radius:999px; font-size:.30em; font-weight:900; letter-spacing:.06em; margin-bottom:10px; }
+    .bad { border-color:#fecaca; background:#fff7f7; }
+    .good { border-color:#bbf7d0; background:#f3fff8; }
+    .warn { border-color:#fde68a; background:#fffbeb; }
+    .bad-label { background:#fee2e2; color:var(--red); }
+    .good-label { background:#dcfce7; color:var(--green); }
+    .warn-label { background:#fef3c7; color:var(--amber); }
+    .timeline { display:grid; gap:14px; margin-top:20px; }
+    .timeline-row { display:grid; grid-template-columns:105px 1fr; gap:16px; align-items:start; padding:14px 16px; background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:16px; }
+    .phase { color:var(--blue); font-size:.45em; font-weight:900; }
+    .desc { color:#334155; font-size:.45em; line-height:1.45; }
+    .small { font-size:.45em!important; }
+    .exercise { border-color:#bfdbfe; background:linear-gradient(135deg,#f8fbff,#eef5ff); }
+    .checklist li::marker { color:var(--blue); }
+    .footer-note { position:absolute; bottom:22px; left:0; right:0; text-align:center; color:var(--muted); font-size:.30em; }
+    .reveal pre { width:100%; font-size:.36em; box-shadow:none; }
+    .reveal code { border-radius:14px; }
   </style>
 </head>
 <body>
-<div class="reveal">
-  <div class="slides">
-    <section class="center">
-      <img src="../images/logo-full.png" class="brand-logo" alt="Timux 時光智造">
-      <div class="eyebrow">內部培訓 SOP v0.1｜2026-05-08</div>
-      <h1><span class="gradient-text">AI 專案顧問方法論</span></h1>
-      <p class="kicker">如何談需求、切 MVP、交代 AI、穩定交付產品</p>
-      <p class="muted">智造交給 AI，時光留給所愛</p>
-      <aside class="notes">開場提醒：這不是 AI 工具課，而是如何把 AI 當作執行團隊管理。</aside>
-    </section>
+<div class="reveal"><div class="slides">
+  <section class="center">
+    <img src="../images/logo-full.png" class="logo" alt="Timux 时光智造">
+    <div class="eyebrow">内部培训 SOP v0.2｜2026-05-08｜16:9</div>
+    <h1><span class="title-accent">AI 项目顾问</span>方法论</h1>
+    <p class="kicker">如何谈需求、切 MVP、交代 AI、稳定交付产品</p>
+    <p class="muted">智造交给 AI，时光留给所爱</p>
+    <aside class="notes">本版改为简体中文、内地表达和更专业的商务培训视觉。</aside>
+  </section>
 
-    <section>
-      <div class="eyebrow">今天的核心命題</div>
-      <h2>不是「把需求丟給 AI」</h2>
-      <p class="quote">而是把自己放在產品負責人、客戶翻譯者、AI 指揮者、交付驗收者的位置。</p>
-      <div class="grid-3">
-        <div class="mini-card"><span class="big-number">1</span><h3>聽懂現場</h3><p>從業務流程與痛點出發，不急著賣系統。</p></div>
-        <div class="mini-card"><span class="big-number">2</span><h3>翻成產品</h3><p>把模糊對話整理成角色、流程、資料與 MVP。</p></div>
-        <div class="mini-card"><span class="big-number">3</span><h3>管理 AI</h3><p>給上下文、邊界、優先級與驗收方式。</p></div>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">核心定位</div>
+    <h2>不是“把需求丢给 AI”</h2>
+    <p class="quote">而是把自己放在产品负责人、客户翻译者、AI 指挥者、交付验收者的位置。</p>
+    <div class="grid-3">
+      <div class="mini-card"><span class="number">1</span><h3>听懂现场</h3><p>从业务流程和真实痛点出发，不急着卖系统。</p></div>
+      <div class="mini-card"><span class="number">2</span><h3>翻成产品</h3><p>把模糊表达整理成角色、流程、数据和 MVP。</p></div>
+      <div class="mini-card"><span class="number">3</span><h3>管理 AI</h3><p>给上下文、边界、优先级和验收标准。</p></div>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">課程節奏</div>
-      <h2>心法講完，就讓新人開始跟 AI 互動</h2>
-      <div class="timeline">
-        <div class="timeline-row"><div class="phase">10–15 min</div><div class="desc">講心法：AI 不是神燈，是需要被管理的執行團隊。</div></div>
-        <div class="timeline-row"><div class="phase">20 min</div><div class="desc">互動練習 1：模糊需求 → 訪談問題。</div></div>
-        <div class="timeline-row"><div class="phase">25 min</div><div class="desc">方法講解：需求探索、MVP 切片、母型複用。</div></div>
-        <div class="timeline-row"><div class="phase">25 min</div><div class="desc">互動練習 2：交代 AI 規劃 MVP + 糾錯。</div></div>
-        <div class="timeline-row"><div class="phase">20 min</div><div class="desc">穩定產品開發 SOP + 部署前檢查。</div></div>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">30 分钟精简版课程</div>
+    <h2>时间压缩到原方案约三分之一</h2>
+    <div class="timeline">
+      <div class="timeline-row"><div class="phase">5 min</div><div class="desc">心法：AI 不是许愿池，是需要管理的执行团队。</div></div>
+      <div class="timeline-row"><div class="phase">5 min</div><div class="desc">互动 1：模糊需求 → 访谈问题。</div></div>
+      <div class="timeline-row"><div class="phase">8 min</div><div class="desc">方法：需求探索、MVP 切片、项目母版复用。</div></div>
+      <div class="timeline-row"><div class="phase">7 min</div><div class="desc">互动 2：交代 AI 规划 MVP，并纠正错误方向。</div></div>
+      <div class="timeline-row"><div class="phase">5 min</div><div class="desc">稳定交付 SOP：本地测试、发布上线、复盘沉淀。</div></div>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">心法 01</div>
-      <h2>先聽現場，不急著賣系統</h2>
-      <div class="grid-2">
-        <div class="mini-card bad"><span class="label bad-label">常見錯誤</span><h3>一聽需求就列功能</h3><p>客戶說「想數位化」，我們馬上開始講 ERP、CRM、AI OCR、庫存、報表。</p></div>
-        <div class="mini-card good"><span class="label good-label">頭頭做法</span><h3>先問日常怎麼做</h3><p>誰在做？用什麼表？哪一步最痛？哪裡最常錯？怎樣算改善成功？</p></div>
-      </div>
-      <aside class="notes">這一頁要讓新人知道，顧問價值不是背功能表，而是找到客戶真正卡住的流程。</aside>
-    </section>
+  <section>
+    <div class="eyebrow">心法 01</div>
+    <h2>先听业务现场，不急着卖系统</h2>
+    <div class="grid-2">
+      <div class="mini-card bad"><span class="label bad-label">常见误区</span><h3>一听需求就列功能</h3><p>客户说“想数字化”，马上开始讲 ERP、CRM、AI OCR、库存、报表。</p></div>
+      <div class="mini-card good"><span class="label good-label">正确做法</span><h3>先问日常怎么跑</h3><p>谁在做？用什么表？哪一步最痛？哪里最容易出错？怎么算有效果？</p></div>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">方法 01</div>
-      <h2>需求探索：四層問題</h2>
-      <div class="grid-2">
-        <div class="mini-card"><h3>業務輪廓</h3><p>公司規模、角色、服務流程、客戶類型、營收模式。</p></div>
-        <div class="mini-card"><h3>痛點排序</h3><p>最耗時、最常錯、最影響收入、老闆最常親自處理。</p></div>
-        <div class="mini-card"><h3>現況工具</h3><p>紙本、Excel、LINE、既有系統、照片、表單、人工規則。</p></div>
-        <div class="mini-card"><h3>決策條件</h3><p>誰拍板、何時要 Demo、預算型態、可否先試點。</p></div>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">方法 01</div>
+    <h2>需求探索：四层问题</h2>
+    <div class="grid-2">
+      <div class="mini-card"><h3>业务轮廓</h3><p>公司规模、岗位角色、服务流程、客户类型、收入模式。</p></div>
+      <div class="mini-card"><h3>痛点排序</h3><p>最耗时、最容易错、最影响收款、老板最常亲自处理。</p></div>
+      <div class="mini-card"><h3>现有工具</h3><p>纸质单据、Excel、微信/企微、系统、照片、表单、人工规则。</p></div>
+      <div class="mini-card"><h3>决策条件</h3><p>谁拍板、什么时候看 Demo、预算怎么定、能不能先试点。</p></div>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">互動練習 1</div>
-      <h2>模糊需求 → 訪談問題</h2>
-      <div class="card exercise">
-        <p class="quote">客戶說：我們想做一套 AI 管理系統，現在很多事情都很亂，希望你們幫忙數位化。</p>
-        <p><strong>請交代 AI：</strong></p>
-        <ul class="checklist">
-          <li>先不要規劃系統。</li>
-          <li>先整理要問客戶的問題。</li>
-          <li>問題要分：業務輪廓、流程、痛點、資料來源、決策條件、Demo 切入點。</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">方法 02</div>
-      <h2>產品切片：先打最痛的一段流程</h2>
-      <div class="flow">
-        <div class="step">現場痛點</div><div class="arrow">→</div>
-        <div class="step">最短 Demo</div><div class="arrow">→</div>
-        <div class="step">MVP</div><div class="arrow">→</div>
-        <div class="step">擴張系統</div>
-      </div>
-      <div class="card" style="margin-top: 26px;">
-        <p><strong>PoC 不是完整系統。</strong>PoC 是讓客戶一眼看出：「你真的懂我的痛」。</p>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">案例｜吊桿車維修廠</div>
-      <h2>真痛點不是「我要 ERP」</h2>
-      <div class="grid-2">
-        <div class="mini-card bad"><span class="label bad-label">表面需求</span><h3>完整管理系統</h3><p>工單、報價、庫存、排程、客戶、KPI、財務報表全部都要。</p></div>
-        <div class="mini-card good"><span class="label good-label">第一版切入</span><h3>老闆每天卡住的流程</h3><p>工單照片 → AI OCR → 人工確認 → 客戶版報價 → 手機審核/定價。</p></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">互動練習 2</div>
-      <h2>功能清單 → MVP 切分</h2>
-      <div class="card exercise">
-        <p>客戶想要：工單、報價、庫存、排程、客戶管理、KPI、LINE 通知、AI OCR、財務報表。</p>
-        <p><strong>請交代 AI：</strong></p>
-        <ul>
-          <li>分成「第一版必做 / 第二版加分 / 先不要做」。</li>
-          <li>說明切分理由。</li>
-          <li>指出第一版 Demo 的最短路徑。</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">方法 03</div>
-      <h2>複用既有模型：新專案不是從零想</h2>
-      <p class="quote">先問：它像我們做過的哪個系統？能抽出哪種母型？</p>
-      <div class="pill-row">
-        <span class="pill">Web Admin</span>
-        <span class="pill">LIFF 手機操作</span>
-        <span class="pill">LINE 通知</span>
-        <span class="pill">AI 辨識</span>
-        <span class="pill">人工確認</span>
-        <span class="pill">任務 / 審核</span>
-        <span class="pill">報表</span>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">案例｜銘將 → 吊桿車</div>
-      <h2>複用的是產品結構，不是照抄畫面</h2>
-      <div class="grid-2">
-        <div class="mini-card"><h3>銘將保全</h3><p>考勤、文件辨識、LINE 入口、管理員 LIFF、人工確認、薪資報表。</p></div>
-        <div class="mini-card"><h3>吊桿車維修廠</h3><p>工單、報價、定價、派工、客戶版明細、庫存後續擴張。</p></div>
-      </div>
-      <p class="muted small">相同：管理後台 + 手機高頻操作 + AI 辨識 + 人工確認。不同：業務資料與決策流程。</p>
-    </section>
-
-    <section>
-      <div class="eyebrow">方法 04</div>
-      <h2>AI 交代基本公式</h2>
-      <div class="flow" style="flex-wrap: wrap; justify-content: flex-start;">
-        <div class="step">背景</div><div class="arrow">→</div>
-        <div class="step">目標</div><div class="arrow">→</div>
-        <div class="step">現況資料</div><div class="arrow">→</div>
-        <div class="step">參考案例</div><div class="arrow">→</div>
-        <div class="step">約束</div><div class="arrow">→</div>
-        <div class="step">交付格式</div><div class="arrow">→</div>
-        <div class="step">驗收</div>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">錯誤示範</div>
-      <h2>只給目標，AI 就會自由發揮</h2>
-      <div class="card bad">
-        <span class="label bad-label">不要這樣交代</span>
-        <p class="quote">幫我做吊桿車維修廠系統，要有工單、報價、庫存、客戶管理、AI 辨識，越完整越好。</p>
-      </div>
-      <ul class="small">
-        <li>沒說誰最常用。</li>
-        <li>沒說第一版打哪個痛點。</li>
-        <li>沒說哪些功能先不要做。</li>
-        <li>沒定義怎麼驗收。</li>
-      </ul>
-    </section>
-
-    <section>
-      <div class="eyebrow">正確示範</div>
-      <h2>把 AI 拉回真實場景</h2>
-      <div class="card good">
-        <p class="small"><strong>背景：</strong>吊桿車維修廠用手寫工單，老闆每天要整理成客戶報價，還要判斷加價與派工，手機使用頻率高。</p>
-        <p class="small"><strong>目標：</strong>先規劃 MVP，不做完整 ERP。第一版展示「拍照 → OCR → 人工確認 → 客戶版報價 → 手機審核」。</p>
-        <p class="small"><strong>參考：</strong>銘將保全 Web Admin + LIFF + AI 辨識人工確認。</p>
-        <p class="small"><strong>約束：</strong>庫存、KPI、法規提醒先列後續。</p>
-        <p class="small"><strong>交付：</strong>模組清單、資料表草案、MVP 流程、第一週開發順序。</p>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">AI 溝通情境庫</div>
-      <h2>新人最需要練的 8 種交代</h2>
-      <div class="grid-2">
-        <div class="mini-card"><h3>需求訪談前</h3><p>拆業務輪廓、痛點提問、Demo 切入點。</p></div>
-        <div class="mini-card"><h3>會議紀錄後</h3><p>整理角色、流程、資料、待確認問題。</p></div>
-        <div class="mini-card"><h3>規劃 MVP 時</h3><p>切第一版、第二版、先不要做。</p></div>
-        <div class="mini-card"><h3>交代開發時</h3><p>讀記憶/文件，照既有架構，不重造輪子。</p></div>
-        <div class="mini-card"><h3>修 bug 時</h3><p>先復現、找根因、提出修法，再改。</p></div>
-        <div class="mini-card"><h3>部署前</h3><p>列 build、測試、備份、回滾、線上驗證。</p></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">方法 05</div>
-      <h2>介面判斷：以真實使用場景為準</h2>
-      <div class="grid-2">
-        <div class="mini-card"><h3>Web Admin</h3><p>完整管理、複雜設定、大量表格、後台報表。</p></div>
-        <div class="mini-card"><h3>LINE / LIFF</h3><p>手機高頻操作：審核、派工、定價、查詢、回報。</p></div>
-      </div>
-      <p class="quote">高頻操作少一層就是少一層。</p>
-    </section>
-
-    <section>
-      <div class="eyebrow">案例｜銘將 LINE</div>
-      <h2>「流程很怪」是非常重要的驗收語言</h2>
-      <div class="grid-2">
-        <div class="mini-card bad"><span class="label bad-label">原流程</span><h3>打卡 → 上下班選擇 → 同一個打卡頁</h3><p>多一層選擇，使用者會困惑。</p></div>
-        <div class="mini-card good"><span class="label good-label">修正</span><h3>打卡 → 直接進上下班打卡頁</h3><p>頁面內再選上班/下班，減少入口層級。</p></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">方法 06</div>
-      <h2>驗收與糾錯：不要只說「錯了」</h2>
-      <div class="card">
-        <p><strong>好的驗收回饋格式：</strong></p>
-        <div class="flow" style="justify-content: flex-start;">
-          <div class="step">現象</div><div class="arrow">→</div>
-          <div class="step">判斷依據</div><div class="arrow">→</div>
-          <div class="step">期望流程</div><div class="arrow">→</div>
-          <div class="step">驗收方式</div>
-        </div>
-      </div>
-      <p class="muted small">AI/合作伙伴要回到根因，不要只修表面。</p>
-    </section>
-
-    <section>
-      <div class="eyebrow">失誤案例庫</div>
-      <h2>失誤不是丟臉，是 SOP 的原料</h2>
-      <div class="grid-2">
-        <div class="mini-card warn"><span class="label warn-label">LIFF 誤判</span><p>direct LIFF 不是目標；穩定取得 LINE uid 才是目標。</p></div>
-        <div class="mini-card warn"><span class="label warn-label">API 404 誤列</span><p>要確認實際頁面有沒有用，不要把參考資料當需求。</p></div>
-        <div class="mini-card warn"><span class="label warn-label">部署路徑</span><p>容器 running 不代表成功；dist 路徑錯仍會 502。</p></div>
-        <div class="mini-card warn"><span class="label warn-label">改圖改到流程</span><p>改動要守範圍，不要順手重構或回退別的功能。</p></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">穩定產品開發 SOP</div>
-      <h2>AI 能加速，但不能跳過工程紀律</h2>
-      <div class="flow" style="flex-wrap: wrap; justify-content: flex-start;">
-        <div class="step">大架構</div><div class="arrow">→</div>
-        <div class="step">建 repo</div><div class="arrow">→</div>
-        <div class="step">本地開發</div><div class="arrow">→</div>
-        <div class="step">本地測試</div><div class="arrow">→</div>
-        <div class="step">部署上線</div><div class="arrow">→</div>
-        <div class="step">線上驗證</div><div class="arrow">→</div>
-        <div class="step">記憶化</div>
-      </div>
-    </section>
-
-    <section>
-      <div class="eyebrow">SOP 01</div>
-      <h2>大架構先完成</h2>
-      <div class="grid-2">
-        <div class="mini-card"><h3>先定義</h3><ul><li>產品目標</li><li>使用角色</li><li>核心流程</li><li>系統邊界</li></ul></div>
-        <div class="mini-card"><h3>再落地</h3><ul><li>技術架構</li><li>資料模型</li><li>MVP 範圍</li><li>驗收標準</li></ul></div>
-      </div>
-      <p class="muted small">先不要寫代碼；先標出高風險與需要客戶確認的假設。</p>
-    </section>
-
-    <section>
-      <div class="eyebrow">SOP 02</div>
-      <h2>建立 repo 與開發基線</h2>
+  <section>
+    <div class="eyebrow">课堂互动 1</div>
+    <h2>模糊需求 → 访谈问题</h2>
+    <div class="card exercise">
+      <p class="quote">客户说：我们想做一套 AI 管理系统，现在很多事情都很乱，希望你们帮忙数字化。</p>
+      <p><strong>请交代 AI：</strong></p>
       <ul class="checklist">
-        <li>建立 GitHub repo 與乾淨 skeleton commit。</li>
-        <li>README 寫清楚啟動方式與架構。</li>
-        <li>建立 `.env.example`，不得提交 secret。</li>
-        <li>設定 `.gitignore`，避免 build 產物與金鑰進 repo。</li>
-        <li>若套用母型，標清楚「複用什麼、不複用什麼」。</li>
+        <li>先不要规划系统。</li>
+        <li>先整理要问客户的问题。</li>
+        <li>问题要分：业务轮廓、流程、痛点、数据来源、决策条件、Demo 切入点。</li>
       </ul>
-    </section>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">SOP 03</div>
-      <h2>本地開發順序：DB → API → 前端</h2>
-      <pre><code class="language-text" data-trim>
+  <section>
+    <div class="eyebrow">方法 02</div>
+    <h2>产品切片：先打最痛的一段流程</h2>
+    <div class="flow">
+      <div class="step">现场痛点</div><div class="arrow">→</div>
+      <div class="step">最短 Demo</div><div class="arrow">→</div>
+      <div class="step">MVP</div><div class="arrow">→</div>
+      <div class="step">后续扩展</div>
+    </div>
+    <div class="card" style="margin-top:26px;"><p><strong>PoC 不是完整系统。</strong>PoC 是让客户一眼看出：“你懂我的业务，也能解决我的痛点”。</p></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">案例｜吊杆车维修厂</div>
+    <h2>真正痛点不是“我要一套 ERP”</h2>
+    <div class="grid-2">
+      <div class="mini-card bad"><span class="label bad-label">表面需求</span><h3>完整管理系统</h3><p>工单、报价、库存、排班、客户、KPI、财务报表都想要。</p></div>
+      <div class="mini-card good"><span class="label good-label">第一版切入</span><h3>老板每天卡住的流程</h3><p>工单照片 → AI OCR → 人工确认 → 客户版报价 → 手机审批/定价。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">课堂互动 2</div>
+    <h2>功能清单 → MVP 切分</h2>
+    <div class="card exercise">
+      <p>客户想要：工单、报价、库存、排班、客户管理、KPI、消息通知、AI OCR、财务报表。</p>
+      <p><strong>请交代 AI：</strong></p>
+      <ul>
+        <li>分成“第一版必做 / 第二版增强 / 先不做”。</li>
+        <li>说明切分理由。</li>
+        <li>指出第一版 Demo 的最短路径。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">方法 03</div>
+    <h2>复用项目母版：新项目不是从零想</h2>
+    <p class="quote">先问：它像我们做过的哪个项目？能抽出哪套产品母版？</p>
+    <div class="pill-row">
+      <span class="pill">Web 管理后台</span><span class="pill">手机端高频操作</span><span class="pill">消息通知</span><span class="pill">AI 识别</span><span class="pill">人工确认</span><span class="pill">任务 / 审批</span><span class="pill">经营报表</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">案例｜铭将安保 → 吊杆车</div>
+    <h2>复用的是产品结构，不是照搬界面</h2>
+    <div class="grid-2">
+      <div class="mini-card"><h3>铭将安保</h3><p>考勤、单据识别、消息入口、管理员手机操作、人工确认、薪资报表。</p></div>
+      <div class="mini-card"><h3>吊杆车维修厂</h3><p>工单、报价、定价、派工、客户版明细、后续库存扩展。</p></div>
+    </div>
+    <p class="muted small">相同：后台 + 手机高频操作 + AI 识别 + 人工确认。不同：业务数据和决策流程。</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">方法 04</div>
+    <h2>交代 AI 的基本公式</h2>
+    <div class="flow">
+      <div class="step">背景</div><div class="arrow">→</div>
+      <div class="step">目标</div><div class="arrow">→</div>
+      <div class="step">现状数据</div><div class="arrow">→</div>
+      <div class="step">参考案例</div><div class="arrow">→</div>
+      <div class="step">约束</div><div class="arrow">→</div>
+      <div class="step">交付格式</div><div class="arrow">→</div>
+      <div class="step">验收标准</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">错误示范</div>
+    <h2>只给目标，AI 就会自由发挥</h2>
+    <div class="card bad">
+      <span class="label bad-label">不要这样交代</span>
+      <p class="quote">帮我做吊杆车维修厂系统，要有工单、报价、库存、客户管理、AI 识别，越完整越好。</p>
+    </div>
+    <ul class="small"><li>没说谁最常用。</li><li>没说第一版解决哪个痛点。</li><li>没说哪些功能先不做。</li><li>没定义怎么验收。</li></ul>
+  </section>
+
+  <section>
+    <div class="eyebrow">正确示范</div>
+    <h2>把 AI 拉回真实业务场景</h2>
+    <div class="card good">
+      <p class="small"><strong>背景：</strong>维修厂现在用手写工单，老板每天要整理成客户报价，还要判断加价和派工，手机使用频率高。</p>
+      <p class="small"><strong>目标：</strong>先规划 MVP，不做完整 ERP。第一版展示“拍照 → OCR → 人工确认 → 客户版报价 → 手机审批”。</p>
+      <p class="small"><strong>参考：</strong>铭将安保的后台 + 手机操作 + AI 识别人工确认流程。</p>
+      <p class="small"><strong>约束：</strong>库存、KPI、法规提醒先放到后续阶段。</p>
+      <p class="small"><strong>交付：</strong>模块清单、数据表草案、MVP 流程、第一周开发顺序。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">AI 沟通场景库</div>
+    <h2>新人最需要练的 6 种交代</h2>
+    <div class="grid-2">
+      <div class="mini-card"><h3>访谈前</h3><p>拆业务轮廓、痛点问题、Demo 切入点。</p></div>
+      <div class="mini-card"><h3>会议后</h3><p>整理角色、流程、数据、待确认事项。</p></div>
+      <div class="mini-card"><h3>规划 MVP</h3><p>切第一版、第二版、先不做。</p></div>
+      <div class="mini-card"><h3>交代开发</h3><p>读项目记忆/技术文档，按现有架构改。</p></div>
+      <div class="mini-card"><h3>修 Bug</h3><p>先复现、找根因、提出方案，再修改。</p></div>
+      <div class="mini-card"><h3>发布前</h3><p>列测试、备份、回滚、线上验证步骤。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">方法 05</div>
+    <h2>界面判断：以真实使用场景为准</h2>
+    <div class="grid-2">
+      <div class="mini-card"><h3>Web 管理后台</h3><p>完整管理、复杂配置、大量表格、经营报表。</p></div>
+      <div class="mini-card"><h3>手机端入口</h3><p>高频操作：审批、派工、定价、查询、回报。</p></div>
+    </div>
+    <p class="quote">高频流程少一层，就是更好用一分。</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">案例｜手机入口</div>
+    <h2>“流程很别扭”就是重要验收信号</h2>
+    <div class="grid-2">
+      <div class="mini-card bad"><span class="label bad-label">原流程</span><h3>打卡 → 上下班选择 → 同一个打卡页</h3><p>入口多一层，用户会困惑。</p></div>
+      <div class="mini-card good"><span class="label good-label">修正</span><h3>打卡 → 直接进入打卡页</h3><p>页面内再选上班/下班，减少操作层级。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">方法 06</div>
+    <h2>验收与纠错：不要只说“错了”</h2>
+    <div class="card">
+      <p><strong>有效反馈格式：</strong></p>
+      <div class="flow"><div class="step">现象</div><div class="arrow">→</div><div class="step">判断依据</div><div class="arrow">→</div><div class="step">期望流程</div><div class="arrow">→</div><div class="step">验收方式</div></div>
+    </div>
+    <p class="muted small">好的 AI/合作伙伴要回到根因，不只是修表面。</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">复盘案例库</div>
+    <h2>失误不是丢脸，是 SOP 的原料</h2>
+    <div class="grid-2">
+      <div class="mini-card warn"><span class="label warn-label">手机入口误判</span><p>直达入口不是目标；稳定识别用户身份才是目标。</p></div>
+      <div class="mini-card warn"><span class="label warn-label">API 误判</span><p>要确认实际页面是否调用，不要把参考资料当需求。</p></div>
+      <div class="mini-card warn"><span class="label warn-label">发布路径</span><p>服务 running 不等于成功；构建产物路径错仍会 502。</p></div>
+      <div class="mini-card warn"><span class="label warn-label">越界修改</span><p>改动要守范围，不要顺手重构或回退其他功能。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">稳定产品开发 SOP</div>
+    <h2>AI 能加速，但不能跳过工程纪律</h2>
+    <div class="flow">
+      <div class="step">产品架构</div><div class="arrow">→</div>
+      <div class="step">代码仓库</div><div class="arrow">→</div>
+      <div class="step">本地开发</div><div class="arrow">→</div>
+      <div class="step">本地测试</div><div class="arrow">→</div>
+      <div class="step">发布上线</div><div class="arrow">→</div>
+      <div class="step">线上验证</div><div class="arrow">→</div>
+      <div class="step">复盘沉淀</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">SOP 01</div>
+    <h2>产品架构先完成</h2>
+    <div class="grid-2">
+      <div class="mini-card"><h3>先定义</h3><ul><li>产品目标</li><li>使用角色</li><li>核心流程</li><li>系统边界</li></ul></div>
+      <div class="mini-card"><h3>再落地</h3><ul><li>技术架构</li><li>数据模型</li><li>MVP 范围</li><li>验收标准</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">SOP 02</div>
+    <h2>代码仓库与开发基线</h2>
+    <ul class="checklist">
+      <li>建立 GitHub 仓库和干净的 skeleton commit。</li>
+      <li>README 写清楚启动方式和项目结构。</li>
+      <li>建立 `.env.example`，不得提交密钥。</li>
+      <li>设置 `.gitignore`，避免构建产物进入仓库。</li>
+      <li>如果套用项目母版，写清楚“复用什么、不复用什么”。</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="eyebrow">SOP 03</div>
+    <h2>本地开发顺序：数据 → 接口 → 页面</h2>
+    <pre><code class="language-text" data-trim>
 DB Schema
 → prisma validate / migration or db push
 → API module / service / DTO
 → backend build
-→ curl 或 API 測試
+→ curl 或接口测试
 → frontend page / integration
 → frontend build
-→ browser/mobile 實測
-→ 整合驗證
-      </code></pre>
-    </section>
+→ browser/mobile 实测
+→ 集成验证
+    </code></pre>
+  </section>
 
-    <section>
-      <div class="eyebrow">SOP 04</div>
-      <h2>部署前檢查</h2>
-      <div class="grid-2">
-        <div class="mini-card"><h3>上線前</h3><ul><li>Git 狀態乾淨</li><li>本地 build 通過</li><li>API curl 測過</li><li>重要頁面實測</li></ul></div>
-        <div class="mini-card"><h3>風險控管</h3><ul><li>環境變數確認</li><li>secret 不進聊天</li><li>備份或回滾方案</li><li>知道上一個可用版本</li></ul></div>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">SOP 04</div>
+    <h2>发布前后都要验收</h2>
+    <div class="grid-2">
+      <div class="mini-card"><h3>上线前</h3><ul><li>Git 状态干净</li><li>本地 build 通过</li><li>接口测试通过</li><li>关键页面实测</li></ul></div>
+      <div class="mini-card"><h3>上线后</h3><ul><li>服务状态正常</li><li>核心 API 200</li><li>浏览器打开新版</li><li>手机端入口跑通</li></ul></div>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">SOP 05</div>
-      <h2>部署後驗證，不只看服務 running</h2>
-      <div class="timeline">
-        <div class="timeline-row"><div class="phase">1</div><div class="desc">檢查 service / container / PM2 狀態。</div></div>
-        <div class="timeline-row"><div class="phase">2</div><div class="desc">curl 核心 API，確認 200 與資料格式。</div></div>
-        <div class="timeline-row"><div class="phase">3</div><div class="desc">瀏覽器檢查核心頁面與新 asset。</div></div>
-        <div class="timeline-row"><div class="phase">4</div><div class="desc">手機/LIFF/LINE 入口走一遍真實流程。</div></div>
-        <div class="timeline-row"><div class="phase">5</div><div class="desc">記錄 commit、部署結果、風險與後續事項。</div></div>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">课堂互动 3</div>
+    <h2>AI 说“做完了，可以发布”时怎么追问？</h2>
+    <div class="card exercise">
+      <ul>
+        <li>build 是否通过？</li>
+        <li>接口是否测过？</li>
+        <li>前端是否用浏览器测过？</li>
+        <li>手机端入口是否测过？</li>
+        <li>有没有回滚方案？</li>
+        <li>commit 是哪一个？</li>
+      </ul>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">互動練習 3</div>
-      <h2>AI 說「做完了，可以部署」時怎麼追問？</h2>
-      <div class="card exercise">
-        <ul>
-          <li>build 是否通過？</li>
-          <li>API 是否 curl 測過？</li>
-          <li>前端是否用瀏覽器測過？</li>
-          <li>手機/LIFF 是否測過？</li>
-          <li>有沒有回滾方案？</li>
-          <li>commit 是哪一個？</li>
-        </ul>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">每次更新的小循环</div>
+    <h2>先测试，再发布，再复盘</h2>
+    <div class="flow">
+      <div class="step">理解需求</div><div class="arrow">→</div><div class="step">影响范围</div><div class="arrow">→</div><div class="step">小步修改</div><div class="arrow">→</div><div class="step">本地测试</div><div class="arrow">→</div><div class="step">commit</div><div class="arrow">→</div><div class="step">发布</div><div class="arrow">→</div><div class="step">线上验证</div><div class="arrow">→</div><div class="step">复盘</div>
+    </div>
+  </section>
 
-    <section>
-      <div class="eyebrow">每次更新的小循環</div>
-      <h2>先測試，再部署，再記憶化</h2>
-      <div class="flow" style="flex-wrap: wrap; justify-content: flex-start;">
-        <div class="step">理解需求</div><div class="arrow">→</div>
-        <div class="step">影響範圍</div><div class="arrow">→</div>
-        <div class="step">小步修改</div><div class="arrow">→</div>
-        <div class="step">本地測試</div><div class="arrow">→</div>
-        <div class="step">commit</div><div class="arrow">→</div>
-        <div class="step">部署</div><div class="arrow">→</div>
-        <div class="step">線上驗證</div><div class="arrow">→</div>
-        <div class="step">lessons</div>
-      </div>
-    </section>
+  <section>
+    <div class="eyebrow">新人检核表</div>
+    <h2>能做到这 6 件事，就能开始跟项目</h2>
+    <ol class="checklist">
+      <li>把客户一句话整理成访谈问题。</li>
+      <li>把功能清单切成 MVP / 后续增强 / 暂不做。</li>
+      <li>找出可复用的项目母版。</li>
+      <li>用完整公式交代 AI，而不是只丢目标。</li>
+      <li>用真实使用场景验收页面和流程。</li>
+      <li>按 SOP 完成本地测试、发布上线和复盘沉淀。</li>
+    </ol>
+  </section>
 
-    <section>
-      <div class="eyebrow">新人檢核表</div>
-      <h2>你能做到這 6 件事，就能開始跟專案</h2>
-      <ol class="checklist">
-        <li>把客戶一句話整理成訪談問題。</li>
-        <li>把功能清單切成 MVP / 後續 / 暫不做。</li>
-        <li>找出可複用的既有專案母型。</li>
-        <li>用完整公式交代 AI，而不是只丟目標。</li>
-        <li>用真實使用情境驗收畫面與流程。</li>
-        <li>照 SOP 完成本地測試、部署與記憶化。</li>
-      </ol>
-    </section>
-
-    <section>
-      <div class="eyebrow">結語</div>
-      <h2>AI 專案顧問的價值</h2>
-      <p class="quote">不是比 AI 更會寫，而是比 AI 更懂現場、更懂取捨、更懂驗收。</p>
-      <div class="pill-row">
-        <span class="pill">先聽</span>
-        <span class="pill">會切</span>
-        <span class="pill">善用母型</span>
-        <span class="pill">會交代 AI</span>
-        <span class="pill">能驗收</span>
-        <span class="pill">穩定交付</span>
-      </div>
-      <p class="footer-note">Timux 時光智造｜智造交給 AI，時光留給所愛</p>
-    </section>
-  </div>
-</div>
+  <section>
+    <div class="eyebrow">结语</div>
+    <h2>AI 项目顾问的价值</h2>
+    <p class="quote">不是比 AI 更会写代码，而是比 AI 更懂现场、更懂取舍、更懂验收。</p>
+    <div class="pill-row"><span class="pill">先听</span><span class="pill">会切</span><span class="pill">善用母版</span><span class="pill">会交代 AI</span><span class="pill">能验收</span><span class="pill">稳定交付</span></div>
+    <p class="footer-note">Timux 时光智造｜智造交给 AI，时光留给所爱</p>
+  </section>
+</div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
@@ -550,7 +409,7 @@ DB Schema
     hash: true,
     width: 1280,
     height: 720,
-    margin: 0.055,
+    margin: 0.06,
     controls: true,
     progress: true,
     center: true,
