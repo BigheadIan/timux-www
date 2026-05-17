@@ -113,6 +113,27 @@
     .tabs { display:flex; gap:10px; flex-wrap:wrap; margin:0 0 18px; }
     .tab { background:#fff; border:1px solid var(--border); padding:10px 14px; border-radius:999px; color:#374151; font-weight:700; }
     .tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .simulator { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; }
+    .sim-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+    .sim-btn {
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:14px;
+      padding:12px 10px;
+      cursor:pointer;
+      text-align:left;
+      font-weight:800;
+      color:#172033;
+    }
+    .sim-btn span { display:block; margin-top:4px; color:var(--muted); font-size:12px; font-weight:500; line-height:1.45; }
+    .sim-state {
+      border-radius:18px;
+      padding:18px;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      min-height:140px;
+      line-height:1.7;
+    }
     .flow { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
     .step { background:#fff; border:1px solid var(--border); border-radius:20px; padding:18px; position:relative; }
     .step b { display:block; margin-bottom:8px; }
@@ -122,12 +143,12 @@
     .preview-empty { color:var(--muted); line-height:1.7; }
     footer { text-align:center; color:var(--muted); padding:36px 7vw 54px; }
     @media (max-width: 980px) {
-      .hero-grid, .dashboard { grid-template-columns:1fr; }
+      .hero-grid, .dashboard, .simulator { grid-template-columns:1fr; }
       .phone { margin:0; }
       .cards, .library, .flow { grid-template-columns:1fr 1fr; }
     }
     @media (max-width: 640px) {
-      .cards, .library, .flow { grid-template-columns:1fr; }
+      .cards, .library, .flow, .sim-grid { grid-template-columns:1fr; }
       .section-title { align-items:start; flex-direction:column; }
     }
   </style>
@@ -202,6 +223,30 @@
       <div class="card"><div>已提交</div><div class="metric green" id="submittedCount">9</div><div class="hint" id="submitRate">提交率 75%</div></div>
       <div class="card"><div>未提交</div><div class="metric red" id="missingCount">2</div><div class="hint">需要提醒</div></div>
       <div class="card"><div>风险事项</div><div class="metric orange" id="riskCount">4</div><div class="hint">AI 自动识别</div></div>
+    </div>
+  </section>
+
+  <section id="simulator">
+    <div class="section-title">
+      <div>
+        <h2>点击模拟员工状态</h2>
+        <div class="hint">不用真实接企业微信，也可以先模拟员工填报流程。点击不同状态，左上方员工表单、管理看板和 AI 汇总会跟着变化。</div>
+      </div>
+    </div>
+    <div class="simulator">
+      <div class="card">
+        <div class="sim-grid">
+          <button class="sim-btn" data-sim="empty">未填写<span>员工还没有开始写日报</span></button>
+          <button class="sim-btn" data-sim="editing">填写中<span>员工正在输入，但还没提交</span></button>
+          <button class="sim-btn" data-sim="submitted">已提交<span>正常日报，自动进入看板</span></button>
+          <button class="sim-btn" data-sim="late">迟交<span>超过截止时间后才提交</span></button>
+          <button class="sim-btn" data-sim="risk">有风险<span>AI 自动标记需要主管关注</span></button>
+          <button class="sim-btn" data-sim="files">带图片附件<span>模拟上传图片与文件归档</span></button>
+        </div>
+      </div>
+      <div class="sim-state" id="simState">
+        当前模拟：尚未选择。你可以点击左侧任一状态，查看员工端和管理端如何变化。
+      </div>
     </div>
   </section>
 
@@ -372,6 +417,150 @@
       });
     }
 
+    function setMetric(submitted, missing, risk) {
+      $("submittedCount").textContent = String(submitted);
+      $("missingCount").textContent = String(missing);
+      $("submitRate").textContent = `提交率 ${Math.round(submitted / 12 * 100)}%`;
+      $("riskCount").textContent = String(risk);
+    }
+
+    function renderSimRow(name, dept, status, attach, time) {
+      const cls = status === "已交" ? "ok" : status === "迟交" ? "late" : "no";
+      $("statusTable").insertAdjacentHTML("afterbegin", `
+        <tr>
+          <td>${escapeHtml(name)}</td>
+          <td>${escapeHtml(dept)}</td>
+          <td><span class="status ${cls}">${status}</span></td>
+          <td>${escapeHtml(attach)}</td>
+          <td>${escapeHtml(time)}</td>
+        </tr>
+      `);
+    }
+
+    const simulations = {
+      empty: {
+        title: "未填写",
+        desc: "员工尚未进入日报页，管理端显示未交，系统可以在截止前自动提醒。",
+        name: "霏霏",
+        department: "运营部",
+        today: "",
+        problem: "",
+        tomorrow: "",
+        row: ["霏霏", "运营部", "未交", "-", "-"],
+        metric: [9, 3, 4],
+        ai: [
+          ["todo", "提醒建议", "霏霏今日尚未提交日报，建议在企业微信发送一次温和提醒。"],
+          ["", "老板视角", "未交人数增加为 3 人，当前不需要逐篇查看，只需要关注未交名单。"],
+        ],
+      },
+      editing: {
+        title: "填写中",
+        desc: "员工正在填写日报但还没提交，管理端可以显示草稿/填写中，避免误判为完全没动。",
+        name: "霏霏",
+        department: "运营部",
+        today: "正在整理客户回访记录，补充报价资料。",
+        problem: "有一份客户资料还在确认中。",
+        tomorrow: "完成资料核对后提交给主管确认。",
+        row: ["霏霏", "运营部", "未交", "草稿", "-"],
+        metric: [9, 3, 4],
+        ai: [
+          ["todo", "填写状态", "霏霏已有草稿但尚未提交，截止前可再次提醒。"],
+          ["", "老板视角", "系统可以区分完全未填与填写中，管理者不用逐个询问。"],
+        ],
+      },
+      submitted: {
+        title: "已提交",
+        desc: "正常提交日报后，管理端已交人数增加，日报进入文件库并参与 AI 汇总。",
+        name: "霏霏",
+        department: "运营部",
+        today: "完成本周客户回访记录整理，补充 6 条客户需求，协助销售确认报价资料。",
+        problem: "暂无重大风险。",
+        tomorrow: "继续整理客户资料，并输出一份日报汇总模板。",
+        row: ["霏霏", "运营部", "已交", "0", nowTime()],
+        metric: [10, 2, 4],
+        ai: [
+          ["", "团队进展", "霏霏已提交日报，今日主要完成客户回访与报价资料整理。"],
+          ["todo", "明日跟进", "继续整理客户资料，并输出日报汇总模板。"],
+        ],
+      },
+      late: {
+        title: "迟交",
+        desc: "超过截止时间后提交，系统保留日报内容，同时标记迟交，方便后续统计。",
+        name: "霏霏",
+        department: "运营部",
+        today: "完成客户资料整理，但因外出拜访导致较晚提交。",
+        problem: "提交时间超过规定截止时间。",
+        tomorrow: "明天提前填写，避免影响团队汇总。",
+        row: ["霏霏", "运营部", "迟交", "0", nowTime()],
+        metric: [10, 2, 4],
+        ai: [
+          ["todo", "迟交提醒", "霏霏已迟交，内容已纳入汇总，但会记录在提交统计中。"],
+          ["", "老板视角", "日报内容不丢失，同时可看到迟交趋势。"],
+        ],
+      },
+      risk: {
+        title: "有风险",
+        desc: "日报出现缺资料、延期、投诉、卡住等关键词时，AI 自动标红给主管看。",
+        name: "霏霏",
+        department: "运营部",
+        today: "完成客户 A 资料整理，跟进合同与发票状态。",
+        problem: "客户 C 迟迟没有提供盖章合同，可能影响本周归档，需要主管协助催收。",
+        tomorrow: "继续催收客户 C 合同，并准备替代方案。",
+        row: ["霏霏", "运营部", "已交", "0", nowTime()],
+        metric: [10, 2, 5],
+        ai: [
+          ["risk", "风险提醒", "客户 C 未提供盖章合同，可能影响本周归档，需要主管协助。"],
+          ["todo", "明日跟进", "继续催收客户 C 合同，并准备替代方案。"],
+        ],
+      },
+      files: {
+        title: "带图片附件",
+        desc: "即使当前只是模拟，也能看到图片/附件如何进入文件库。正式版会保存真实文件。",
+        name: "霏霏",
+        department: "运营部",
+        today: "整理客户资料，并上传现场照片与报价表供主管查看。",
+        problem: "报价表还需要财务确认最终金额。",
+        tomorrow: "确认报价金额后发送给客户。",
+        row: ["霏霏", "运营部", "已交", "2 图 1 件", nowTime()],
+        metric: [10, 2, 5],
+        ai: [
+          ["", "资料归档", "霏霏提交的 2 张图片与 1 个附件已模拟进入文件库。"],
+          ["risk", "风险提醒", "报价表金额仍需财务确认，建议明日优先处理。"],
+        ],
+      },
+    };
+
+    function applySimulation(key) {
+      const sim = simulations[key];
+      $("employeeName").value = sim.name;
+      $("department").value = sim.department;
+      $("todayWork").value = sim.today;
+      $("problems").value = sim.problem;
+      $("tomorrowPlan").value = sim.tomorrow;
+      setMetric(...sim.metric);
+      renderSimRow(...sim.row);
+      $("aiSummary").innerHTML = sim.ai.map(([cls, title, body]) => `<div class="ai-item ${cls}"><b>${title}：</b>${escapeHtml(body)}</div>`).join("");
+      $("simState").innerHTML = `<b>当前模拟：${sim.title}</b><br>${sim.desc}<br><br>员工端表单已同步切换为这个状态，管理端看板也已更新。`;
+      $("reportPreview").innerHTML = `
+        <div class="preview-card">
+          <b>${escapeHtml(sim.name)}｜${escapeHtml(sim.department)}｜${sim.title}</b>
+          <div class="hint">今日完成</div>
+          <p>${escapeHtml(sim.today || "尚未填写")}</p>
+          <div class="hint">问题 / 风险</div>
+          <p>${escapeHtml(sim.problem || "尚未填写")}</p>
+          <div class="hint">明日计划</div>
+          <p>${escapeHtml(sim.tomorrow || "尚未填写")}</p>
+        </div>
+      `;
+      if (key === "files") {
+        document.querySelector(".library").insertAdjacentHTML("afterbegin", `
+          <div class="file"><div class="icon">🖼️</div><div><b>霏霏模拟上传图片 2 张</b><br/><span class="hint">运营部 · 自动归档</span></div></div>
+          <div class="file"><div class="icon">📎</div><div><b>报价表-模拟附件.xlsx</b><br/><span class="hint">等待财务确认</span></div></div>
+        `);
+      }
+      $("simulator").scrollIntoView({ behavior: "smooth" });
+    }
+
     imageFiles.addEventListener("change", fileSummary);
     attachFiles.addEventListener("change", fileSummary);
 
@@ -381,6 +570,10 @@
       $("todayWork").value = "完成本周客户回访记录整理，补充 6 条客户需求，协助销售确认报价资料。";
       $("problems").value = "客户 C 还没有提供盖章合同，可能影响本周归档，需要明天继续催收。";
       $("tomorrowPlan").value = "上午跟进客户 C 合同，下午整理日报汇总模板，并确认附件归档规则。";
+    });
+
+    document.querySelectorAll("[data-sim]").forEach((btn) => {
+      btn.addEventListener("click", () => applySimulation(btn.dataset.sim));
     });
 
     form.addEventListener("submit", (e) => {
