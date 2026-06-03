@@ -431,6 +431,73 @@
             color: #1565c0;
             white-space: nowrap;
         }
+
+
+        .feature-image, .tutorial-item img {
+            cursor: zoom-in;
+        }
+
+        .image-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.88);
+            padding: 28px;
+        }
+
+        .image-lightbox.open {
+            display: flex;
+        }
+
+        .image-lightbox-content {
+            position: relative;
+            max-width: min(1200px, 96vw);
+            max-height: 92vh;
+            text-align: center;
+        }
+
+        .image-lightbox img {
+            max-width: 100%;
+            max-height: 86vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+            background: white;
+        }
+
+        .image-lightbox-caption {
+            margin-top: 12px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .image-lightbox-close {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 50%;
+            background: #fff;
+            color: #0f172a;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        }
+
+        @media (max-width: 768px) {
+            .image-lightbox {
+                padding: 14px;
+            }
+            .image-lightbox-close {
+                top: 8px;
+                right: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -822,6 +889,14 @@
         </footer>
     </div>
     
+    <div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-label="圖片放大預覽">
+        <div class="image-lightbox-content">
+            <button class="image-lightbox-close" type="button" aria-label="關閉圖片預覽">×</button>
+            <img id="imageLightboxImg" src="" alt="">
+            <div class="image-lightbox-caption" id="imageLightboxCaption"></div>
+        </div>
+    </div>
+    
     <script>
         // 平滑滾動到錨點
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -874,6 +949,43 @@
             });
         }
         
+
+        // 圖片點擊放大預覽
+        const imageLightbox = document.getElementById('imageLightbox');
+        const imageLightboxImg = document.getElementById('imageLightboxImg');
+        const imageLightboxCaption = document.getElementById('imageLightboxCaption');
+        const imageLightboxClose = document.querySelector('.image-lightbox-close');
+
+        function openImageLightbox(img) {
+            if (!img || !img.src) return;
+            imageLightboxImg.src = img.src;
+            imageLightboxImg.alt = img.alt || '圖片預覽';
+            imageLightboxCaption.textContent = img.alt || '';
+            imageLightbox.classList.add('open');
+            imageLightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageLightbox() {
+            imageLightbox.classList.remove('open');
+            imageLightbox.setAttribute('aria-hidden', 'true');
+            imageLightboxImg.src = '';
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.feature-image, .tutorial-item img').forEach(img => {
+            img.addEventListener('click', () => openImageLightbox(img));
+        });
+
+        imageLightbox.addEventListener('click', (event) => {
+            if (event.target === imageLightbox) closeImageLightbox();
+        });
+        imageLightboxClose.addEventListener('click', closeImageLightbox);
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && imageLightbox.classList.contains('open')) {
+                closeImageLightbox();
+            }
+        });
         window.addEventListener('scroll', highlightCurrentSection);
         highlightCurrentSection(); // 初始化時執行一次
     </script>
