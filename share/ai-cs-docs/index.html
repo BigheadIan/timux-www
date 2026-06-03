@@ -357,6 +357,80 @@
             margin-bottom: 8px;
             color: #1565c0;
         }
+
+        .version-note {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+
+        .info-card h4 {
+            color: #2c3e50;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+        }
+
+        .info-card p, .info-card li {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .check-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 0 1px #e9ecef;
+        }
+
+        .check-table th, .check-table td {
+            padding: 13px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+            font-size: 14px;
+        }
+
+        .check-table th {
+            background: #f1f5f9;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .check-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e3f2fd;
+            color: #1565c0;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -370,6 +444,7 @@
             <div class="nav-section-title">快速入門</div>
             <ul class="nav-list">
                 <li><a href="#ai-training">AI 訓練</a></li>
+                <li><a href="#tenant-test">租戶測試客服</a></li>
                 <li><a href="#website-widget">網站嵌入 Widget</a></li>
                 <li><a href="#channel-config">渠道配置</a></li>
                 <li><a href="#workstation">客服工作台</a></li>
@@ -399,7 +474,8 @@
             <!-- 頁面頭部 -->
             <header class="header">
                 <h1>時光智造 AI 智能客服系統</h1>
-                <p class="subtitle">從零開始搭建你的專屬 AI 客服</p>
+                <p class="subtitle">從租戶建立、AI 訓練到測試上線的新版操作指南</p>
+                <div class="version-note">更新日期：2026-06-03｜重點更新：AI 訓練、錄音分析、租戶測試客服、轉真人確認流程</div>
             </header>
             
             <!-- 第一部分：快速入門 -->
@@ -407,97 +483,133 @@
                 <h2>第一部分：快速入門</h2>
                 
                 <div id="ai-training">
-                    <h3>1. AI 訓練 — 最重要的核心功能</h3>
+                    <h3>1. AI 訓練 — 建立知識、意圖、實體與持續學習閉環</h3>
                     <div class="highlight">
-                        <strong>核心功能：</strong>AI 訓練是系統的核心功能，支援多租戶架構（每個公司一個租戶，數據完全隔離）。提供 17 種行業模板，配備互動教程和 AI 智能生成功能，讓你快速建立專屬行業 AI 客服。
+                        <strong>新版定位：</strong>AI 訓練不是只放 FAQ，而是把租戶客服能力拆成「知識庫 FAQ、意圖定義、實體收集、錄音分析、AI 學習」五個層次。建議先建立可維護的知識與意圖，再用錄音/未解答問題持續補強。
                     </div>
-                    
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h4>📚 FAQ 知識庫</h4>
+                            <p>放固定且可回答的內容，例如路線時刻表、遺失物流程、票卡處理方式。適合給 AI 直接引用。</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🎯 意圖定義</h4>
+                            <p>定義使用者「想做什麼」，例如班表查詢、即時位置、客訴、遺失物、票卡扣款爭議。</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🧩 實體收集</h4>
+                            <p>定義需要追問或擷取的欄位，例如路線、站牌、方向、日期、車號、聯絡電話、票卡卡號。</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>🎧 錄音分析</h4>
+                            <p>上傳客服錄音後，系統會分析主要問題，產生 FAQ / Intent / Entity / SOP 候選，供人工審核套用。</p>
+                        </div>
+                    </div>
+
                     <div class="feature-list">
-                        <strong>核心特色：</strong>
+                        <strong>新版 AI 訓練建議流程：</strong>
                         <ul>
-                            <li><strong>多租戶架構：</strong>每個公司擁有獨立租戶，數據完全隔離，確保商業機密</li>
-                            <li><strong>17 種行業模板：</strong>餐飲、旅遊、電商、醫療、健身、美容、教育、金融、物流、房地產、保險、法律、飯店、電信、寵物、診所、通用</li>
-                            <li><strong>互動教程：</strong>新用戶首次進入自動引導，也可隨時點「教程導覽」按鈕重新學習</li>
-                            <li><strong>AI 智能生成：</strong>上傳業務文件（PDF、Word、Excel），AI 自動生成 20 組訓練對話</li>
-                            <li><strong>AI 持續學習：</strong>收集未解答問題 → AI 生成知識庫建議 → 一鍵採用</li>
+                            <li><strong>第一步：建立租戶。</strong>每個客戶或品牌使用獨立租戶，資料隔離。</li>
+                            <li><strong>第二步：先補 FAQ。</strong>把確定答案放入知識庫；會變動或需人工確認的內容要標註限制。</li>
+                            <li><strong>第三步：整理意圖。</strong>把常見來電/訊息分類成可統計的意圖，避免全部落到 OTHER。</li>
+                            <li><strong>第四步：整理實體。</strong>把客服需要追問的關鍵欄位建成實體，例如路線、站牌、日期、方向、車號。</li>
+                            <li><strong>第五步：錄音分析。</strong>批次上傳錄音，等待分析完成後，在候選審核列表中套用有價值內容。</li>
+                            <li><strong>第六步：AI 學習。</strong>針對未解答與需轉真人問題，定期整理可補入 FAQ、意圖或實體的項目。</li>
+                            <li><strong>第七步：租戶測試客服驗證。</strong>每次修改後都要用文字/語音模式跑測試案例，確認不誤答、不誤轉。</li>
                         </ul>
                     </div>
-                    
+
                     <div class="steps">
-                        <p><strong>操作步驟：</strong></p>
+                        <p><strong>AI 學習分頁處理方式：</strong></p>
                         <ol>
-                            <li>進入「AI 訓練」頁面</li>
-                            <li>首次進入會自動啟動互動教程，跟著引導操作</li>
-                            <li>點擊「＋」建立新租戶，填寫公司名稱、選擇行業</li>
-                            <li>系統自動載入該行業的預設意圖（5-6個）和知識庫</li>
-                            <li>切換到「對話訓練」分頁，點擊「🪄 智能生成」</li>
-                            <li>上傳業務文件（PDF、Word、Excel 等），AI 自動生成 20 組對話</li>
-                            <li>審核對話 → 點「🔍 開始分析」→ AI 自動識別意圖和實體</li>
-                            <li>切到「🧠 AI 學習」分頁，查看未解答問題，一鍵生成知識庫建議</li>
+                            <li><strong>knowledge_gap：</strong>知識庫缺固定資料，例如「小12返程時刻表？」。應優先補 FAQ 或向客戶索取資料。</li>
+                            <li><strong>realtime_required：</strong>需要官方即時資料，例如「現在小12到哪裡了？」。不應硬答固定答案，應引導官方動態或詢問是否轉真人。</li>
+                            <li><strong>human_required：</strong>需要真人處理，例如客訴、扣款爭議、事故、臨時站建議。應先詢問是否轉真人，並收集必要欄位。</li>
+                            <li><strong>user_requested_human：</strong>使用者主動要求真人客服。系統會直接轉人工，不再多問一次。</li>
                         </ol>
                     </div>
-                    
+
+                    <table class="check-table">
+                        <thead>
+                            <tr><th>資料類型</th><th>適合放在哪裡</th><th>注意事項</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="badge">固定答案</span></td><td>FAQ 知識庫</td><td>例如固定班表、遺失物流程、客服電話。需要加上資料來源與更新日期。</td></tr>
+                            <tr><td><span class="badge">分類目的</span></td><td>意圖定義</td><td>例如「查班表」「投訴司機」「票卡扣款爭議」。用於路由、統計與客服分析。</td></tr>
+                            <tr><td><span class="badge">欄位資訊</span></td><td>實體收集</td><td>例如路線、站牌、方向、日期、車號、姓名、電話。個資只做收集欄位，不建議寫入 FAQ 答案。</td></tr>
+                            <tr><td><span class="badge">不確定/即時</span></td><td>AI 學習 / 真人確認</td><td>例如即時到站、臨時改道、未公開返程班表。不要讓 AI 推算，應查官方動態或轉真人。</td></tr>
+                        </tbody>
+                    </table>
+
                     <img src="09-ai-training.png" alt="AI 訓練界面截圖" class="feature-image" 
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="image-error" style="display: none;">
                         🖼️ 圖片載入失敗 (09-ai-training.png)
                     </div>
-                    
-                    <div class="tutorial-section">
-                        <h4>📖 互動教程展示</h4>
-                        <p>系統提供完整的互動教程，引導新用戶快速上手。以下是教程的關鍵步驟截圖：</p>
-                        
-                        <div class="tutorial-grid">
-                            <div class="tutorial-item">
-                                <img src="tutorial-step1.png" alt="教程步驟1：建立租戶"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="image-error" style="display: none;">
-                                    🖼️ 圖片載入失敗 (tutorial-step1.png)
-                                </div>
-                                <p><strong>步驟1：建立租戶</strong><br>選擇行業模板，填寫公司資訊</p>
-                            </div>
-                            
-                            <div class="tutorial-item">
-                                <img src="tutorial-step3.png" alt="教程步驟3：意圖管理"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="image-error" style="display: none;">
-                                    🖼️ 圖片載入失敗 (tutorial-step3.png)
-                                </div>
-                                <p><strong>步驟3：意圖管理</strong><br>查看預載的意圖和模擬數據</p>
-                            </div>
-                            
-                            <div class="tutorial-item">
-                                <img src="tutorial-step4.png" alt="教程步驟4：對話訓練"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="image-error" style="display: none;">
-                                    🖼️ 圖片載入失敗 (tutorial-step4.png)
-                                </div>
-                                <p><strong>步驟4：對話訓練</strong><br>瀏覽 10 組模擬對話範例</p>
-                            </div>
-                            
-                            <div class="tutorial-item">
-                                <img src="tutorial-step5.png" alt="教程步驟5：AI 智能生成"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="image-error" style="display: none;">
-                                    🖼️ 圖片載入失敗 (tutorial-step5.png)
-                                </div>
-                                <p><strong>步驟5：AI 智能生成</strong><br>上傳文件，AI 自動生成對話</p>
-                            </div>
-                            
-                            <div class="tutorial-item">
-                                <img src="tutorial-step6.png" alt="教程步驟6：AI 持續學習"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="image-error" style="display: none;">
-                                    🖼️ 圖片載入失敗 (tutorial-step6.png)
-                                </div>
-                                <p><strong>步驟6：AI 持續學習</strong><br>檢視未解答問題，生成建議</p>
-                            </div>
+                </div>
+
+                <div id="tenant-test">
+                    <h3>2. 租戶測試客服 — 上線前必測文字、語音與轉真人流程</h3>
+                    <div class="highlight">
+                        <strong>用途：</strong>「租戶測試客服」用來模擬真實客戶對話。每次新增 FAQ、意圖、實體或錄音訓練內容後，都應先在此頁測試，再交付客戶或現場 demo。
+                    </div>
+
+                    <div class="feature-list">
+                        <strong>三種測試模式：</strong>
+                        <ul>
+                            <li><strong>文字客服測試：</strong>直接輸入客戶問題，驗證 FAQ、Route RAG、意圖與轉真人判斷。</li>
+                            <li><strong>語音電話模式：</strong>瀏覽器語音辨識 STT → /widget/chat → TTS 播放，後端流程與文字模式一致，可驗證轉真人與 AI 學習。</li>
+                            <li><strong>Gemini Live 即時語音：</strong>即時音訊串流體驗。可測語音回答內容；目前主要驗證「是否口頭詢問轉真人」，不作為後台 WAITING 狀態的唯一驗證。</li>
+                        </ul>
+                    </div>
+
+                    <div class="steps">
+                        <p><strong>標準測試步驟：</strong></p>
+                        <ol>
+                            <li>進入「租戶測試客服」。</li>
+                            <li>選擇要測試的租戶，例如「東南客運智慧客服」。</li>
+                            <li>點「重新開始測試」，確保每組案例使用新 session。</li>
+                            <li>先跑正常問題，確認 AI 能回答且不轉真人。</li>
+                            <li>再跑需真人場景，確認 AI 先詢問是否轉真人。</li>
+                            <li>回覆「需要 / 好 / 可以」等確認詞，確認系統才真正轉人工。</li>
+                            <li>回覆「不用」，確認對話維持 BOT，不進人工佇列。</li>
+                            <li>測試完成後，若有進入人工佇列的測試對話，記得結案。</li>
+                        </ol>
+                    </div>
+
+                    <table class="check-table">
+                        <thead>
+                            <tr><th>測試分類</th><th>建議測試語句</th><th>正確結果</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>正常回答</td><td>小12的時刻表？</td><td>回答固定班表，不詢問轉真人。</td></tr>
+                            <tr><td>正常回答</td><td>小12下午三點後還有車嗎？</td><td>回答 15:50、17:40，不詢問轉真人。</td></tr>
+                            <tr><td>knowledge_gap</td><td>小12返程時刻表？</td><td>說明缺固定返程班表，詢問是否轉真人；確認後才轉。</td></tr>
+                            <tr><td>realtime_required</td><td>現在小12到哪裡了？</td><td>建議查官方動態，詢問是否轉真人；回不用則不轉。</td></tr>
+                            <tr><td>human_required</td><td>司機過站不停，我要客訴</td><td>收集必要資訊，詢問是否轉真人；確認後才轉。</td></tr>
+                            <tr><td>user_requested_human</td><td>我要找真人客服</td><td>使用者已主動要求真人，直接轉人工，不再多問一次。</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="tutorial-grid">
+                        <div class="tutorial-item">
+                            <img src="15-tenant-test-normal.png" alt="租戶測試客服正常回答"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="image-error" style="display: none;">🖼️ 圖片載入失敗 (15-tenant-test-normal.png)</div>
+                            <p><strong>正常流程：</strong>小12固定班表可直接回答，無須轉真人。</p>
+                        </div>
+                        <div class="tutorial-item">
+                            <img src="16-tenant-test-handoff.png" alt="租戶測試客服轉真人確認"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="image-error" style="display: none;">🖼️ 圖片載入失敗 (16-tenant-test-handoff.png)</div>
+                            <p><strong>轉真人流程：</strong>客訴等人工作業場景，先詢問，確認後才轉。</p>
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="website-widget">
-                    <h3>2. 網站嵌入 Widget — 讓任何網站擁有 AI 客服</h3>
+                    <h3>3. 網站嵌入 Widget — 讓任何網站擁有 AI 客服</h3>
                     <div class="highlight">
                         <strong>核心功能：</strong>只需一行代碼，即可讓任何網站擁有智能客服功能。右下角浮動聊天氣泡，自動載入租戶知識庫，手機友好。
                     </div>
@@ -548,7 +660,7 @@
                 </div>
                 
                 <div id="channel-config">
-                    <h3>3. 渠道配置 — 連接你的通訊平台</h3>
+                    <h3>4. 渠道配置 — 連接你的通訊平台</h3>
                     <div class="highlight">
                         <strong>核心功能：</strong>區域管理是配置渠道的地方，將 AI 客服連接到 LINE 等通訊平台。
                     </div>
@@ -573,7 +685,7 @@
                 </div>
                 
                 <div id="workstation">
-                    <h3>4. 客服工作台 — 即時接管 AI 對話</h3>
+                    <h3>5. 客服工作台 — 即時接管 AI 對話</h3>
                     <div class="highlight">
                         <strong>核心功能：</strong>當 AI 無法回答或客戶需要人工服務時，客服人員可以在工作台接管對話。
                     </div>
