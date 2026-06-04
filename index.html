@@ -396,6 +396,20 @@
                                     <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.aics.img1">客服工作台</span>
                                 </div>
                             </div>
+                            <div class="mt-3 rounded-xl border border-primary/20 bg-primary/5 p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs text-primary font-semibold" data-i18n="products.aics.caseLabel">東南客運案例截圖</span>
+                                    <span class="text-[11px] text-gray-500" data-i18n="products.aics.caseTag">路線問答 / 即時到站 / 人工轉接</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-normal.png')">
+                                        <img src="images/cases/southeast-ai-cs-normal.png" alt="東南客運 AI 客服正常問答" class="rounded-lg w-full h-24 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                    </div>
+                                    <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-realtime.png')">
+                                        <img src="images/cases/southeast-ai-cs-realtime.png" alt="東南客運 AI 客服即時資訊轉人工提示" class="rounded-lg w-full h-24 object-cover object-top border border-gray-700 hover:border-primary transition">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div>
@@ -700,6 +714,68 @@
                                 <span class="text-2xl hidden">🚌</span>
                             </div>
                             <p class="text-sm text-gray-400">東南客運</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section id="case-studies" class="py-24 relative border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="cases.title">實績案例</h2>
+                <p class="text-xl text-gray-400" data-i18n="cases.subtitle">把近期導入成果，用真實介面截圖呈現</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="glass rounded-2xl p-6 md:p-8 card-hover overflow-hidden">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center p-2">
+                            <img src="images/clients/southeast-bus.png" alt="東南客運" class="max-w-full max-h-full object-contain">
+                        </div>
+                        <div>
+                            <p class="text-xs text-primary font-semibold" data-i18n="cases.southeast.category">AI 智能客服</p>
+                            <h3 class="text-2xl font-bold" data-i18n="cases.southeast.title">東南客運 AI 客服</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-5" data-i18n="cases.southeast.desc">導入租戶式客服訓練、錄音分析、路線/班表問答與真人轉接流程，讓大量客運客服問題可被分類、學習與追蹤。</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-normal.png')">
+                            <img src="images/cases/southeast-ai-cs-normal.png" alt="東南客運 AI 客服問答截圖" class="rounded-xl h-52 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.southeast.img1">路線問答</div>
+                        </div>
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-realtime.png')">
+                            <img src="images/cases/southeast-ai-cs-realtime.png" alt="東南客運即時資訊轉人工截圖" class="rounded-xl h-52 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.southeast.img2">即時資訊處理</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-2xl p-6 md:p-8 card-hover overflow-hidden">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center p-2">
+                            <img src="images/clients/mj-security.png" alt="銘將保全" class="max-w-full max-h-full object-contain">
+                        </div>
+                        <div>
+                            <p class="text-xs text-primary font-semibold" data-i18n="cases.mj.category">LINE 數據整理</p>
+                            <h3 class="text-2xl font-bold" data-i18n="cases.mj.title">銘將保全 LINE 數據整理</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-5" data-i18n="cases.mj.desc">保全群組照片、打卡、請假、加班、任務與薪資資料整合到 LINE Bot 與 LIFF 手機頁，現場人員不用進後台也能完成日常操作。</p>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/mj-line-bot-rich-menu.png')">
+                            <img src="images/cases/mj-line-bot-rich-menu.png" alt="銘將保全 LINE Bot Rich Menu" class="rounded-xl h-56 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.mj.img1">LINE Bot</div>
+                        </div>
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/mj-liff-clock.png')">
+                            <img src="images/cases/mj-liff-clock.png" alt="銘將保全 LIFF 打卡頁" class="rounded-xl h-56 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.mj.img2">LIFF 打卡</div>
+                        </div>
+                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/mj-liff-attendance.png')">
+                            <img src="images/cases/mj-liff-attendance.png" alt="銘將保全 LIFF 出勤月曆" class="rounded-xl h-56 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
+                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.mj.img3">出勤月曆</div>
                         </div>
                     </div>
                 </div>
