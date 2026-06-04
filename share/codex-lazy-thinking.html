@@ -86,7 +86,13 @@
     .title.mid{font-size:76px!important;line-height:1.12!important}.title.small{font-size:64px!important;line-height:1.14!important}.title.xsmall{font-size:58px!important;line-height:1.15!important}.quote.small{font-size:72px!important;line-height:1.18!important}
     .demo-slide{gap:28px!important}.demo-title{font-size:64px!important;line-height:1.14!important;text-align:center;background:rgba(2,6,23,.82);border:3px solid rgba(255,255,255,.28);border-radius:34px;padding:24px 34px;box-shadow:0 24px 90px rgba(0,0,0,.62);font-weight:950;color:#fff!important}.video-wrap{width:930px;height:1120px;border-radius:34px;border:3px solid rgba(103,232,249,.55);background:#020617;box-shadow:0 28px 90px rgba(0,0,0,.62);overflow:hidden;display:flex;align-items:center;justify-content:center}.video-wrap video{width:100%;height:100%;object-fit:contain;background:#020617}.demo-note{font-size:36px!important;line-height:1.24!important;color:#fff!important;background:#020617;border:2px solid rgba(255,255,255,.28);border-radius:24px;padding:16px 24px;text-align:center}
 
-    .reveal .controls,.reveal .progress,.reveal .pause-overlay{display:none!important}
+    .reveal .controls,.reveal .progress,.reveal .pause-overlay,.reveal .playback{display:none!important}
+
+    .opening-kicker{visibility:hidden!important}
+    .case-title{font-size:62px!important;line-height:1.14!important;margin-bottom:36px!important}
+    .case-grid{width:900px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .case-card{height:250px;border-radius:30px;background:#020617;border:3px solid rgba(255,255,255,.3);padding:26px 28px;display:flex;flex-direction:column;justify-content:center;gap:10px;box-shadow:0 22px 70px rgba(0,0,0,.45)}
+    .case-card span{font-size:54px;line-height:1}.case-card b{font-size:42px;line-height:1.1;color:#fff}.case-card em{font-style:normal;font-size:38px;line-height:1.12;color:#facc15;font-weight:950;text-shadow:0 0 14px rgba(250,204,21,.35)}
   </style>
 <!-- v7-marker yellow-emphasis-layout -->
 </head>
@@ -102,7 +108,7 @@
     <div class="tool t5"><div class="icon"><img src="https://cdn.simpleicons.org/openai/ffffff" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback" style="display:none">AI</span></div>Codex<small>又说是救星</small></div>
     <div class="tool t6"><div class="icon"><img src="https://cdn.simpleicons.org/capcut/ffffff" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback" style="display:none">剪</span></div>剪映 AI<small>一键成片</small></div>
   </div>
-  <div class="kicker">开场 Hook</div>
+  <div class="kicker opening-kicker" aria-hidden="true"></div>
   <div class="title">不要再追着<br><span class="grad"><span class="hl">AI 工具</span></span>跑了</div>
   <p class="subtitle">工具越多<br><span class="hl">越焦虑</span></p>
 </section>
@@ -208,9 +214,13 @@
 </section>
 <section>
   <div class="grid"></div>
-  <div class="kicker">案例延伸</div>
-  <h2 class="title small" style="margin-bottom:50px">普通人先做<br>很小但很有用的工具</h2>
-  <div class="tools"><div class="mini"><span>🎬</span><span class="hl">选题评分表</span></div><div class="mini"><span>📚</span><span class="hl">教案生成流程</span></div><div class="mini"><span>🤝</span><span class="hl">客户需求整理器</span></div><div class="mini"><span>📊</span>活动复盘<span class="hl">模板</span></div></div>
+  <h2 class="title case-title">普通人先做<br><span class="hl">小而有用</span>的工具</h2>
+  <div class="case-grid">
+    <div class="case-card"><span>🎬</span><b>自媒体人</b><em>选题评分表</em></div>
+    <div class="case-card"><span>📚</span><b>老师</b><em>教案生成流程</em></div>
+    <div class="case-card"><span>🤝</span><b>老板 / 销售</b><em>客户需求整理器</em></div>
+    <div class="case-card"><span>📊</span><b>运营</b><em>活动复盘模板</em></div>
+  </div>
 </section>
 <section>
   <div class="grid"></div>
