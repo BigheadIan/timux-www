@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
@@ -11,18 +11,19 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo Hub | Timux</title>
   <meta name="description" content="Explore Timux products for sports venues, customer service, events and AI experiences.">
   <link rel="canonical" href="https://www.timux.site/demo/">
   <link rel="icon" type="image/png" href="../images/logo-icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    body { font-family: Inter, system-ui, sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap');
+    body { font-family: Inter, "Noto Sans SC", system-ui, sans-serif; }
     .hero { background: radial-gradient(circle at top right, #312e81 0, transparent 36%), radial-gradient(circle at left, #0e7490 0, transparent 30%), #020617; }
     .card { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
     .card:hover { transform: translateY(-4px); border-color: #6366f1; box-shadow: 0 16px 40px rgba(30, 41, 59, .55); }
+    .lang-active { background: #4f46e5; color: #fff; }
   </style>
+  <title>Timux Demo Hub</title>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100">
   <header class="border-b border-slate-800 bg-slate-950/90">
@@ -31,7 +32,13 @@
         <img class="h-8 w-8" src="../images/logo-icon.png" alt="Timux">
         <span class="font-semibold">Timux <span class="text-slate-400">Demo Hub</span></span>
       </a>
-      <a class="text-sm text-slate-400 transition hover:text-white" href="https://www.timux.site/">Official website</a>
+      <div class="flex items-center gap-3">
+        <div class="flex rounded-lg border border-slate-700 p-1 text-xs font-semibold">
+          <button class="lang-active rounded px-2.5 py-1.5" data-lang="zh-CN">简体中文</button>
+          <button class="rounded px-2.5 py-1.5 text-slate-300" data-lang="en">English</button>
+        </div>
+        <a class="hidden text-sm text-slate-400 transition hover:text-white sm:block" href="https://www.timux.site/" data-i18n="website">官网</a>
+      </div>
     </div>
   </header>
 
@@ -39,70 +46,114 @@
     <section class="hero border-b border-slate-800">
       <div class="mx-auto max-w-6xl px-6 py-20">
         <p class="mb-4 text-sm font-semibold uppercase tracking-[.24em] text-cyan-300">Timux Demo Hub</p>
-        <h1 class="max-w-3xl text-4xl font-extrabold leading-tight md:text-6xl">Experience practical AI,<br>not just a slide deck.</h1>
-        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Explore products for sports communities, venue operations, customer service and event experiences. The links below lead to live, demonstration-ready services.</p>
-        <p class="mt-4 text-sm text-slate-400">時光智造：把 AI 放進真實營運流程，讓服務、場館與社群更有效率。</p>
+        <h1 class="max-w-3xl text-4xl font-extrabold leading-tight md:text-6xl" data-i18n="heroTitle">体验真正落地的 AI，<br>不只是简报。</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300" data-i18n="heroBody">探索运动社群、场馆运营、智能客服与活动体验产品。以下服务可直接打开体验。</p>
+        <p class="mt-4 text-sm text-slate-400" data-i18n="tagline">时光智造：把 AI 放进真实运营流程，让服务、场馆与社群更有效率。</p>
       </div>
     </section>
 
     <section class="mx-auto max-w-6xl px-6 py-14">
       <div class="mb-7 flex items-end justify-between gap-4">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[.18em] text-emerald-300">Live demos</p>
-          <h2 class="mt-2 text-3xl font-bold">Try it now</h2>
+          <p class="text-sm font-semibold uppercase tracking-[.18em] text-emerald-300" data-i18n="liveLabel">LIVE DEMOS</p>
+          <h2 class="mt-2 text-3xl font-bold" data-i18n="liveTitle">立即体验</h2>
         </div>
-        <p class="text-right text-sm text-slate-400">Open in a new tab</p>
+        <p class="text-right text-sm text-slate-400" data-i18n="newTab">将在新分页打开</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <article class="card rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <div class="text-3xl">🏸</div>
           <h3 class="mt-4 text-xl font-bold">PlayTime</h3>
-          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400">A LINE-first sports community for creating events, matching players and enjoying games together.</p>
-          <a class="mt-6 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://playtime.timux.site" target="_blank" rel="noopener">Open PlayTime →</a>
+          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400" data-i18n="playtimeDesc">以 LINE 为入口的运动社群：创建活动、揪团配对、轻松开打。</p>
+          <a class="mt-6 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://playtime.timux.site" target="_blank" rel="noopener" data-i18n="openPlaytime">打开 PlayTime →</a>
         </article>
+
         <article class="card rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <div class="text-3xl">🚌</div>
-          <h3 class="mt-4 text-xl font-bold">Southeast Bus AI Customer Service</h3>
-          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400">A live customer-service widget for route, service and handoff conversations. No account is required.</p>
-          <a class="mt-6 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://ai-customer-service.timux.site/southeast-widget-test.html" target="_blank" rel="noopener">Try the AI assistant →</a>
+          <h3 class="mt-4 text-xl font-bold" data-i18n="csTitle">东南客运 AI 客服</h3>
+          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400" data-i18n="csDesc">可直接体验路线、服务资讯与真人转接对话；Widget 无需登入。</p>
+          <div class="mt-4 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-sm leading-6 text-cyan-100">
+            <div><span data-i18n="account">测试帐号</span>：<strong>eastsouth@example.com</strong></div>
+            <div><span data-i18n="password">密码</span>：<strong>eastsouth123456</strong></div>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a class="inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://ai-customer-service.timux.site/southeast-widget-test.html" target="_blank" rel="noopener" data-i18n="tryWidget">体验 Widget →</a>
+            <a class="inline-flex rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-white hover:text-white" href="https://ai-customer-service.timux.site/ai-customer-service" target="_blank" rel="noopener" data-i18n="openBackend">打开管理后台 →</a>
+          </div>
         </article>
+
         <article class="card rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <div class="text-3xl">🐶</div>
-          <h3 class="mt-4 text-xl font-bold">Time Assistant</h3>
-          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400">An event and community assistant for participant guidance, on-site information and activity support.</p>
-          <div class="mt-5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-sm text-cyan-100">Demo account: <strong>G01</strong> &nbsp; Password: <strong>123321</strong></div>
-          <a class="mt-4 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://szintern.timux.cn" target="_blank" rel="noopener">Open Time Assistant →</a>
+          <h3 class="mt-4 text-xl font-bold" data-i18n="timeTitle">时光助手</h3>
+          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400" data-i18n="timeDesc">为活动与社群提供参与者指引、现场资讯与服务支持。</p>
+          <div class="mt-5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-sm text-cyan-100"><span data-i18n="account">测试帐号</span>：<strong>G01</strong> &nbsp; <span data-i18n="password">密码</span>：<strong>123321</strong></div>
+          <a class="mt-4 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://szintern.timux.cn" target="_blank" rel="noopener" data-i18n="openTime">打开时光助手 →</a>
         </article>
-        <article class="card rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <div class="text-3xl">🧑‍💼</div>
-          <h3 class="mt-4 text-xl font-bold">AI Digital Employee</h3>
-          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400">Turn business knowledge, voice and workflows into a customer-facing AI representative.</p>
-          <a class="mt-6 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://digitalhuman.timux.site" target="_blank" rel="noopener">Open AI Digital Employee →</a>
-        </article>
+
         <article class="card rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <div class="text-3xl">🎮</div>
-          <h3 class="mt-4 text-xl font-bold">Guangming Game Hub</h3>
-          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400">A platform for interactive games, cultural experiences and AI-enabled co-creation.</p>
-          <a class="mt-6 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://gm-game-hub.timux.cn" target="_blank" rel="noopener">Explore Game Hub →</a>
+          <h3 class="mt-4 text-xl font-bold" data-i18n="gameTitle">光明游戏共创平台</h3>
+          <p class="mt-2 min-h-16 text-sm leading-6 text-slate-400" data-i18n="gameDesc">互动游戏、文化体验与 AI 共创作品的展示平台。</p>
+          <a class="mt-6 inline-flex rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold transition hover:bg-indigo-400" href="https://gm-game-hub.timux.cn" target="_blank" rel="noopener" data-i18n="openGame">探索游戏平台 →</a>
         </article>
       </div>
     </section>
 
     <section class="border-y border-slate-800 bg-slate-900/50">
-      <div class="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-2 md:items-center">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[.18em] text-amber-300">Product preview</p>
-          <h2 class="mt-2 text-3xl font-bold">AceTime Smart Venue Operations</h2>
-          <p class="mt-4 leading-7 text-slate-300">A venue operating system connecting online booking, schedules, membership, revenue dashboards and IoT-ready operations. The live instance is temporarily unavailable, so this page presents the real product interface instead of an inactive link.</p>
-          <a class="mt-6 inline-flex rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-white hover:text-white" href="https://www.timux.site/#products">View product overview →</a>
+      <div class="mx-auto max-w-6xl px-6 py-14">
+        <p class="text-sm font-semibold uppercase tracking-[.18em] text-amber-300" data-i18n="previewLabel">PRODUCT PREVIEW</p>
+        <h2 class="mt-2 text-3xl font-bold" data-i18n="aceTitle">AceTime 智慧场馆管理</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-300" data-i18n="aceDesc">从你提供的 SmartCourt 文件中，保留「系统画面展示：管理后台」的四张真实系统画面：营运数据、时段定价、预约管理与内容管理。</p>
+        <div class="mt-8 grid gap-5 md:grid-cols-2">
+          <figure class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950">
+            <img class="w-full" src="../images/acetime/admin-dashboard.png" alt="AceTime management dashboard">
+            <figcaption class="border-t border-slate-800 px-4 py-3 text-sm text-slate-300" data-i18n="dashboard">营运数据仪表板</figcaption>
+          </figure>
+          <figure class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950">
+            <img class="w-full" src="../images/acetime/admin-schedule.png" alt="AceTime venue schedule management">
+            <figcaption class="border-t border-slate-800 px-4 py-3 text-sm text-slate-300" data-i18n="schedule">场地时段与动态定价</figcaption>
+          </figure>
+          <figure class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950">
+            <img class="w-full" src="../images/acetime/admin-bookings.png" alt="AceTime booking management">
+            <figcaption class="border-t border-slate-800 px-4 py-3 text-sm text-slate-300" data-i18n="bookings">预约管理与状态处理</figcaption>
+          </figure>
+          <figure class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950">
+            <img class="w-full" src="../images/acetime/admin-content.png" alt="AceTime content management">
+            <figcaption class="border-t border-slate-800 px-4 py-3 text-sm text-slate-300" data-i18n="content">图文内容管理与手机预览</figcaption>
+          </figure>
         </div>
-        <img class="w-full rounded-xl border border-slate-700 shadow-2xl" src="../images/smartcourt/dashboard.png" alt="AceTime venue operations dashboard preview">
       </div>
     </section>
   </main>
 
-  <footer class="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-500">
-    © 2026 Timux Technology Co., Ltd. · 智造交給 AI，時光留給所愛
-  </footer>
+  <footer class="mx-auto max-w-6xl px-6 py-10 text-sm text-slate-500" data-i18n="footer">© 2026 时光智造科技有限公司 Timux · 智造交给 AI，时光留给所爱</footer>
+
+  <script>
+    const translations = {
+      'zh-CN': {
+        pageTitle: 'Demo Hub | 时光智造 Timux', website: '官网', heroTitle: '体验真正落地的 AI，<br>不只是简报。', heroBody: '探索运动社群、场馆运营、智能客服与活动体验产品。以下服务可直接打开体验。', tagline: '时光智造：把 AI 放进真实运营流程，让服务、场馆与社群更有效率。', liveLabel: 'LIVE DEMOS', liveTitle: '立即体验', newTab: '将在新分页打开', playtimeDesc: '以 LINE 为入口的运动社群：创建活动、揪团配对、轻松开打。', openPlaytime: '打开 PlayTime →', csTitle: '东南客运 AI 客服', csDesc: '可直接体验路线、服务资讯与真人转接对话；Widget 无需登入。', account: '测试帐号', password: '密码', tryWidget: '体验 Widget →', openBackend: '打开管理后台 →', timeTitle: '时光助手', timeDesc: '为活动与社群提供参与者指引、现场资讯与服务支持。', openTime: '打开时光助手 →', gameTitle: '光明游戏共创平台', gameDesc: '互动游戏、文化体验与 AI 共创作品的展示平台。', openGame: '探索游戏平台 →', previewLabel: 'PRODUCT PREVIEW', aceTitle: 'AceTime 智慧场馆管理', aceDesc: '从你提供的 SmartCourt 文件中，保留「系统画面展示：管理后台」的四张真实系统画面：营运数据、时段定价、预约管理与内容管理。', dashboard: '营运数据仪表板', schedule: '场地时段与动态定价', bookings: '预约管理与状态处理', content: '图文内容管理与手机预览', footer: '© 2026 时光智造科技有限公司 Timux · 智造交给 AI，时光留给所爱'
+      },
+      en: {
+        pageTitle: 'Demo Hub | Timux', website: 'Official website', heroTitle: 'Experience practical AI,<br>not just a slide deck.', heroBody: 'Explore products for sports communities, venue operations, customer service and event experiences. The services below are ready to try.', tagline: 'Timux puts AI into real operations, helping services, venues and communities work better.', liveLabel: 'LIVE DEMOS', liveTitle: 'Try it now', newTab: 'Opens in a new tab', playtimeDesc: 'A LINE-first sports community for creating events, matching players and enjoying games together.', openPlaytime: 'Open PlayTime →', csTitle: 'Southeast Bus AI Customer Service', csDesc: 'Try route, service and human-handoff conversations directly. The widget needs no sign-in.', account: 'Demo account', password: 'Password', tryWidget: 'Try the widget →', openBackend: 'Open admin console →', timeTitle: 'Time Assistant', timeDesc: 'An event and community assistant for participant guidance, on-site information and service support.', openTime: 'Open Time Assistant →', gameTitle: 'Guangming Game Hub', gameDesc: 'A platform for interactive games, cultural experiences and AI-enabled co-creation.', openGame: 'Explore Game Hub →', previewLabel: 'PRODUCT PREVIEW', aceTitle: 'AceTime Smart Venue Operations', aceDesc: 'Four real management-backend screens from the supplied SmartCourt deck: operating data, schedule pricing, booking management and content management.', dashboard: 'Operations dashboard', schedule: 'Venue schedules and dynamic pricing', bookings: 'Booking management and status handling', content: 'Content management with mobile preview', footer: '© 2026 Timux Technology Co., Ltd. · Let AI do the making, leave time for what you love.'
+      }
+    };
+    function setLanguage(lang) {
+      const copy = translations[lang];
+      document.documentElement.lang = lang;
+      document.title = copy.pageTitle;
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        const value = copy[element.dataset.i18n];
+        if (value) element.innerHTML = value;
+      });
+      document.querySelectorAll('[data-lang]').forEach((button) => {
+        const active = button.dataset.lang === lang;
+        button.classList.toggle('lang-active', active);
+        button.classList.toggle('text-slate-300', !active);
+      });
+      localStorage.setItem('timux-demo-language', lang);
+    }
+    document.querySelectorAll('[data-lang]').forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.lang)));
+    setLanguage(localStorage.getItem('timux-demo-language') || 'zh-CN');
+  </script>
 </body>
 </html>
