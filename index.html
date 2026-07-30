@@ -1,989 +1,1096 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-NDPR2LSFQ3');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>時光智造 Timux - 智慧場館管理 × AI 運動揪團 | SmartCourt + PlayTime</title>
-    <meta name="description" content="時光智造 Timux 打造智慧運動生態系。SmartCourt 智慧場館管理（IoT + SaaS）+ PlayTime AI 運動揪團平台（LINE LIFF）+ AI 智能客服，從訂場到揪人到比賽，一站式解決方案。">
-    <meta name="keywords" content="智慧場館,運動中心管理系統,場地預約系統,線上預約,場地租借,國民運動中心,運動中心,羽球場預約,羽球館,籃球場管理,網球場系統,桌球場,壁球場,游泳池管理,泳池系統,健身房系統,健身中心,體適能中心,球場管理,球館系統,場館營運,體育館智能化,數位場館,雲端管理,AI客服,AI分身,AI數字人,數字人員工,智能客服,客服機器人,聊天機器人,自動回覆,線上客服,24小時客服,企業客服系統,智能問答,顧客服務,客戶服務,SmartCourt,Timux,時光智造,台灣">
-    <meta name="author" content="時光智造 Timux">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.timux.site/">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.timux.site/">
-    <meta property="og:title" content="時光智造 Timux | 智造交給 AI，時光留給所愛">
-    <meta property="og:description" content="AI 驅動的智能解決方案。智慧場館管理、AI 智能客服，讓您專注於更有價值的事。">
-    <meta property="og:image" content="https://www.timux.site/images/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="zh_TW">
-    <meta property="og:locale:alternate" content="zh_CN">
-    <meta property="og:locale:alternate" content="en_US">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.timux.site/">
-    <meta name="twitter:title" content="時光智造 Timux | 智造交給 AI，時光留給所愛">
-    <meta name="twitter:description" content="AI 驅動的智能解決方案。智慧場館管理、AI 智能客服，讓您專注於更有價值的事。">
-    <meta name="twitter:image" content="https://www.timux.site/images/og-image.png">
-    
-    <link rel="icon" type="image/png" href="images/logo-icon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6366f1',
-                        secondary: '#8b5cf6',
-                        accent: '#06b6d4',
-                        dark: '#0f172a',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-text {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-        }
-        .ai-glow {
-            box-shadow: 0 0 60px rgba(99, 102, 241, 0.4);
-        }
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .pulse-glow {
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
-            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.8); }
-        }
-    </style>
-    
-    <!-- Structured Data / JSON-LD -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-NDPR2LSFQ3");
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="index,follow">
+  <meta name="author" content="時光智造 Timux">
+  <meta name="timux-build" content="homepage-v3-readable-20260730">
+  <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
+  <meta name="description" content="時光智造 Timux：從業務痛點、資料與流程出發，把 AI 做成企業真正用得起來的工作能力。">
+  <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
+  <link rel="canonical" href="https://www.timux.site/">
+  <link rel="icon" type="image/png" href="assets/logo-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:url" content="https://www.timux.site/">
+  <meta property="og:title" content="時光智造 Timux｜企業 AI 導入顧問與落地團隊">
+  <meta property="og:description" content="從真實業務痛點、資料與流程出發，把 AI 做成企業真正用得起來、能安全擴大的工作能力。">
+  <meta property="og:image" content="https://www.timux.site/images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="時光智造 Timux｜企業 AI 導入顧問與落地團隊">
+  <meta name="twitter:description" content="從真實業務痛點、資料與流程出發，把 AI 做成企業真正用得起來、能安全擴大的工作能力。">
+  <meta name="twitter:image" content="https://www.timux.site/images/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
         "@type": "Organization",
+        "@id": "https://www.timux.site/#organization",
         "name": "時光智造 Timux",
-        "url": "https://www.timux.site",
-        "logo": "https://www.timux.site/images/logo.png",
-        "description": "時光智造提供智慧體育場館管理系統、AI智能客服、場地預約系統等解決方案",
-        "sameAs": [],
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "customer service",
-            "availableLanguage": ["Chinese", "English"]
-        }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "SmartCourt 智慧場館系統",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "智慧運動中心管理系統，支援羽球場、籃球場、網球場、桌球場、游泳池、健身房、國民運動中心等場地線上預約與營運管理",
-        "offers": {
-            "@type": "Offer",
-            "category": "場館管理軟體"
-        },
-        "featureList": [
-            "場地線上預約",
-            "場地租借系統",
-            "會員管理",
-            "智能排程",
-            "數據分析",
-            "線上支付",
-            "設備管理",
-            "雲端管理"
+        "url": "https://www.timux.site/",
+        "logo": "https://www.timux.site/assets/logo-icon.png",
+        "description": "企業 AI 導入顧問與落地團隊，從業務痛點、資料與流程出發，協助企業建立可驗證、可治理、可持續營運的 AI 能力。",
+        "email": "service@timux.site",
+        "knowsAbout": [
+          "企業 AI 導入",
+          "AI Agent",
+          "AI 智能客服",
+          "企業知識庫",
+          "流程自動化",
+          "系統整合"
         ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "AI 智能客服系統",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "AI驅動的智能客服機器人，提供24小時自動回覆、智能問答、多管道線上客服與顧客服務",
-        "offers": {
-            "@type": "Offer",
-            "category": "客服軟體"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.timux.site/#website",
+        "url": "https://www.timux.site/",
+        "name": "時光智造 Timux",
+        "publisher": {
+          "@id": "https://www.timux.site/#organization"
         },
-        "featureList": [
-            "24小時自動回覆",
-            "智能問答",
-            "多語言支援",
-            "聊天機器人",
-            "LINE 官方帳號整合",
-            "Facebook Messenger 整合",
-            "顧客數據分析",
-            "真人客服轉接"
-        ]
+        "inLanguage": "zh-Hant"
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --ink: #090a0e;
+      --ink-2: #11131a;
+      --ink-3: #191c26;
+      --paper: #f8f7f4;
+      --white: #fff;
+      --text: #f6f5f1;
+      --muted: #a7a9b3;
+      --paper-muted: #6d6f76;
+      --line: rgba(255,255,255,.12);
+      --paper-line: rgba(10,11,15,.12);
+      --violet: #8d7cff;
+      --violet-2: #5d4cff;
+      --cyan: #53e4eb;
+      --blue: #4f8cff;
+      --peach: #ffb49a;
+      --lime: #c7f68a;
+      --max: 1280px;
+      --radius: 28px;
+      --shadow: 0 30px 100px rgba(0,0,0,.35);
     }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "AI 分身員工",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "結合知識庫、基礎 Prompt、訪談錄音與語音包的 AI 數字人工作台，協助企業建立可對外服務的 AI 分身員工。",
-        "url": "https://digitalhuman.timux.site/",
-        "offers": {
-            "@type": "Offer",
-            "category": "AI 數字人"
-        },
-        "featureList": [
-            "知識庫上傳",
-            "基礎 Prompt 生成",
-            "訪談式錄音",
-            "語音樣本管理",
-            "多租戶工作台",
-            "文字與語音體驗"
-        ]
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Manrope, "Noto Sans TC", system-ui, sans-serif;
+      line-height: 1.65;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
     }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "PlayTime 運動揪團平台",
-        "applicationCategory": "SportsApplication",
-        "operatingSystem": "Web, LINE LIFF",
-        "description": "LINE LIFF 原生運動社群平台，一鍵開團揪人、對抗分組、即時記分，支援匹克球、羽球、排球等多種運動。",
-        "url": "https://playtime.timux.site",
-        "offers": {
-            "@type": "Offer",
-            "category": "運動社群"
-        },
-        "featureList": [
-            "LINE 一鍵開團",
-            "快速報名",
-            "俱樂部管理",
-            "對抗分組（循環賽、淘汰賽）",
-            "即時記分",
-            "海報生成",
-            "LINE 分享裂變"
-        ]
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    svg { display: block; }
+    h1, h2, h3, p { margin-top: 0; }
+    ::selection { color: #08090c; background: var(--cyan); }
+
+    .shell { width: min(calc(100% - 48px), var(--max)); margin: 0 auto; }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .07em;
+      text-transform: uppercase;
     }
-    </script>
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 20px;
+      color: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      content: "";
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 18px var(--cyan);
+    }
+    .button {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 750;
+      line-height: 1.2;
+      transition: transform .25s ease, background .25s ease, border-color .25s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button.white { color: #090a0e; background: #fff; }
+    .button.ghost { color: #fff; border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.04); }
+    .button.dark { color: #fff; background: #090a0e; }
+    .button svg { width: 17px; height: 17px; }
+
+    .preview-note {
+      padding: 7px 14px;
+      color: #c9c9d2;
+      background: #12131a;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .dark-world {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 76% 12%, rgba(111,86,255,.2), transparent 29%),
+        radial-gradient(circle at 13% 54%, rgba(51,197,206,.08), transparent 24%),
+        #08090d;
+    }
+    .dark-world::before {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      opacity: .34;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+    }
+    .noise {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .16;
+      pointer-events: none;
+      filter: contrast(150%);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.24'/%3E%3C/svg%3E");
+    }
+
+    .nav {
+      position: relative;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      background: rgba(8,9,13,.76);
+      backdrop-filter: blur(20px);
+    }
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { width: 38px; height: 38px; border-radius: 11px; }
+    .brand strong { display: block; font-size: 16px; letter-spacing: -.02em; }
+    .brand small { display: block; color: #838691; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: #b7b8c0; font-size: 14px; font-weight: 600; }
+    .nav-links a:not(.button):hover { color: #fff; }
+    .nav .button { min-height: 42px; padding: 9px 16px; font-size: 13px; }
+
+    .hero { padding: 94px 0 98px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 58px;
+      align-items: center;
+    }
+    .hero-copy { position: relative; z-index: 2; }
+    .hero h1 {
+      margin-bottom: 25px;
+      font-size: clamp(54px, 6vw, 88px);
+      font-weight: 780;
+      line-height: .99;
+      letter-spacing: -.065em;
+    }
+    .hero h1 .line { display: block; }
+    .hero h1 .prism-text {
+      color: transparent;
+      background: linear-gradient(90deg, #fff 0%, #dcd6ff 38%, #78eaf0 72%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .hero-lead { max-width: 590px; margin-bottom: 32px; color: #b5b7c0; font-size: 18px; line-height: 1.8; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .proof-line { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 25px; color: #787b87; font-size: 12px; }
+    .proof-line span { display: flex; align-items: center; gap: 7px; }
+    .proof-line i { width: 5px; height: 5px; border-radius: 50%; background: #5e6170; }
+
+    .prism-stage { position: relative; min-width: 0; }
+    .prism-glow {
+      position: absolute;
+      inset: -17% -12% -16% -6%;
+      z-index: -1;
+      opacity: .75;
+      filter: blur(55px);
+      background:
+        radial-gradient(circle at 38% 24%, rgba(116,91,255,.7), transparent 30%),
+        radial-gradient(circle at 78% 44%, rgba(77,223,230,.48), transparent 25%),
+        radial-gradient(circle at 56% 82%, rgba(255,169,139,.35), transparent 25%);
+      animation: breathe 7s ease-in-out infinite alternate;
+    }
+    @keyframes breathe { to { transform: scale(1.06) translate3d(1%, -1%, 0); opacity: .9; } }
+    .prism-frame {
+      position: relative;
+      padding: 1px;
+      border-radius: 31px;
+      background: linear-gradient(138deg, rgba(255,255,255,.48), rgba(141,124,255,.7) 28%, rgba(83,228,235,.58) 67%, rgba(255,180,154,.42));
+      box-shadow: 0 40px 130px rgba(0,0,0,.58);
+    }
+    .prism-frame::before {
+      position: absolute;
+      inset: -1px;
+      content: "";
+      border-radius: inherit;
+      opacity: .6;
+      filter: blur(16px);
+      background: inherit;
+    }
+    .agent-app {
+      position: relative;
+      display: grid;
+      grid-template-columns: 170px minmax(0,1fr) 212px;
+      min-height: 578px;
+      overflow: hidden;
+      border-radius: 30px;
+      background: rgba(12,14,20,.94);
+      backdrop-filter: blur(28px);
+    }
+    .app-side {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 15px;
+      border-right: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+    }
+    .app-mark { display: flex; align-items: center; gap: 9px; margin-bottom: 25px; font-size: 13px; font-weight: 750; }
+    .app-mark span {
+      width: 28px; height: 28px; display: grid; place-items: center;
+      border-radius: 9px; color: #090a0e;
+      background: linear-gradient(135deg, #9f90ff, #62e6e5);
+      box-shadow: 0 0 22px rgba(114,228,232,.24);
+    }
+    .side-label { margin: 14px 8px 8px; color: #717480; font-size: 10px; }
+    .side-item {
+      display: flex; align-items: center; gap: 9px; margin: 2px 0;
+      padding: 10px 9px; border-radius: 10px; color: #9295a2; font-size: 11px; font-weight: 650;
+    }
+    .side-item svg { width: 14px; height: 14px; }
+    .side-item.active { color: #fff; background: rgba(141,124,255,.13); box-shadow: inset 0 0 0 1px rgba(141,124,255,.18); }
+    .side-live {
+      margin-top: auto; padding: 12px; border: 1px solid var(--line); border-radius: 14px;
+      color: #9a9da8; background: rgba(255,255,255,.025); font-size: 10px;
+    }
+    .side-live b { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: #d6d7dc; font-size: 11px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #7decaf; box-shadow: 0 0 12px #7decaf; }
+
+    .chat-main { min-width: 0; display: flex; flex-direction: column; }
+    .app-head {
+      min-height: 65px; display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 13px 17px; border-bottom: 1px solid var(--line);
+    }
+    .app-head h3 { margin: 0; font-size: 14px; letter-spacing: -.01em; }
+    .app-head p { margin: 2px 0 0; color: #8d909c; font-size: 10px; }
+    .agent-badge {
+      display: flex; align-items: center; gap: 7px; padding: 6px 9px;
+      border: 1px solid rgba(125,236,175,.2); border-radius: 999px;
+      color: #a9eec2; background: rgba(125,236,175,.06); font-size: 10px;
+    }
+    .chat-feed {
+      height: 404px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      overflow: auto;
+      padding: 20px 17px 14px;
+      scrollbar-width: thin;
+      scrollbar-color: #333642 transparent;
+    }
+    .message { max-width: 88%; }
+    .message.user { align-self: flex-end; }
+    .message-label { margin: 0 0 5px 4px; color: #777a86; font-size: 10px; }
+    .bubble {
+      padding: 11px 13px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 14px 14px 14px 4px;
+      color: #d8d9df;
+      background: rgba(255,255,255,.045);
+      font-size: 12px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+    .message.user .bubble {
+      color: #0a0b0f;
+      border: 0;
+      border-radius: 14px 14px 4px 14px;
+      background: linear-gradient(135deg, #b1a5ff, #6ce7e5);
+      font-weight: 600;
+    }
+    .typing { display: flex; gap: 4px; align-items: center; min-height: 39px; }
+    .typing i { width: 5px; height: 5px; border-radius: 50%; background: #898c98; animation: type 1s infinite alternate; }
+    .typing i:nth-child(2) { animation-delay: .2s; }
+    .typing i:nth-child(3) { animation-delay: .4s; }
+    @keyframes type { to { opacity: .25; transform: translateY(-3px); } }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+    .chip {
+      padding: 6px 8px; border: 1px solid rgba(141,124,255,.22); border-radius: 999px;
+      color: #b9b2ff; background: rgba(141,124,255,.06); font-size: 10px;
+    }
+    .chat-compose {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px;
+      margin-top: auto; padding: 13px 14px; border-top: 1px solid var(--line);
+      background: rgba(255,255,255,.018);
+    }
+    .chat-compose input {
+      min-width: 0; height: 38px; padding: 0 12px; outline: none;
+      color: #ececf0; border: 1px solid rgba(255,255,255,.11); border-radius: 11px;
+      background: rgba(255,255,255,.04); font-size: 11px;
+    }
+    .chat-compose input:focus { border-color: rgba(141,124,255,.6); box-shadow: 0 0 0 3px rgba(141,124,255,.08); }
+    .send-btn {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border: 0; border-radius: 11px; color: #08090d;
+      background: linear-gradient(135deg, #a291ff, #65e6e4);
+    }
+    .send-btn:disabled { cursor: wait; opacity: .55; }
+    .send-btn svg { width: 15px; height: 15px; }
+
+    .trace {
+      padding: 17px 14px;
+      border-left: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.035), transparent);
+    }
+    .trace-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .trace-head b { font-size: 10px; }
+    .trace-head span { color: #737682; font-size: 10px; }
+    .orbital {
+      position: relative; width: 98px; height: 98px; margin: 4px auto 24px; display: grid; place-items: center;
+    }
+    .orbital::before, .orbital::after {
+      position: absolute; inset: 0; content: ""; border: 1px solid rgba(122,225,232,.28); border-radius: 50%;
+    }
+    .orbital::before { animation: orbit 9s linear infinite; border-top-color: var(--violet); border-right-color: var(--cyan); }
+    .orbital::after { inset: 12px; animation: orbit 6s linear infinite reverse; border-bottom-color: var(--peach); }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    .orbital-core {
+      width: 45px; height: 45px; display: grid; place-items: center; border-radius: 15px;
+      color: #0b0c10; background: linear-gradient(135deg, #aa9cff, #6ce4e2); font-size: 10px; font-weight: 900;
+      box-shadow: 0 0 30px rgba(94,228,230,.22);
+    }
+    .trace-list { display: grid; gap: 8px; }
+    .trace-row {
+      position: relative; padding: 10px 9px 10px 27px;
+      border: 1px solid rgba(255,255,255,.075); border-radius: 12px;
+      color: #8c8f9b; background: rgba(255,255,255,.024); font-size: 10px;
+    }
+    .trace-row::before {
+      position: absolute; left: 10px; top: 13px; width: 7px; height: 7px; content: "";
+      border-radius: 50%; background: #555866; box-shadow: 0 0 0 3px rgba(255,255,255,.035);
+    }
+    .trace-row.done { color: #b9bbc4; }
+    .trace-row.done::before { background: #7decaf; box-shadow: 0 0 10px rgba(125,236,175,.7); }
+    .trace-row.active { color: #dcd9ff; border-color: rgba(141,124,255,.25); background: rgba(141,124,255,.06); }
+    .trace-row.active::before { background: var(--violet); box-shadow: 0 0 12px var(--violet); animation: pulse 1s infinite alternate; }
+    @keyframes pulse { to { opacity: .35; } }
+    .trace-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); color: #747783; font-size: 10px; line-height: 1.65; }
+
+    .trust { border-top: 1px solid rgba(255,255,255,.08); background: #0b0c11; }
+    .trust-inner { display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: center; padding: 25px 0; }
+    .trust-copy { color: #858894; font-size: 11px; line-height: 1.5; }
+    .logo-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; align-items: center; }
+    .logo-card {
+      height: 54px; display: grid; place-items: center; padding: 10px;
+      border: 1px solid rgba(255,255,255,.07); border-radius: 12px; background: rgba(255,255,255,.025);
+    }
+    .logo-card img { max-width: 100%; max-height: 32px; filter: grayscale(1) brightness(2.4); opacity: .58; transition: .25s ease; }
+    .logo-card:hover img { filter: none; opacity: 1; }
+
+    .section { padding: 120px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 58px; }
+    .section-head h2 {
+      max-width: 860px; margin-bottom: 0;
+      font-size: clamp(42px, 5vw, 72px); font-weight: 760; line-height: 1.06; letter-spacing: -.055em;
+    }
+    .section-head p:last-child { max-width: 380px; margin-bottom: 7px; color: var(--paper-muted); }
+    .paper-eyebrow { color: #55575e; }
+    .paper-eyebrow::before { background: var(--violet-2); box-shadow: none; }
+
+    .method-grid { display: grid; grid-template-columns: 1.03fr .97fr; gap: 18px; }
+    .method-visual {
+      position: relative; min-height: 655px; overflow: hidden;
+      border-radius: var(--radius); color: #fff; background: #101117;
+    }
+    .method-visual::before {
+      position: absolute; inset: 0; content: "";
+      background:
+        radial-gradient(circle at 22% 21%, rgba(141,124,255,.45), transparent 28%),
+        radial-gradient(circle at 80% 65%, rgba(83,228,235,.22), transparent 29%);
+    }
+    .method-copy { position: relative; z-index: 2; padding: 44px; }
+    .method-copy h3 { max-width: 460px; margin-bottom: 16px; font-size: 38px; line-height: 1.12; letter-spacing: -.045em; }
+    .method-copy p { max-width: 500px; color: #a8aab3; }
+    .flow-map { position: absolute; inset: 246px 36px 34px; }
+    .flow-line {
+      position: absolute; left: 10%; right: 10%; top: 47%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(141,124,255,.8), rgba(83,228,235,.8), transparent);
+    }
+    .flow-line::after {
+      position: absolute; left: 10%; top: -2px; width: 6px; height: 6px; content: "";
+      border-radius: 50%; background: #fff; box-shadow: 0 0 18px #fff;
+      animation: dataflow 5s ease-in-out infinite;
+    }
+    @keyframes dataflow { 50% { left: 86%; } }
+    .flow-node {
+      position: absolute; width: 128px; padding: 14px;
+      border: 1px solid rgba(255,255,255,.12); border-radius: 18px;
+      background: rgba(16,17,23,.72); box-shadow: 0 18px 45px rgba(0,0,0,.25); backdrop-filter: blur(15px);
+    }
+    .flow-node:nth-child(2) { left: 0; top: 30%; }
+    .flow-node:nth-child(3) { left: 50%; top: 4%; transform: translateX(-50%); }
+    .flow-node:nth-child(4) { right: 0; top: 30%; }
+    .flow-node:nth-child(5) { left: 50%; bottom: 0; transform: translateX(-50%); }
+    .flow-icon {
+      width: 35px; height: 35px; display: grid; place-items: center; margin-bottom: 16px;
+      border-radius: 11px; color: #0c0d12; background: linear-gradient(135deg, #a89aff, #72e8e4);
+    }
+    .flow-icon svg { width: 17px; height: 17px; }
+    .flow-node b { display: block; margin-bottom: 4px; font-size: 12px; }
+    .flow-node span { display: block; color: #8a8d99; font-size: 10px; }
+
+    .method-cards { display: grid; gap: 18px; }
+    .method-card {
+      min-height: 206px; display: grid; grid-template-columns: 60px 1fr; gap: 22px;
+      padding: 30px; border: 1px solid var(--paper-line); border-radius: var(--radius); background: #fff;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .method-card:hover { transform: translateY(-3px); box-shadow: 0 22px 55px rgba(10,11,15,.08); }
+    .method-number {
+      width: 58px; height: 58px; display: grid; place-items: center;
+      border: 1px solid var(--paper-line); border-radius: 18px; color: var(--violet-2);
+      font-size: 12px; font-weight: 800;
+    }
+    .method-card h3 { margin-bottom: 8px; font-size: 23px; letter-spacing: -.025em; }
+    .method-card p { margin-bottom: 15px; color: var(--paper-muted); font-size: 14px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags span { padding: 5px 8px; border-radius: 999px; color: #5f6168; background: #f3f2ef; font-size: 10px; }
+
+    .cases { background: #eeece7; }
+    .case-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
+    .case-card {
+      position: relative; overflow: hidden; border: 1px solid var(--paper-line);
+      border-radius: var(--radius); background: #fff;
+    }
+    .case-card.large { min-height: 625px; }
+    .case-card.stack { min-height: 303px; }
+    .case-info { padding: 30px; }
+    .case-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 25px; }
+    .case-brand img { width: 52px; height: 42px; object-fit: contain; }
+    .case-brand span { color: #66686f; font-size: 11px; }
+    .case-card h3 { max-width: 560px; margin-bottom: 11px; font-size: 29px; line-height: 1.2; letter-spacing: -.035em; }
+    .case-card p { max-width: 650px; color: var(--paper-muted); font-size: 15px; }
+    .case-shot {
+      position: absolute; left: 30px; right: 30px; bottom: -30px;
+      overflow: hidden; border: 8px solid #191a20; border-bottom: 0; border-radius: 19px 19px 0 0;
+      box-shadow: 0 30px 70px rgba(9,10,14,.25);
+    }
+    .case-shot img { width: 100%; height: 315px; object-fit: cover; object-position: top; }
+    .case-stack { display: grid; gap: 18px; }
+    .case-card.stack { display: grid; grid-template-columns: 1fr 210px; align-items: stretch; }
+    .case-card.stack .case-info { align-self: center; }
+    .case-card.stack .case-brand { margin-bottom: 18px; }
+    .case-card.stack h3 { font-size: 23px; }
+    .mini-shot { overflow: hidden; background: #121319; }
+    .mini-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+    .governance {
+      position: relative; overflow: hidden; color: #f4f3f0; background: #090a0e;
+    }
+    .governance::before {
+      position: absolute; inset: 0; content: "";
+      background:
+        radial-gradient(circle at 85% 10%, rgba(141,124,255,.18), transparent 30%),
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: auto, 56px 56px, 56px 56px;
+    }
+    .governance .shell { position: relative; }
+    .gov-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 70px; align-items: center; }
+    .gov-copy h2 { margin-bottom: 24px; font-size: clamp(44px, 5vw, 70px); line-height: 1.05; letter-spacing: -.055em; }
+    .gov-copy > p { color: #a5a7b1; }
+    .gov-points { display: grid; gap: 16px; margin-top: 32px; }
+    .gov-point { display: grid; grid-template-columns: 32px 1fr; gap: 13px; align-items: start; }
+    .gov-point i { width: 29px; height: 29px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.13); border-radius: 9px; color: var(--cyan); }
+    .gov-point svg { width: 14px; height: 14px; }
+    .gov-point b { display: block; margin-bottom: 2px; font-size: 14px; }
+    .gov-point span { color: #90939f; font-size: 12px; }
+    .policy-ui {
+      padding: 1px; border-radius: 27px;
+      background: linear-gradient(135deg, rgba(141,124,255,.55), rgba(83,228,235,.28), rgba(255,255,255,.12));
+      box-shadow: var(--shadow);
+    }
+    .policy-inner { overflow: hidden; border-radius: 26px; background: #12131a; }
+    .policy-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .policy-head b { font-size: 13px; }
+    .policy-head span { color: #7decaf; font-size: 10px; }
+    .policy-body { padding: 18px; }
+    .policy-overview { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 13px; }
+    .policy-stat { padding: 13px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.025); }
+    .policy-stat span { display: block; margin-bottom: 5px; color: #80838f; font-size: 10px; }
+    .policy-stat b { font-size: 16px; }
+    .event-table { border: 1px solid var(--line); border-radius: 15px; overflow: hidden; }
+    .event-row {
+      display: grid; grid-template-columns: 1.15fr .9fr .7fr; gap: 10px;
+      padding: 12px 13px; border-bottom: 1px solid var(--line); color: #b5b7c1; font-size: 10px;
+    }
+    .event-row:last-child { border-bottom: 0; }
+    .event-row.header { color: #5f626e; background: rgba(255,255,255,.02); }
+    .status-pill { width: fit-content; padding: 3px 6px; border-radius: 999px; }
+    .status-pill.ok { color: #a9eec2; background: rgba(125,236,175,.08); }
+    .status-pill.wait { color: #ffe0a3; background: rgba(255,202,104,.08); }
+    .status-pill.stop { color: #ffafa6; background: rgba(255,113,100,.08); }
+
+    .final { padding: 38px 0; background: #eeece7; }
+    .final-card {
+      position: relative; isolation: isolate; overflow: hidden;
+      min-height: 500px; display: grid; place-items: center; padding: 70px 30px;
+      border-radius: 34px; color: #fff; text-align: center; background: #0a0b0f;
+    }
+    .final-card::before {
+      position: absolute; inset: -30%; z-index: -1; content: "";
+      opacity: .72; filter: blur(65px);
+      background:
+        radial-gradient(circle at 34% 40%, rgba(116,91,255,.8), transparent 24%),
+        radial-gradient(circle at 64% 46%, rgba(83,228,235,.55), transparent 22%),
+        radial-gradient(circle at 51% 72%, rgba(255,180,154,.45), transparent 20%);
+    }
+    .final-card h2 { max-width: 900px; margin-bottom: 19px; font-size: clamp(48px, 6.5vw, 86px); line-height: 1.02; letter-spacing: -.06em; }
+    .final-card p { max-width: 650px; color: #d1d1d7; font-size: 17px; }
+    .final-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; margin-top: 25px; }
+
+    footer { padding: 38px 0 50px; background: #eeece7; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 30px; color: #686a71; font-size: 12px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; color: #111218; font-weight: 700; }
+    .footer-brand img { width: 28px; height: 28px; border-radius: 8px; }
+
+    @media (max-width: 1120px) {
+      .hero-grid, .gov-grid { grid-template-columns: 1fr; }
+      .hero-copy { max-width: 820px; }
+      .prism-stage { max-width: 900px; }
+      .trust-inner { grid-template-columns: 1fr; }
+      .method-grid, .case-grid { grid-template-columns: 1fr; }
+      .method-cards { grid-template-columns: repeat(3,1fr); }
+      .method-card { grid-template-columns: 1fr; }
+      .case-stack { grid-template-columns: 1fr 1fr; }
+      .case-card.stack { grid-template-columns: 1fr 180px; }
+    }
+
+    @media (max-width: 820px) {
+      .shell { width: min(calc(100% - 30px), var(--max)); }
+      .nav-links a:not(.button) { display: none; }
+      .nav-links { gap: 8px; }
+      .hero { padding: 70px 0 68px; }
+      .hero h1 { font-size: clamp(49px, 14vw, 70px); }
+      .hero-grid { gap: 45px; }
+      .agent-app { grid-template-columns: 1fr; min-height: 660px; }
+      .app-side, .trace { display: none; }
+      .chat-feed { height: 475px; }
+      .trust { overflow: hidden; }
+      .logo-row { width: 850px; grid-template-columns: repeat(6, 128px); }
+      .section { padding: 88px 0; }
+      .section-head { display: block; }
+      .section-head h2 { margin-bottom: 20px; font-size: 46px; }
+      .method-visual { min-height: 620px; }
+      .method-copy { padding: 30px; }
+      .method-copy h3 { font-size: 32px; }
+      .method-cards, .case-stack { grid-template-columns: 1fr; }
+      .method-card { min-height: auto; }
+      .case-card.stack { grid-template-columns: 1fr 150px; }
+      .gov-grid { gap: 45px; }
+    }
+
+    @media (max-width: 520px) {
+      .preview-note { font-size: 10px; }
+      .nav-inner { min-height: 68px; }
+      .brand small { display: none; }
+      .brand img { width: 34px; height: 34px; }
+      .nav .button { padding: 8px 12px; }
+      .hero { padding-top: 55px; }
+      .hero-lead { font-size: 16px; }
+      .hero-actions .button { width: 100%; }
+      .prism-frame, .agent-app { border-radius: 23px; }
+      .app-head { padding: 12px 14px; }
+      .app-head p { display: none; }
+      .chat-feed { height: 432px; padding: 16px 13px; }
+      .message { max-width: 95%; }
+      .bubble { font-size: 12px; }
+      .chat-compose { padding: 11px; }
+      .section-head h2, .gov-copy h2 { font-size: 40px; }
+      .method-visual { min-height: 670px; }
+      .flow-map { inset: 280px 20px 25px; }
+      .flow-node { width: 110px; }
+      .flow-node:nth-child(3) { top: 0; }
+      .flow-node:nth-child(5) { bottom: 0; }
+      .case-card.large { min-height: 565px; }
+      .case-info { padding: 23px; }
+      .case-shot { left: 23px; right: 23px; }
+      .case-card.stack { grid-template-columns: 1fr; }
+      .mini-shot { height: 190px; }
+      .policy-body { padding: 12px; }
+      .policy-overview { grid-template-columns: 1fr; }
+      .event-row { grid-template-columns: 1.1fr .7fr; }
+      .event-row > :nth-child(2) { display: none; }
+      .final-card { min-height: 530px; padding: 60px 22px; }
+      .final-card h2 { font-size: 49px; }
+      .footer-inner { display: grid; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
 </head>
-<body class="bg-dark text-white">
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <img src="images/logo-icon.png" alt="Timux" class="h-9 w-9 rounded-lg">
-                    <span class="ml-2 text-2xl font-bold gradient-text">Timux</span>
-                    <span class="ml-1 text-sm text-gray-400" data-i18n="brand">時光智造</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#products" class="text-gray-300 hover:text-white transition" data-i18n="nav.products">產品</a>
-                    <a href="#about" class="text-gray-300 hover:text-white transition" data-i18n="nav.about">關於我們</a>
-                    <a href="#contact" class="text-gray-300 hover:text-white transition" data-i18n="nav.contact">聯繫我們</a>
-                    <select id="lang-selector" class="bg-transparent border border-gray-600 rounded px-2 py-1 text-sm">
-                        <option value="zh-TW">繁體中文</option>
-                        <option value="zh-CN">简体中文</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-                <div class="md:hidden flex items-center gap-2">
-                    <select id="lang-selector-mobile" class="bg-gray-800/60 border border-gray-600 rounded px-2 py-1 text-xs text-gray-200" aria-label="Language">
-                        <option value="zh-TW">繁</option>
-                        <option value="zh-CN">简</option>
-                        <option value="en">EN</option>
-                    </select>
-                    <button id="mobile-menu-btn" class="text-gray-300" aria-label="Menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+<body>
+  <div class="dark-world">
+    <div class="noise"></div>
+    <nav class="nav">
+      <div class="shell nav-inner">
+        <a class="brand" href="#top" aria-label="Timux 首頁">
+          <img src="assets/logo-icon.png" alt="">
+          <span><strong>時光智造 Timux</strong><small>AI adoption & execution</small></span>
+        </a>
+        <div class="nav-links">
+          <a href="#method">導入方法</a>
+          <a href="#cases">案例經驗</a>
+          <a href="#governance">治理與安全</a>
+          <a class="button ghost" href="#agent">問 AI 顧問
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
         </div>
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass">
-            <div class="px-4 py-4 space-y-4">
-                <a href="#products" class="block text-gray-300 hover:text-white" data-i18n="nav.products">產品</a>
-                <a href="#about" class="block text-gray-300 hover:text-white" data-i18n="nav.about">關於我們</a>
-                <a href="#contact" class="block text-gray-300 hover:text-white" data-i18n="nav.contact">聯繫我們</a>
-            </div>
-        </div>
+      </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <!-- Background Effects -->
-        <div class="absolute inset-0">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-accent/20 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
-            <div class="floating mb-8">
-                <div class="inline-flex items-center px-4 py-2 rounded-full glass text-sm">
-                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                    <span data-i18n="hero.badge">AI 驅動的智能解決方案</span>
-                </div>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                <span data-i18n="hero.title1">讓 AI 處理繁瑣</span><br>
-                <span class="gradient-text" data-i18n="hero.title2">把時光留給所愛</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto" data-i18n="hero.subtitle">
-                時光智造透過 AI 自動化重複性工作，節省您的寶貴時間，讓您能專注於更有價值的事，或陪伴您真正在乎的人。
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#products" class="gradient-bg px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition pulse-glow">
-                    <span data-i18n="hero.cta1">探索產品</span> →
-                </a>
-                <a href="#contact" class="glass px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/10 transition">
-                    <span data-i18n="hero.cta2">聯繫我們</span>
-                </a>
-            </div>
+    <header class="hero" id="top">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">AI adoption, built for real work</p>
+          <h1>
+            <span class="line">讓 AI</span>
+            <span class="line prism-text">真正進入工作。</span>
+          </h1>
+          <p class="hero-lead">我們從業務痛點、資料與權限出發，把 AI 做成企業真正用得起來的客服、知識助手與數字員工。</p>
+          <div class="hero-actions">
+            <a class="button white" href="#agent">直接問 Timux Agent
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="button ghost" href="#cases">查看真實案例</a>
+          </div>
+          <div class="proof-line">
+            <span><i></i>先場景，後模型</span>
+            <span><i></i>從 PoC 到 Production</span>
+            <span><i></i>人工可控、逐步放權</span>
+          </div>
         </div>
 
-        <!-- Scroll indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
+        <div class="prism-stage" id="agent">
+          <div class="prism-glow"></div>
+          <div class="prism-frame">
+            <div class="agent-app">
+              <aside class="app-side">
+                <div class="app-mark"><span>✦</span> Timux Agent</div>
+                <div class="side-label mono">Workspace</div>
+                <div class="side-item active">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4z"/></svg>
+                  導入顧問
+                </div>
+                <div class="side-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg>
+                  公開案例
+                </div>
+                <div class="side-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  導入路徑
+                </div>
+                <div class="side-label mono">Guardrails</div>
+                <div class="side-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
+                  資料邊界
+                </div>
+                <div class="side-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 11V8a4 4 0 018 0v3M6 11h12v10H6z"/></svg>
+                  人工審核
+                </div>
+                <div class="side-live"><b><i class="live-dot"></i> Agent online</b>知識版本 2026.07.30</div>
+              </aside>
+
+              <main class="chat-main">
+                <div class="app-head">
+                  <div><h3>Timux AI 導入顧問</h3><p>Ian 方法論 · 公開知識 · 不亂報成效</p></div>
+                  <div class="agent-badge"><i class="live-dot"></i> LIVE</div>
+                </div>
+                <div class="chat-feed" id="chatFeed" aria-live="polite">
+                  <div class="message assistant">
+                    <p class="message-label mono">Timux Agent</p>
+                    <div class="bubble">我是 Timux 官網的 AI 導入顧問 Agent。語氣參考 Ian 的方法，但我不是 Ian 本人。你可以直接告訴我：公司裡哪一段流程最重複、最耗時或最容易出錯？</div>
+                    <div class="chips">
+                      <button class="chip" type="button">幫我找第一個 AI 場景</button>
+                      <button class="chip" type="button">你們做過哪些案例？</button>
+                    </div>
+                  </div>
+                </div>
+                <form class="chat-compose" id="agentForm">
+                  <input id="agentInput" maxlength="1200" autocomplete="off" aria-label="輸入問題" placeholder="例如：我們每天有 200 筆客服訊息，怎麼開始？">
+                  <button class="send-btn" id="sendButton" aria-label="傳送問題">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+                  </button>
+                </form>
+              </main>
+
+              <aside class="trace">
+                <div class="trace-head"><b class="mono">Reasoning map</b><span>visible controls</span></div>
+                <div class="orbital"><div class="orbital-core">AI</div></div>
+                <div class="trace-list">
+                  <div class="trace-row done" data-trace="scene">辨識業務場景</div>
+                  <div class="trace-row done" data-trace="knowledge">核對公開知識</div>
+                  <div class="trace-row active" data-trace="risk">檢查事實與風險</div>
+                  <div class="trace-row" data-trace="next">產生下一步建議</div>
+                </div>
+                <div class="trace-foot mono">No private data<br>No fabricated metrics<br>Human escalation ready</div>
+              </aside>
+            </div>
+          </div>
         </div>
+      </div>
+    </header>
+
+    <section class="trust">
+      <div class="shell trust-inner">
+        <div class="trust-copy"><span class="mono">Selected experience</span><br>公開合作與實作經驗</div>
+        <div class="logo-row">
+          <div class="logo-card"><img src="assets/clients/southeast-bus.png" alt="東南客運"></div>
+          <div class="logo-card"><img src="assets/clients/dragontr.png" alt="金龍旅遊"></div>
+          <div class="logo-card"><img src="assets/clients/bianlibag.png" alt="台灣便利帶"></div>
+          <div class="logo-card"><img src="assets/clients/rechuunion.png" alt="熱楚聯盟匹克球"></div>
+          <div class="logo-card"><img src="assets/clients/mj-security.png" alt="銘將保全"></div>
+          <div class="logo-card"><img src="assets/clients/xiguang.png" alt="羲光劇遊"></div>
+        </div>
+      </div>
     </section>
+  </div>
 
-    <!-- Products Section -->
-    <section id="products" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="products.title">我們的產品</h2>
-                <p class="text-xl text-gray-400 mb-2" data-i18n="products.subtitle">智造交給 AI，時光留給所愛</p>
-                <p class="text-sm text-gray-500 max-w-2xl mx-auto" data-i18n="products.desc">每一個產品都圍繞同一個信念 — 用 AI 自動化繁瑣的管理與營運，把省下的時間還給場館主、教練和每一位熱愛運動的你。</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-6 gap-8">
-                <!-- Product 1: SmartCourt -->
-                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-2 lg:order-3">
-                    <div class="flex flex-col gap-6">
-                        <!-- Screenshots Gallery -->
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/dashboard.png')">
-                                    <img src="images/smartcourt/dashboard.png" alt="Dashboard" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                        <span class="text-xs" data-i18n="products.smartcourt.img1">數據看板</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/schedule.png')">
-                                    <img src="images/smartcourt/schedule.png" alt="Schedule" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                        <span class="text-xs" data-i18n="products.smartcourt.img2">時段管理</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/booking.png')">
-                                    <img src="images/smartcourt/booking.png" alt="Booking" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                        <span class="text-xs" data-i18n="products.smartcourt.img3">預約管理</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/lottery.png')">
-                                    <img src="images/smartcourt/lottery.png" alt="Marketing" class="rounded-xl w-full h-32 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                        <span class="text-xs" data-i18n="products.smartcourt.img4">行銷工具</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="relative group/img cursor-pointer" onclick="openLightbox('images/smartcourt/mobile.png')">
-                                <img src="images/smartcourt/mobile.png" alt="Mobile App" class="rounded-xl w-full h-40 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                    <span class="text-sm" data-i18n="products.smartcourt.img5">用戶端 APP</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Info -->
-                        <div>
-                            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-1" data-i18n="products.smartcourt.name">SmartCourt 智慧場館</h3>
-                            <p class="text-xs text-primary/70 mb-3 italic" data-i18n="products.smartcourt.tagline">「把場館營運交給 AI，讓老闆有時間享受生活」</p>
-                            <p class="text-gray-400 mb-6" data-i18n="products.smartcourt.desc">
-                                AI 驅動的無人場館解決方案。SaaS + IoT 讓場館 24 小時自動營運 — 不用盯場、不用排班、不用手動收款。搭配 PlayTime 揪團平台，為場館持續導入社群流量與穩定營收。
-                            </p>
-                            <ul class="space-y-2 mb-6 text-sm text-gray-300">
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f1">🔐 IoT 智慧門鎖 + 燈光電源自動控制</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f2">📅 AI 動態定價 + 線上自助預約</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f3">👥 會員管理 + PlayTime 社群裂變導流</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.smartcourt.f4">📊 智慧營收報表 + 數據驅動決策</span></li>
-                            </ul>
-                            <a href="#contact" class="inline-flex items-center text-primary hover:text-secondary transition">
-                                <span data-i18n="products.learnmore">了解更多</span>
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 2: AI Customer Service -->
-                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-3 lg:order-1">
-                    <div class="absolute top-0 right-0 gradient-bg text-xs px-3 py-1 rounded-bl-xl font-semibold" data-i18n="products.featured">主推</div>
-                    <div class="flex flex-col gap-6">
-                        <div class="space-y-3">
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/aics/reports.jpg')">
-                                    <img src="images/aics/reports.jpg" alt="Reports" class="rounded-xl w-full h-24 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                        <span class="text-xs bg-black/50 px-2 py-1 rounded-full" data-i18n="products.aics.img2">報表分析</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer" onclick="openLightbox('images/aics/knowledge.jpg')">
-                                    <img src="images/aics/knowledge.jpg" alt="Knowledge Base" class="rounded-xl w-full h-24 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                        <span class="text-xs bg-black/50 px-2 py-1 rounded-full" data-i18n="products.aics.img3">知識庫管理</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="relative group/img cursor-pointer" onclick="openLightbox('images/aics/workspace.jpg')">
-                                <img src="images/aics/workspace.jpg" alt="AI Customer Service Workspace" class="rounded-xl w-full h-44 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                                    <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.aics.img1">客服工作台</span>
-                                </div>
-                            </div>
-                            <div class="mt-3 rounded-xl border border-primary/20 bg-primary/5 p-3">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs text-primary font-semibold" data-i18n="products.aics.caseLabel">東南客運案例截圖</span>
-                                    <span class="text-[11px] text-gray-500" data-i18n="products.aics.caseTag">路線問答 / 即時到站 / 人工轉接</span>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-normal.png')">
-                                        <img src="images/cases/southeast-ai-cs-normal.png" alt="東南客運 AI 客服正常問答" class="rounded-lg w-full h-24 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    </div>
-                                    <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-realtime.png')">
-                                        <img src="images/cases/southeast-ai-cs-realtime.png" alt="東南客運 AI 客服即時資訊轉人工提示" class="rounded-lg w-full h-24 object-cover object-top border border-gray-700 hover:border-primary transition">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-1" data-i18n="products.aics.name">AI 智能客服</h3>
-                            <p class="text-xs text-primary/70 mb-3 italic" data-i18n="products.aics.tagline">「把客服應答交給 AI，讓團隊專注核心業務」</p>
-                            <p class="text-gray-400 mb-6" data-i18n="products.aics.desc">
-                                基於 Gemini 2.0 Flash 的多租戶智能客服系統。降低 70% 客服成本，提升 3 倍回覆效率，支援意圖辨識、知識庫問答、人機協作，讓客戶服務智慧化升級。
-                            </p>
-                            <ul class="space-y-2 mb-6 text-sm text-gray-300">
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f1">🧠 AI 意圖辨識 + 多輪對話</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f2">📚 智慧訓練系統 + 多格式導入</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f3">🔄 無縫轉接真人 + 數據分析</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.aics.f4">🏢 多行業支援 + LINE/Web 整合</span></li>
-                            </ul>
-                            <div class="flex gap-3">
-                                <a href="ai-customer-service.html" target="_blank" class="inline-flex items-center text-primary hover:text-secondary transition">
-                                    <span data-i18n="products.aics.demo">觀看 Demo</span>
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                    </svg>
-                                </a>
-                                <a href="#contact" class="inline-flex items-center text-accent hover:text-primary transition">
-                                    <span data-i18n="products.aics.trial">取得試用</span>
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89c.39.39 1.02.39 1.41 0L21 7"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3: AI Digital Human Employee -->
-                <div class="glass rounded-2xl p-8 md:p-10 card-hover relative overflow-hidden group border border-primary/20 lg:col-span-3 lg:order-2">
-                    <div class="absolute top-0 right-0 bg-cyan-400 text-xs px-3 py-1 rounded-bl-xl font-semibold text-slate-950">NEW</div>
-                    <div class="relative group/img cursor-pointer mb-6" onclick="openLightbox('images/digitalhuman/trial-workspace.png')">
-                        <img src="images/digitalhuman/trial-workspace.png" alt="AI 分身員工產品後台截圖" class="rounded-xl w-full h-56 object-cover object-top border border-gray-700 hover:border-primary transition shadow-lg">
-                        <div class="absolute inset-0 bg-black/35 opacity-0 group-hover/img:opacity-100 transition rounded-xl flex items-center justify-center">
-                            <span class="text-sm bg-black/60 px-3 py-1 rounded-full" data-i18n="products.digitalhuman.img4">🚀 對外服務</span>
-                        </div>
-                    </div>
-                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition ai-glow">
-                        <span class="text-3xl">🧬</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-1" data-i18n="products.digitalhuman.name">AI 分身員工</h3>
-                    <p class="text-xs text-primary/70 mb-3 italic" data-i18n="products.digitalhuman.tagline">「把知識、聲音與服務流程，做成會對話的 AI 分身」</p>
-                    <p class="text-gray-400 mb-4" data-i18n="products.digitalhuman.desc">
-                        為企業與個人打造可對外服務的 AI 數字人工作台。上傳知識庫、生成基礎 Prompt、用訪談方式錄製聲音樣本，讓 AI 分身可以介紹服務、回答客戶問題、沉澱專屬資料。
-                    </p>
-                    <ul class="space-y-2 mb-4 text-sm text-gray-300">
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.digitalhuman.f1">📚 上傳資料形成專屬知識庫</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.digitalhuman.f2">🧠 生成可編輯的基礎 Prompt</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.digitalhuman.f3">🎙️ 訪談式錄音保存語音樣本</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.digitalhuman.f4">🏢 多租戶工作台管理數字人</span></li>
-                    </ul>
-                    <div class="flex gap-3 flex-wrap">
-                        <a href="https://digitalhuman.timux.site/" target="_blank" class="inline-flex items-center gradient-bg px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition">
-                            <span data-i18n="products.digitalhuman.demo">體驗 AI 分身員工</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                            </svg>
-                        </a>
-                        <a href="#contact" class="inline-flex items-center text-accent hover:text-primary transition">
-                            <span data-i18n="products.digitalhuman.trial">預約導入</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Product 3: Smart Property Management -->
-                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-2 lg:order-4">
-                    <div class="absolute top-0 right-0 bg-amber-500 text-xs px-3 py-1 rounded-bl-xl font-semibold text-black">HOT</div>
-                    <!-- Screenshots -->
-                    <div class="grid grid-cols-2 gap-2 mb-6">
-                        <div class="relative group/img cursor-pointer">
-                            <div class="rounded-xl w-full h-28 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-gray-700 hover:border-primary transition flex items-center justify-center">
-                                <span class="text-xs text-gray-300" data-i18n="products.property.img1">🏠 智慧控制</span>
-                            </div>
-                        </div>
-                        <div class="relative group/img cursor-pointer">
-                            <div class="rounded-xl w-full h-28 bg-gradient-to-br from-green-500/20 to-teal-500/20 border border-gray-700 hover:border-primary transition flex items-center justify-center">
-                                <span class="text-xs text-gray-300" data-i18n="products.property.img2">📊 營運分析</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-1" data-i18n="products.property.name">智慧物業管理</h3>
-                    <p class="text-xs text-primary/70 mb-3 italic" data-i18n="products.property.tagline">「把住宿管理交給 AI，讓經營者專注服務品質」</p>
-                    <p class="text-gray-400 mb-4" data-i18n="products.property.desc">
-                        IoT + AI 驅動的智慧住宿解決方案。TTLock 智慧門鎖、遠端控制、能耗管理，結合 AI 客服自動回覆房客問題，讓民宿、飯店、短租經營全面智慧化升級。
-                    </p>
-                    <ul class="space-y-2 mb-4 text-sm text-gray-300">
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.property.f1">🔐 TTLock 智慧門鎖整合</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.property.f2">⚡ IoT 設備遠端控制</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.property.f3">🤖 AI 客服自動回覆</span></li>
-                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.property.f4">📈 能耗監控 + 成本分析</span></li>
-                    </ul>
-                    <div class="flex gap-3">
-                        <a href="property-management.html" target="_blank" class="inline-flex items-center text-primary hover:text-secondary transition">
-                            <span data-i18n="products.property.demo">觀看 Demo</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                            </svg>
-                        </a>
-                        <a href="#contact" class="inline-flex items-center text-accent hover:text-primary transition">
-                            <span data-i18n="products.property.trial">取得試用</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89c.39.39 1.02.39 1.41 0L21 7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Product 5: PlayTime -->
-                <div class="glass rounded-2xl p-8 card-hover relative overflow-hidden group lg:col-span-2 lg:order-5">
-                    <div class="absolute top-0 right-0 gradient-bg text-xs px-3 py-1 rounded-bl-xl font-semibold">NEW</div>
-                    <div class="flex flex-col gap-6">
-                        <div>
-                            <!-- Mobile screenshots -->
-                            <div class="flex gap-4 overflow-x-auto pb-2" style="scrollbar-width: thin;">
-                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/home.png')">
-                                    <img src="images/playtime/home.png" alt="PlayTime 首頁" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-primary transition shadow-lg">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
-                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.playtime.img1">智慧首頁</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/event-detail.png')">
-                                    <img src="images/playtime/event-detail.png" alt="活動詳情" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-primary transition shadow-lg">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
-                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.playtime.img2">活動詳情</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/create-event.png')">
-                                    <img src="images/playtime/create-event.png" alt="開團頁面" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-primary transition shadow-lg">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
-                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.playtime.img3">一鍵開團</span>
-                                    </div>
-                                </div>
-                                <div class="relative group/img cursor-pointer flex-shrink-0" onclick="openLightbox('images/playtime/match-create.png')">
-                                    <img src="images/playtime/match-create.png" alt="對抗分組" class="rounded-2xl h-64 object-cover object-top border-2 border-gray-700 hover:border-primary transition shadow-lg">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition rounded-2xl flex items-center justify-center">
-                                        <span class="text-sm bg-black/50 px-3 py-1 rounded-full" data-i18n="products.playtime.img4">AI 對抗分組</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-3 text-center" data-i18n="products.playtime.scroll">← 左右滑動查看更多截圖</p>
-                        </div>
-
-                        <div>
-                            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                                <span class="text-3xl">⚡</span>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-1" data-i18n="products.playtime.name">PlayTime 智慧揪團</h3>
-                            <p class="text-xs text-primary/70 mb-3 italic" data-i18n="products.playtime.tagline">「把揪人排程交給 AI，讓球友專心享受比賽」</p>
-                            <p class="text-gray-400 mb-6" data-i18n="products.playtime.desc">
-                                AI 驅動的 LINE 運動社群平台。智能匹配等級、自動排賽程、數據追蹤戰績 — 不用再群組裡一個一個問，不用手動記比分。結合 SmartCourt 場館系統，從「訂場 → 揪人 → 比賽 → 覆盤」全自動化，把省下的時間還給真正的運動時光。
-                            </p>
-                            <ul class="space-y-2 mb-6 text-sm text-gray-300">
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.playtime.f1">🤖 AI 智能分組 — 按等級均衡配對，告別手動湊人</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.playtime.f2">📊 數據戰績引擎 — 勝率、積分、排名自動計算</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.playtime.f3">⚡ LINE 一鍵開團 — 30 秒發起，好友直接報名</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.playtime.f4">🏟️ SmartCourt 聯動 — 訂場揪團一站搞定</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.playtime.f5">🎯 智慧賽程編排 — 循環賽 / 淘汰賽自動生成</span></li>
-                                <li class="flex items-center"><span class="text-green-400 mr-2">✓</span> <span data-i18n="products.playtime.f6">📱 社群裂變 — AI 海報生成 + 分享 + 俱樂部</span></li>
-                            </ul>
-                            <a href="https://playtime.timux.site" target="_blank" class="inline-flex items-center gradient-bg px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition">
-                                <span data-i18n="products.playtime.cta">立即體驗 PlayTime →</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ecosystem Bridge -->
-                <div class="lg:col-span-6 lg:order-6 glass rounded-2xl p-8 text-center relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-cyan-500/5"></div>
-                    <div class="relative z-10">
-                        <h3 class="text-xl font-bold mb-2" data-i18n="ecosystem.title">🔗 智慧運動生態系</h3>
-                        <p class="text-sm text-gray-300 mb-1">「<span class="gradient-text font-semibold" data-i18n="ecosystem.motto">智造交給 AI，時光留給所愛</span>」</p>
-                        <p class="text-gray-400 mb-6 max-w-2xl mx-auto text-sm" data-i18n="ecosystem.desc">
-                            場館營運、揪人排程、客服應答 — 全部交給 AI。場館主省下管理時間，球友省下揪人麻煩，把時光花在真正重要的事：享受運動、陪伴所愛。
-                        </p>
-                        <!-- Desktop: horizontal -->
-                        <div class="hidden md:flex items-center justify-center gap-4">
-                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2">
-                                <span class="text-lg">🏟️</span>
-                                <span data-i18n="ecosystem.smartcourt">SmartCourt</span><br><span class="text-xs text-gray-400" data-i18n="ecosystem.smartcourt.role">場館端 · 營運管理</span></span>
-                            </div>
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="text-primary text-xl">⟷</span>
-                                <span class="text-xs text-gray-500" data-i18n="ecosystem.link1">數據互通</span>
-                            </div>
-                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2">
-                                <span class="text-lg">⚡</span>
-                                <span><span data-i18n="ecosystem.playtime">PlayTime</span><br><span class="text-xs text-gray-400" data-i18n="ecosystem.playtime.role">用戶端 · 揪團比賽</span></span>
-                            </div>
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="text-primary text-xl">⟷</span>
-                                <span class="text-xs text-gray-500" data-i18n="ecosystem.link2">AI 賦能</span>
-                            </div>
-                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2">
-                                <span class="text-lg">🤖</span>
-                                <span><span data-i18n="ecosystem.aics">AI 客服</span><br><span class="text-xs text-gray-400" data-i18n="ecosystem.aics.role">服務端 · 智能應答</span></span>
-                            </div>
-                        </div>
-                        <!-- Mobile: vertical -->
-                        <div class="flex md:hidden flex-col items-center gap-2">
-                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2 w-56">
-                                <span class="text-lg">🏟️</span>
-                                <span><span data-i18n="ecosystem.smartcourt">SmartCourt</span><br><span class="text-xs text-gray-400" data-i18n="ecosystem.smartcourt.role">場館端 · 營運管理</span></span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-primary text-lg">↕</span>
-                                <span class="text-xs text-gray-500" data-i18n="ecosystem.link1">數據互通</span>
-                            </div>
-                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2 w-56">
-                                <span class="text-lg">⚡</span>
-                                <span><span data-i18n="ecosystem.playtime">PlayTime</span><br><span class="text-xs text-gray-400" data-i18n="ecosystem.playtime.role">用戶端 · 揪團比賽</span></span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-primary text-lg">↕</span>
-                                <span class="text-xs text-gray-500" data-i18n="ecosystem.link2">AI 賦能</span>
-                            </div>
-                            <div class="glass px-5 py-3 rounded-xl text-sm flex items-center gap-2 w-56">
-                                <span class="text-lg">🤖</span>
-                                <span><span data-i18n="ecosystem.aics">AI 客服</span><br><span class="text-xs text-gray-400" data-i18n="ecosystem.aics.role">服務端 · 智能應答</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <section class="section" id="method">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow paper-eyebrow">From friction to capability</p>
+          <h2>不是做一個 Demo，<br>是長出一項企業能力。</h2>
         </div>
-    </section>
+        <p>我們不從「要用哪個模型」開始，而是先把真實流程攤開，找出值得交給 AI 的第一個閉環。</p>
+      </div>
 
-    <!-- Clients Section -->
-    <section id="clients" class="py-24 relative border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="clients.title">合作夥伴</h2>
-                <p class="text-xl text-gray-400" data-i18n="clients.subtitle">感謝這些企業的信任與支持</p>
+      <div class="method-grid">
+        <article class="method-visual">
+          <div class="method-copy">
+            <p class="eyebrow">AI solution architecture</p>
+            <h3>資料、流程、Agent 與人，在同一張圖上工作。</h3>
+            <p>AI 的價值不在聊天框，而在它如何理解資料、呼叫工具、留下紀錄，並知道何時交給人。</p>
+          </div>
+          <div class="flow-map" aria-label="AI 導入流程示意圖">
+            <div class="flow-line"></div>
+            <div class="flow-node">
+              <div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg></div>
+              <b>Knowledge</b><span>文件 · FAQ · SOP</span>
             </div>
-
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- AI Technical Consulting Clients -->
-                <div class="glass rounded-2xl p-8">
-                    <h3 class="text-lg font-semibold mb-6 text-primary" data-i18n="clients.smartcourt">AI 技術顧問客戶</h3>
-                    <div class="flex flex-wrap items-center justify-center gap-8">
-                        <div class="text-center">
-                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
-                                <img src="images/clients/rechuunion.png" alt="熱楚聯盟匹克球" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="text-2xl hidden">🏸</span>
-                            </div>
-                            <p class="text-sm text-gray-400">熱楚聯盟匹克球</p>
-                            <p class="text-xs text-gray-500">洪山文體中心店</p>
-                            <p class="text-xs text-gray-500">羅莎文創園店</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
-                                <img src="images/clients/xiguang.png" alt="羲光劇遊" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="text-2xl hidden">🎭</span>
-                            </div>
-                            <p class="text-sm text-gray-400">羲光劇遊</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
-                                <img src="images/clients/mj-security.png" alt="銘將保全" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="text-2xl hidden">🛡️</span>
-                            </div>
-                            <p class="text-sm text-gray-400">銘將保全</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI Customer Service Clients -->
-                <div class="glass rounded-2xl p-8">
-                    <h3 class="text-lg font-semibold mb-6 text-primary" data-i18n="clients.aics">AI 智能客服客戶</h3>
-                    <div class="flex flex-wrap items-center justify-center gap-8">
-                        <div class="text-center">
-                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
-                                <img src="images/clients/bianlibag.png" alt="台灣便利帶" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="text-2xl hidden">📦</span>
-                            </div>
-                            <p class="text-sm text-gray-400">台灣便利帶</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
-                                <img src="images/clients/dragontr.png" alt="金龍旅遊" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="text-2xl hidden">✈️</span>
-                            </div>
-                            <p class="text-sm text-gray-400">金龍旅遊</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center mb-2 p-2">
-                                <img src="images/clients/southeast-bus.png" alt="東南客運" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <span class="text-2xl hidden">🚌</span>
-                            </div>
-                            <p class="text-sm text-gray-400">東南客運</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="flow-node">
+              <div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M9 12h6M12 9v6"/></svg></div>
+              <b>Agent</b><span>理解 · 規劃 · 回答</span>
             </div>
+            <div class="flow-node">
+              <div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M7 4v6M17 4v6M5 11h14v9H5z"/></svg></div>
+              <b>Systems</b><span>CRM · ERP · Channel</span>
+            </div>
+            <div class="flow-node">
+              <div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg></div>
+              <b>Human</b><span>審核 · 接管 · 驗證</span>
+            </div>
+          </div>
+        </article>
+
+        <div class="method-cards">
+          <article class="method-card">
+            <div class="method-number mono">01</div>
+            <div><h3>找出第一個高價值場景</h3><p>從高頻、重複、耗時、容易出錯的流程切入，先定義誰使用、處理什麼、怎樣算成功。</p><div class="tags"><span>痛點工作坊</span><span>資料盤點</span><span>成功指標</span></div></div>
+          </article>
+          <article class="method-card">
+            <div class="method-number mono">02</div>
+            <div><h3>做出可驗證的最小閉環</h3><p>不是粗糙原型，而是能接收真資料、產出結果、讓人驗證並持續修正的 PoC。</p><div class="tags"><span>Agent 原型</span><span>知識庫</span><span>真實測試</span></div></div>
+          </article>
+          <article class="method-card">
+            <div class="method-number mono">03</div>
+            <div><h3>接入流程，逐步放權</h3><p>先影子模式與只讀，再加入人工批准、工具調用與營運監控，讓能力可安全擴大。</p><div class="tags"><span>API 整合</span><span>權限治理</span><span>迭代營運</span></div></div>
+          </article>
         </div>
-    </section>
-
-    <!-- Case Studies Section -->
-    <section id="case-studies" class="py-24 relative border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="cases.title">實績案例</h2>
-                <p class="text-xl text-gray-400" data-i18n="cases.subtitle">把近期導入成果，用真實介面截圖呈現</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="glass rounded-2xl p-6 md:p-8 card-hover overflow-hidden">
-                    <div class="flex items-center gap-3 mb-5">
-                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center p-2">
-                            <img src="images/clients/southeast-bus.png" alt="東南客運" class="max-w-full max-h-full object-contain">
-                        </div>
-                        <div>
-                            <p class="text-xs text-primary font-semibold" data-i18n="cases.southeast.category">AI 智能客服</p>
-                            <h3 class="text-2xl font-bold" data-i18n="cases.southeast.title">東南客運 AI 客服</h3>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 mb-5" data-i18n="cases.southeast.desc">導入租戶式客服訓練、錄音分析、路線/班表問答與真人轉接流程，讓大量客運客服問題可被分類、學習與追蹤。</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-normal.png')">
-                            <img src="images/cases/southeast-ai-cs-normal.png" alt="東南客運 AI 客服問答截圖" class="rounded-xl h-52 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
-                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.southeast.img1">路線問答</div>
-                        </div>
-                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/southeast-ai-cs-realtime.png')">
-                            <img src="images/cases/southeast-ai-cs-realtime.png" alt="東南客運即時資訊轉人工截圖" class="rounded-xl h-52 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
-                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.southeast.img2">即時資訊處理</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass rounded-2xl p-6 md:p-8 card-hover overflow-hidden">
-                    <div class="flex items-center gap-3 mb-5">
-                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center p-2">
-                            <img src="images/clients/mj-security.png" alt="銘將保全" class="max-w-full max-h-full object-contain">
-                        </div>
-                        <div>
-                            <p class="text-xs text-primary font-semibold" data-i18n="cases.mj.category">LINE 數據整理</p>
-                            <h3 class="text-2xl font-bold" data-i18n="cases.mj.title">銘將保全 LINE 數據整理</h3>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 mb-5" data-i18n="cases.mj.desc">保全群組照片、打卡、請假、加班、任務與薪資資料整合到 LINE Bot 與 LIFF 手機頁，現場人員不用進後台也能完成日常操作。</p>
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/mj-line-bot-rich-menu.png')">
-                            <img src="images/cases/mj-line-bot-rich-menu.png" alt="銘將保全 LINE Bot Rich Menu" class="rounded-xl h-56 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
-                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.mj.img1">LINE Bot</div>
-                        </div>
-                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/mj-liff-clock.png')">
-                            <img src="images/cases/mj-liff-clock.png" alt="銘將保全 LIFF 打卡頁" class="rounded-xl h-56 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
-                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.mj.img2">LIFF 打卡</div>
-                        </div>
-                        <div class="relative group/img cursor-pointer" onclick="openLightbox('images/cases/mj-liff-attendance.png')">
-                            <img src="images/cases/mj-liff-attendance.png" alt="銘將保全 LIFF 出勤月曆" class="rounded-xl h-56 w-full object-cover object-top border border-gray-700 hover:border-primary transition">
-                            <div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-1 rounded" data-i18n="cases.mj.img3">出勤月曆</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-24 relative">
-        <div class="absolute inset-0">
-            <div class="absolute top-1/2 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6" data-i18n="about.title">關於時光智造</h2>
-                    <p class="text-xl text-gray-400 mb-6" data-i18n="about.p1">
-                        時光智造成立於台灣，是一家專注於 AI 智能解決方案的科技公司。我們相信 AI 技術能夠改變傳統行業的運作方式，幫助企業實現數位轉型。
-                    </p>
-                    <p class="text-gray-400 mb-8" data-i18n="about.p2">
-                        我們的團隊由資深軟體工程師和 AI 專家組成，擁有豐富的產品開發經驗。從智慧場館管理到 AI 客服，我們致力於打造實用、可靠、創新的解決方案。
-                    </p>
-                    <div class="grid grid-cols-3 gap-8">
-                        <div class="text-center">
-                            <div class="text-4xl font-bold gradient-text">3+</div>
-                            <div class="text-sm text-gray-400" data-i18n="about.stat1">產品線</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold gradient-text">24/7</div>
-                            <div class="text-sm text-gray-400" data-i18n="about.stat2">智能服務</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold gradient-text">100%</div>
-                            <div class="text-sm text-gray-400" data-i18n="about.stat3">AI 驅動</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <!-- Founder Card -->
-                    <div class="glass rounded-3xl p-8 ai-glow">
-                        <div class="text-center mb-6">
-                            <div class="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/50">
-                                <img src="images/team/founder.jpg" alt="黃昱仁" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl\'>👨‍💼</div>';">
-                            </div>
-                            <h3 class="text-xl font-bold" data-i18n="founder.name">黃昱仁</h3>
-                            <p class="text-primary text-sm font-medium" data-i18n="founder.role">創辦人暨執行長｜時光智造科技</p>
-                            <p class="text-gray-400 text-xs mt-1" data-i18n="founder.title2">共同創辦人｜Upfront Investment 美股 AI 分析平台</p>
-                            <p class="text-gray-400 text-xs" data-i18n="founder.title3">AI 智能客服系統 專家顧問｜台灣</p>
-                            <p class="text-gray-400 text-xs" data-i18n="founder.title4">AI 創業生態 特聘導師｜武漢</p>
-                        </div>
-                        <p class="text-gray-400 text-sm text-center mb-4" data-i18n="founder.bio">
-                            連續創業者，10+ 年軟體與 AI 產品實戰經驗。曾主導台南共享充電寶新創（技術負責人）、擔任成功大學 APP 創業導師，後赴上海深耕有機電商 MarTech 技術行銷。2024 年創辦時光智造科技（台灣），2025 年於武漢設立時光智造，致力以 AI 賦能企業數位轉型。
-                        </p>
-                        <div class="text-center mb-6">
-                            <span class="inline-flex items-center gap-1.5 text-xs text-green-400 bg-green-400/10 rounded-full px-3 py-1">
-                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
-                                <span data-i18n="founder.line">Line ID: bigheadian</span>
-                            </span>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2">
-                            <div class="glass rounded-xl p-3 text-center">
-                                <div class="text-xl mb-1">🤖</div>
-                                <div class="text-xs text-gray-400" data-i18n="about.tech1">AI 技術</div>
-                            </div>
-                            <div class="glass rounded-xl p-3 text-center">
-                                <div class="text-xl mb-1">☁️</div>
-                                <div class="text-xs text-gray-400" data-i18n="about.tech2">雲端服務</div>
-                            </div>
-                            <div class="glass rounded-xl p-3 text-center">
-                                <div class="text-xl mb-1">🔗</div>
-                                <div class="text-xs text-gray-400" data-i18n="about.tech3">IoT 整合</div>
-                            </div>
-                            <div class="glass rounded-xl p-3 text-center">
-                                <div class="text-xl mb-1">📊</div>
-                                <div class="text-xs text-gray-400" data-i18n="about.tech4">數據分析</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Gallery Link -->
-            <div class="mt-12 text-center">
-                <a href="gallery.html" class="inline-flex items-center gap-2 glass rounded-full px-6 py-3 text-sm font-medium hover:bg-white/10 transition" data-i18n="about.gallery_link">
-                    📸 查看活動相簿
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 relative">
-        <div class="absolute inset-0">
-            <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
-        </div>
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="contact.title">聯繫我們</h2>
-                <p class="text-xl text-gray-400" data-i18n="contact.subtitle">有任何問題或合作需求？歡迎與我們聯繫</p>
-            </div>
-
-            <form id="contact-form" class="glass rounded-2xl p-8" onsubmit="return false;">
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-2" data-i18n="contact.name">姓名</label>
-                        <input type="text" name="name" required class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" placeholder="">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2" data-i18n="contact.email">電子郵件</label>
-                        <input type="email" name="email" required class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" placeholder="">
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-medium mb-2" data-i18n="contact.company">公司名稱（選填）</label>
-                    <input type="text" name="company" class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" placeholder="">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-medium mb-2" data-i18n="contact.product">感興趣的產品</label>
-                    <select name="product" class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition">
-                        <option value="smartcourt" data-i18n="contact.opt1">SmartCourt 智慧場館</option>
-                        <option value="aics" data-i18n="contact.opt2">AI 智能客服</option>
-                        <option value="digitalhuman" data-i18n="contact.opt.digitalhuman">AI 分身員工</option>
-                        <option value="pms" data-i18n="contact.opt.property">智慧物業管理</option>
-
-                        <option value="playtime" data-i18n="contact.opt.playtime">PlayTime 智慧揪團</option>
-                        <option value="partnership" data-i18n="contact.opt5">合作洽談 / 產品試用</option>
-                        <option value="other" data-i18n="contact.opt4">其他</option>
-                    </select>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-medium mb-2" data-i18n="contact.message">訊息內容</label>
-                    <textarea name="message" rows="4" required class="w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition resize-none" placeholder=""></textarea>
-                </div>
-                <button type="submit" class="w-full gradient-bg py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition">
-                    <span data-i18n="contact.submit">發送訊息</span>
-                </button>
-                <p id="form-status" class="mt-4 text-center text-sm hidden"></p>
-            </form>
-
-            <!-- 直接寄信選項 -->
-            <div class="mt-8 text-center">
-                <div class="inline-flex items-center gap-2 text-gray-400 text-sm mb-3">
-                    <div class="h-px w-12 bg-gray-600"></div>
-                    <span data-i18n="contact.emailSection">或直接寄信給我們</span>
-                    <div class="h-px w-12 bg-gray-600"></div>
-                </div>
-                <div class="flex items-center justify-center gap-3">
-                    <a href="mailto:contact@timux.site" class="inline-flex items-center gap-2 glass px-5 py-3 rounded-xl hover:border-primary transition cursor-pointer group">
-                        <span class="text-lg">📧</span>
-                        <span class="text-primary font-medium group-hover:text-secondary transition">contact@timux.site</span>
-                    </a>
-                    <button onclick="navigator.clipboard.writeText('contact@timux.site').then(()=>{this.innerHTML='<span data-i18n=\'contact.copied\'>✅ 已複製</span>';setTimeout(()=>{this.innerHTML='<span data-i18n=\'contact.copy\'>📋 複製</span>';},2000)})" class="inline-flex items-center gap-1 bg-white/5 border border-gray-600 px-4 py-3 rounded-xl hover:border-primary transition text-sm text-gray-300 hover:text-white cursor-pointer">
-                        <span data-i18n="contact.copy">📋 複製</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center mb-4 md:mb-0">
-                    <img src="images/logo-icon.png" alt="Timux" class="h-8 w-8 rounded-lg">
-                    <span class="ml-2 text-2xl font-bold gradient-text">Timux</span>
-                    <span class="ml-1 text-sm text-gray-400" data-i18n="brand">時光智造</span>
-                </div>
-                <div class="text-gray-400 text-sm">
-                    © 2026 Timux. <span data-i18n="footer.rights">All rights reserved.</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Lightbox -->
-    <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90" onclick="closeLightbox()">
-        <button class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300" onclick="closeLightbox()">&times;</button>
-        <img id="lightbox-img" src="" alt="" class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl">
+      </div>
     </div>
+  </section>
 
-    <script>
-        function openLightbox(src) {
-            const lightbox = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            img.src = src;
-            lightbox.classList.remove('hidden');
-            lightbox.classList.add('flex');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.add('hidden');
-            lightbox.classList.remove('flex');
-            document.body.style.overflow = '';
-        }
-        
-        // Close on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeLightbox();
+  <section class="section cases" id="cases">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow paper-eyebrow">Built in real operations</p>
+          <h2>每個案例，都從<br>真實工作現場開始。</h2>
+        </div>
+        <p>不只展示模型能做什麼，更要讓企業看見資料、人工接管、後台與持續訓練如何一起運作。</p>
+      </div>
+
+      <div class="case-grid">
+        <article class="case-card large">
+          <div class="case-info">
+            <div class="case-brand"><img src="assets/clients/southeast-bus.png" alt=""><span class="mono">AI customer service</span></div>
+            <h3>東南客運：從 FAQ 回答，走向意圖判斷與人工交接。</h3>
+            <p>一般問題由知識庫回答；即時路線、客訴、遺失物等場景辨識後，收集必要資訊並交由人員處理。</p>
+          </div>
+          <div class="case-shot"><img src="assets/product/aics-workspace.jpg" alt="AI 客服工作台畫面"></div>
+        </article>
+        <div class="case-stack">
+          <article class="case-card stack">
+            <div class="case-info">
+              <div class="case-brand"><img src="assets/clients/mj-security.png" alt=""><span class="mono">Mobile operations</span></div>
+              <h3>銘將保全：讓行動打卡與資料校對可追蹤。</h3>
+              <p>把手機端操作、考勤紀錄與後台驗證連成一條流程。</p>
+            </div>
+            <div class="mini-shot"><img src="assets/product/mj-liff-clock.png" alt="行動打卡畫面"></div>
+          </article>
+          <article class="case-card stack">
+            <div class="case-info">
+              <div class="case-brand"><img src="assets/clients/xiguang.png" alt=""><span class="mono">Interactive content</span></div>
+              <h3>羲光劇遊：互動內容不是一次性頁面。</h3>
+              <p>從手機 Web 體驗延伸到素材、設定、預覽與發布的內容工具台。</p>
+            </div>
+            <div class="mini-shot"><img src="assets/product/aics-dashboard.jpg" alt="營運後台畫面"></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section governance" id="governance">
+    <div class="shell gov-grid">
+      <div class="gov-copy">
+        <p class="eyebrow">Governed by design</p>
+        <h2>AI 可以更主動，<br>但不能失去控制。</h2>
+        <p>真正的企業 Agent 不只要會回答，還要知道資料邊界、動作權限、人工批准與每一次執行的紀錄。</p>
+        <div class="gov-points">
+          <div class="gov-point"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></i><div><b>Public / Private data boundary</b><span>官網 Agent 只讀核准公開資料，不碰私人專案知識。</span></div></div>
+          <div class="gov-point"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 11V8a4 4 0 018 0v3M6 11h12v10H6z"/></svg></i><div><b>Human approval gates</b><span>高風險動作必須由人批准，逐步從只讀走向執行。</span></div></div>
+          <div class="gov-point"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></i><div><b>Traceable activity</b><span>輸入、引用、回覆與動作留下紀錄，方便追蹤與修正。</span></div></div>
+        </div>
+      </div>
+
+      <div class="policy-ui">
+        <div class="policy-inner">
+          <div class="policy-head"><b>Agent Governance Center</b><span class="mono">All systems operational</span></div>
+          <div class="policy-body">
+            <div class="policy-overview">
+              <div class="policy-stat"><span class="mono">Policy coverage</span><b>100%</b></div>
+              <div class="policy-stat"><span class="mono">Human review</span><b>Required</b></div>
+              <div class="policy-stat"><span class="mono">Public KB</span><b>v07.30</b></div>
+            </div>
+            <div class="event-table">
+              <div class="event-row header"><span>最近動作</span><span>風險層級</span><span>狀態</span></div>
+              <div class="event-row"><span>讀取官網公開案例</span><span>L0 · Read only</span><span class="status-pill ok">已放行</span></div>
+              <div class="event-row"><span>產生導入需求摘要</span><span>L1 · Review</span><span class="status-pill ok">已完成</span></div>
+              <div class="event-row"><span>寫入 CRM 潛在客戶</span><span>L2 · Approval</span><span class="status-pill wait">待批准</span></div>
+              <div class="event-row"><span>要求輸出內部提示詞</span><span>L3 · Restricted</span><span class="status-pill stop">已阻擋</span></div>
+              <div class="event-row"><span>提供未驗證成效數字</span><span>L3 · Restricted</span><span class="status-pill stop">已阻擋</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="shell">
+      <div class="final-card">
+        <p class="eyebrow">Start with one real workflow</p>
+        <h2>先找出第一個<br>值得交給 AI 的流程。</h2>
+        <p>不用先準備完整企劃。告訴 Timux Agent 你最耗時間的一段工作，我們會先幫你拆成可驗證的導入路徑。</p>
+        <div class="final-actions">
+          <a class="button white" href="#agent">直接問 AI 顧問</a>
+          <a class="button ghost" href="mailto:service@timux.site">預約真人討論</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="shell footer-inner">
+      <div class="footer-brand"><img src="assets/logo-icon.png" alt="">時光智造 Timux</div>
+      <div>智造交給 AI，時光留給所愛。</div>
+      <div>© 2026 Timux Technology</div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const apiBase = "https://digitalhuman.timux.site";
+      const endpoint = `${apiBase}/api/digital-human/website-chat`;
+      const form = document.querySelector("#agentForm");
+      const input = document.querySelector("#agentInput");
+      const feed = document.querySelector("#chatFeed");
+      const sendButton = document.querySelector("#sendButton");
+      const traceRows = [...document.querySelectorAll(".trace-row")];
+      const history = [];
+      const storageKey = "timux_website_agent_visitor";
+      let visitorId = localStorage.getItem(storageKey);
+      if (!visitorId) {
+        visitorId = globalThis.crypto?.randomUUID?.() || `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        localStorage.setItem(storageKey, visitorId);
+      }
+
+      function setTrace(step) {
+        traceRows.forEach((row, index) => {
+          row.classList.toggle("done", index < step);
+          row.classList.toggle("active", index === step);
         });
-    </script>
+      }
 
-    <!-- i18n Script -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js?v=20260303"></script>
+      function addMessage(role, text, actions = []) {
+        const article = document.createElement("div");
+        article.className = `message ${role}`;
+        const label = document.createElement("p");
+        label.className = "message-label mono";
+        label.textContent = role === "assistant" ? "Timux Agent" : "You";
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.textContent = text;
+        article.append(label, bubble);
 
-    <!-- 時光智造 AI 客服 Widget（語音版） -->
-    <script src="https://ai-customer-service.timux.site/widget.js?v=3" data-tenant="cs_timux" data-color="#6366F1" data-position="right"></script>
+        if (actions.length) {
+          const chips = document.createElement("div");
+          chips.className = "chips";
+          actions.slice(0, 3).forEach((action) => {
+            const chip = document.createElement("button");
+            chip.className = "chip";
+            chip.type = "button";
+            chip.textContent = action;
+            chip.addEventListener("click", () => sendQuestion(action));
+            chips.append(chip);
+          });
+          article.append(chips);
+        }
+        feed.append(article);
+        feed.scrollTop = feed.scrollHeight;
+        return article;
+      }
+
+      function addTyping() {
+        const article = document.createElement("div");
+        article.className = "message assistant";
+        article.dataset.typing = "true";
+        const label = document.createElement("p");
+        label.className = "message-label mono";
+        label.textContent = "Timux Agent";
+        const bubble = document.createElement("div");
+        bubble.className = "bubble typing";
+        bubble.innerHTML = "<i></i><i></i><i></i>";
+        article.append(label, bubble);
+        feed.append(article);
+        feed.scrollTop = feed.scrollHeight;
+        return article;
+      }
+
+      async function sendQuestion(rawText) {
+        const text = String(rawText || "").trim();
+        if (!text || sendButton.disabled) return;
+        addMessage("user", text);
+        history.push({ role: "user", content: text });
+        input.value = "";
+        sendButton.disabled = true;
+        setTrace(0);
+        const typing = addTyping();
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 22000);
+
+        try {
+          setTimeout(() => setTrace(1), 350);
+          setTimeout(() => setTrace(2), 800);
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              message: text,
+              history: history.slice(-7, -1),
+              visitorId
+            }),
+            signal: controller.signal
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.message || `HTTP ${response.status}`);
+          setTrace(3);
+          typing.remove();
+          const reply = data.reply || "目前沒有取得回覆，請稍後再試。";
+          history.push({ role: "assistant", content: reply });
+          addMessage("assistant", reply, data.nextActions || []);
+          setTimeout(() => setTrace(4), 450);
+        } catch (error) {
+          typing.remove();
+          const timedOut = error?.name === "AbortError";
+          addMessage(
+            "assistant",
+            timedOut
+              ? "這次回覆超時了。你可以再試一次，或直接預約真人顧問討論。"
+              : "官網 Agent 暫時無法連線；你仍可瀏覽案例，或直接預約真人顧問討論。",
+            ["幫我找第一個 AI 場景"]
+          );
+          setTrace(2);
+        } finally {
+          clearTimeout(timeout);
+          sendButton.disabled = false;
+          input.focus();
+        }
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendQuestion(input.value);
+      });
+      document.querySelectorAll(".chip").forEach((chip) => {
+        chip.addEventListener("click", () => sendQuestion(chip.textContent));
+      });
+    })();
+  </script>
 </body>
 </html>
