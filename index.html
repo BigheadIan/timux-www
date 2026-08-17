@@ -14,7 +14,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="時光智造 Timux">
-  <meta name="timux-build" content="homepage-v4-interactive-cases-20260730">
+  <meta name="timux-build" content="homepage-v5-voice-agent-20260817">
   <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
   <meta name="description" content="時光智造 Timux：從業務痛點、資料與流程出發，把 AI 做成企業真正用得起來的工作能力。">
   <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
@@ -369,7 +369,7 @@
       color: #d2cdff; background: rgba(141,124,255,.08); font-size: 14px;
     }
     .chat-compose {
-      display: grid; grid-template-columns: 1fr auto; gap: 8px;
+      display: grid; grid-template-columns: minmax(0,1fr) auto auto auto; gap: 8px;
       margin-top: auto; padding: 14px 15px; border-top: 1px solid var(--line);
       background: rgba(255,255,255,.018);
     }
@@ -379,6 +379,23 @@
       background: rgba(255,255,255,.04); font-size: 16px;
     }
     .chat-compose input:focus { border-color: rgba(141,124,255,.6); box-shadow: 0 0 0 3px rgba(141,124,255,.08); }
+    .voice-btn {
+      width: 50px; height: 50px; display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,.12); border-radius: 11px;
+      color: #c9cad2; background: rgba(255,255,255,.045);
+    }
+    .voice-btn:hover, .voice-btn:focus-visible { color: #fff; border-color: rgba(141,124,255,.55); background: rgba(141,124,255,.12); }
+    .voice-btn svg { width: 19px; height: 19px; }
+    .voice-btn.is-active { color: #8ff2d3; border-color: rgba(125,236,175,.38); background: rgba(125,236,175,.1); }
+    .voice-btn.is-recording { color: #fff; border-color: rgba(255,112,112,.62); background: rgba(255,94,94,.22); animation: voicePulse .85s ease-in-out infinite alternate; }
+    .voice-btn:disabled { cursor: not-allowed; opacity: .38; }
+    @keyframes voicePulse { to { box-shadow: 0 0 0 5px rgba(255,94,94,.1), 0 0 20px rgba(255,94,94,.18); } }
+    .voice-status {
+      grid-column: 1 / -1; min-height: 18px; margin: 0 3px;
+      color: #9fa2ad; font-size: 14px; line-height: 1.35;
+    }
+    .voice-status[data-tone="active"] { color: #9ceec5; }
+    .voice-status[data-tone="error"] { color: #ffaaa2; }
     .send-btn {
       width: 50px; height: 50px; display: grid; place-items: center;
       border: 0; border-radius: 11px; color: #08090d;
@@ -802,6 +819,8 @@
       .message { max-width: 95%; }
       .bubble { font-size: 18px; }
       .chat-compose { padding: 11px; }
+      .chat-compose input, .voice-btn, .send-btn { height: 46px; }
+      .voice-btn, .send-btn { width: 46px; }
       .section-head h2, .gov-copy h2 { font-size: 40px; }
       .method-visual { min-height: 670px; }
       .flow-map { inset: 280px 20px 25px; }
@@ -909,7 +928,7 @@
               <main class="chat-main">
                 <div class="app-head">
                   <div><h3>Timux AI 導入顧問</h3><p>Ian 方法論 · 公開知識 · 不亂報成效</p></div>
-                  <div class="agent-badge"><i class="live-dot"></i> LIVE</div>
+                  <div class="agent-badge"><i class="live-dot"></i> LIVE · VOICE</div>
                 </div>
                 <div class="chat-feed" id="chatFeed" aria-live="polite">
                   <div class="message assistant">
@@ -922,10 +941,17 @@
                   </div>
                 </div>
                 <form class="chat-compose" id="agentForm">
-                  <input id="agentInput" maxlength="1200" autocomplete="off" aria-label="輸入問題" placeholder="例如：我們每天有 200 筆客服訊息，怎麼開始？">
-                  <button class="send-btn" id="sendButton" aria-label="傳送問題">
+                  <input id="agentInput" maxlength="1200" autocomplete="off" aria-label="輸入問題" placeholder="輸入或按麥克風說話…">
+                  <button class="voice-btn" id="micButton" type="button" aria-label="開始語音輸入" aria-pressed="false" title="語音輸入">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="3" width="8" height="12" rx="4"/><path d="M5 11a7 7 0 0014 0M12 18v3M9 21h6"/></svg>
+                  </button>
+                  <button class="voice-btn" id="ttsButton" type="button" aria-label="關閉 AI 朗讀" aria-pressed="true" title="AI 朗讀已開啟">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5z"/><path d="M17 9a4 4 0 010 6M19 6a8 8 0 010 12"/></svg>
+                  </button>
+                  <button class="send-btn" id="sendButton" type="submit" aria-label="傳送問題">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
                   </button>
+                  <p class="voice-status" id="voiceStatus" aria-live="polite">可用語音輸入，AI 回覆會自動朗讀。</p>
                 </form>
               </main>
 
@@ -1140,14 +1166,28 @@
     (() => {
       const apiBase = "https://digitalhuman.timux.site";
       const endpoint = `${apiBase}/api/digital-human/website-chat`;
+      const ttsEndpoint = "https://ai-customer-service.timux.site/api/widget/tts";
       const form = document.querySelector("#agentForm");
       const input = document.querySelector("#agentInput");
       const feed = document.querySelector("#chatFeed");
       const sendButton = document.querySelector("#sendButton");
+      const micButton = document.querySelector("#micButton");
+      const ttsButton = document.querySelector("#ttsButton");
+      const voiceStatus = document.querySelector("#voiceStatus");
       const starterArea = document.querySelector("#starterArea");
       const starterQuestions = document.querySelector("#starterQuestions");
       const traceRows = [...document.querySelectorAll(".trace-row")];
       const history = [];
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const speechSynth = window.speechSynthesis;
+      let recognition = null;
+      let isRecording = false;
+      let pendingVoiceText = "";
+      let ttsEnabled = localStorage.getItem("timux_agent_tts") !== "off";
+      let playbackRevision = 0;
+      let currentAudio = null;
+      let currentAudioUrl = null;
+      let currentUtterance = null;
       const questionPool = [
         "我們每天有 200 筆客服訊息，第一步怎麼做？",
         "你們做過哪些 AI 導入案例？",
@@ -1160,6 +1200,149 @@
       if (!visitorId) {
         visitorId = globalThis.crypto?.randomUUID?.() || `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
         localStorage.setItem(storageKey, visitorId);
+      }
+
+      function setVoiceStatus(message, tone = "") {
+        voiceStatus.textContent = message;
+        voiceStatus.dataset.tone = tone;
+      }
+
+      function updateTTSButton() {
+        ttsButton.classList.toggle("is-active", ttsEnabled);
+        ttsButton.setAttribute("aria-pressed", String(ttsEnabled));
+        ttsButton.setAttribute("aria-label", ttsEnabled ? "關閉 AI 朗讀" : "開啟 AI 朗讀");
+        ttsButton.title = ttsEnabled ? "AI 朗讀已開啟" : "AI 朗讀已關閉";
+      }
+
+      function stopSpeaking() {
+        playbackRevision += 1;
+        if (currentAudio) currentAudio.pause();
+        if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+        currentAudio = null;
+        currentAudioUrl = null;
+        currentUtterance = null;
+        if (speechSynth?.speaking) speechSynth.cancel();
+      }
+
+      function fallbackSpeak(text, revision) {
+        if (!speechSynth || revision !== playbackRevision || !ttsEnabled) {
+          setVoiceStatus("AI 已回覆；目前瀏覽器無法播放語音。", "error");
+          return;
+        }
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "zh-TW";
+        utterance.rate = 1.04;
+        currentUtterance = utterance;
+        utterance.onend = () => {
+          if (revision !== playbackRevision) return;
+          currentUtterance = null;
+          setVoiceStatus("朗讀完成，可繼續說話或輸入問題。", "active");
+        };
+        utterance.onerror = () => {
+          if (revision !== playbackRevision) return;
+          currentUtterance = null;
+          setVoiceStatus("AI 已回覆；語音播放被瀏覽器阻擋。", "error");
+        };
+        speechSynth.speak(utterance);
+      }
+
+      async function speakText(rawText) {
+        if (!ttsEnabled) return;
+        stopSpeaking();
+        const revision = playbackRevision;
+        const text = String(rawText || "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim().slice(0, 500);
+        if (!text) return;
+        setVoiceStatus("AI 正在朗讀回覆…", "active");
+        try {
+          const response = await fetch(ttsEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+          });
+          if (!response.ok) throw new Error(`TTS HTTP ${response.status}`);
+          const blob = await response.blob();
+          if (revision !== playbackRevision || !ttsEnabled) return;
+          currentAudioUrl = URL.createObjectURL(blob);
+          currentAudio = new Audio(currentAudioUrl);
+          currentAudio.onended = () => {
+            if (revision !== playbackRevision) return;
+            URL.revokeObjectURL(currentAudioUrl);
+            currentAudio = null;
+            currentAudioUrl = null;
+            setVoiceStatus("朗讀完成，可繼續說話或輸入問題。", "active");
+          };
+          currentAudio.onerror = () => {
+            if (revision !== playbackRevision) return;
+            if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+            currentAudio = null;
+            currentAudioUrl = null;
+            fallbackSpeak(text, revision);
+          };
+          await currentAudio.play().catch(() => {
+            if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+            currentAudio = null;
+            currentAudioUrl = null;
+            fallbackSpeak(text, revision);
+          });
+        } catch {
+          if (revision === playbackRevision) fallbackSpeak(text, revision);
+        }
+      }
+
+      function updateMicButton() {
+        micButton.classList.toggle("is-recording", isRecording);
+        micButton.setAttribute("aria-pressed", String(isRecording));
+        micButton.setAttribute("aria-label", isRecording ? "停止語音輸入" : "開始語音輸入");
+        micButton.title = isRecording ? "停止錄音" : "語音輸入";
+      }
+
+      function initSpeechRecognition() {
+        if (!SpeechRecognition) {
+          micButton.disabled = true;
+          micButton.title = "此瀏覽器不支援語音輸入";
+          setVoiceStatus("此瀏覽器不支援麥克風辨識；仍可打字並使用 AI 朗讀。", "error");
+          return;
+        }
+        recognition = new SpeechRecognition();
+        recognition.lang = "zh-TW";
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+        recognition.onstart = () => {
+          isRecording = true;
+          updateMicButton();
+          setVoiceStatus("正在聽，說完後會自動送出…", "active");
+        };
+        recognition.onresult = (event) => {
+          let transcript = "";
+          for (let index = 0; index < event.results.length; index += 1) {
+            transcript += event.results[index][0]?.transcript || "";
+          }
+          pendingVoiceText = transcript.trim();
+          input.value = pendingVoiceText;
+          if (event.results[event.results.length - 1]?.isFinal) recognition.stop();
+        };
+        recognition.onerror = (event) => {
+          pendingVoiceText = "";
+          const messages = {
+            "not-allowed": "麥克風權限未開啟，請允許後再試。",
+            "service-not-allowed": "瀏覽器未允許語音辨識服務。",
+            "no-speech": "沒有聽到聲音，請靠近麥克風再試。",
+            "audio-capture": "找不到可用的麥克風。"
+          };
+          setVoiceStatus(messages[event.error] || "語音辨識暫時失敗，請再試一次。", "error");
+        };
+        recognition.onend = () => {
+          isRecording = false;
+          updateMicButton();
+          const spokenText = pendingVoiceText;
+          pendingVoiceText = "";
+          if (spokenText) {
+            setVoiceStatus("語音辨識完成，正在詢問 AI…", "active");
+            sendQuestion(spokenText, { source: "voice" });
+          }
+        };
+        setVoiceStatus(ttsEnabled ? "可用語音輸入，AI 回覆會自動朗讀。" : "語音輸入可用；AI 朗讀目前已關閉。");
       }
 
       function setTrace(step) {
@@ -1226,9 +1409,14 @@
         return article;
       }
 
-      async function sendQuestion(rawText) {
+      async function sendQuestion(rawText, options = {}) {
         const text = String(rawText || "").trim();
         if (!text || sendButton.disabled) return;
+        if (isRecording && recognition) {
+          pendingVoiceText = "";
+          recognition.stop();
+        }
+        stopSpeaking();
         starterArea?.remove();
         addMessage("user", text);
         history.push({ role: "user", content: text });
@@ -1259,6 +1447,8 @@
           const reply = data.reply || "目前沒有取得回覆，請稍後再試。";
           history.push({ role: "assistant", content: reply });
           addMessage("assistant", reply, data.nextActions || []);
+          if (ttsEnabled) speakText(reply);
+          else if (options.source === "voice") setVoiceStatus("AI 已文字回覆；點喇叭可開啟朗讀。", "active");
           setTimeout(() => setTrace(4), 450);
         } catch (error) {
           typing.remove();
@@ -1274,14 +1464,40 @@
         } finally {
           clearTimeout(timeout);
           sendButton.disabled = false;
-          input.focus();
+          if (options.source !== "voice") input.focus();
         }
       }
 
+      micButton.addEventListener("click", () => {
+        if (!recognition || sendButton.disabled) return;
+        if (isRecording) {
+          recognition.stop();
+          return;
+        }
+        stopSpeaking();
+        pendingVoiceText = "";
+        input.value = "";
+        try {
+          recognition.start();
+        } catch {
+          setVoiceStatus("麥克風正在初始化，請稍後再試。", "error");
+        }
+      });
+
+      ttsButton.addEventListener("click", () => {
+        ttsEnabled = !ttsEnabled;
+        localStorage.setItem("timux_agent_tts", ttsEnabled ? "on" : "off");
+        if (!ttsEnabled) stopSpeaking();
+        updateTTSButton();
+        setVoiceStatus(ttsEnabled ? "AI 朗讀已開啟。" : "AI 朗讀已關閉，仍可使用語音輸入。", "active");
+      });
+
       form.addEventListener("submit", (event) => {
         event.preventDefault();
-        sendQuestion(input.value);
+        sendQuestion(input.value, { source: "text" });
       });
+      updateTTSButton();
+      initSpeechRecognition();
       renderStarterQuestions();
     })();
   </script>
