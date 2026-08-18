@@ -3,40 +3,31 @@ import fs from "node:fs";
 
 const { chromium } = playwright;
 const baseURL = process.env.HOMEPAGE_URL || "http://127.0.0.1:8787/";
-const outputDir = process.env.HOMEPAGE_QA_OUTPUT || "../output/timux-homepage-v4-20260730";
+const outputDir = process.env.HOMEPAGE_QA_OUTPUT || "../output/timux-homepage-v6-20260818";
 fs.mkdirSync(outputDir, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const results = {};
 
-async function installSpeechMock(page) {
+async function installCallMocks(page) {
   await page.addInitScript(() => {
     class MockSpeechRecognition {
-      constructor() {
-        this.lang = "zh-TW";
-        this.continuous = false;
-        this.interimResults = true;
-      }
-
-      start() {
-        this.onstart?.();
-        setTimeout(() => {
-          const result = { 0: { transcript: "我們想用語音了解 AI 導入" }, isFinal: true, length: 1 };
-          this.onresult?.({ resultIndex: 0, results: Object.assign([result], { length: 1 }) });
-        }, 20);
-      }
-
-      stop() {
-        setTimeout(() => this.onend?.(), 0);
-      }
+      start() { this.onstart?.(); }
+      stop() { this.onend?.(); }
+      abort() { this.onend?.(); }
     }
     window.SpeechRecognition = MockSpeechRecognition;
+    window.webkitSpeechRecognition = MockSpeechRecognition;
+    window.Audio = class MockAudio {
+      play() { queueMicrotask(() => this.onended?.()); return Promise.resolve(); }
+      pause() {}
+    };
   });
 }
 
 async function inspect(viewport, name) {
   const page = await browser.newPage({ viewport });
-  await installSpeechMock(page);
+  await installCallMocks(page);
   const consoleErrors = [];
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
@@ -44,7 +35,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v5-voice-agent-20260817") {
+  if (marker !== "homepage-v6-phone-chat-20260818") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -58,7 +49,7 @@ async function inspect(viewport, name) {
 
   const fontAudit = await page.evaluate(() => {
     const failures = [];
-    for (const element of document.querySelectorAll("body *")) {
+    for (const element of document.querySelectorAll("body *:not(.timux-chat-widget):not(.timux-chat-widget *)")) {
       const directText = [...element.childNodes]
         .filter((node) => node.nodeType === Node.TEXT_NODE)
         .map((node) => node.textContent.trim())
@@ -82,14 +73,14 @@ async function inspect(viewport, name) {
   const agentSize = await page.locator(".bubble").first().evaluate((element) => getComputedStyle(element).fontSize);
   if (agentSize !== "18px") throw new Error(`${name}: agent font is ${agentSize}`);
 
-  const voiceControls = await page.evaluate(() => ({
-    micDisabled: document.querySelector("#micButton").disabled,
-    micSize: document.querySelector("#micButton").getBoundingClientRect().width,
-    ttsPressed: document.querySelector("#ttsButton").getAttribute("aria-pressed"),
-    status: document.querySelector("#voiceStatus").textContent.trim()
+  const removedReplyReading = await page.evaluate(() => ({
+    inlineMic: Boolean(document.querySelector("#micButton")),
+    inlineTts: Boolean(document.querySelector("#ttsButton")),
+    inlineVoiceStatus: Boolean(document.querySelector("#voiceStatus")),
+    inlineTtsEndpoint: document.documentElement.innerHTML.includes("/api/widget/tts")
   }));
-  if (voiceControls.micDisabled || voiceControls.micSize < 44 || voiceControls.ttsPressed !== "true") {
-    throw new Error(`${name}: invalid voice controls ${JSON.stringify(voiceControls)}`);
+  if (Object.values(removedReplyReading).some(Boolean)) {
+    throw new Error(`${name}: inline reply-reading remnants ${JSON.stringify(removedReplyReading)}`);
   }
 
   const starters = await page.locator("#starterQuestions .chip").allTextContents();
@@ -104,12 +95,18 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: broken case image ${JSON.stringify(images)}`);
   }
 
-  await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
-  await page.locator(".chat-compose").screenshot({ path: `${outputDir}/${name}-voice-controls.png` });
-  await page.locator("#cases").screenshot({ path: `${outputDir}/${name}-cases.png` });
-  if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
+  const widget = {
+    bubble: await page.locator(".timux-chat-bubble").count(),
+    phoneButton: await page.locator(".timux-phone-button").count(),
+    replyReadingControlVisible: await page.locator(".timux-tts-toggle").isVisible()
+  };
+  if (widget.bubble !== 1 || widget.phoneButton !== 1 || widget.replyReadingControlVisible) {
+    throw new Error(`${name}: phone chat widget unavailable ${JSON.stringify(widget)}`);
+  }
 
-  results[name] = { overflow, agentSize, starters, images: images.length, voiceControls, consoleErrors };
+  await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
+  if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
+  results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, consoleErrors };
   await page.close();
 }
 
@@ -118,76 +115,75 @@ await inspect({ width: 390, height: 844 }, "mobile");
 await inspect({ width: 360, height: 740 }, "small-mobile");
 
 const interactionPage = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
-await installSpeechMock(interactionPage);
+await installCallMocks(interactionPage);
 const interactionErrors = [];
-const ttsResponses = [];
 const failedResponses = [];
+const ttsRequests = [];
 interactionPage.on("console", (message) => {
   if (message.type() === "error") interactionErrors.push(message.text());
 });
 interactionPage.on("response", (response) => {
   if (response.status() >= 400) failedResponses.push({ status: response.status(), url: response.url() });
-  if (response.url().includes("/api/widget/tts")) {
-    ttsResponses.push({ status: response.status(), contentType: response.headers()["content-type"] || "" });
-  }
+});
+interactionPage.on("request", (request) => {
+  if (request.url().includes("/api/widget/tts")) ttsRequests.push(request.postDataJSON());
 });
 await interactionPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
-await interactionPage.locator("#ttsButton").click();
-if (await interactionPage.locator("#ttsButton").getAttribute("aria-pressed") !== "false") {
-  throw new Error("TTS toggle did not turn off");
-}
+
 const firstStarter = interactionPage.locator("#starterQuestions .chip").first();
 const firstQuestion = await firstStarter.textContent();
 await firstStarter.click();
 await interactionPage.locator(".message.user").filter({ hasText: firstQuestion }).waitFor({ timeout: 5000 });
 await interactionPage.locator(".message.assistant .bubble:not(.typing)").nth(1).waitFor({ timeout: 30000 });
-await interactionPage.locator("#agentInput").fill("我們想先做內部知識助手，文件很多，怎麼開始？");
-await interactionPage.locator("#agentForm").evaluate((form) => form.requestSubmit());
-await interactionPage.locator(".message.user").filter({ hasText: "我們想先做內部知識助手" }).waitFor({ timeout: 5000 });
-await interactionPage.locator(".message.assistant .bubble:not(.typing)").nth(2).waitFor({ timeout: 30000 });
-await interactionPage.locator("#micButton").click();
-await interactionPage.locator(".message.user").filter({ hasText: "我們想用語音了解 AI 導入" }).waitFor({ timeout: 5000 });
-await interactionPage.locator(".message.assistant .bubble:not(.typing)").nth(3).waitFor({ timeout: 30000 });
-await interactionPage.locator("#ttsButton").click();
-await interactionPage.locator("#agentInput").fill("請用一句話介紹 Timux");
-const ttsResponsePromise = interactionPage.waitForResponse((response) => response.url().includes("/api/widget/tts") && response.status() === 200, { timeout: 30000 });
-await interactionPage.locator("#agentForm").evaluate((form) => form.requestSubmit());
-await interactionPage.locator(".message.assistant .bubble:not(.typing)").nth(4).waitFor({ timeout: 30000 });
-await ttsResponsePromise;
+if (ttsRequests.length) throw new Error(`text Agent unexpectedly requested reply reading ${JSON.stringify(ttsRequests)}`);
 
+await interactionPage.locator(".timux-chat-bubble").click();
+await interactionPage.locator(".timux-chat-window.open").waitFor();
+const initialWidgetReplies = await interactionPage.locator(".timux-message.assistant").count();
+await interactionPage.locator(".timux-chat-input").fill("你們提供哪些 AI 導入服務？");
+await interactionPage.locator(".timux-send-button").click();
+await interactionPage.locator(".timux-message.user").filter({ hasText: "你們提供哪些 AI 導入服務" }).waitFor();
+await interactionPage.waitForFunction(
+  (initialCount) => document.querySelectorAll(".timux-message.assistant").length > initialCount,
+  initialWidgetReplies,
+  { timeout: 30000 }
+);
+if (ttsRequests.length) throw new Error(`widget text chat unexpectedly requested reply reading ${JSON.stringify(ttsRequests)}`);
+
+await interactionPage.locator(".timux-phone-button").click();
+await interactionPage.locator(".phone-overlay").waitFor();
+await interactionPage.locator(".timux-message.assistant").filter({ hasText: "通話已接通" }).waitFor();
+await interactionPage.waitForResponse(
+  (response) => response.url().includes("/api/widget/tts") && response.status() === 200,
+  { timeout: 30000 }
+);
+
+const callGreeting = ttsRequests.find((request) => request?.text === "您好，有什麼問題嗎？");
+const phoneCall = {
+  connected: await interactionPage.locator(".timux-message.assistant").filter({ hasText: "通話已接通" }).count(),
+  overlay: await interactionPage.locator(".phone-overlay").count(),
+  greeting: callGreeting?.text || "",
+  status: await interactionPage.locator(".phone-status-text").textContent()
+};
+if (phoneCall.connected !== 1 || phoneCall.overlay !== 1 || phoneCall.greeting !== "您好，有什麼問題嗎？") {
+  throw new Error(`phone call did not proactively greet ${JSON.stringify(phoneCall)}`);
+}
+
+await interactionPage.locator(".timux-chat-window").screenshot({ path: `${outputDir}/desktop-phone-chat.png` });
 const interaction = {
   firstQuestion,
-  assistantMessages: await interactionPage.locator(".message.assistant .bubble:not(.typing)").count(),
-  userMessages: await interactionPage.locator(".message.user").count(),
-  voiceQuestionSent: await interactionPage.locator(".message.user").filter({ hasText: "我們想用語音了解 AI 導入" }).count(),
-  ttsEnabled: await interactionPage.locator("#ttsButton").getAttribute("aria-pressed") === "true",
-  ttsResponses,
+  heroAssistantMessages: await interactionPage.locator(".message.assistant .bubble:not(.typing)").count(),
+  heroUserMessages: await interactionPage.locator(".message.user").count(),
+  widgetTextMessages: await interactionPage.locator(".timux-message.user").count(),
+  textReplyReadingRequests: ttsRequests.filter((request) => request?.text !== "您好，有什麼問題嗎？").length,
+  phoneCall,
   failedResponses,
-  starterRemoved: (await interactionPage.locator("#starterArea").count()) === 0,
   consoleErrors: interactionErrors
 };
-if (interaction.assistantMessages < 5 || interaction.userMessages !== 4 || interaction.voiceQuestionSent !== 1 || !interaction.ttsEnabled || interaction.ttsResponses.some((response) => response.status !== 200 || !response.contentType.includes("audio/")) || interaction.failedResponses.length || interaction.consoleErrors.length || !interaction.starterRemoved) {
+if (interaction.heroAssistantMessages < 2 || interaction.heroUserMessages !== 1 || interaction.textReplyReadingRequests || interaction.failedResponses.length || interaction.consoleErrors.length) {
   throw new Error(`interaction flow failed ${JSON.stringify(interaction)}`);
 }
-await interactionPage.screenshot({ path: `${outputDir}/desktop-agent-conversation.png`, fullPage: false });
 results.interaction = interaction;
-
-const fallbackPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-await fallbackPage.addInitScript(() => {
-  Object.defineProperty(window, "SpeechRecognition", { configurable: true, value: undefined });
-  Object.defineProperty(window, "webkitSpeechRecognition", { configurable: true, value: undefined });
-});
-await fallbackPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
-const fallback = await fallbackPage.evaluate(() => ({
-  micDisabled: document.querySelector("#micButton").disabled,
-  ttsEnabled: document.querySelector("#ttsButton").getAttribute("aria-pressed") === "true",
-  status: document.querySelector("#voiceStatus").textContent.trim()
-}));
-if (!fallback.micDisabled || !fallback.ttsEnabled || !fallback.status.includes("仍可打字")) {
-  throw new Error(`unsupported browser fallback failed ${JSON.stringify(fallback)}`);
-}
-results.unsupportedBrowser = fallback;
-await fallbackPage.close();
 
 await browser.close();
 console.log(JSON.stringify(results, null, 2));
