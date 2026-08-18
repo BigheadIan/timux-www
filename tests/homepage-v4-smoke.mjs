@@ -4,12 +4,22 @@ import fs from "node:fs";
 const { chromium } = playwright;
 const baseURL = process.env.HOMEPAGE_URL || "http://127.0.0.1:8787/";
 const outputDir = process.env.HOMEPAGE_QA_OUTPUT || "../output/timux-homepage-v6-20260818";
+const widgetSource = process.env.WIDGET_SOURCE_PATH
+  ? fs.readFileSync(process.env.WIDGET_SOURCE_PATH, "utf8")
+  : null;
 fs.mkdirSync(outputDir, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const results = {};
 
 async function installCallMocks(page) {
+  if (widgetSource) {
+    await page.route("https://ai-customer-service.timux.site/api/widget.js*", (route) => route.fulfill({
+      status: 200,
+      contentType: "application/javascript; charset=utf-8",
+      body: widgetSource
+    }));
+  }
   await page.addInitScript(() => {
     const track = { enabled: false, stop() {}, getSettings: () => ({ echoCancellation: true, noiseSuppression: true, autoGainControl: true }) };
     const stream = { getAudioTracks: () => [track], getTracks: () => [track] };
@@ -53,6 +63,11 @@ async function installCallMocks(page) {
       play() { queueMicrotask(() => this.onended?.()); return Promise.resolve(); }
       pause() {}
     };
+    window.SpeechRecognition = class MockSpeechRecognition {
+      constructor() { this.lang = "zh-TW"; this.continuous = true; this.interimResults = true; }
+      start() { queueMicrotask(() => this.onstart?.()); }
+      stop() { queueMicrotask(() => this.onend?.()); }
+    };
   });
 }
 
@@ -66,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v7-shared-gemini-live-20260818") {
+  if (marker !== "homepage-v8-timux-turn-based-voice-20260818") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -130,10 +145,10 @@ async function inspect(viewport, name) {
     bubble: await page.locator(".timux-chat-bubble").count(),
     phoneButton: await page.locator(".timux-phone-button").count(),
     micButton: await page.locator(".timux-mic-button").count(),
-    geminiLiveBadge: await page.locator(".timux-voice-badge").textContent(),
+    voiceBadge: await page.locator(".timux-voice-badge").textContent(),
     replyReadingControlVisible: await page.locator(".timux-tts-toggle").isVisible()
   };
-  if (widget.bubble !== 1 || widget.phoneButton !== 1 || widget.micButton !== 0 || !widget.geminiLiveBadge.includes("Gemini Live") || widget.replyReadingControlVisible) {
+  if (widget.bubble !== 1 || widget.phoneButton !== 1 || widget.micButton !== 0 || !widget.voiceBadge.includes("一來一回語音") || widget.replyReadingControlVisible) {
     throw new Error(`${name}: phone chat widget unavailable ${JSON.stringify(widget)}`);
   }
 
@@ -152,6 +167,7 @@ await installCallMocks(interactionPage);
 const interactionErrors = [];
 const failedResponses = [];
 const ttsRequests = [];
+const liveRequests = [];
 interactionPage.on("console", (message) => {
   if (message.type() === "error") interactionErrors.push(message.text());
 });
@@ -160,6 +176,7 @@ interactionPage.on("response", (response) => {
 });
 interactionPage.on("request", (request) => {
   if (request.url().includes("/api/widget/tts")) ttsRequests.push(request.postDataJSON());
+  if (request.url().includes("/api/widget/live-token") || request.url().includes("/widget-live")) liveRequests.push(request.url());
 });
 await interactionPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
@@ -201,6 +218,7 @@ const phoneCall = {
 if (phoneCall.connected !== 1 || phoneCall.overlay !== 1 || phoneCall.greeting !== "您好，有什麼問題嗎？") {
   throw new Error(`phone call did not proactively greet ${JSON.stringify(phoneCall)}`);
 }
+if (liveRequests.length) throw new Error(`turn-based phone unexpectedly connected Gemini Live ${JSON.stringify(liveRequests)}`);
 
 await interactionPage.locator(".timux-chat-window").screenshot({ path: `${outputDir}/desktop-phone-chat.png` });
 const interaction = {
@@ -210,6 +228,7 @@ const interaction = {
   widgetTextMessages: await interactionPage.locator(".timux-message.user").count(),
   textReplyReadingRequests: ttsRequests.filter((request) => request?.text !== "您好，有什麼問題嗎？").length,
   phoneCall,
+  liveRequests,
   failedResponses,
   consoleErrors: interactionErrors
 };
