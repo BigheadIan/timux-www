@@ -11,13 +11,44 @@ const results = {};
 
 async function installCallMocks(page) {
   await page.addInitScript(() => {
-    class MockSpeechRecognition {
-      start() { this.onstart?.(); }
-      stop() { this.onend?.(); }
-      abort() { this.onend?.(); }
+    const track = { enabled: false, stop() {}, getSettings: () => ({ echoCancellation: true, noiseSuppression: true, autoGainControl: true }) };
+    const stream = { getAudioTracks: () => [track], getTracks: () => [track] };
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: { getUserMedia: async () => stream }
+    });
+    class MockSource {
+      connect() {}
+      disconnect() {}
+      stop() { this.stopped = true; }
+      start() { if (this.buffer?.length > 1) queueMicrotask(() => this.onended?.()); }
     }
-    window.SpeechRecognition = MockSpeechRecognition;
-    window.webkitSpeechRecognition = MockSpeechRecognition;
+    class MockAudioContext {
+      constructor() {
+        this.state = "running";
+        this.sampleRate = 48000;
+        this.currentTime = 0;
+        this.destination = {};
+        this.audioWorklet = { addModule: async () => {} };
+      }
+      resume() { return Promise.resolve(); }
+      close() { return Promise.resolve(); }
+      createMediaStreamSource() { return new MockSource(); }
+      createBufferSource() { return new MockSource(); }
+      createBuffer(_channels, length, sampleRate) {
+        const data = new Float32Array(length);
+        return { length, sampleRate, duration: length / sampleRate, getChannelData: () => data };
+      }
+      createScriptProcessor() { return { connect() {}, disconnect() {}, onaudioprocess: null }; }
+      createGain() { return { gain: { value: 0 }, connect() {}, disconnect() {} }; }
+    }
+    window.AudioContext = MockAudioContext;
+    window.webkitAudioContext = MockAudioContext;
+    window.AudioWorkletNode = class {
+      constructor() { this.port = { onmessage: null }; }
+      connect() {}
+      disconnect() {}
+    };
     window.Audio = class MockAudio {
       play() { queueMicrotask(() => this.onended?.()); return Promise.resolve(); }
       pause() {}
@@ -35,7 +66,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v6-phone-chat-20260818") {
+  if (marker !== "homepage-v7-shared-gemini-live-20260818") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -98,9 +129,11 @@ async function inspect(viewport, name) {
   const widget = {
     bubble: await page.locator(".timux-chat-bubble").count(),
     phoneButton: await page.locator(".timux-phone-button").count(),
+    micButton: await page.locator(".timux-mic-button").count(),
+    geminiLiveBadge: await page.locator(".timux-voice-badge").textContent(),
     replyReadingControlVisible: await page.locator(".timux-tts-toggle").isVisible()
   };
-  if (widget.bubble !== 1 || widget.phoneButton !== 1 || widget.replyReadingControlVisible) {
+  if (widget.bubble !== 1 || widget.phoneButton !== 1 || widget.micButton !== 0 || !widget.geminiLiveBadge.includes("Gemini Live") || widget.replyReadingControlVisible) {
     throw new Error(`${name}: phone chat widget unavailable ${JSON.stringify(widget)}`);
   }
 

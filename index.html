@@ -14,7 +14,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="時光智造 Timux">
-  <meta name="timux-build" content="homepage-v6-phone-chat-20260818">
+  <meta name="timux-build" content="homepage-v7-shared-gemini-live-20260818">
   <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
   <meta name="description" content="時光智造 Timux：從業務痛點、資料與流程出發，把 AI 做成企業真正用得起來的工作能力。">
   <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
@@ -1290,9 +1290,9 @@
     })();
   </script>
 
-  <!-- 時光智造 AI 客服 Widget：聊天視窗內可切換電話模式；電話接通後由 AI 主動開場。 -->
+  <!-- 共用 AI 客服 Widget：與東南客運使用同一個 Gemini Live 電話實作。 -->
   <script>try { localStorage.setItem("timux_tts_enabled", "off"); } catch {}</script>
-  <script src="https://ai-customer-service.timux.site/widget.js?v=3" data-tenant="cs_timux" data-color="#6366F1" data-position="right"></script>
+  <script src="https://ai-customer-service.timux.site/api/widget.js?v=shared-gemini-live" data-tenant="cs_timux" data-color="#6366F1" data-position="right"></script>
   <script>
     (() => {
       const widget = window.TimuxChatWidget;
