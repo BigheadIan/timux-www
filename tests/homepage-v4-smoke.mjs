@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v8-timux-turn-based-voice-20260818") {
+  if (marker !== "homepage-v9-discovery-20260929") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -112,7 +112,7 @@ async function inspect(viewport, name) {
   if (fontAudit.length) throw new Error(`${name}: text below 14px ${JSON.stringify(fontAudit.slice(0, 8))}`);
 
   const heroLines = await page.locator(".hero h1 .line").allTextContents();
-  if (heroLines.join("|") !== "讓 AI 真正|進入工作。") {
+  if (heroLines.join("|") !== "讓 AI 理解業務，|讓團隊用得起來。") {
     throw new Error(`${name}: hero line break regression ${heroLines.join("|")}`);
   }
 
@@ -158,11 +158,11 @@ async function inspect(viewport, name) {
   await page.close();
 }
 
-await inspect({ width: 1440, height: 1100 }, "desktop");
+await inspect({ width: 1920, height: 1080 }, "desktop");
 await inspect({ width: 390, height: 844 }, "mobile");
 await inspect({ width: 360, height: 740 }, "small-mobile");
 
-const interactionPage = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
+const interactionPage = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 await installCallMocks(interactionPage);
 const interactionErrors = [];
 const failedResponses = [];
@@ -180,6 +180,10 @@ interactionPage.on("request", (request) => {
 });
 await interactionPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
+const configResponse = await interactionPage.request.get("https://ai-customer-service.timux.site/api/widget/config/cs_timux");
+if (!configResponse.ok()) throw new Error("Cannot verify tenant greeting");
+const tenantConfig = await configResponse.json();
+const expectedGreeting = tenantConfig.config?.phoneGreeting || "您好，歡迎致電智慧客服，請問需要什麼協助？";
 const firstStarter = interactionPage.locator("#starterQuestions .chip").first();
 const firstQuestion = await firstStarter.textContent();
 await firstStarter.click();
@@ -208,25 +212,25 @@ await interactionPage.waitForResponse(
   { timeout: 30000 }
 );
 
-const callGreeting = ttsRequests.find((request) => request?.text === "您好，有什麼問題嗎？");
+const callGreeting = ttsRequests.find((request) => request?.text === expectedGreeting);
 const phoneCall = {
   connected: await interactionPage.locator(".timux-message.assistant").filter({ hasText: "通話已接通" }).count(),
   overlay: await interactionPage.locator(".phone-overlay").count(),
   greeting: callGreeting?.text || "",
   status: await interactionPage.locator(".phone-status-text").textContent()
 };
-if (phoneCall.connected !== 1 || phoneCall.overlay !== 1 || phoneCall.greeting !== "您好，有什麼問題嗎？") {
+if (phoneCall.connected !== 1 || phoneCall.overlay !== 1 || phoneCall.greeting !== expectedGreeting) {
   throw new Error(`phone call did not proactively greet ${JSON.stringify(phoneCall)}`);
 }
 if (liveRequests.length) throw new Error(`turn-based phone unexpectedly connected Gemini Live ${JSON.stringify(liveRequests)}`);
 
-await interactionPage.locator(".timux-chat-window").screenshot({ path: `${outputDir}/desktop-phone-chat.png` });
+await interactionPage.screenshot({ path: `${outputDir}/desktop-phone-chat.png` });
 const interaction = {
   firstQuestion,
   heroAssistantMessages: await interactionPage.locator(".message.assistant .bubble:not(.typing)").count(),
   heroUserMessages: await interactionPage.locator(".message.user").count(),
   widgetTextMessages: await interactionPage.locator(".timux-message.user").count(),
-  textReplyReadingRequests: ttsRequests.filter((request) => request?.text !== "您好，有什麼問題嗎？").length,
+  textReplyReadingRequests: ttsRequests.filter((request) => request?.text !== expectedGreeting).length,
   phoneCall,
   liveRequests,
   failedResponses,
