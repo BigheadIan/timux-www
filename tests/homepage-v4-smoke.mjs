@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v9-discovery-20260929") {
+  if (marker !== "homepage-v10-ai-first-20261005") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -112,8 +112,24 @@ async function inspect(viewport, name) {
   if (fontAudit.length) throw new Error(`${name}: text below 14px ${JSON.stringify(fontAudit.slice(0, 8))}`);
 
   const heroLines = await page.locator(".hero h1 .line").allTextContents();
-  if (heroLines.join("|") !== "讓 AI 理解業務，|讓團隊用得起來。") {
+  if (heroLines.join("|") !== "AI 不只會聊天。|它開始進入工作現場。") {
     throw new Error(`${name}: hero line break regression ${heroLines.join("|")}`);
+  }
+
+  const homepageStory = await page.evaluate(() => {
+    const ids = ["experience", "cases", "method", "roadmap"];
+    return {
+      order: ids.map((id) => document.querySelector(`#${id}`)?.getBoundingClientRect().top + scrollY),
+      launchCards: document.querySelectorAll(".experience-launch-grid .launch-card").length,
+      models: [...document.querySelectorAll(".model-code")].map((element) => element.textContent.trim())
+    };
+  });
+  if (homepageStory.order.some((position) => !Number.isFinite(position)) ||
+      homepageStory.order.some((position, index) => index && position <= homepageStory.order[index - 1])) {
+    throw new Error(`${name}: homepage story order invalid ${JSON.stringify(homepageStory.order)}`);
+  }
+  if (homepageStory.launchCards !== 3 || homepageStory.models.join("|") !== "CORE|SCALE|TRUST") {
+    throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
   }
 
   const agentSize = await page.locator(".bubble").first().evaluate((element) => getComputedStyle(element).fontSize);
