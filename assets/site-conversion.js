@@ -68,6 +68,134 @@
     document.getElementById('nextDemo').addEventListener('click', () => show((current + 1) % scenes.length));
   }
 })();
+
+(() => {
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const html = document.documentElement;
+  html.dataset.motionSystem = 'v14';
+
+  const progress = document.createElement('div');
+  progress.className = 'scroll-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  document.body.append(progress);
+  let progressFrame = 0;
+  const paintProgress = () => {
+    progressFrame = 0;
+    const distance = document.documentElement.scrollHeight - innerHeight;
+    const ratio = distance > 0 ? Math.min(1, Math.max(0, scrollY / distance)) : 0;
+    progress.style.transform = `scaleX(${ratio})`;
+  };
+  addEventListener('scroll', () => {
+    if (!progressFrame) progressFrame = requestAnimationFrame(paintProgress);
+  }, {passive: true});
+  addEventListener('resize', paintProgress, {passive: true});
+  paintProgress();
+
+  const transitionLayer = document.createElement('div');
+  transitionLayer.className = 'page-transition';
+  transitionLayer.setAttribute('aria-hidden', 'true');
+  transitionLayer.append(document.createElement('span'));
+  document.body.append(transitionLayer);
+  if (!reducedMotion.matches && sessionStorage.getItem('timux-page-transition') === '1') {
+    sessionStorage.removeItem('timux-page-transition');
+    transitionLayer.classList.add('is-entering');
+    setTimeout(() => transitionLayer.classList.remove('is-entering'), 980);
+  }
+
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || reducedMotion.matches) return;
+    const link = event.target.closest('a[href]');
+    if (!link || link.hasAttribute('download') || link.target === '_blank' || link.dataset.noTransition !== undefined) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+    const target = new URL(link.href, location.href);
+    if (target.origin !== location.origin) return;
+    if (target.pathname === location.pathname && target.search === location.search && target.hash) return;
+    event.preventDefault();
+    sessionStorage.setItem('timux-page-transition', '1');
+    transitionLayer.classList.remove('is-entering');
+    transitionLayer.classList.add('is-leaving');
+    setTimeout(() => location.assign(target.href), 500);
+  });
+
+  const groups = [
+    ['.workflow-demo', 'right'],
+    ['.trust-copy', 'left'],
+    ['.logo-card', 'up'],
+    ['.section-head', 'up'],
+    ['.solution-card', 'up'],
+    ['.adoption-path article', 'up'],
+    ['.case-card', 'up'],
+    ['.model-pie-grid article', 'up'],
+    ['.model-equation', 'up'],
+    ['.phase-card', 'up'],
+    ['.agent-layout > div', 'up'],
+    ['.contact-grid > *', 'up'],
+    ['.discovery-grid article', 'up'],
+    ['.experience-card', 'up'],
+    ['.guided-demo > *', 'up'],
+    ['.faq-wrap details', 'up']
+  ];
+  const revealTargets = [];
+  groups.forEach(([selector, direction]) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      if (element.dataset.reveal) return;
+      element.dataset.reveal = direction;
+      element.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 85}ms`);
+      revealTargets.push(element);
+    });
+  });
+
+  if (reducedMotion.matches) {
+    html.classList.add('motion-reduced');
+    revealTargets.forEach(element => element.classList.add('is-visible'));
+  } else {
+    html.classList.add('motion-ready');
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      });
+    }, {rootMargin: '0px 0px -7% 0px', threshold: .08});
+    requestAnimationFrame(() => revealTargets.forEach(element => revealObserver.observe(element)));
+  }
+
+  const workflow = document.querySelector('.workflow-demo');
+  if (workflow && !reducedMotion.matches) {
+    let flowStep = 0;
+    let flowTimer = 0;
+    const stopFlow = () => { clearInterval(flowTimer); flowTimer = 0; };
+    const startFlow = () => {
+      if (flowTimer) return;
+      const advance = () => {
+        flowStep = flowStep % 4 + 1;
+        workflow.dataset.flowStep = String(flowStep);
+      };
+      advance();
+      flowTimer = setInterval(advance, 1450);
+    };
+    const flowObserver = new IntersectionObserver(([entry]) => entry.isIntersecting && !document.hidden ? startFlow() : stopFlow(), {threshold: .18});
+    flowObserver.observe(workflow);
+    document.addEventListener('visibilitychange', () => document.hidden ? stopFlow() : startFlow());
+  }
+
+  if (!reducedMotion.matches && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.solution-card').forEach(card => {
+      card.addEventListener('pointermove', event => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - .5;
+        const y = (event.clientY - rect.top) / rect.height - .5;
+        card.style.setProperty('--rx', `${(-y * 3.5).toFixed(2)}deg`);
+        card.style.setProperty('--ry', `${(x * 4.5).toFixed(2)}deg`);
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
+})();
 (() => {
   document.querySelectorAll('[data-live-question]').forEach(button => {
     button.addEventListener('click', () => {

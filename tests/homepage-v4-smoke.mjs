@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v13-needs-first-20261006") {
+  if (marker !== "homepage-v14-motion-system-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -141,6 +141,21 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
   }
 
+  await page.locator('.workflow-demo').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('.workflow-demo')?.classList.contains('is-visible') && Boolean(document.querySelector('.workflow-demo')?.dataset.flowStep));
+  const motion = await page.evaluate(() => ({
+    system: document.documentElement.dataset.motionSystem,
+    ready: document.documentElement.classList.contains("motion-ready"),
+    transitionLayers: document.querySelectorAll(".page-transition").length,
+    progressBars: document.querySelectorAll(".scroll-progress").length,
+    revealTargets: document.querySelectorAll("[data-reveal]").length,
+    visibleTargets: document.querySelectorAll("[data-reveal].is-visible").length,
+    flowStep: document.querySelector(".workflow-demo")?.dataset.flowStep || ""
+  }));
+  if (motion.system !== "v14" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 || !motion.flowStep) {
+    throw new Error(`${name}: motion system unavailable ${JSON.stringify(motion)}`);
+  }
+
   const agentSize = await page.locator(".bubble").first().evaluate((element) => getComputedStyle(element).fontSize);
   if (agentSize !== "18px") throw new Error(`${name}: agent font is ${agentSize}`);
 
@@ -182,15 +197,44 @@ async function inspect(viewport, name) {
   const heroURL = new URL(baseURL);
   heroURL.searchParams.set("qa", `hero-${name}`);
   await page.goto(heroURL.toString(), { waitUntil: "networkidle", timeout: 30000 });
+  await page.waitForTimeout(1500);
   await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
   if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
-  results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, consoleErrors };
+  results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, motion, consoleErrors };
   await page.close();
 }
 
 await inspect({ width: 1920, height: 1080 }, "desktop");
 await inspect({ width: 390, height: 844 }, "mobile");
 await inspect({ width: 360, height: 740 }, "small-mobile");
+
+const reducedPage = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: "reduce" });
+await installCallMocks(reducedPage);
+await reducedPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
+const reducedMotion = await reducedPage.evaluate(() => ({
+  reduced: document.documentElement.classList.contains("motion-reduced"),
+  ready: document.documentElement.classList.contains("motion-ready"),
+  hiddenTargets: [...document.querySelectorAll("[data-reveal]")].filter(element => getComputedStyle(element).opacity !== "1").length,
+  transitionDisplay: getComputedStyle(document.querySelector(".page-transition")).display,
+  heroAnimation: getComputedStyle(document.querySelector(".outcome-hero h1")).animationName
+}));
+if (!reducedMotion.reduced || reducedMotion.ready || reducedMotion.hiddenTargets || reducedMotion.transitionDisplay !== "none" || reducedMotion.heroAnimation !== "none") {
+  throw new Error(`reduced motion unavailable ${JSON.stringify(reducedMotion)}`);
+}
+results.reducedMotion = reducedMotion;
+await reducedPage.close();
+
+const transitionPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await installCallMocks(transitionPage);
+await transitionPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
+const methodLink = transitionPage.locator('.model-section a[href^="/method/"]');
+await methodLink.click({ noWaitAfter: true });
+await transitionPage.waitForFunction(() => document.querySelector('.page-transition')?.classList.contains('is-leaving'), null, { timeout: 400 });
+await transitionPage.waitForURL(/\/method\//, { timeout: 5000 });
+const enteredWithTransition = await transitionPage.evaluate(() => sessionStorage.getItem('timux-page-transition') === null && Boolean(document.querySelector('.page-transition.is-entering')));
+if (!enteredWithTransition) throw new Error('cross-page transition did not complete');
+results.pageTransition = { destination: transitionPage.url(), enteredWithTransition };
+await transitionPage.close();
 
 const interactionPage = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 await installCallMocks(interactionPage);
