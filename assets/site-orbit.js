@@ -1,4 +1,4 @@
-/* Timux V18 partner orbit. Transform-only animation with static fallbacks. */
+/* Timux V20 partner orbit. Card-only hover pause with static fallbacks. */
 (() => {
   const section=document.querySelector('.partner-orbit');
   if(!section)return;
@@ -46,8 +46,10 @@
     }
   }
   function setPaused(value){paused=value;section.classList.toggle('is-paused',value);last=0;value?stop():start();}
-  section.addEventListener('pointerenter',()=>setPaused(true));
-  section.addEventListener('pointerleave',()=>setPaused(false));
+  cards.forEach(card=>{
+    card.addEventListener('pointerenter',()=>setPaused(true));
+    card.addEventListener('pointerleave',()=>setPaused(false));
+  });
   document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
   motion.addEventListener('change',configure);reduced.addEventListener('change',configure);
   addEventListener('resize',()=>{if(enabled)place();},{passive:true});

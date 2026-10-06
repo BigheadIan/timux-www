@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v19-model-loop-20261006") {
+  if (marker !== "homepage-v20-orbit-center-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -129,7 +129,8 @@ async function inspect(viewport, name) {
       scaleLoopArrows: document.querySelectorAll(".scale-loop-arrow").length,
       legends: document.querySelectorAll(".model-legend").length
       ,partnerCards: document.querySelectorAll('.partner-orbit .logo-card').length,
-      partnerAxis: document.querySelectorAll('.partner-orbit-axis').length
+      partnerAxis: document.querySelectorAll('.partner-orbit-axis').length,
+      partnerCopyAnchors: document.querySelectorAll('.partner-orbit .trust-copy-anchor').length
     };
   });
   if (homepageStory.order.some((position) => !Number.isFinite(position)) ||
@@ -139,7 +140,7 @@ async function inspect(viewport, name) {
   if (homepageStory.solutionCards !== 4 || homepageStory.adoptionSteps !== 3 || homepageStory.workflowSteps !== 3 ||
       homepageStory.models.join("|") !== "CORE|SCALE|TRUST" ||
       homepageStory.modelPies !== 3 || homepageStory.pieLabels.join("|") !== "4|5|5" ||
-      homepageStory.scaleLoopArrows !== 1 || homepageStory.legends !== 0 || homepageStory.partnerCards !== 6 || homepageStory.partnerAxis !== 1) {
+      homepageStory.scaleLoopArrows !== 1 || homepageStory.legends !== 0 || homepageStory.partnerCards !== 6 || homepageStory.partnerAxis !== 1 || homepageStory.partnerCopyAnchors !== 1) {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
   }
 
