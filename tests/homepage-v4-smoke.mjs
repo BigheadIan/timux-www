@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v10-ai-first-20261005") {
+  if (marker !== "homepage-v11-model-pies-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -121,14 +121,17 @@ async function inspect(viewport, name) {
     return {
       order: ids.map((id) => document.querySelector(`#${id}`)?.getBoundingClientRect().top + scrollY),
       launchCards: document.querySelectorAll(".experience-launch-grid .launch-card").length,
-      models: [...document.querySelectorAll(".model-code")].map((element) => element.textContent.trim())
+      models: [...document.querySelectorAll(".model-code")].map((element) => element.textContent.trim()),
+      modelPies: document.querySelectorAll(".model-pie").length,
+      legendItems: [...document.querySelectorAll(".model-legend")].map((element) => element.children.length)
     };
   });
   if (homepageStory.order.some((position) => !Number.isFinite(position)) ||
       homepageStory.order.some((position, index) => index && position <= homepageStory.order[index - 1])) {
     throw new Error(`${name}: homepage story order invalid ${JSON.stringify(homepageStory.order)}`);
   }
-  if (homepageStory.launchCards !== 3 || homepageStory.models.join("|") !== "CORE|SCALE|TRUST") {
+  if (homepageStory.launchCards !== 3 || homepageStory.models.join("|") !== "CORE|SCALE|TRUST" ||
+      homepageStory.modelPies !== 3 || homepageStory.legendItems.join("|") !== "4|5|5") {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
   }
 
