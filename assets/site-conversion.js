@@ -9,15 +9,23 @@
   });
   const form = document.getElementById('contactDraft');
   if (form) {
+    const workflowInput = document.getElementById('workflow');
     const summary = document.getElementById('summary');
     const email = document.getElementById('emailDraft');
     const scenario = new URLSearchParams(location.search).get('scenario');
-    if (scenario === 'customer-service') document.getElementById('workflow').value = '想將 AI 客服用在公司的工作流程';
+    if (scenario === 'customer-service') workflowInput.value = '想將 AI 客服用在公司的工作流程';
+    document.querySelectorAll('[data-solution]').forEach(link => {
+      link.addEventListener('click', () => {
+        workflowInput.value = link.dataset.solution;
+        track('solution_selected', {scenario: link.dataset.solution});
+        setTimeout(() => workflowInput.focus({preventScroll: true}), 450);
+      });
+    });
     const updateEmail = () => { email.href = 'mailto:service@timux.site?subject=' + encodeURIComponent('企業 AI 導入需求討論') + '&body=' + encodeURIComponent(summary.value); };
     form.addEventListener('submit', event => {
       event.preventDefault();
-      const workflow = document.getElementById('workflow').value.trim();
-      if (!workflow) { document.getElementById('workflow').focus(); return; }
+      const workflow = workflowInput.value.trim();
+      if (!workflow) { workflowInput.focus(); return; }
       summary.value = 'Ian 你好，\n\n我想討論的工作流程：' + workflow + '\n\n最近的情況：\n' + (document.getElementById('context').value.trim() || '希望在討論時補充。') + '\n\n希望一起確認：適合先驗證的範圍、需要的資料與下一步。' + (scenario === 'customer-service' ? '\n\n我看過官網的客服案例體驗。' : '');
       updateEmail();
       document.getElementById('draftResult').hidden = false;

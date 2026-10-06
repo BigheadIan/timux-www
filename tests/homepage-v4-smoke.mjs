@@ -3,7 +3,7 @@ import fs from "node:fs";
 
 const { chromium } = playwright;
 const baseURL = process.env.HOMEPAGE_URL || "http://127.0.0.1:8787/";
-const outputDir = process.env.HOMEPAGE_QA_OUTPUT || "../output/timux-homepage-v6-20260818";
+const outputDir = process.env.HOMEPAGE_QA_OUTPUT || "output/playwright/homepage-v13";
 const widgetSource = process.env.WIDGET_SOURCE_PATH
   ? fs.readFileSync(process.env.WIDGET_SOURCE_PATH, "utf8")
   : null;
@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v12-labeled-pies-20261006") {
+  if (marker !== "homepage-v13-needs-first-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -112,15 +112,17 @@ async function inspect(viewport, name) {
   if (fontAudit.length) throw new Error(`${name}: text below 14px ${JSON.stringify(fontAudit.slice(0, 8))}`);
 
   const heroLines = await page.locator(".hero h1 .line").allTextContents();
-  if (heroLines.join("|") !== "AI 不只會聊天。|它開始進入工作現場。") {
+  if (heroLines.join("|") !== "AI 進入工作現場，|真正把事做完。") {
     throw new Error(`${name}: hero line break regression ${heroLines.join("|")}`);
   }
 
   const homepageStory = await page.evaluate(() => {
-    const ids = ["experience", "cases", "method", "roadmap"];
+    const ids = ["solutions", "adoption", "cases", "method", "roadmap"];
     return {
       order: ids.map((id) => document.querySelector(`#${id}`)?.getBoundingClientRect().top + scrollY),
-      launchCards: document.querySelectorAll(".experience-launch-grid .launch-card").length,
+      solutionCards: document.querySelectorAll(".solution-grid .solution-card").length,
+      adoptionSteps: document.querySelectorAll(".adoption-path article").length,
+      workflowSteps: document.querySelectorAll(".workflow-rail > div").length,
       models: [...document.querySelectorAll(".model-code")].map((element) => element.textContent.trim()),
       modelPies: document.querySelectorAll(".model-pie").length,
       pieLabels: [...document.querySelectorAll(".model-pie")].map((element) => element.querySelectorAll(".pie-label").length),
@@ -132,7 +134,8 @@ async function inspect(viewport, name) {
       homepageStory.order.some((position, index) => index && position <= homepageStory.order[index - 1])) {
     throw new Error(`${name}: homepage story order invalid ${JSON.stringify(homepageStory.order)}`);
   }
-  if (homepageStory.launchCards !== 3 || homepageStory.models.join("|") !== "CORE|SCALE|TRUST" ||
+  if (homepageStory.solutionCards !== 4 || homepageStory.adoptionSteps !== 3 || homepageStory.workflowSteps !== 3 ||
+      homepageStory.models.join("|") !== "CORE|SCALE|TRUST" ||
       homepageStory.modelPies !== 3 || homepageStory.pieLabels.join("|") !== "4|5|5" ||
       homepageStory.scaleLoopArrows !== 1 || homepageStory.legends !== 0) {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
@@ -156,6 +159,8 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: starter questions invalid ${JSON.stringify(starters)}`);
   }
 
+  await page.locator("#cases").scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => [...document.querySelectorAll("#cases img")].every((image) => image.complete && image.naturalWidth > 0));
   const images = await page.locator("#cases img").evaluateAll((elements) =>
     elements.map((image) => ({ src: image.getAttribute("src"), complete: image.complete, width: image.naturalWidth }))
   );
@@ -174,6 +179,9 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: phone chat widget unavailable ${JSON.stringify(widget)}`);
   }
 
+  const heroURL = new URL(baseURL);
+  heroURL.searchParams.set("qa", `hero-${name}`);
+  await page.goto(heroURL.toString(), { waitUntil: "networkidle", timeout: 30000 });
   await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
   if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
   results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, consoleErrors };
@@ -201,6 +209,14 @@ interactionPage.on("request", (request) => {
   if (request.url().includes("/api/widget/live-token") || request.url().includes("/widget-live")) liveRequests.push(request.url());
 });
 await interactionPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
+
+const firstSolution = interactionPage.locator("[data-solution]").first();
+const selectedSolution = await firstSolution.getAttribute("data-solution");
+await firstSolution.click();
+await interactionPage.waitForFunction(
+  (value) => document.querySelector("#workflow")?.value === value,
+  selectedSolution
+);
 
 const configResponse = await interactionPage.request.get("https://ai-customer-service.timux.site/api/widget/config/cs_timux");
 if (!configResponse.ok()) throw new Error("Cannot verify tenant greeting");
@@ -248,6 +264,8 @@ if (liveRequests.length) throw new Error(`turn-based phone unexpectedly connecte
 
 await interactionPage.screenshot({ path: `${outputDir}/desktop-phone-chat.png` });
 const interaction = {
+  selectedSolution,
+  workflowPrefill: await interactionPage.locator("#workflow").inputValue(),
   firstQuestion,
   heroAssistantMessages: await interactionPage.locator(".message.assistant .bubble:not(.typing)").count(),
   heroUserMessages: await interactionPage.locator(".message.user").count(),
@@ -258,7 +276,7 @@ const interaction = {
   failedResponses,
   consoleErrors: interactionErrors
 };
-if (interaction.heroAssistantMessages < 2 || interaction.heroUserMessages !== 1 || interaction.textReplyReadingRequests || interaction.failedResponses.length || interaction.consoleErrors.length) {
+if (interaction.workflowPrefill !== interaction.selectedSolution || interaction.heroAssistantMessages < 2 || interaction.heroUserMessages !== 1 || interaction.textReplyReadingRequests || interaction.failedResponses.length || interaction.consoleErrors.length) {
   throw new Error(`interaction flow failed ${JSON.stringify(interaction)}`);
 }
 results.interaction = interaction;
