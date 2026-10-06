@@ -72,7 +72,7 @@
 (() => {
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const html = document.documentElement;
-  html.dataset.motionSystem = 'v14';
+  html.dataset.motionSystem = 'v15';
 
   const progress = document.createElement('div');
   progress.className = 'scroll-progress';
@@ -146,19 +146,130 @@
     });
   });
 
+  const sceneDefinitions = [
+    {root: '.dark-world', label: '首頁', layers: ['.outcome-hero .hero-copy', '.workflow-demo', '.trust-inner']},
+    {root: '#solutions', label: '解決方案', layers: ['.section-head', '.solution-card']},
+    {root: '#adoption', label: '如何開始', layers: ['.section-head', '.adoption-path article', '.adoption-actions']},
+    {root: '#cases', label: '實戰案例', layers: ['.section-head', '.case-card']},
+    {root: '#method', label: '導入模型', layers: ['.section-head', '.model-pie-grid article', '.model-equation', '.section-tail']},
+    {root: '#roadmap', label: '90 天路徑', layers: ['.section-head', '.phase-card', '.section-tail']},
+    {root: '#agent', label: 'AI 顧問', layers: ['.agent-layout > *']},
+    {root: '#contact', label: '開始討論', layers: ['.contact-grid > *']}
+  ];
+  const desktopScenes = !reducedMotion.matches && matchMedia('(min-width: 821px)').matches && document.querySelector('#solutions');
+
   if (reducedMotion.matches) {
     html.classList.add('motion-reduced');
     revealTargets.forEach(element => element.classList.add('is-visible'));
   } else {
     html.classList.add('motion-ready');
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        revealObserver.unobserve(entry.target);
+    if (desktopScenes) {
+      revealTargets.forEach(element => element.classList.add('is-visible'));
+    } else {
+      const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        });
+      }, {rootMargin: '0px 0px -7% 0px', threshold: .08});
+      requestAnimationFrame(() => revealTargets.forEach(element => revealObserver.observe(element)));
+    }
+  }
+
+  if (desktopScenes) {
+    html.classList.add('scene-motion');
+    const clamp = value => Math.min(1, Math.max(0, value));
+    const ease = value => value * value * (3 - 2 * value);
+    const scenes = sceneDefinitions.map((definition, sceneIndex) => {
+      const root = document.querySelector(definition.root);
+      if (!root) return null;
+      root.classList.add('scene-module');
+      root.dataset.sceneIndex = String(sceneIndex);
+      const layers = definition.layers.flatMap(selector => [...root.querySelectorAll(selector)]).filter((element, index, all) => all.indexOf(element) === index);
+      const states = layers.map((element, layerIndex) => {
+        element.classList.add('scene-layer');
+        element.style.setProperty('--scene-order', String(layerIndex));
+        return {element, opacity: 1, y: 0, scale: 1, blur: 0, targetOpacity: 1, targetY: 0, targetScale: 1, targetBlur: 0};
       });
-    }, {rootMargin: '0px 0px -7% 0px', threshold: .08});
-    requestAnimationFrame(() => revealTargets.forEach(element => revealObserver.observe(element)));
+      return {root, label: definition.label, states, visibility: 1};
+    }).filter(Boolean);
+
+    const indicator = document.createElement('div');
+    indicator.className = 'scene-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    scenes.forEach((scene, index) => {
+      const dot = document.createElement('i');
+      dot.dataset.sceneDot = String(index);
+      dot.title = scene.label;
+      indicator.append(dot);
+    });
+    document.body.append(indicator);
+
+    const applyState = state => {
+      state.element.style.setProperty('--scene-opacity', state.opacity.toFixed(4));
+      state.element.style.setProperty('--scene-y', `${state.y.toFixed(2)}px`);
+      state.element.style.setProperty('--scene-scale', state.scale.toFixed(4));
+      state.element.style.setProperty('--scene-blur', `${state.blur.toFixed(2)}px`);
+    };
+    const updateTargets = () => {
+      const viewport = innerHeight;
+      let activeIndex = 0;
+      let activeDistance = Infinity;
+      scenes.forEach((scene, sceneIndex) => {
+        const rect = scene.root.getBoundingClientRect();
+        const enter = ease(clamp((viewport * .94 - rect.top) / (viewport * .58)));
+        const exit = ease(clamp((rect.bottom - viewport * .1) / (viewport * .48)));
+        scene.visibility = Math.min(enter, exit);
+        scene.root.classList.toggle('is-scene-active', scene.visibility > .68);
+        const distance = Math.abs(rect.top - viewport * .24);
+        if (rect.bottom > viewport * .2 && rect.top < viewport * .72 && distance < activeDistance) {
+          activeDistance = distance;
+          activeIndex = sceneIndex;
+        }
+        scene.states.forEach((state, layerIndex) => {
+          const stagger = Math.min(layerIndex, 5) * .045;
+          const layerEnter = ease(clamp((enter - stagger) / (1 - stagger)));
+          const visibility = Math.min(layerEnter, exit);
+          state.targetOpacity = .035 + visibility * .965;
+          state.targetY = enter < 1 ? (1 - layerEnter) * 74 : exit < 1 ? -(1 - exit) * 58 : 0;
+          state.targetScale = .965 + visibility * .035;
+          state.targetBlur = (1 - visibility) * 7;
+        });
+      });
+      html.dataset.activeScene = String(activeIndex);
+      indicator.querySelectorAll('i').forEach((dot, index) => dot.classList.toggle('active', index === activeIndex));
+    };
+
+    let animationFrame = 0;
+    let firstPaint = true;
+    const animateScenes = () => {
+      animationFrame = 0;
+      updateTargets();
+      let moving = false;
+      scenes.forEach(scene => scene.states.forEach(state => {
+        if (firstPaint) {
+          state.opacity = state.targetOpacity;
+          state.y = state.targetY;
+          state.scale = state.targetScale;
+          state.blur = state.targetBlur;
+        } else {
+          const follow = .075;
+          state.opacity += (state.targetOpacity - state.opacity) * follow;
+          state.y += (state.targetY - state.y) * follow;
+          state.scale += (state.targetScale - state.scale) * follow;
+          state.blur += (state.targetBlur - state.blur) * follow;
+        }
+        applyState(state);
+        if (Math.abs(state.targetOpacity - state.opacity) > .002 || Math.abs(state.targetY - state.y) > .18 || Math.abs(state.targetScale - state.scale) > .0008 || Math.abs(state.targetBlur - state.blur) > .08) moving = true;
+      }));
+      firstPaint = false;
+      if (moving) animationFrame = requestAnimationFrame(animateScenes);
+    };
+    const requestSceneFrame = () => { if (!animationFrame) animationFrame = requestAnimationFrame(animateScenes); };
+    addEventListener('scroll', requestSceneFrame, {passive: true});
+    addEventListener('resize', requestSceneFrame, {passive: true});
+    animateScenes();
   }
 
   const workflow = document.querySelector('.workflow-demo');

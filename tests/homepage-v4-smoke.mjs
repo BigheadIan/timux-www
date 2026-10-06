@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v14-motion-system-20261006") {
+  if (marker !== "homepage-v15-scene-transitions-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -150,9 +150,16 @@ async function inspect(viewport, name) {
     progressBars: document.querySelectorAll(".scroll-progress").length,
     revealTargets: document.querySelectorAll("[data-reveal]").length,
     visibleTargets: document.querySelectorAll("[data-reveal].is-visible").length,
-    flowStep: document.querySelector(".workflow-demo")?.dataset.flowStep || ""
+    flowStep: document.querySelector(".workflow-demo")?.dataset.flowStep || "",
+    sceneMotion: document.documentElement.classList.contains("scene-motion"),
+    sceneModules: document.querySelectorAll(".scene-module").length,
+    sceneLayers: document.querySelectorAll(".scene-layer").length,
+    sceneIndicators: document.querySelectorAll(".scene-indicator").length
   }));
-  if (motion.system !== "v14" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 || !motion.flowStep) {
+  const expectsScenes = viewport.width > 820;
+  if (motion.system !== "v15" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 || !motion.flowStep ||
+      (expectsScenes && (!motion.sceneMotion || motion.sceneModules !== 8 || motion.sceneLayers < 25 || motion.sceneIndicators !== 1)) ||
+      (!expectsScenes && (motion.sceneMotion || motion.sceneModules || motion.sceneLayers || motion.sceneIndicators))) {
     throw new Error(`${name}: motion system unavailable ${JSON.stringify(motion)}`);
   }
 
@@ -208,6 +215,41 @@ await inspect({ width: 1920, height: 1080 }, "desktop");
 await inspect({ width: 390, height: 844 }, "mobile");
 await inspect({ width: 360, height: 740 }, "small-mobile");
 
+const scenePage = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+await installCallMocks(scenePage);
+await scenePage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
+const readScenes = () => scenePage.evaluate(() => {
+  const hero = document.querySelector('.outcome-hero .hero-copy');
+  const solution = document.querySelector('#solutions .section-head');
+  return {
+    scrollY,
+    heroOpacity: Number.parseFloat(getComputedStyle(hero).opacity),
+    heroY: Number.parseFloat(getComputedStyle(hero).getPropertyValue('--scene-y')),
+    solutionOpacity: Number.parseFloat(getComputedStyle(solution).opacity),
+    solutionY: Number.parseFloat(getComputedStyle(solution).getPropertyValue('--scene-y')),
+    activeScene: document.documentElement.dataset.activeScene
+  };
+});
+const sceneSamples = {before: await readScenes()};
+await scenePage.mouse.wheel(0, 520);
+await scenePage.waitForTimeout(150);
+sceneSamples.after150 = await readScenes();
+await scenePage.waitForTimeout(350);
+sceneSamples.after500 = await readScenes();
+await scenePage.waitForTimeout(550);
+sceneSamples.after1050 = await readScenes();
+await scenePage.mouse.wheel(0, -520);
+await scenePage.waitForTimeout(900);
+sceneSamples.returned = await readScenes();
+if (sceneSamples.before.heroOpacity < .95 || sceneSamples.before.solutionOpacity > .35 ||
+    sceneSamples.after150.solutionOpacity <= sceneSamples.before.solutionOpacity || sceneSamples.after150.solutionOpacity >= .92 ||
+    sceneSamples.after1050.solutionOpacity < .92 || sceneSamples.after1050.heroOpacity >= sceneSamples.before.heroOpacity ||
+    sceneSamples.returned.heroOpacity < .92 || sceneSamples.returned.solutionOpacity >= sceneSamples.after1050.solutionOpacity) {
+  throw new Error(`desktop scene transition unavailable ${JSON.stringify(sceneSamples)}`);
+}
+results.sceneTransition = sceneSamples;
+await scenePage.close();
+
 const reducedPage = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: "reduce" });
 await installCallMocks(reducedPage);
 await reducedPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
@@ -216,9 +258,11 @@ const reducedMotion = await reducedPage.evaluate(() => ({
   ready: document.documentElement.classList.contains("motion-ready"),
   hiddenTargets: [...document.querySelectorAll("[data-reveal]")].filter(element => getComputedStyle(element).opacity !== "1").length,
   transitionDisplay: getComputedStyle(document.querySelector(".page-transition")).display,
-  heroAnimation: getComputedStyle(document.querySelector(".outcome-hero h1")).animationName
+  heroAnimation: getComputedStyle(document.querySelector(".outcome-hero h1")).animationName,
+  sceneMotion: document.documentElement.classList.contains("scene-motion"),
+  sceneModules: document.querySelectorAll(".scene-module").length
 }));
-if (!reducedMotion.reduced || reducedMotion.ready || reducedMotion.hiddenTargets || reducedMotion.transitionDisplay !== "none" || reducedMotion.heroAnimation !== "none") {
+if (!reducedMotion.reduced || reducedMotion.ready || reducedMotion.hiddenTargets || reducedMotion.transitionDisplay !== "none" || reducedMotion.heroAnimation !== "none" || reducedMotion.sceneMotion || reducedMotion.sceneModules) {
   throw new Error(`reduced motion unavailable ${JSON.stringify(reducedMotion)}`);
 }
 results.reducedMotion = reducedMotion;
