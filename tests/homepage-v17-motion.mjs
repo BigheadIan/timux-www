@@ -21,6 +21,20 @@ for(let i=0;i<24;i++){await page.mouse.wheel(0,110);await page.waitForTimeout(65
 await page.waitForTimeout(450);
 await page.screenshot({path:`${output}/assembled.png`});
 for(let i=0;i<24;i++){await page.mouse.wheel(0,-110);await page.waitForTimeout(65);}
+await page.locator('.partner-orbit').scrollIntoViewIfNeeded();
+await page.waitForTimeout(220);
+const orbitBefore=await page.evaluate(()=>({phase:document.querySelector('.logo-row').dataset.orbitPhase,transforms:[...document.querySelectorAll('.partner-orbit .logo-card')].map(e=>getComputedStyle(e).transform),quality:[...document.querySelectorAll('.partner-orbit .logo-card img')].map(e=>({alt:e.alt,natural:[e.naturalWidth,e.naturalHeight],rendered:[e.getBoundingClientRect().width,e.getBoundingClientRect().height]}))}));
+await page.waitForTimeout(700);
+const orbitAfter=await page.evaluate(()=>({phase:document.querySelector('.logo-row').dataset.orbitPhase,transforms:[...document.querySelectorAll('.partner-orbit .logo-card')].map(e=>getComputedStyle(e).transform)}));
+if(!orbitBefore.phase||orbitBefore.phase===orbitAfter.phase||orbitBefore.transforms.every((v,i)=>v===orbitAfter.transforms[i]))throw Error('partner orbit did not move');
+if(orbitBefore.quality.some(x=>x.natural[0]+1<x.rendered[0]||x.natural[1]+1<x.rendered[1]))throw Error(`logo upscaled beyond source: ${JSON.stringify(orbitBefore.quality)}`);
+await page.locator('.partner-orbit').hover();
+const pausedBefore=await page.locator('.logo-card').first().evaluate(e=>getComputedStyle(e).transform);
+await page.waitForTimeout(500);
+const pausedAfter=await page.locator('.logo-card').first().evaluate(e=>getComputedStyle(e).transform);
+if(pausedBefore!==pausedAfter)throw Error('partner orbit did not pause on hover');
+await page.mouse.move(0,0);await page.waitForTimeout(300);
+await page.screenshot({path:`${output}/partner-orbit.png`});
 const cases=[];
 const count=await page.locator('.case-track').count();
 for(let i=0;i<count;i++){
@@ -59,6 +73,6 @@ if(!await staticPage.locator('h1').isVisible()||await staticPage.locator('.model
 await staticContext.close();
 await browser.close();
 if(errors.length)throw Error(JSON.stringify(errors));
-const results={cases,sweep,metrics,errors};
+const results={orbit:{before:orbitBefore,after:orbitAfter,paused:pausedBefore===pausedAfter},cases,sweep,metrics,errors};
 fs.writeFileSync(`${output}/motion-results.json`,JSON.stringify(results,null,2));
 console.log(JSON.stringify(results,null,2));
