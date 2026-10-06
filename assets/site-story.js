@@ -52,7 +52,7 @@
   const models = document.querySelector('.model-pie-grid');
   const modelTrack = make('div', 'model-track');
   const modelStage = make('div', 'model-stage');
-  modelStage.innerHTML = '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/><path class="orb-loop" pathLength="1" d="M250 34 A216 216 0 1 1 80 118 M80 118 L79 150 M80 118 L111 124"/></svg><div class="orb-center"><b>CORE</b><span>做對的事</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>先對準結果，<br>再讓工作前進。</h3><p class="model-story-description">降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>';
+  modelStage.innerHTML = '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><defs><marker id="orb-flow-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path class="orb-flow-head" d="M1 1 L11 6 L1 11 Z"/></marker></defs><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><circle class="orb-loop" cx="250" cy="250" r="216"/><path class="orb-flow" d="M250 34 A216 216 0 0 1 466 250" marker-end="url(#orb-flow-head)"/><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/></svg><div class="orb-center"><b>CORE</b><span>做對的事</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>先對準結果，<br>再讓工作前進。</h3><p class="model-story-description">降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>';
   modelTrack.append(modelStage); models.before(modelTrack);
   const ns = 'http://www.w3.org/2000/svg';
   const segments = Array.from({length:5}, (_,i) => {
@@ -146,7 +146,7 @@
       segment.setAttribute('d',arc(start,start+Math.max(.001,span-.07),170+Math.sin(mp*Math.PI)*8));
       segment.style.opacity=i===4?String(split):'1';
     });
-    modelStage.querySelector('.orb-loop').style.strokeDashoffset=String(1-range(mp,.3,.66));
+    modelStage.querySelector('.orb-flow').setAttribute('transform',`rotate(${mp*540} 250 250)`);
     modelStage.querySelector('.orb-shield').style.strokeDashoffset=String(1-range(mp,.66,.95));
     modelStage.querySelector('.orb-guide').style.transform=`rotate(${mp*90}deg)`;
     if(mi!==modelIndex){

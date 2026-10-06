@@ -65,8 +65,10 @@
 .model-orb{position:relative;width:100%;max-width:580px;aspect-ratio:1}
 .model-orb svg{width:100%;height:100%;overflow:visible}
 .orb-guide{fill:none;stroke:#c7b8ff35;stroke-dasharray:1 12;transform-origin:center;stroke-width:2}
-.orb-shield,.orb-loop{stroke:#98e5d4;stroke-width:2;fill:none;stroke-dasharray:1;stroke-dashoffset:1}
-.orb-loop{stroke:#cab6ff;stroke-width:3}
+.orb-shield{stroke:#98e5d4;stroke-width:2;fill:none;stroke-dasharray:1;stroke-dashoffset:1}
+.orb-loop{stroke:#cab6ff;stroke-width:2.5;fill:none;opacity:.58;vector-effect:non-scaling-stroke}
+.orb-flow{stroke:#eadfff;stroke-width:4;fill:none;stroke-linecap:round;filter:drop-shadow(0 0 7px #b99dff);vector-effect:non-scaling-stroke}
+.orb-flow-head{fill:#eadfff}
 .orb-center{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;pointer-events:none}
 .orb-center b{font:700 clamp(30px,3vw,50px) Manrope,sans-serif;letter-spacing:.08em}
 .orb-center span{font-size:18px;color:#b3bdce;margin-top:12px}

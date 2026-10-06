@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v18-partner-orbit-20261006") {
+  if (marker !== "homepage-v19-model-loop-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -307,6 +307,7 @@ if (sceneSamples.before.heroOpacity !== 1 || sceneSamples.exploded.heroOpacity !
 }
 results.sceneTransition = sceneSamples;
 const modelFrames = [];
+const modelLoopFrames = [];
 for (const fraction of [0, .5, 1]) {
   await scenePage.evaluate(f => {
     const el=document.querySelector('.model-track');
@@ -314,10 +315,17 @@ for (const fraction of [0, .5, 1]) {
   }, fraction);
   await scenePage.waitForTimeout(180);
   modelFrames.push(await scenePage.locator('.model-stage').getAttribute('data-model'));
+  modelLoopFrames.push(await scenePage.evaluate(() => {
+    const loop=document.querySelector('.orb-loop'),flow=document.querySelector('.orb-flow');
+    const loopStyle=getComputedStyle(loop);
+    return {dashArray:loopStyle.strokeDasharray,dashOffset:loopStyle.strokeDashoffset,r:loop.getAttribute('r'),flowTransform:flow.getAttribute('transform'),marker:flow.getAttribute('marker-end')};
+  }));
   await scenePage.screenshot({path:`${outputDir}/desktop-model-${fraction}.png`});
 }
 if (modelFrames.join('|') !== 'CORE|SCALE|TRUST') throw new Error(`ring chapters: ${modelFrames}`);
+if(modelLoopFrames.some(frame=>frame.dashArray!=='none'||parseFloat(frame.dashOffset)!==0||frame.r!=='216'||frame.marker!=='url(#orb-flow-head)')||new Set(modelLoopFrames.map(frame=>frame.flowTransform)).size!==3)throw new Error(`model loop regression: ${JSON.stringify(modelLoopFrames)}`);
 results.modelFrames=modelFrames;
+results.modelLoopFrames=modelLoopFrames;
 await scenePage.setViewportSize({width:390,height:844});
 await scenePage.waitForFunction(()=>!document.documentElement.classList.contains('story-desktop'));
 const resizeFallback=await scenePage.evaluate(()=>({desktop:document.documentElement.classList.contains('story-desktop'),panels:[...document.querySelectorAll('.ai-decision,.audit-panel')].every(p=>getComputedStyle(p).clipPath==='none')}));
