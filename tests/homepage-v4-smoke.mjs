@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v16-refresh-top-20261006") {
+  if (marker !== "homepage-v17-execution-engine-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -141,8 +141,11 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
   }
 
-  await page.locator('.workflow-demo').scrollIntoViewIfNeeded();
-  await page.waitForFunction(() => document.querySelector('.workflow-demo')?.classList.contains('is-visible') && Boolean(document.querySelector('.workflow-demo')?.dataset.flowStep));
+  const expectsScenes = viewport.width >= 1100 && viewport.height >= 700;
+  if (!expectsScenes) {
+    await page.locator('.workflow-demo').scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => Boolean(document.querySelector('.workflow-demo')?.dataset.flowStep));
+  }
   const motion = await page.evaluate(() => ({
     system: document.documentElement.dataset.motionSystem,
     ready: document.documentElement.classList.contains("motion-ready"),
@@ -155,11 +158,14 @@ async function inspect(viewport, name) {
     sceneModules: document.querySelectorAll(".scene-module").length,
     sceneLayers: document.querySelectorAll(".scene-layer").length,
     sceneIndicators: document.querySelectorAll(".scene-indicator").length
+    ,storyDesktop: document.documentElement.classList.contains('story-desktop'),
+    engineLayers: document.querySelectorAll('.engine-layer').length,
+    modelStages: document.querySelectorAll('.model-stage').length
   }));
-  const expectsScenes = viewport.width > 820;
-  if (motion.system !== "v15" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 || !motion.flowStep ||
-      (expectsScenes && (!motion.sceneMotion || motion.sceneModules !== 8 || motion.sceneLayers < 25 || motion.sceneIndicators !== 1)) ||
-      (!expectsScenes && (motion.sceneMotion || motion.sceneModules || motion.sceneLayers || motion.sceneIndicators))) {
+  if (motion.system !== "v17" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 ||
+      motion.storyDesktop !== expectsScenes || motion.engineLayers !== 5 || motion.modelStages !== 1 ||
+      motion.sceneMotion || motion.sceneModules || motion.sceneLayers || motion.sceneIndicators ||
+      (!expectsScenes && !motion.flowStep)) {
     throw new Error(`${name}: motion system unavailable ${JSON.stringify(motion)}`);
   }
 
@@ -212,6 +218,7 @@ async function inspect(viewport, name) {
 }
 
 await inspect({ width: 1920, height: 1080 }, "desktop");
+await inspect({ width: 1440, height: 900 }, "laptop");
 await inspect({ width: 390, height: 844 }, "mobile");
 await inspect({ width: 360, height: 740 }, "small-mobile");
 
@@ -268,35 +275,51 @@ const scenePage = await browser.newPage({ viewport: { width: 1920, height: 1080 
 await installCallMocks(scenePage);
 await scenePage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 const readScenes = () => scenePage.evaluate(() => {
-  const hero = document.querySelector('.outcome-hero .hero-copy');
-  const solution = document.querySelector('#solutions .section-head');
+  const hero = document.querySelector('.outcome-hero');
   return {
     scrollY,
     heroOpacity: Number.parseFloat(getComputedStyle(hero).opacity),
-    heroY: Number.parseFloat(getComputedStyle(hero).getPropertyValue('--scene-y')),
-    solutionOpacity: Number.parseFloat(getComputedStyle(solution).opacity),
-    solutionY: Number.parseFloat(getComputedStyle(solution).getPropertyValue('--scene-y')),
-    activeScene: document.documentElement.dataset.activeScene
+    heroTop: hero.getBoundingClientRect().top,
+    layerTransform: getComputedStyle(document.querySelector('.engine-layer')).transform,
+    step: hero.dataset.engineStep
   };
 });
 const sceneSamples = {before: await readScenes()};
-await scenePage.mouse.wheel(0, 520);
-await scenePage.waitForTimeout(150);
-sceneSamples.after150 = await readScenes();
-await scenePage.waitForTimeout(350);
-sceneSamples.after500 = await readScenes();
-await scenePage.waitForTimeout(550);
-sceneSamples.after1050 = await readScenes();
-await scenePage.mouse.wheel(0, -520);
-await scenePage.waitForTimeout(900);
+await scenePage.mouse.wheel(0, 1000);
+await scenePage.waitForTimeout(600);
+sceneSamples.exploded = await readScenes();
+await scenePage.screenshot({path:`${outputDir}/desktop-engine-exploded.png`});
+await scenePage.mouse.wheel(0, 1200);
+await scenePage.waitForTimeout(600);
+sceneSamples.assembled = await readScenes();
+await scenePage.screenshot({path:`${outputDir}/desktop-engine-assembled.png`});
+await scenePage.mouse.wheel(0, -2200);
+await scenePage.waitForTimeout(600);
 sceneSamples.returned = await readScenes();
-if (sceneSamples.before.heroOpacity < .95 || sceneSamples.before.solutionOpacity > .35 ||
-    sceneSamples.after150.solutionOpacity <= sceneSamples.before.solutionOpacity || sceneSamples.after150.solutionOpacity >= .92 ||
-    sceneSamples.after1050.solutionOpacity < .92 || sceneSamples.after1050.heroOpacity >= sceneSamples.before.heroOpacity ||
-    sceneSamples.returned.heroOpacity < .92 || sceneSamples.returned.solutionOpacity >= sceneSamples.after1050.solutionOpacity) {
+if (sceneSamples.before.heroOpacity !== 1 || sceneSamples.exploded.heroOpacity !== 1 ||
+    sceneSamples.before.layerTransform === sceneSamples.exploded.layerTransform ||
+    sceneSamples.assembled.step !== '2' || sceneSamples.exploded.step !== '1' ||
+    Math.abs(sceneSamples.exploded.heroTop-78)>2 ||
+    sceneSamples.returned.layerTransform !== sceneSamples.before.layerTransform) {
   throw new Error(`desktop scene transition unavailable ${JSON.stringify(sceneSamples)}`);
 }
 results.sceneTransition = sceneSamples;
+const modelFrames = [];
+for (const fraction of [0, .5, 1]) {
+  await scenePage.evaluate(f => {
+    const el=document.querySelector('.model-track');
+    scrollTo({top:el.getBoundingClientRect().top+scrollY-80+f*(el.offsetHeight-innerHeight+80),behavior:'instant'});
+  }, fraction);
+  await scenePage.waitForTimeout(180);
+  modelFrames.push(await scenePage.locator('.model-stage').getAttribute('data-model'));
+  await scenePage.screenshot({path:`${outputDir}/desktop-model-${fraction}.png`});
+}
+if (modelFrames.join('|') !== 'CORE|SCALE|TRUST') throw new Error(`ring chapters: ${modelFrames}`);
+results.modelFrames=modelFrames;
+await scenePage.setViewportSize({width:390,height:844});
+const resizeFallback=await scenePage.evaluate(()=>({desktop:document.documentElement.classList.contains('story-desktop'),panels:[...document.querySelectorAll('.ai-decision,.audit-panel')].every(p=>getComputedStyle(p).clipPath==='none')}));
+if(resizeFallback.desktop||!resizeFallback.panels)throw new Error(`resize fallback ${JSON.stringify(resizeFallback)}`);
+results.resizeFallback=resizeFallback;
 await scenePage.close();
 
 const reducedPage = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: "reduce" });

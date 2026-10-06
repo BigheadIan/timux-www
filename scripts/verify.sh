@@ -43,5 +43,7 @@ for name,d in documents.items():
  print('PASS HTML, scripts, assets, links:',name)
 PY
 node --check assets/site-conversion.js
+node --check assets/site-story.js
 node --check tests/homepage-v4-smoke.mjs
+node --check tests/homepage-v17-motion.mjs
 git diff --check -- index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js tests scripts

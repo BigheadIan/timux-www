@@ -72,7 +72,8 @@
 (() => {
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const html = document.documentElement;
-  html.dataset.motionSystem = 'v15';
+  const storyHome = Boolean(document.querySelector('script[src*="site-story.js"]'));
+  html.dataset.motionSystem = storyHome ? 'v17' : 'v15';
 
   const progress = document.createElement('div');
   progress.className = 'scroll-progress';
@@ -156,14 +157,14 @@
     {root: '#agent', label: 'AI 顧問', layers: ['.agent-layout > *']},
     {root: '#contact', label: '開始討論', layers: ['.contact-grid > *']}
   ];
-  const desktopScenes = !reducedMotion.matches && matchMedia('(min-width: 821px)').matches && document.querySelector('#solutions');
+  const desktopScenes = !storyHome && !reducedMotion.matches && matchMedia('(min-width: 821px)').matches && document.querySelector('#solutions');
 
   if (reducedMotion.matches) {
     html.classList.add('motion-reduced');
     revealTargets.forEach(element => element.classList.add('is-visible'));
   } else {
     html.classList.add('motion-ready');
-    if (desktopScenes) {
+    if (desktopScenes || storyHome) {
       revealTargets.forEach(element => element.classList.add('is-visible'));
     } else {
       const revealObserver = new IntersectionObserver(entries => {
