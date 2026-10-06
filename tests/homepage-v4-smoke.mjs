@@ -317,6 +317,7 @@ for (const fraction of [0, .5, 1]) {
 if (modelFrames.join('|') !== 'CORE|SCALE|TRUST') throw new Error(`ring chapters: ${modelFrames}`);
 results.modelFrames=modelFrames;
 await scenePage.setViewportSize({width:390,height:844});
+await scenePage.waitForFunction(()=>!document.documentElement.classList.contains('story-desktop'));
 const resizeFallback=await scenePage.evaluate(()=>({desktop:document.documentElement.classList.contains('story-desktop'),panels:[...document.querySelectorAll('.ai-decision,.audit-panel')].every(p=>getComputedStyle(p).clipPath==='none')}));
 if(resizeFallback.desktop||!resizeFallback.panels)throw new Error(`resize fallback ${JSON.stringify(resizeFallback)}`);
 results.resizeFallback=resizeFallback;
