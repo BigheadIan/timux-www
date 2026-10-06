@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v15-scene-transitions-20261006") {
+  if (marker !== "homepage-v16-refresh-top-20261006") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -214,6 +214,55 @@ async function inspect(viewport, name) {
 await inspect({ width: 1920, height: 1080 }, "desktop");
 await inspect({ width: 390, height: 844 }, "mobile");
 await inspect({ width: 360, height: 740 }, "small-mobile");
+
+const reloadPage = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+await installCallMocks(reloadPage);
+const contactURL = new URL("#contact", baseURL).href;
+await reloadPage.goto(contactURL, { waitUntil: "networkidle", timeout: 30000 });
+await reloadPage.waitForFunction(() => scrollY >= document.documentElement.scrollHeight - innerHeight - 2, null, { timeout: 5000 });
+await reloadPage.waitForTimeout(500);
+const directAnchor = await reloadPage.evaluate(() => ({
+  y: scrollY,
+  hash: location.hash,
+  max: document.documentElement.scrollHeight - innerHeight
+}));
+await reloadPage.evaluate(() => {
+  const root = document.documentElement;
+  root.style.scrollBehavior = "auto";
+  scrollTo(0, 0);
+});
+await reloadPage.waitForFunction(() => scrollY < 2, null, { timeout: 5000 });
+const beforeAnchorReload = await reloadPage.evaluate(() => ({ y: scrollY, hash: location.hash }));
+await reloadPage.reload({ waitUntil: "networkidle", timeout: 30000 });
+await reloadPage.waitForTimeout(250);
+const afterAnchorReload = await reloadPage.evaluate(() => ({
+  y: scrollY,
+  hash: location.hash,
+  restoration: history.scrollRestoration,
+  navigation: performance.getEntriesByType("navigation")[0]?.type
+}));
+if (directAnchor.hash !== "#contact" || directAnchor.y < directAnchor.max * .7 || beforeAnchorReload.y > 1 ||
+    afterAnchorReload.y !== 0 || afterAnchorReload.hash || afterAnchorReload.restoration !== "manual" || afterAnchorReload.navigation !== "reload") {
+  throw new Error(`anchor reload did not reset to top ${JSON.stringify({directAnchor, beforeAnchorReload, afterAnchorReload})}`);
+}
+
+await reloadPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
+await reloadPage.evaluate(() => {
+  const root = document.documentElement;
+  root.style.scrollBehavior = "auto";
+  scrollTo(0, 2400);
+  root.style.removeProperty("scroll-behavior");
+});
+await reloadPage.waitForFunction(() => scrollY > 2000, null, { timeout: 5000 });
+const beforePlainReload = await reloadPage.evaluate(() => ({ y: scrollY, hash: location.hash }));
+await reloadPage.reload({ waitUntil: "networkidle", timeout: 30000 });
+await reloadPage.waitForTimeout(250);
+const afterPlainReload = await reloadPage.evaluate(() => ({ y: scrollY, hash: location.hash }));
+if (beforePlainReload.y < 2000 || afterPlainReload.y !== 0 || afterPlainReload.hash) {
+  throw new Error(`plain reload did not reset to top ${JSON.stringify({beforePlainReload, afterPlainReload})}`);
+}
+results.reloadPosition = { directAnchor, beforeAnchorReload, afterAnchorReload, beforePlainReload, afterPlainReload };
+await reloadPage.close();
 
 const scenePage = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 await installCallMocks(scenePage);

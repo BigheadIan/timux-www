@@ -11,10 +11,38 @@
   </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (() => {
+      const navigation = typeof performance.getEntriesByType === "function"
+        ? performance.getEntriesByType("navigation")[0]
+        : null;
+      const isReload = navigation
+        ? navigation.type === "reload"
+        : performance.navigation && performance.navigation.type === 1;
+      if (!isReload) return;
+
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      if (location.hash) history.replaceState(history.state, "", location.pathname + location.search);
+
+      const root = document.documentElement;
+      const previousScrollBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      const resetToTop = () => window.scrollTo(0, 0);
+      resetToTop();
+      addEventListener("DOMContentLoaded", resetToTop, { once: true });
+      addEventListener("pageshow", () => {
+        resetToTop();
+        requestAnimationFrame(() => {
+          if (previousScrollBehavior) root.style.scrollBehavior = previousScrollBehavior;
+          else root.style.removeProperty("scroll-behavior");
+        });
+      }, { once: true });
+    })();
+  </script>
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="時光智造 Timux">
-  <meta name="timux-build" content="homepage-v15-scene-transitions-20261006">
+  <meta name="timux-build" content="homepage-v16-refresh-top-20261006">
   <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
   <meta name="description" content="讓 AI 進入客服、企業知識、現場營運與跨系統流程。時光智造從需求盤點、試點驗證到受控上線，協助企業把 AI 變成真正完成工作的能力。">
   <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
