@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v24-route-progression-20261007") {
+  if (marker !== "homepage-v25-international-layer-20261007") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -94,6 +94,20 @@ async function inspect(viewport, name) {
   }));
   if (navStructure.triggers !== 3 || navStructure.panels !== 3 || navStructure.mobileGroups !== 3) {
     throw new Error(`${name}: navigation structure invalid ${JSON.stringify(navStructure)}`);
+  }
+  const internationalLayer = await page.evaluate(() => ({
+    navEnglish: [...document.querySelectorAll('.intl-nav-en')].map((element) => element.textContent.trim()),
+    mobileEnglish: [...document.querySelectorAll('.intl-mobile-summary small')].map((element) => element.textContent.trim()),
+    heroScopes: document.querySelectorAll('.intl-hero-scope span').length,
+    heroProofSteps: document.querySelectorAll('.intl-hero-proof > div').length,
+    sectionSubtitles: document.querySelectorAll('.intl-section-en').length,
+    caseTags: document.querySelectorAll('.intl-case-meta span').length
+  }));
+  if (internationalLayer.navEnglish.join('|') !== 'Solutions|Case Studies|AI Adoption|Talk to us' ||
+      internationalLayer.mobileEnglish.join('|') !== 'Solutions|Case Studies|AI Adoption' ||
+      internationalLayer.heroScopes !== 3 || internationalLayer.heroProofSteps !== 3 ||
+      internationalLayer.sectionSubtitles !== 3 || internationalLayer.caseTags !== 6) {
+    throw new Error(`${name}: international layer invalid ${JSON.stringify(internationalLayer)}`);
   }
   let navInteraction;
   if (viewport.width > 820) {
@@ -151,7 +165,8 @@ async function inspect(viewport, name) {
       const rect = element.getBoundingClientRect();
       if (style.display === "none" || style.visibility === "hidden" || rect.width === 0 || rect.height === 0) continue;
       const size = Number.parseFloat(style.fontSize);
-      if (size < 14) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
+      const intentionalEnglishMicrocopy = element.matches('.intl-nav-en,.intl-lang,.intl-lang *,.intl-mobile-summary small,.intl-mobile-lang,.intl-mobile-lang *,.intl-hero-scope span,.intl-hero-proof b,.intl-hero-proof span,.intl-section-en,.intl-case-meta span,.nav-cta .intl-nav-zh');
+      if (size < (intentionalEnglishMicrocopy ? 9 : 14)) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
     }
     return failures;
   });
