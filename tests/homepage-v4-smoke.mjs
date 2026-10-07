@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v20-orbit-center-20261006") {
+  if (marker !== "homepage-v21-scale-loop-20261007") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -142,6 +142,19 @@ async function inspect(viewport, name) {
       homepageStory.modelPies !== 3 || homepageStory.pieLabels.join("|") !== "4|5|5" ||
       homepageStory.scaleLoopArrows !== 1 || homepageStory.legends !== 0 || homepageStory.partnerCards !== 6 || homepageStory.partnerAxis !== 1 || homepageStory.partnerCopyAnchors !== 1) {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
+  }
+
+  const scaleLoop = page.locator(".scale-loop-arrow");
+  const scaleLoopMotion = await scaleLoop.evaluate((element) => ({
+    animationName: getComputedStyle(element).animationName,
+    animationDuration: getComputedStyle(element).animationDuration,
+    transform: getComputedStyle(element).transform
+  }));
+  await page.waitForTimeout(250);
+  scaleLoopMotion.laterTransform = await scaleLoop.evaluate((element) => getComputedStyle(element).transform);
+  if (scaleLoopMotion.animationName !== "scale-loop-rotate" || scaleLoopMotion.animationDuration !== "16s" ||
+      scaleLoopMotion.transform === scaleLoopMotion.laterTransform) {
+    throw new Error(`${name}: SCALE loop is not rotating ${JSON.stringify(scaleLoopMotion)}`);
   }
 
   const expectsScenes = viewport.width >= 1100 && viewport.height >= 700;
@@ -216,7 +229,7 @@ async function inspect(viewport, name) {
   await page.waitForTimeout(1500);
   await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
   if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
-  results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, motion, consoleErrors };
+  results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, consoleErrors };
   await page.close();
 }
 
@@ -343,10 +356,11 @@ const reducedMotion = await reducedPage.evaluate(() => ({
   hiddenTargets: [...document.querySelectorAll("[data-reveal]")].filter(element => getComputedStyle(element).opacity !== "1").length,
   transitionDisplay: getComputedStyle(document.querySelector(".page-transition")).display,
   heroAnimation: getComputedStyle(document.querySelector(".outcome-hero h1")).animationName,
+  scaleLoopAnimation: getComputedStyle(document.querySelector(".scale-loop-arrow")).animationName,
   sceneMotion: document.documentElement.classList.contains("scene-motion"),
   sceneModules: document.querySelectorAll(".scene-module").length
 }));
-if (!reducedMotion.reduced || reducedMotion.ready || reducedMotion.hiddenTargets || reducedMotion.transitionDisplay !== "none" || reducedMotion.heroAnimation !== "none" || reducedMotion.sceneMotion || reducedMotion.sceneModules) {
+if (!reducedMotion.reduced || reducedMotion.ready || reducedMotion.hiddenTargets || reducedMotion.transitionDisplay !== "none" || reducedMotion.heroAnimation !== "none" || reducedMotion.scaleLoopAnimation !== "none" || reducedMotion.sceneMotion || reducedMotion.sceneModules) {
   throw new Error(`reduced motion unavailable ${JSON.stringify(reducedMotion)}`);
 }
 results.reducedMotion = reducedMotion;
