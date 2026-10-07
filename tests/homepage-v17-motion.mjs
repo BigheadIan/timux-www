@@ -58,16 +58,18 @@ for(let i=0;i<count;i++){
   const sample=await page.locator('.case-card').nth(i).evaluate(e=>({phase:e.dataset.casePhase,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,transform:e.querySelector('.case-screen,.phone')?getComputedStyle(e.querySelector('.case-screen,.phone')).transform:null,replaySequence:e.querySelector('[data-case-replay]')?.dataset.replaySequence||null}));
   if(sample.top<77||sample.bottom>1080||i>0&&before===sample.transform)throw Error(`case ${i} motion/layout: ${JSON.stringify(sample)}`);
   if(i===0){
-    await page.locator('[data-replay-step="2"]').click();
-    if(await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')!=='4')throw Error('case replay control did not jump to handoff stage');
-    await page.waitForTimeout(1850);
-    if(await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')!=='5')throw Error('case replay did not reveal the handoff message');
-    await page.locator('[data-case-replay]').hover();
-    const paused=await page.locator('[data-case-replay]').getAttribute('data-replay-sequence');
-    await page.waitForTimeout(600);
-    if(paused!==await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')||await page.locator('[data-case-replay]').getAttribute('data-replay-paused')!=='true')throw Error('case replay did not pause on hover');
-    await page.mouse.move(0,0);
-    sample.replaySequence=`${before}->${paused}`;
+    const replayProgress=[];
+    for(const [q,expected,messages] of [[.16,'1',1],[.52,'3',2],[.88,'5',3],[.16,'1',1],[.88,'5',3]]){
+      await page.evaluate(q=>{
+        const track=document.querySelector('#case-southeast').parentElement,rect=track.getBoundingClientRect();
+        scrollTo({top:rect.top+scrollY-80+q*Math.max(1,rect.height-innerHeight+80),behavior:'instant'});
+      },q);
+      await page.waitForTimeout(180);
+      const state=await page.locator('[data-case-replay]').evaluate(element=>({sequence:element.dataset.replaySequence,stage:element.dataset.replayStage,visibleMessages:element.querySelectorAll('.replay-message.is-visible').length,activeSteps:element.closest('.case-card').querySelectorAll('.case-replay-step.replay-selected').length}));
+      replayProgress.push(state.sequence);
+      if(state.sequence!==expected||state.visibleMessages!==messages||state.activeSteps!==1)throw Error(`case replay scroll progression invalid at ${q}: ${JSON.stringify(state)}`);
+    }
+    sample.replaySequence=`${before}->${replayProgress.join('->')}`;
   }
   cases.push(sample);
   await page.screenshot({path:`${output}/case-${i}.png`});
@@ -122,6 +124,8 @@ for(const size of [{width:1600,height:900},{width:1366,height:768},{width:1100,h
 }
 await page.emulateMedia({reducedMotion:'reduce'});
 if(await page.locator('html').evaluate(e=>e.classList.contains('story-desktop')))throw Error('reduced motion not respected');
+await page.waitForTimeout(100);
+if(await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')!=='5')throw Error('case replay reduced-motion fallback incomplete');
 await context.close();
 const staticContext=await browser.newContext({javaScriptEnabled:false,viewport:{width:1920,height:1080}});
 const staticPage=await staticContext.newPage();
