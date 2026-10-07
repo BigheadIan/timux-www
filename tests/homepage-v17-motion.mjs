@@ -58,6 +58,38 @@ for(let i=0;i<count;i++){
   cases.push(sample);
   await page.screenshot({path:`${output}/case-${i}.png`});
 }
+async function sampleRoute(selector,points){
+  const samples=[];
+  for(const q of points){
+    await page.evaluate(({selector,q})=>{
+      const container=document.querySelector(selector),rect=container.getBoundingClientRect();
+      const top=rect.top+scrollY,denominator=Math.min(rect.height+innerHeight*.2,innerHeight*.85);
+      scrollTo({top:Math.max(0,top-innerHeight*.84+q*denominator),behavior:'instant'});
+    },{selector,q});
+    await page.waitForTimeout(140);
+    samples.push(await page.locator(selector).evaluate(container=>{
+      const cards=[...container.querySelectorAll(':scope > article')],route=container.previousElementSibling;
+      return {
+        current:cards.findIndex(card=>card.classList.contains('route-current')),
+        complete:cards.filter(card=>card.classList.contains('route-complete')).length,
+        upcoming:cards.filter(card=>card.classList.contains('route-upcoming')).length,
+        dash:route.querySelector('.route-ink').style.strokeDashoffset,
+        head:Number(route.querySelector('.route-head').getAttribute('cx')),
+        states:cards.map(card=>({opacity:card.style.getPropertyValue('--step-opacity'),scale:card.style.getPropertyValue('--step-scale')}))
+      };
+    }));
+  }
+  if(samples.some((sample,index)=>sample.current!==index||sample.complete!==index||!sample.dash||!Number.isFinite(sample.head)))throw Error(`${selector} route progression invalid: ${JSON.stringify(samples)}`);
+  return samples;
+}
+const adoptionProgression=await sampleRoute('.adoption-path',[.12,.5,.88]);
+await page.screenshot({path:`${output}/adoption-progression.png`});
+const roadmapProgression=await sampleRoute('.phase-grid',[.12,.38,.63,.88]);
+await page.screenshot({path:`${output}/roadmap-progression.png`});
+await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+await page.waitForTimeout(100);
+const reversedRoute=await sampleRoute('.phase-grid',[.12]);
+if(reversedRoute[0].current!==0)throw Error(`route did not reverse: ${JSON.stringify(reversedRoute)}`);
 await page.locator('.model-track').evaluate(e=>scrollTo({top:e.getBoundingClientRect().top+scrollY-80,behavior:'instant'}));
 for(let i=0;i<22;i++){await page.mouse.wheel(0,66);await page.waitForTimeout(75);}
 await page.screenshot({path:`${output}/trust.png`});
@@ -84,6 +116,6 @@ if(!await staticPage.locator('h1').isVisible()||await staticPage.locator('.model
 await staticContext.close();
 await browser.close();
 if(errors.length)throw Error(JSON.stringify(errors));
-const results={orbit:{before:orbitBefore,after:orbitAfter,center:orbitCenter,backgroundContinues:backgroundBefore!==backgroundAfter,cardPaused:pausedBefore===pausedAfter},cases,sweep,metrics,errors};
+const results={orbit:{before:orbitBefore,after:orbitAfter,center:orbitCenter,backgroundContinues:backgroundBefore!==backgroundAfter,cardPaused:pausedBefore===pausedAfter},cases,adoptionProgression,roadmapProgression,reversedRoute,sweep,metrics,errors};
 fs.writeFileSync(`${output}/motion-results.json`,JSON.stringify(results,null,2));
 console.log(JSON.stringify(results,null,2));

@@ -38,11 +38,12 @@
   const adoption = document.querySelector('.adoption-path');
   const phases = document.querySelector('.phase-grid');
   function addRoute(container) {
-    const svg = make('div', 'story-route', '<svg viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><path class="route-base" d="M10 22 H990"/><path class="route-ink" pathLength="1" d="M10 22 H990"/><circle cx="10" cy="22" r="6"/><circle cx="990" cy="22" r="6"/></svg>');
-    container.before(svg); return svg.querySelector('.route-ink');
+    const svg = make('div', 'story-route', '<svg viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><path class="route-base" d="M10 22 H990"/><path class="route-ink" pathLength="1" d="M10 22 H990"/><circle class="route-terminal route-start" cx="10" cy="22" r="6"/><circle class="route-terminal route-end" cx="990" cy="22" r="6"/><circle class="route-head" cx="10" cy="22" r="9"/></svg>');
+    container.before(svg);
+    return {root: svg, ink: svg.querySelector('.route-ink'), head: svg.querySelector('.route-head')};
   }
-  const adoptionLine = addRoute(adoption);
-  const phaseLine = addRoute(phases);
+  const adoptionRoute = addRoute(adoption);
+  const phaseRoute = addRoute(phases);
   const caseCards = [...document.querySelectorAll('.case-card')];
   const cases = caseCards.map(card => {
     const track = make('div', 'case-track'); card.before(track); track.append(card);
@@ -116,14 +117,30 @@
       c.style.setProperty('--card-turn',`${(1-t)*(i-1.5)*8}deg`);
       c.style.setProperty('--card-y',`${(1-t)*65}px`);
     });
-    [[adoption,adoptionLine],[phases,phaseLine]].forEach(([container,line])=>{
-      const q=progress(container); line.style.strokeDashoffset=String(1-q);
-      const cards=[...container.querySelectorAll(':scope > article')];
+    [[adoption,adoptionRoute],[phases,phaseRoute]].forEach(([container,route])=>{
+      const q=progress(container), cards=[...container.querySelectorAll(':scope > article')];
+      const activeIndex=Math.min(cards.length-1,Math.floor(q*cards.length));
+      route.ink.style.strokeDashoffset=String(1-q);
+      route.head.setAttribute('cx',String(10+980*q));
+      route.root.style.setProperty('--route-progress',q.toFixed(4));
+      route.root.dataset.routeIndex=String(activeIndex);
       cards.forEach((card,i)=>{
-        const t=range(q,i*.12,.5+i*.12);
-        card.style.setProperty('--step-lift',`${(1-t)*60}px`);
-        card.style.setProperty('--step-rotate',`${(1-t)*-9}deg`);
-        card.classList.toggle('route-active',q>(i+.4)/cards.length);
+        const reveal=range(q,Math.max(0,(i-.45)/cards.length),(i+.38)/cards.length);
+        const current=i===activeIndex, complete=i<activeIndex;
+        const emphasis=current?1:complete?.38:0;
+        card.style.setProperty('--step-lift',`${(1-reveal)*72-emphasis*14}px`);
+        card.style.setProperty('--step-rotate',`${(1-reveal)*-10}deg`);
+        card.style.setProperty('--step-scale',String(.92+reveal*.08+emphasis*.026));
+        card.style.setProperty('--step-opacity',String(.34+reveal*.66));
+        card.style.setProperty('--step-saturation',String(.48+reveal*.52));
+        card.style.zIndex=current?'3':complete?'2':'1';
+        card.classList.toggle('route-current',current);
+        card.classList.toggle('route-complete',complete);
+        card.classList.toggle('route-upcoming',i>activeIndex);
+      });
+      [...container.children].filter(element=>element.tagName==='I').forEach((arrow,i)=>{
+        arrow.classList.toggle('route-passed',i<activeIndex);
+        arrow.classList.toggle('route-next',i===activeIndex);
       });
     });
     cases.forEach(({track,card,screens,steps})=>{
@@ -168,12 +185,26 @@
     enabled=desktop.matches&&!reduced.matches;
     root.classList.toggle('story-desktop',enabled);
     root.classList.toggle('story-static',reduced.matches);
+    root.classList.toggle('story-mobile-route',!enabled&&!reduced.matches);
     if (!enabled) {
       document.querySelectorAll('.ai-decision,.audit-panel').forEach(panel => panel.style.removeProperty('clip-path'));
-      [adoptionLine,phaseLine].forEach(line => line.style.strokeDashoffset='0');
+      [adoptionRoute,phaseRoute].forEach(route => {
+        route.ink.style.strokeDashoffset=reduced.matches?'0':'1';
+        route.head.setAttribute('cx',reduced.matches?'990':'10');
+      });
     }
     measure(); requestPaint();
   }
+  const mobileRoutes=[[adoption,adoptionRoute],[phases,phaseRoute]];
+  mobileRoutes.forEach(([container])=>[...container.querySelectorAll(':scope > article')].forEach((card,i)=>card.style.setProperty('--route-order',String(i))));
+  const mobileRouteObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    if(!entry.isIntersecting||desktop.matches||reduced.matches)return;
+    const pair=mobileRoutes.find(([container])=>container===entry.target);
+    entry.target.classList.add('route-mobile-play');
+    pair?.[1].root.classList.add('route-mobile-play');
+    mobileRouteObserver.unobserve(entry.target);
+  }),{threshold:.14,rootMargin:'0px 0px -8%'});
+  mobileRoutes.forEach(([container])=>mobileRouteObserver.observe(container));
   addEventListener('scroll',requestPaint,{passive:true});
   let resizeFrame=0;
   addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(configure);},{passive:true});
