@@ -7,7 +7,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 import re, subprocess, tempfile
 root = Path.cwd()
-pages = ['index.html','method/index.html','demo/index.html','demo/customer-service/index.html']
+pages = ['index.html','en/index.html','method/index.html','demo/index.html','demo/customer-service/index.html']
 class Document(HTMLParser):
  def __init__(self):
   super().__init__(); self.refs=[]; self.ids=set(); self.h1=0
@@ -23,7 +23,8 @@ documents={}
 for name in pages:
  s=(root/name).read_text();d=Document();d.feed(s);documents[name]=d
  assert d.h1==1,(name,'h1 count')
- assert 'lang="zh-Hant"' in s
+ expected_lang = 'en' if name == 'en/index.html' else 'zh-Hant'
+ assert f'lang="{expected_lang}"' in s,(name,'language')
  for forbidden in ['All systems operational','Policy coverage','待批准','MapleHome','SoFun']:
   assert forbidden not in s,(name,forbidden)
  for body in re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S):
@@ -48,4 +49,6 @@ node --check assets/site-orbit.js
 node --check assets/site-mega-nav.js
 node --check tests/homepage-v4-smoke.mjs
 node --check tests/homepage-v17-motion.mjs
+node --check tests/homepage-en-smoke.mjs
+node --check scripts/build-en-home.mjs
 git diff --check -- index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js tests scripts

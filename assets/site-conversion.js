@@ -1,4 +1,5 @@
 (() => {
+  const english = document.documentElement.lang === 'en';
   const track = (event, params = {}) => {
     if (!['www.timux.site', 'timux.site'].includes(location.hostname)) return;
     if (typeof window.gtag === 'function') window.gtag('event', event, params);
@@ -13,7 +14,7 @@
     const summary = document.getElementById('summary');
     const email = document.getElementById('emailDraft');
     const scenario = new URLSearchParams(location.search).get('scenario');
-    if (scenario === 'customer-service') workflowInput.value = '想將 AI 客服用在公司的工作流程';
+    if (scenario === 'customer-service') workflowInput.value = english ? 'Use AI customer service in our company workflow' : '想將 AI 客服用在公司的工作流程';
     document.querySelectorAll('[data-solution]').forEach(link => {
       link.addEventListener('click', () => {
         workflowInput.value = link.dataset.solution;
@@ -21,12 +22,14 @@
         setTimeout(() => workflowInput.focus({preventScroll: true}), 450);
       });
     });
-    const updateEmail = () => { email.href = 'mailto:service@timux.site?subject=' + encodeURIComponent('企業 AI 導入需求討論') + '&body=' + encodeURIComponent(summary.value); };
+    const updateEmail = () => { email.href = 'mailto:service@timux.site?subject=' + encodeURIComponent(english ? 'Enterprise AI adoption discussion' : '企業 AI 導入需求討論') + '&body=' + encodeURIComponent(summary.value); };
     form.addEventListener('submit', event => {
       event.preventDefault();
       const workflow = workflowInput.value.trim();
       if (!workflow) { workflowInput.focus(); return; }
-      summary.value = 'Ian 你好，\n\n我想討論的工作流程：' + workflow + '\n\n最近的情況：\n' + (document.getElementById('context').value.trim() || '希望在討論時補充。') + '\n\n希望一起確認：適合先驗證的範圍、需要的資料與下一步。' + (scenario === 'customer-service' ? '\n\n我看過官網的客服案例體驗。' : '');
+      summary.value = english
+        ? 'Hi Ian,\n\nThe workflow I would like to discuss:\n' + workflow + '\n\nCurrent situation:\n' + (document.getElementById('context').value.trim() || 'I would like to add details during our discussion.') + '\n\nI would like to clarify a suitable validation scope, the data required, and the next step.' + (scenario === 'customer-service' ? '\n\nI reviewed the customer service case experience on the Timux website.' : '')
+        : 'Ian 你好，\n\n我想討論的工作流程：' + workflow + '\n\n最近的情況：\n' + (document.getElementById('context').value.trim() || '希望在討論時補充。') + '\n\n希望一起確認：適合先驗證的範圍、需要的資料與下一步。' + (scenario === 'customer-service' ? '\n\n我看過官網的客服案例體驗。' : '');
       updateEmail();
       document.getElementById('draftResult').hidden = false;
       summary.focus();
@@ -35,8 +38,8 @@
     summary.addEventListener('input', updateEmail);
     document.getElementById('copyDraft').addEventListener('click', async () => {
       const status = document.getElementById('copyStatus');
-      try { await navigator.clipboard.writeText(summary.value); status.textContent = '摘要已複製，請貼到 Email 並自行寄送。'; }
-      catch { summary.focus(); summary.select(); status.textContent = '請複製上方已選取的摘要，再貼到 Email。'; }
+      try { await navigator.clipboard.writeText(summary.value); status.textContent = english ? 'Summary copied. Paste it into your email and send when ready.' : '摘要已複製，請貼到 Email 並自行寄送。'; }
+      catch { summary.focus(); summary.select(); status.textContent = english ? 'Copy the selected summary above, then paste it into your email.' : '請複製上方已選取的摘要，再貼到 Email。'; }
     });
   }
   const tabs = [...document.querySelectorAll('[data-demo-step]')];

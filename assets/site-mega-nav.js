@@ -1,4 +1,14 @@
 (() => {
+  document.querySelectorAll('[data-language-link]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const target = new URL(link.href, location.origin);
+      if (location.hash) target.hash = location.hash;
+      event.preventDefault();
+      location.assign(target.href);
+    });
+  });
+
   const directory = document.querySelector('[data-nav-directory]');
   if (!directory) return;
 

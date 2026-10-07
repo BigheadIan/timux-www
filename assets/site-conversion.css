@@ -310,11 +310,13 @@ html{scroll-behavior:smooth}
 .intl-nav-zh{color:#f5f5f7;font-size:15px;font-weight:720;letter-spacing:.035em}
 .intl-nav-en{color:#858a99;font:600 10px/1.15 Manrope,sans-serif;letter-spacing:.13em;text-transform:uppercase}
 .nav-entry.is-open .intl-nav-en,.nav-trigger:hover .intl-nav-en{color:#8be2d3}
-.intl-lang{display:flex;align-items:center;gap:7px;margin-left:12px;padding:8px 11px;border:1px solid #ffffff20;border-radius:999px;color:#d9dbe2;background:#ffffff06;font:650 10px/1 Manrope,sans-serif;letter-spacing:.09em}
-.intl-lang b{color:#8de2d3;font-weight:750}.intl-lang i{width:1px;height:11px;background:#ffffff28}
+.intl-lang{display:flex;align-items:center;gap:7px;margin-left:12px;padding:4px;border:1px solid #ffffff20;border-radius:999px;color:#d9dbe2;background:#ffffff06;font:650 10px/1 Manrope,sans-serif;letter-spacing:.09em}
+.intl-lang a{display:flex;align-items:center;min-height:28px;padding:0 8px;border-radius:999px;color:#9297a5;text-decoration:none;transition:color .2s ease,background .2s ease}
+.intl-lang a:hover,.intl-lang a:focus-visible{color:#fff;background:#ffffff0d}.intl-lang a.is-active{color:#10201d;background:#8de2d3;font-weight:750}.intl-lang i{width:1px;height:11px;background:#ffffff28}
 .nav-cta{margin-left:10px;padding:9px 16px}
 .nav-cta .intl-nav-zh{font-size:13px}.nav-cta .intl-nav-en{font-size:9px}
-.intl-mobile-lang{display:flex!important;align-items:center;justify-content:center;gap:9px;margin-top:11px!important;padding:11px!important;border:1px solid #ffffff1f!important;border-radius:9px;color:#c9ccd5!important;font:650 10px/1 Manrope,sans-serif!important;letter-spacing:.12em}
+.intl-mobile-lang{display:flex!important;align-items:center;justify-content:center;gap:7px;margin-top:11px!important;padding:5px!important;border:1px solid #ffffff1f!important;border-radius:9px;color:#c9ccd5!important;font:650 10px/1 Manrope,sans-serif!important;letter-spacing:.12em}
+.intl-mobile-lang a{display:flex;flex:1;align-items:center;justify-content:center;min-height:34px;border-radius:7px;color:#9da2af;text-decoration:none}.intl-mobile-lang a.is-active{color:#10201d;background:#8de2d3}.intl-mobile-lang i{width:1px;height:16px;background:#ffffff24}
 .intl-mobile-summary{display:flex;flex-direction:column;gap:3px}.intl-mobile-summary small{color:#858b99;font:600 9px/1 Manrope,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .intl-hero-scope{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0 0}
 .intl-hero-scope span{padding:7px 10px;border:1px solid #ffffff18;border-radius:999px;color:#b7bdcb;background:#ffffff06;font:600 11px/1.1 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase}
@@ -325,6 +327,10 @@ html{scroll-behavior:smooth}
 #roadmap .section-head h2::after{content:"A staged path from baseline to joint acceptance."}
 #agent h2::after{content:"Explore your next step with an AI adoption advisor.";color:#8ee2d3!important}
 #contact h2::after{content:"Start with one real workflow."}
+html[lang="en"] #method .section-head h2::after{content:"經營成果 · 執行閉環 · 可信治理"}
+html[lang="en"] #roadmap .section-head h2::after{content:"從基線確認走向聯合驗收的分階段路徑"}
+html[lang="en"] #agent h2::after{content:"與 AI 導入顧問一起釐清下一步"}
+html[lang="en"] #contact h2::after{content:"從一段真實工作開始"}
 .intl-case-meta{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 2px}.intl-case-meta span{padding:6px 9px;border:1px solid #dcd6e8;border-radius:999px;color:#665489;background:#f8f6fc;font:650 10px/1 Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase}
 #roadmap .section-tail::before{display:inline-flex;align-items:center;gap:8px;flex-basis:100%;color:#777c8b;font:600 11px/1.4 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;content:"Evidence before scale · Human oversight by design"}
 #roadmap .section-tail::before{padding-left:32px;background:linear-gradient(#8d76df,#8d76df) left center/24px 1px no-repeat}

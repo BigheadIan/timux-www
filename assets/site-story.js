@@ -1,6 +1,7 @@
 /* Timux V17. Native scrolling, progressively enhanced business storytelling. */
 (() => {
   const root = document.documentElement;
+  const english = root.lang === 'en';
   const hero = document.querySelector('.outcome-hero');
   if (!hero) return;
   root.classList.add('story-home');
@@ -16,10 +17,10 @@
 
   const heroTrack = document.querySelector('.engine-track');
   const stage = document.querySelector('.engine-stage');
-  const layerNames = ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
-  const details = ['客戶詢問 · 現場回報 · 工作任務', '核准文件 · 可用資料 · 引用依據', '權限範圍 · 例外條件 · 處理順序', '重要操作先批准 · 異常有人接手', '執行任務 · 留下證據 · 持續改進'];
-  const outputs = ['客服與銷售', '企業知識', '現場營運', '系統自動化'];
-  const outputDetails = ['回應詢問，接續服務', '找到資料，核對依據', '串起現場，追蹤進度', '減少重複，保留審批'];
+  const layerNames = english ? ['Signal received', 'Knowledge checked', 'Rules applied', 'Human decision', 'Action recorded'] : ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
+  const details = english ? ['Customer request · Field report · Work task', 'Approved documents · Available data · Sources', 'Permission scope · Exceptions · Priorities', 'Approval for critical actions · Human handoff', 'Execute · Preserve evidence · Improve'] : ['客戶詢問 · 現場回報 · 工作任務', '核准文件 · 可用資料 · 引用依據', '權限範圍 · 例外條件 · 處理順序', '重要操作先批准 · 異常有人接手', '執行任務 · 留下證據 · 持續改進'];
+  const outputs = english ? ['Service & sales', 'Enterprise knowledge', 'Field operations', 'System automation'] : ['客服與銷售', '企業知識', '現場營運', '系統自動化'];
+  const outputDetails = english ? ['Respond and continue service', 'Find and verify sources', 'Connect teams and track progress', 'Reduce repetition, retain approvals'] : ['回應詢問，接續服務', '找到資料，核對依據', '串起現場，追蹤進度', '減少重複，保留審批'];
   const colors = ['#73e0ce', '#a590ff', '#82bfff', '#eab68d', '#b7efbb'];
   stage.innerHTML = '<div class="engine-grid"></div><div class="engine-orbit orbit-one"></div><div class="engine-orbit orbit-two"></div><div class="engine-coordinate">TIMUX / EXECUTION ENGINE</div>';
   const stack = make('div', 'engine-stack');
@@ -29,7 +30,7 @@
     stack.append(el); return el;
   });
   stage.append(stack);
-  stage.append(make('div', 'engine-footer', '<span>資料有依據</span><span>人保有決策</span><span>結果可追蹤</span>'));
+  stage.append(make('div', 'engine-footer', english ? '<span>Grounded in data</span><span>Humans decide</span><span>Results traceable</span>' : '<span>資料有依據</span><span>人保有決策</span><span>結果可追蹤</span>'));
   const caption = document.querySelector('.engine-caption');
 
   // Connect the actual service cards to the assembled execution layers.
@@ -53,7 +54,7 @@
   const models = document.querySelector('.model-pie-grid');
   const modelTrack = make('div', 'model-track');
   const modelStage = make('div', 'model-stage');
-  modelStage.innerHTML = '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><defs><marker id="orb-flow-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path class="orb-flow-head" d="M1 1 L11 6 L1 11 Z"/></marker></defs><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><circle class="orb-loop" cx="250" cy="250" r="216"/><path class="orb-flow" d="M250 34 A216 216 0 0 1 466 250" marker-end="url(#orb-flow-head)"/><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/></svg><div class="orb-center"><b>CORE</b><span>做對的事</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>先對準結果，<br>再讓工作前進。</h3><p class="model-story-description">降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>';
+  modelStage.innerHTML = english ? '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><defs><marker id="orb-flow-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path class="orb-flow-head" d="M1 1 L11 6 L1 11 Z"/></marker></defs><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><circle class="orb-loop" cx="250" cy="250" r="216"/><path class="orb-flow" d="M250 34 A216 216 0 0 1 466 250" marker-end="url(#orb-flow-head)"/><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/></svg><div class="orb-center"><b>CORE</b><span>Do the right work</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>Align on outcomes,<br>then move work forward.</h3><p class="model-story-description">Reduce cost, improve operations, manage risk, or grow revenue: first define what should change.</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>' : '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><defs><marker id="orb-flow-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path class="orb-flow-head" d="M1 1 L11 6 L1 11 Z"/></marker></defs><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><circle class="orb-loop" cx="250" cy="250" r="216"/><path class="orb-flow" d="M250 34 A216 216 0 0 1 466 250" marker-end="url(#orb-flow-head)"/><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/></svg><div class="orb-center"><b>CORE</b><span>做對的事</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>先對準結果，<br>再讓工作前進。</h3><p class="model-story-description">降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>';
   modelTrack.append(modelStage); models.before(modelTrack);
   const ns = 'http://www.w3.org/2000/svg';
   const segments = Array.from({length:5}, (_,i) => {
@@ -65,7 +66,11 @@
     const a=point(start,radius),b=point(end,radius),c=point(end,112),d=point(start,112);
     return `M${a} A${radius} ${radius} 0 0 1 ${b} L${c} A112 112 0 0 0 ${d} Z`;
   }
-  const descriptions = [
+  const descriptions = english ? [
+    ['CORE','Do the right work','Align on outcomes,<br>then move work forward.','Reduce cost, improve operations, manage risk, or grow revenue: first define what should change.'],
+    ['SCALE','Finish the work','Every signal<br>gets a next step.','Sense, add context, approve, act, and learn. Let AI complete the workflow, then improve from results.'],
+    ['TRUST','Use AI with confidence','Extend capability,<br>keep boundaries clear.','Transparent evidence, recoverable actions, human decisions, scoped permissions, and traceable results.']
+  ] : [
     ['CORE','做對的事','先對準結果，<br>再讓工作前進。','降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。'],
     ['SCALE','把事情做完','每一個訊號，<br>都有下一步。','感知、補足情境、審批、行動、復盤。讓 AI 走過完整流程，再用結果持續改進。'],
     ['TRUST','放心地使用','能力向外延伸，<br>邊界始終清楚。','證據透明、確認恢復方式、人保有決策、權限有範圍、結果可追溯。']
@@ -106,8 +111,8 @@
     if(hi!==heroIndex){
       heroIndex=hi; hero.dataset.engineStep=String(hi);
       caption.querySelector('.engine-step').textContent=`0${hi+1} / 03`;
-      caption.querySelector('strong').textContent=['讓分散訊號，進入同一段工作。','拆開每一步，讓判斷有依據。','組成適合你的工作方式。'][hi];
-      caption.querySelector('p').textContent=['從一個真實需求開始，看 AI 如何協助團隊完成下一步。','知識、規則與人的決策彼此連接，重要操作保留人工確認。','客服、知識、現場與系統整合，從你最想改善的流程開始。'][hi];
+      caption.querySelector('strong').textContent=(english ? ['Bring scattered signals into one workflow.','Break down each step so decisions have evidence.','Assemble a workflow that fits your team.'] : ['讓分散訊號，進入同一段工作。','拆開每一步，讓判斷有依據。','組成適合你的工作方式。'])[hi];
+      caption.querySelector('p').textContent=(english ? ['Start with one real need and see how AI helps the team reach the next step.','Knowledge, rules, and human decisions stay connected, with approval for critical actions.','Connect service, knowledge, operations, and systems—starting with the workflow that matters most.'] : ['從一個真實需求開始，看 AI 如何協助團隊完成下一步。','知識、規則與人的決策彼此連接，重要操作保留人工確認。','客服、知識、現場與系統整合，從你最想改善的流程開始。'])[hi];
     }
     caption.querySelector('.engine-meter i').style.transform=`scaleX(${p})`;
     const sp=progress(solutions);
