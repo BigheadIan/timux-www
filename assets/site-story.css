@@ -87,9 +87,8 @@
 .partner-orbit .trust-copy strong{display:block;margin:14px 0 12px;color:#fff;font-size:clamp(26px,2.4vw,38px);font-weight:600;letter-spacing:-.04em}
 .partner-orbit .trust-copy small{display:block;color:#9299aa;font-size:15px;line-height:1.7}
 .partner-orbit-axis{position:absolute;left:50%;top:50%;width:min(82%,1080px);height:440px;border:1px solid #a18cf229;border-radius:50%;transform:translate(-50%,-50%) rotate(-3deg)}
-.partner-orbit-axis::before,.partner-orbit-axis::after{position:absolute;content:'';border-radius:50%}
+.partner-orbit-axis::before{position:absolute;content:'';border-radius:50%}
 .partner-orbit-axis::before{inset:16px;border:1px dashed #7de6d31c}
-.partner-orbit-axis::after{left:50%;top:50%;width:8px;height:8px;background:#80e5d2;box-shadow:0 0 28px #70e4ce;transform:translate(-50%,-50%)}
 .partner-orbit .logo-row{position:absolute;inset:0;display:block;pointer-events:none}
 .partner-orbit .logo-card{position:absolute;left:50%;top:50%;width:230px;height:106px;box-sizing:border-box;display:grid;place-items:center;padding:14px 18px;overflow:hidden;border:1px solid #ffffff24;border-radius:22px;background:linear-gradient(145deg,#fff,#f3f4f8);box-shadow:0 24px 58px #0008,inset 0 1px #fff;pointer-events:auto;will-change:transform,opacity;transition:border-color .2s,box-shadow .2s}
 .partner-orbit .logo-card::after{position:absolute;inset:0;content:'';pointer-events:none;background:linear-gradient(120deg,#fff8,transparent 30%,transparent 70%,#a7ecdf17)}

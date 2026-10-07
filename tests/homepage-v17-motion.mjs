@@ -24,8 +24,8 @@ for(let i=0;i<24;i++){await page.mouse.wheel(0,-110);await page.waitForTimeout(6
 await page.locator('.partner-orbit').scrollIntoViewIfNeeded();
 await page.waitForTimeout(220);
 await page.mouse.move(5,100);
-const orbitCenter=await page.evaluate(()=>{const axis=document.querySelector('.partner-orbit-axis').getBoundingClientRect(),copy=document.querySelector('.partner-orbit .trust-copy').getBoundingClientRect();return {axis:[axis.left+axis.width/2,axis.top+axis.height/2],copy:[copy.left+copy.width/2,copy.top+copy.height/2]}});
-if(Math.abs(orbitCenter.axis[0]-orbitCenter.copy[0])>1||Math.abs(orbitCenter.axis[1]-orbitCenter.copy[1])>1)throw Error(`partner copy is not centered: ${JSON.stringify(orbitCenter)}`);
+const orbitCenter=await page.evaluate(()=>{const axisElement=document.querySelector('.partner-orbit-axis'),axis=axisElement.getBoundingClientRect(),copy=document.querySelector('.partner-orbit .trust-copy').getBoundingClientRect();return {axis:[axis.left+axis.width/2,axis.top+axis.height/2],copy:[copy.left+copy.width/2,copy.top+copy.height/2],centerDot:getComputedStyle(axisElement,'::after').content}});
+if(Math.abs(orbitCenter.axis[0]-orbitCenter.copy[0])>1||Math.abs(orbitCenter.axis[1]-orbitCenter.copy[1])>1||orbitCenter.centerDot!=='none')throw Error(`partner center regression: ${JSON.stringify(orbitCenter)}`);
 const orbitBefore=await page.evaluate(()=>({phase:document.querySelector('.logo-row').dataset.orbitPhase,transforms:[...document.querySelectorAll('.partner-orbit .logo-card')].map(e=>getComputedStyle(e).transform),quality:[...document.querySelectorAll('.partner-orbit .logo-card img')].map(e=>({alt:e.alt,natural:[e.naturalWidth,e.naturalHeight],rendered:[e.getBoundingClientRect().width,e.getBoundingClientRect().height]}))}));
 await page.waitForTimeout(700);
 const orbitAfter=await page.evaluate(()=>({phase:document.querySelector('.logo-row').dataset.orbitPhase,transforms:[...document.querySelectorAll('.partner-orbit .logo-card')].map(e=>getComputedStyle(e).transform)}));
