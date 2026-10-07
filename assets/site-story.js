@@ -48,7 +48,7 @@
   const caseCards = [...document.querySelectorAll('.case-card')];
   const cases = caseCards.map(card => {
     const track = make('div', 'case-track'); card.before(track); track.append(card);
-    return {track, card, screens: [...card.querySelectorAll('.case-screen,.phone')], steps: [...card.querySelectorAll('.case-flow-item')]};
+    return {track, card, screens: [...card.querySelectorAll('.case-screen,.phone')], steps: card.id === 'case-southeast' ? [] : [...card.querySelectorAll('.case-flow-item')]};
   });
 
   const models = document.querySelector('.model-pie-grid');

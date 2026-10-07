@@ -46,7 +46,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="Timux Technology">
-  <meta name="timux-build" content="homepage-en-v1-20261007">
+  <meta name="timux-build" content="homepage-en-v2-case-replay-20261007">
   <title>Timux Technology | Enterprise AI Adoption & Execution</title>
   <meta name="description" content="Bring AI into customer service, enterprise knowledge, field operations, and cross-system workflows. Timux helps teams discover needs, validate pilots, and adopt AI under clear human oversight.">
   <meta name="keywords" content="enterprise AI adoption,AI consulting,AI agents,AI customer service,enterprise knowledge,workflow automation,system integration,Timux">
@@ -105,9 +105,10 @@
   }
   </script>
   <link rel="stylesheet" href="/assets/site-base.css">
-<link rel="stylesheet" href="/assets/site-conversion.css?v=20261007-v26">
+<link rel="stylesheet" href="/assets/site-conversion.css?v=20261007-v27">
 <link rel="stylesheet" href="/assets/site-story.css?v=20261007-v24">
-<script src="/assets/site-story.js?v=20261007-v26" defer></script>
+<script src="/assets/site-story.js?v=20261007-v27" defer></script>
+<script src="/assets/site-case-replay.js?v=20261007-v27" defer></script>
 <script src="/assets/site-orbit.js?v=20261006-v20-1" defer></script>
 <script src="/assets/site-mega-nav.js?v=20261007-v26" defer></script>
 </head>
@@ -336,20 +337,62 @@
             <div class="intl-case-meta"><span>Challenge</span><span>Approach</span><span>Human Oversight</span></div>
             <h3>Southeast Bus: AI answers—and knows when to hand off.</h3><a class="text-link" href="/en/#case-southeast">Walk through the case →</a>
             <p>From one service entry point, AI identifies the question and route intent. Approved knowledge is answered immediately; requests requiring live official data or human judgment are handed off safely.</p>
-            <div class="case-flow">
-              <div class="case-flow-item"><i>01</i><div><b>Understand passenger intent</b><span>Identify schedules, stops, lost property, and complaint scenarios</span></div></div>
-              <div class="case-flow-item"><i>02</i><div><b>Verify knowledge and timeliness</b><span>Answer from static knowledge; never guess dynamic information</span></div></div>
-              <div class="case-flow-item"><i>03</i><div><b>Human handoff with context</b><span>Keep the conversation and essential context to reduce repetition</span></div></div>
+            <div class="case-flow" aria-label="Case animation steps">
+              <button type="button" class="case-flow-item case-replay-step" data-replay-step="0"><i>01</i><span><b>Understand passenger intent</b><span>Identify schedules, stops, lost property, and complaint scenarios</span></span></button>
+              <button type="button" class="case-flow-item case-replay-step" data-replay-step="1"><i>02</i><span><b>Verify knowledge and timeliness</b><span>Answer from static knowledge; never guess dynamic information</span></span></button>
+              <button type="button" class="case-flow-item case-replay-step" data-replay-step="2"><i>03</i><span><b>Human handoff with context</b><span>Keep the conversation and essential context to reduce repetition</span></span></button>
             </div>
           </div>
-          <div class="case-visual">
-            <div class="case-screen primary"><img src="/images/cases/southeast-ai-cs-normal.png" alt="Southeast Bus AI intent and schedule response screen" loading="lazy"></div>
-            <div class="case-screen secondary"><img src="/images/cases/southeast-ai-cs-realtime.png" alt="Southeast Bus live-data boundary and human-handoff screen" loading="lazy"></div>
-            <div class="ai-decision">
-              <div class="ai-decision-head"><b>Response & handoff scenarios</b><span>Case screens</span></div>
-              <div class="ai-signal"><span>Intent recognition</span><b>Route updates</b></div>
-              <div class="ai-signal"><span>Knowledge boundary</span><b>Official live data required</b></div>
-              <div class="ai-signal"><span>Next action</span><b>Human handoff recommended</b></div>
+          <div class="case-visual case-replay-visual">
+            <div class="case-replay" data-case-replay data-replay-sequence="0" data-replay-stage="0" data-replay-paused="false">
+              <div class="case-replay-head">
+                <div><span class="replay-brand-dot"></span><b>TIMUX SERVICE INTELLIGENCE</b><small>LIVE WORKFLOW REPLAY</small></div>
+                <span class="replay-status"><i></i><span data-replay-status>Preparing scenario</span></span>
+              </div>
+              <div class="case-replay-progress" aria-hidden="true"><i></i></div>
+              <div class="case-replay-layout">
+                <section class="replay-conversation" aria-label="AI customer-service conversation replay">
+                  <div class="replay-panel-label"><span>PASSENGER CONVERSATION</span><b data-replay-counter>01 / 03</b></div>
+                  <div class="replay-thread">
+                    <div class="replay-message passenger" data-replay-show="1">
+                      <span class="replay-avatar">PAX</span>
+                      <div><small>Passenger · Just now</small><p>Does route 299 depart MRT Fu Jen University Station at 18:30 today?</p></div>
+                    </div>
+                    <div class="replay-message ai typing" data-replay-only="2">
+                      <span class="replay-avatar">AI</span>
+                      <div><small>Timux AI is checking</small><p><i></i><i></i><i></i></p></div>
+                    </div>
+                    <div class="replay-message ai" data-replay-show="3">
+                      <span class="replay-avatar">AI</span>
+                      <div><small>Timux AI · Replied</small><p>I can confirm the scheduled timetable first. Any temporary change today must be verified through official live information.</p></div>
+                    </div>
+                    <div class="replay-message handoff" data-replay-show="5">
+                      <span class="replay-avatar">HUM</span>
+                      <div><small>Human handoff created</small><p>The route, stop, and time are organized so an agent can verify the live service without asking again.</p></div>
+                    </div>
+                  </div>
+                </section>
+                <aside class="replay-intelligence" aria-label="AI decision and handoff status">
+                  <div class="replay-panel-label"><span>DECISION INTELLIGENCE</span><b>TRACE ON</b></div>
+                  <div class="replay-signal-card" data-replay-show="1">
+                    <div><span>Intent recognition</span><strong>Schedule confirmation</strong></div>
+                    <div class="replay-score"><i></i><b>94%</b></div>
+                    <div class="replay-entities"><span>Route 299</span><span>MRT Fu Jen University</span><span>18:30</span></div>
+                  </div>
+                  <div class="replay-check-card" data-replay-show="3">
+                    <div><span>Knowledge check</span><b>2 / 3 VERIFIED</b></div>
+                    <p class="is-ok"><i>✓</i><span>Route and stop data</span></p>
+                    <p class="is-ok"><i>✓</i><span>Scheduled timetable</span></p>
+                    <p class="is-warn"><i>!</i><span>Live changes today</span></p>
+                  </div>
+                  <div class="replay-boundary-card" data-replay-show="4">
+                    <span>HUMAN OVERSIGHT</span>
+                    <b>Never guess live information</b>
+                    <p>Preserve the conversation, detected conditions, and knowledge checks before handing off to an agent.</p>
+                  </div>
+                </aside>
+              </div>
+              <div class="case-replay-foot"><span><i></i> Auto replay · Hover to pause</span><b data-replay-stage-label>01 UNDERSTAND</b></div>
             </div>
           </div>
         </article>

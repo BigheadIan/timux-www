@@ -202,6 +202,13 @@ const translations = [
   ['90 天導入路徑', '90-day Adoption Path'], ['基線與流程', 'Baseline & Workflow'], ['並行驗證', 'Parallel Validation'], ['受控執行', 'Controlled Execution'], ['聯合驗收', 'Joint Acceptance'],
   ['選單', 'Menu'], ['問 AI 顧問', 'Ask the AI Advisor'], ['選一段工作', 'Choose a Workflow'], ['看演示並驗證', 'Demo & Validate'], ['受控上線', 'Adopt with Control'],
   ['理解旅客意圖', 'Understand passenger intent'], ['核對知識與即時性', 'Verify knowledge and timeliness'], ['人工接手有上下文', 'Human handoff with context'],
+  ['案例動畫步驟', 'Case animation steps'], ['AI 客服對話重演', 'AI customer-service conversation replay'], ['AI 判斷與接手狀態', 'AI decision and handoff status'],
+  ['情境準備中', 'Preparing scenario'], ['旅客 · 剛剛', 'Passenger · Just now'], ['請問 299 路今天 18:30 從捷運輔大站發車嗎？', 'Does route 299 depart MRT Fu Jen University Station at 18:30 today?'],
+  ['Timux AI 正在核對', 'Timux AI is checking'], ['Timux AI · 已回覆', 'Timux AI · Replied'], ['我可以先幫你確認固定時刻表。今天是否臨時調整，需要以官方即時資訊為準。', 'I can confirm the scheduled timetable first. Any temporary change today must be verified through official live information.'],
+  ['已建立人工接手', 'Human handoff created'], ['路線、站點與時間已整理，客服可直接確認即時班次，不必重新詢問。', 'The route, stop, and time are organized so an agent can verify the live service without asking again.'],
+  ['班次確認', 'Schedule confirmation'], ['捷運輔大站', 'MRT Fu Jen University'], ['299 路', 'Route 299'], ['知識核對', 'Knowledge check'], ['路線與站點資料', 'Route and stop data'], ['固定時刻表', 'Scheduled timetable'], ['今日即時異動', 'Live changes today'],
+  ['即時資訊不猜測', 'Never guess live information'], ['保留對話、已辨識條件與知識核對結果，再交給客服確認。', 'Preserve the conversation, detected conditions, and knowledge checks before handing off to an agent.'],
+  ['自動重演 · 懸停暫停', 'Auto replay · Hover to pause'], ['01 理解意圖', '01 UNDERSTAND'],
   ['回覆與接手情境', 'Response & handoff scenarios'], ['案例畫面', 'Case screens'], ['意圖辨識', 'Intent recognition'], ['路線動態', 'Route updates'],
   ['知識邊界', 'Knowledge boundary'], ['需官方即時資料', 'Official live data required'], ['下一動作', 'Next action'], ['建議人工接手', 'Human handoff recommended'],
   ['LINE 行動作業', 'LINE mobile operations'], ['前線資料即時結構化', 'Structure frontline data in real time'], ['出勤紀錄集中查閱', 'Centralize attendance records'], ['主管依據紀錄確認', 'Supervisor verification from records'], ['資料與覆核流程', 'Data & review workflow'],
@@ -225,7 +232,7 @@ for (const [source, target] of translations) html = html.split(source).join(targ
 
 html = html
   .replace('<html lang="zh-Hant">', '<html lang="en">')
-  .replace('homepage-v26-bilingual-switch-20261007', 'homepage-en-v1-20261007')
+  .replace('homepage-v27-case-replay-20261007', 'homepage-en-v2-case-replay-20261007')
   .replace('<link rel="canonical" href="https://www.timux.site/">', '<link rel="canonical" href="https://www.timux.site/en/">')
   .replace('<meta property="og:locale" content="zh_TW">', '<meta property="og:locale" content="en_US">')
   .replace('<meta property="og:url" content="https://www.timux.site/">', '<meta property="og:url" content="https://www.timux.site/en/">')

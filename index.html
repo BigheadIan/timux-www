@@ -46,7 +46,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="時光智造 Timux">
-  <meta name="timux-build" content="homepage-v26-bilingual-switch-20261007">
+  <meta name="timux-build" content="homepage-v27-case-replay-20261007">
   <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
   <meta name="description" content="讓 AI 進入客服、企業知識、現場營運與跨系統流程。時光智造從需求盤點、試點驗證到受控上線，協助企業把 AI 變成真正完成工作的能力。">
   <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
@@ -105,9 +105,10 @@
   }
   </script>
   <link rel="stylesheet" href="/assets/site-base.css">
-<link rel="stylesheet" href="/assets/site-conversion.css?v=20261007-v26">
+<link rel="stylesheet" href="/assets/site-conversion.css?v=20261007-v27">
 <link rel="stylesheet" href="/assets/site-story.css?v=20261007-v24">
-<script src="/assets/site-story.js?v=20261007-v26" defer></script>
+<script src="/assets/site-story.js?v=20261007-v27" defer></script>
+<script src="/assets/site-case-replay.js?v=20261007-v27" defer></script>
 <script src="/assets/site-orbit.js?v=20261006-v20-1" defer></script>
 <script src="/assets/site-mega-nav.js?v=20261007-v26" defer></script>
 </head>
@@ -336,20 +337,62 @@
             <div class="intl-case-meta"><span>Challenge</span><span>Approach</span><span>Human Oversight</span></div>
             <h3>東南客運：AI 不只回答，也知道什麼時候該交給人。</h3><a class="text-link" href="/demo/customer-service/">跟著案例看一次 →</a>
             <p>同一個客服入口，先理解問題與路線意圖；能由核准知識回答的立即處理，需要即時官方資訊或人工判斷的則安全轉接。</p>
-            <div class="case-flow">
-              <div class="case-flow-item"><i>01</i><div><b>理解旅客意圖</b><span>辨識班次、站點、遺失物與客訴情境</span></div></div>
-              <div class="case-flow-item"><i>02</i><div><b>核對知識與即時性</b><span>靜態知識直接回答，動態資訊不猜測</span></div></div>
-              <div class="case-flow-item"><i>03</i><div><b>人工接手有上下文</b><span>保留對話與必要資訊，減少重複詢問</span></div></div>
+            <div class="case-flow" aria-label="案例動畫步驟">
+              <button type="button" class="case-flow-item case-replay-step" data-replay-step="0"><i>01</i><span><b>理解旅客意圖</b><span>辨識班次、站點、遺失物與客訴情境</span></span></button>
+              <button type="button" class="case-flow-item case-replay-step" data-replay-step="1"><i>02</i><span><b>核對知識與即時性</b><span>靜態知識直接回答，動態資訊不猜測</span></span></button>
+              <button type="button" class="case-flow-item case-replay-step" data-replay-step="2"><i>03</i><span><b>人工接手有上下文</b><span>保留對話與必要資訊，減少重複詢問</span></span></button>
             </div>
           </div>
-          <div class="case-visual">
-            <div class="case-screen primary"><img src="/images/cases/southeast-ai-cs-normal.png" alt="東南客運 AI 客服意圖判斷與班次回答畫面" loading="lazy"></div>
-            <div class="case-screen secondary"><img src="/images/cases/southeast-ai-cs-realtime.png" alt="東南客運即時資訊邊界與人工交接畫面" loading="lazy"></div>
-            <div class="ai-decision">
-              <div class="ai-decision-head"><b>回覆與接手情境</b><span>案例畫面</span></div>
-              <div class="ai-signal"><span>意圖辨識</span><b>路線動態</b></div>
-              <div class="ai-signal"><span>知識邊界</span><b>需官方即時資料</b></div>
-              <div class="ai-signal"><span>下一動作</span><b>建議人工接手</b></div>
+          <div class="case-visual case-replay-visual">
+            <div class="case-replay" data-case-replay data-replay-sequence="0" data-replay-stage="0" data-replay-paused="false">
+              <div class="case-replay-head">
+                <div><span class="replay-brand-dot"></span><b>TIMUX SERVICE INTELLIGENCE</b><small>LIVE WORKFLOW REPLAY</small></div>
+                <span class="replay-status"><i></i><span data-replay-status>情境準備中</span></span>
+              </div>
+              <div class="case-replay-progress" aria-hidden="true"><i></i></div>
+              <div class="case-replay-layout">
+                <section class="replay-conversation" aria-label="AI 客服對話重演">
+                  <div class="replay-panel-label"><span>PASSENGER CONVERSATION</span><b data-replay-counter>01 / 03</b></div>
+                  <div class="replay-thread">
+                    <div class="replay-message passenger" data-replay-show="1">
+                      <span class="replay-avatar">PAX</span>
+                      <div><small>旅客 · 剛剛</small><p>請問 299 路今天 18:30 從捷運輔大站發車嗎？</p></div>
+                    </div>
+                    <div class="replay-message ai typing" data-replay-only="2">
+                      <span class="replay-avatar">AI</span>
+                      <div><small>Timux AI 正在核對</small><p><i></i><i></i><i></i></p></div>
+                    </div>
+                    <div class="replay-message ai" data-replay-show="3">
+                      <span class="replay-avatar">AI</span>
+                      <div><small>Timux AI · 已回覆</small><p>我可以先幫你確認固定時刻表。今天是否臨時調整，需要以官方即時資訊為準。</p></div>
+                    </div>
+                    <div class="replay-message handoff" data-replay-show="5">
+                      <span class="replay-avatar">HUM</span>
+                      <div><small>已建立人工接手</small><p>路線、站點與時間已整理，客服可直接確認即時班次，不必重新詢問。</p></div>
+                    </div>
+                  </div>
+                </section>
+                <aside class="replay-intelligence" aria-label="AI 判斷與接手狀態">
+                  <div class="replay-panel-label"><span>DECISION INTELLIGENCE</span><b>TRACE ON</b></div>
+                  <div class="replay-signal-card" data-replay-show="1">
+                    <div><span>意圖辨識</span><strong>班次確認</strong></div>
+                    <div class="replay-score"><i></i><b>94%</b></div>
+                    <div class="replay-entities"><span>299 路</span><span>捷運輔大站</span><span>18:30</span></div>
+                  </div>
+                  <div class="replay-check-card" data-replay-show="3">
+                    <div><span>知識核對</span><b>2 / 3 VERIFIED</b></div>
+                    <p class="is-ok"><i>✓</i><span>路線與站點資料</span></p>
+                    <p class="is-ok"><i>✓</i><span>固定時刻表</span></p>
+                    <p class="is-warn"><i>!</i><span>今日即時異動</span></p>
+                  </div>
+                  <div class="replay-boundary-card" data-replay-show="4">
+                    <span>HUMAN OVERSIGHT</span>
+                    <b>即時資訊不猜測</b>
+                    <p>保留對話、已辨識條件與知識核對結果，再交給客服確認。</p>
+                  </div>
+                </aside>
+              </div>
+              <div class="case-replay-foot"><span><i></i> 自動重演 · 懸停暫停</span><b data-replay-stage-label>01 理解意圖</b></div>
             </div>
           </div>
         </article>

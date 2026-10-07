@@ -51,10 +51,24 @@ const count=await page.locator('.case-track').count();
 for(let i=0;i<count;i++){
   await page.locator('.case-track').nth(i).evaluate(e=>scrollTo({top:e.getBoundingClientRect().top+scrollY-110,behavior:'instant'}));
   await page.waitForTimeout(180);
-  const before=await page.locator('.case-card').nth(i).locator('.case-screen,.phone').first().evaluate(e=>getComputedStyle(e).transform);
+  const before=i===0
+    ? await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')
+    : await page.locator('.case-card').nth(i).locator('.case-screen,.phone').first().evaluate(e=>getComputedStyle(e).transform);
   for(let j=0;j<8;j++){await page.mouse.wheel(0,55);await page.waitForTimeout(70);}
-  const sample=await page.locator('.case-card').nth(i).evaluate(e=>({phase:e.dataset.casePhase,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,transform:getComputedStyle(e.querySelector('.case-screen,.phone')).transform}));
-  if(before===sample.transform||sample.top<77||sample.bottom>1080)throw Error(`case ${i} motion/layout: ${JSON.stringify(sample)}`);
+  const sample=await page.locator('.case-card').nth(i).evaluate(e=>({phase:e.dataset.casePhase,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,transform:e.querySelector('.case-screen,.phone')?getComputedStyle(e.querySelector('.case-screen,.phone')).transform:null,replaySequence:e.querySelector('[data-case-replay]')?.dataset.replaySequence||null}));
+  if(sample.top<77||sample.bottom>1080||i>0&&before===sample.transform)throw Error(`case ${i} motion/layout: ${JSON.stringify(sample)}`);
+  if(i===0){
+    await page.locator('[data-replay-step="2"]').click();
+    if(await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')!=='4')throw Error('case replay control did not jump to handoff stage');
+    await page.waitForTimeout(1850);
+    if(await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')!=='5')throw Error('case replay did not reveal the handoff message');
+    await page.locator('[data-case-replay]').hover();
+    const paused=await page.locator('[data-case-replay]').getAttribute('data-replay-sequence');
+    await page.waitForTimeout(600);
+    if(paused!==await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')||await page.locator('[data-case-replay]').getAttribute('data-replay-paused')!=='true')throw Error('case replay did not pause on hover');
+    await page.mouse.move(0,0);
+    sample.replaySequence=`${before}->${paused}`;
+  }
   cases.push(sample);
   await page.screenshot({path:`${output}/case-${i}.png`});
 }

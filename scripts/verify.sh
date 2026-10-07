@@ -45,6 +45,7 @@ for name,d in documents.items():
 PY
 node --check assets/site-conversion.js
 node --check assets/site-story.js
+node --check assets/site-case-replay.js
 node --check assets/site-orbit.js
 node --check assets/site-mega-nav.js
 node --check tests/homepage-v4-smoke.mjs
