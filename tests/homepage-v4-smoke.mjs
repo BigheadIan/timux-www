@@ -81,8 +81,54 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v22-orbit-center-clean-20261007") {
+  if (marker !== "homepage-v23-mega-navigation-20261007") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
+  }
+
+  const navStructure = await page.evaluate(() => ({
+    triggers: document.querySelectorAll('.nav-trigger').length,
+    panels: document.querySelectorAll('.mega-panel').length,
+    desktopDisplay: getComputedStyle(document.querySelector('.nav-directory')).display,
+    mobileDisplay: getComputedStyle(document.querySelector('.mobile-nav')).display,
+    mobileGroups: document.querySelectorAll('.mobile-nav-panel > details').length
+  }));
+  if (navStructure.triggers !== 3 || navStructure.panels !== 3 || navStructure.mobileGroups !== 3) {
+    throw new Error(`${name}: navigation structure invalid ${JSON.stringify(navStructure)}`);
+  }
+  let navInteraction;
+  if (viewport.width > 820) {
+    const panels = [];
+    for (let index = 0; index < 3; index += 1) {
+      await page.locator('.nav-trigger').nth(index).hover();
+      await page.waitForFunction((activeIndex) => document.querySelectorAll('.nav-entry')[activeIndex].classList.contains('is-open'), index);
+      panels.push(await page.evaluate((activeIndex) => {
+        const entries = [...document.querySelectorAll('.nav-entry')];
+        const entry = entries[activeIndex];
+        return {
+          expanded: entry.querySelector('.nav-trigger').getAttribute('aria-expanded'),
+          hidden: entry.querySelector('.mega-panel').getAttribute('aria-hidden'),
+          visiblePanels: entries.filter((item) => getComputedStyle(item.querySelector('.mega-panel')).visibility === 'visible').length
+        };
+      }, index));
+    }
+    await page.mouse.move(viewport.width - 2, viewport.height - 2);
+    await page.waitForTimeout(240);
+    navInteraction = { panels, closed: await page.locator('.nav-entry.is-open').count() === 0 };
+    if (panels.some((panel) => panel.expanded !== 'true' || panel.hidden !== 'false' || panel.visiblePanels !== 1) || !navInteraction.closed || navStructure.desktopDisplay === 'none' || navStructure.mobileDisplay !== 'none') {
+      throw new Error(`${name}: desktop mega navigation invalid ${JSON.stringify({navStructure, navInteraction})}`);
+    }
+  } else {
+    await page.locator('.mobile-nav > summary').click();
+    await page.locator('.mobile-nav-panel > details > summary').first().click();
+    navInteraction = await page.evaluate(() => ({
+      menuOpen: document.querySelector('.mobile-nav').open,
+      openGroups: document.querySelectorAll('.mobile-nav-panel > details[open]').length,
+      panelWidth: document.querySelector('.mobile-nav-panel').getBoundingClientRect().width
+    }));
+    if (!navInteraction.menuOpen || navInteraction.openGroups !== 1 || navInteraction.panelWidth > viewport.width || navStructure.desktopDisplay !== 'none' || navStructure.mobileDisplay === 'none') {
+      throw new Error(`${name}: mobile directory invalid ${JSON.stringify({navStructure, navInteraction})}`);
+    }
+    await page.locator('.mobile-nav > summary').click();
   }
 
   const overflow = await page.evaluate(() => ({
@@ -229,7 +275,7 @@ async function inspect(viewport, name) {
   await page.waitForTimeout(1500);
   await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
   if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
-  results[name] = { overflow, agentSize, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, consoleErrors };
+  results[name] = { overflow, navStructure, navInteraction, agentSize, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, consoleErrors };
   await page.close();
 }
 
