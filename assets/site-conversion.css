@@ -327,7 +327,7 @@ html{scroll-behavior:smooth}
 #contact h2::after{content:"Start with one real workflow."}
 .intl-case-meta{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 2px}.intl-case-meta span{padding:6px 9px;border:1px solid #dcd6e8;border-radius:999px;color:#665489;background:#f8f6fc;font:650 10px/1 Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase}
 #roadmap .section-tail::before{display:inline-flex;align-items:center;gap:8px;flex-basis:100%;color:#777c8b;font:600 11px/1.4 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;content:"Evidence before scale · Human oversight by design"}
-#roadmap .section-tail::before{background:linear-gradient(90deg,#8d76df 0 24px,transparent 24px);padding-left:32px}
+#roadmap .section-tail::before{padding-left:32px;background:linear-gradient(#8d76df,#8d76df) left center/24px 1px no-repeat}
 .section-head{align-items:flex-start}.section-head>p{max-width:510px}.solution-heading{margin-bottom:42px}.model-equation{margin-top:28px}
 @media(max-width:1100px){.nav-trigger{min-width:112px;padding-inline:12px}.intl-lang{display:none}}
 @media(max-width:820px){.nav-inner{min-height:70px}.intl-hero-scope{gap:7px}.intl-hero-scope span{font-size:9px}.intl-hero-proof{grid-template-columns:1fr;margin-top:20px}.intl-hero-proof div{padding:11px 12px}.intl-section-en,.section-head h2::after,.agent-layout h2::after,.contact-grid h2::after{font-size:10px!important;letter-spacing:.07em}.intl-case-meta{margin-top:10px}}
