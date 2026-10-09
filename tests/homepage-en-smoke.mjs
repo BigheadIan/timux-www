@@ -45,7 +45,7 @@ for (const [name, viewport] of Object.entries({ desktop: { width: 1920, height: 
     }).map((element) => element.textContent.trim()).slice(0, 10)
   }));
 
-  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v10-agent-workbench-20261009' ||
+  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v11-clean-workbench-20261009' ||
       audit.canonical !== 'https://www.timux.site/en/' || audit.title !== 'Timux Technology | Enterprise AI Adoption & Execution' ||
       audit.h1 !== 'Bring AI into real work,and get work done.' || audit.activeLanguage !== 'EN' ||
       audit.navPrimary.join('|') !== 'Solutions|Case Studies|AI Adoption' || audit.overflow > 1 ||

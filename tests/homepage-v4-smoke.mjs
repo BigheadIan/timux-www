@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v35-agent-workbench-20261009") {
+  if (marker !== "homepage-v36-clean-workbench-20261009") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -300,7 +300,7 @@ async function inspect(viewport, name) {
     };
   });
   if (viewport.width >= 1100) {
-    if (agentWorkbench.workbenchRatio < 0.68 || agentWorkbench.workbenchRatio > 0.76 || agentWorkbench.overflowY !== "scroll") {
+    if (agentWorkbench.workbenchRatio < 0.68 || agentWorkbench.workbenchRatio > 0.76 || agentWorkbench.overflowY !== "auto" || agentWorkbench.scrollbarColor !== "auto") {
       throw new Error(`${name}: advisor workbench proportion invalid ${JSON.stringify(agentWorkbench)}`);
     }
   } else if (agentWorkbench.workbenchRatio < 0.95 || !["auto", "scroll"].includes(agentWorkbench.overflowY)) {

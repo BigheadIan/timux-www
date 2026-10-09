@@ -74,12 +74,8 @@ html.home-refresh .agent-layout h2{font-size:52px}
 html[lang="zh-Hant"].home-refresh .agent-layout h2{white-space:nowrap}
 html.home-refresh .agent-layout .prism-frame{min-width:0}
 html.home-refresh .agent-layout .chat-main{position:relative;overflow:hidden;background:linear-gradient(145deg,#1a1d2a,#141721)}
-html.home-refresh .agent-layout .chat-main::after{position:absolute;right:8px;top:96px;bottom:82px;width:8px;content:"";pointer-events:none;opacity:.48;background:radial-gradient(circle,#7fe0d0 0 1px,transparent 1.8px) center top/8px 25% repeat-y;filter:drop-shadow(0 0 5px #8b77e8)}
-html.home-refresh .agent-layout .chat-feed{height:318px!important;padding:24px 34px 22px 26px;overflow-y:scroll;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#8c76e8 #242735}
-html.home-refresh .agent-layout .chat-feed::-webkit-scrollbar{width:12px}
-html.home-refresh .agent-layout .chat-feed::-webkit-scrollbar-track{margin:17px 0;background:linear-gradient(180deg,#7ee3d035,#8e75eb35);border-radius:999px;box-shadow:inset 0 0 0 5px #191c28}
-html.home-refresh .agent-layout .chat-feed::-webkit-scrollbar-thumb{min-height:54px;border:3px solid #191c28;border-radius:999px;background:linear-gradient(180deg,#82e2d2,#9b7df0);box-shadow:0 0 14px #8874e899}
-html.home-refresh .agent-layout .chat-feed::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#a4f4e7,#b29bff)}
+html.home-refresh .agent-layout .chat-feed{height:318px!important;padding:24px 26px 22px;overflow-y:auto;scrollbar-width:none;scrollbar-color:auto}
+html.home-refresh .agent-layout .chat-feed::-webkit-scrollbar{display:none;width:0;height:0}
 html.home-refresh .agent-layout .chat-main .bubble{font-size:17px}
 html.home-refresh #contact{padding:52px 0}
 html.home-refresh .contact-grid{grid-template-columns:.8fr 1.2fr;gap:70px}
@@ -120,7 +116,7 @@ html.home-refresh .agent-layout .chat-main .bubble{font-size:18px}
 }
 
 @media(max-width:1099px){.layout-hero-index{display:none}.layout-section-link,.layout-method-link{display:inline-block;margin:16px 0}.home-refresh .section{padding:52px 0}.home-refresh .agent-layout{grid-template-columns:1fr;gap:30px}.home-refresh .agent-layout>div:first-child{padding:0 0 8px}.home-refresh .agent-layout>div:first-child::after{margin-top:24px}.home-refresh .agent-layout .chat-feed{height:420px!important}}
-@media(max-width:600px){.home-refresh .agent-layout .chat-feed{height:390px!important;padding:20px 26px 18px 16px}.home-refresh .agent-layout .chat-main::after{right:5px}.home-refresh .agent-layout>div:first-child::after{width:180px}}
+@media(max-width:600px){.home-refresh .agent-layout .chat-feed{height:390px!important;padding:20px 16px 18px}.home-refresh .agent-layout>div:first-child::after{width:180px}}
 
 .case-scene{height:1000px;min-height:1000px;position:relative;overflow:hidden}.scene-inner{width:1600px;height:100%;position:relative;margin:auto}.case-scene .case-headline,.case-scene h3,.case-scene p,.case-scene figure{margin:0}.case-scene .chapter{position:absolute;left:0;right:0;top:34px;display:flex;justify-content:space-between;align-items:center;font:600 11px Manrope,sans-serif;letter-spacing:.2em;opacity:.65}.client-mark{display:flex;align-items:center;gap:14px;font-size:15px;font-weight:600;letter-spacing:.06em}.client-mark img{width:64px;height:44px;object-fit:contain}.case-scene .case-headline{font-size:68px;line-height:1.22;letter-spacing:-.045em;font-weight:700;margin-top:24px}.case-scene .case-headline span{color:#b5a1ff}.case-scene header>p,.editorial-title>p{font-size:19px;margin-top:22px}.scene-foot{position:absolute;left:0;right:0;bottom:28px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff25;padding-top:20px;font-size:14px;color:inherit;background:none}.scene-foot a{display:flex;align-items:center;gap:36px;color:inherit;font-weight:600}.scene-foot a b{display:grid;place-items:center;width:40px;height:40px;border:1px solid currentColor;border-radius:50%;font-size:22px;font-weight:400}.foot-index{font:500 13px Manrope,"Noto Sans TC",sans-serif;letter-spacing:.06em}.foot-index i{font-style:normal;margin:0 18px;opacity:.45}.demo-tag{font-size:11px;letter-spacing:.08em;opacity:.7}.device{position:absolute;overflow:hidden;padding:7px;border:1px solid #a2a9b74d;background:linear-gradient(140deg,#69717e,#151b27 28%,#282c36 90%,#8c94a5);border-radius:38px;box-shadow:22px 34px 65px #0004}.device img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:30px}
 /* A1: a service journey, no enclosing dashboard or split panel. */
