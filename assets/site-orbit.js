@@ -6,7 +6,7 @@
   const cards=[...row.querySelectorAll('.logo-card')];
   const motion=matchMedia('(min-width: 821px) and (min-height: 600px)');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  let phase=-Math.PI/12,frame=0,last=0,visible=false,paused=false,enabled=false;
+  let phase=-Math.PI/12,frame=0,last=0,visible=false,paused=false,enabled=false,hoveredCard=null,focusedCard=null;
 
   function place(){
     if(!enabled)return;
@@ -46,9 +46,12 @@
     }
   }
   function setPaused(value){paused=value;section.classList.toggle('is-paused',value);last=0;value?stop():start();}
+  function syncPause(){setPaused(Boolean(hoveredCard||focusedCard));}
   cards.forEach(card=>{
-    card.addEventListener('pointerenter',()=>setPaused(true));
-    card.addEventListener('pointerleave',()=>setPaused(false));
+    card.addEventListener('pointerenter',()=>{hoveredCard=card;syncPause();});
+    card.addEventListener('pointerleave',()=>{if(hoveredCard===card)hoveredCard=null;syncPause();});
+    card.addEventListener('focusin',()=>{focusedCard=card;syncPause();});
+    card.addEventListener('focusout',()=>requestAnimationFrame(()=>{if(focusedCard===card&&!card.contains(document.activeElement))focusedCard=null;syncPause();}));
   });
   document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
   motion.addEventListener('change',configure);reduced.addEventListener('change',configure);

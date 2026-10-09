@@ -100,7 +100,9 @@
 .partner-orbit .logo-row{position:absolute;inset:0;display:block;pointer-events:none}
 .partner-orbit .logo-card{position:absolute;left:50%;top:50%;width:230px;height:106px;box-sizing:border-box;display:grid;place-items:center;padding:14px 18px;overflow:hidden;border:1px solid #ffffff24;border-radius:22px;background:linear-gradient(145deg,#fff,#f3f4f8);box-shadow:0 24px 58px #0008,inset 0 1px #fff;pointer-events:auto;will-change:transform,opacity;transition:border-color .2s,box-shadow .2s}
 .partner-orbit .logo-card::after{position:absolute;inset:0;content:'';pointer-events:none;background:linear-gradient(120deg,#fff8,transparent 30%,transparent 70%,#a7ecdf17)}
-.partner-orbit .logo-card:hover{border-color:#8fe6d5a6;box-shadow:0 28px 68px #000b,0 0 32px #64dbc323}
+.partner-orbit .logo-card:hover,.partner-orbit .logo-card:focus-within{border-color:#8fe6d5a6;box-shadow:0 28px 68px #000b,0 0 32px #64dbc323}
+.partner-orbit .logo-card-link{position:absolute;inset:0;z-index:2;display:grid;place-items:center;border-radius:inherit;color:inherit;text-decoration:none;cursor:pointer}
+.partner-orbit .logo-card-link:focus-visible{outline:3px solid #71ddc9;outline-offset:-7px}
 .partner-orbit .logo-card img{position:relative;z-index:1;display:block;max-width:none;max-height:none;width:auto;height:auto;filter:none;opacity:1;object-fit:contain;image-rendering:auto}
 .partner-orbit .logo-southeast img{width:112px}
 .partner-orbit .logo-dragon img{width:194px}

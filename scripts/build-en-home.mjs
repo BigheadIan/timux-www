@@ -90,6 +90,7 @@ const translations = [
   ['東南客運：AI 不只回答，也知道什麼時候該交給人。', 'Southeast Bus: AI answers—and knows when to hand off.'],
   ['銘將保全：把行動作業，接回可追蹤的紀錄。', 'MJ Security: Connect mobile work to traceable records.'],
   ['東南客運 AI 客服', 'Southeast Bus AI Customer Service'],
+  ['查看東南客運案例', 'View the Southeast Bus case'],
   ['銘將保全 LINE 營運', 'MJ Security LINE Operations'],
   ['案例體驗中心', 'Case Experience Center'],
   ['分辨可回答內容與需要即時資料、人工判斷的情境', 'Separate answerable requests from cases requiring live data or human judgment'],
@@ -232,7 +233,7 @@ for (const [source, target] of translations) html = html.split(source).join(targ
 
 html = html
   .replace('<html lang="zh-Hant">', '<html lang="en">')
-  .replace('homepage-v28-scroll-replay-20261007', 'homepage-en-v3-scroll-replay-20261007')
+  .replace('homepage-v29-partner-case-link-20261009', 'homepage-en-v4-partner-case-link-20261009')
   .replace('<link rel="canonical" href="https://www.timux.site/">', '<link rel="canonical" href="https://www.timux.site/en/">')
   .replace('<meta property="og:locale" content="zh_TW">', '<meta property="og:locale" content="en_US">')
   .replace('<meta property="og:url" content="https://www.timux.site/">', '<meta property="og:url" content="https://www.timux.site/en/">')

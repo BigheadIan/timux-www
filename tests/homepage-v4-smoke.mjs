@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v28-scroll-replay-20261007") {
+  if (marker !== "homepage-v29-partner-case-link-20261009") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -205,6 +205,30 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: capability/model sections invalid ${JSON.stringify(homepageStory)}`);
   }
 
+  const partnerLink = page.locator('.logo-southeast .logo-card-link');
+  const partnerLinkAudit = await partnerLink.evaluate((element) => ({
+    href: element.getAttribute('href'),
+    label: element.getAttribute('aria-label'),
+    tabIndex: element.tabIndex
+  }));
+  if (partnerLinkAudit.href !== '#case-southeast' || !partnerLinkAudit.label || partnerLinkAudit.tabIndex < 0) {
+    throw new Error(`${name}: partner case link invalid ${JSON.stringify(partnerLinkAudit)}`);
+  }
+  await partnerLink.scrollIntoViewIfNeeded();
+  await partnerLink.focus();
+  await page.waitForFunction(() => document.querySelector('.partner-orbit')?.classList.contains('is-paused'));
+  await partnerLink.click();
+  await page.waitForFunction(() => {
+    const target = document.querySelector('#case-southeast');
+    if (location.hash !== '#case-southeast' || !target) return false;
+    const top = target.getBoundingClientRect().top;
+    return top >= 70 && top <= 140;
+  });
+  const partnerNavigation = await page.evaluate(() => ({
+    hash: location.hash,
+    targetTop: Math.round(document.querySelector('#case-southeast').getBoundingClientRect().top)
+  }));
+
   const scaleLoop = page.locator(".scale-loop-arrow");
   const scaleLoopMotion = await scaleLoop.evaluate((element) => ({
     animationName: getComputedStyle(element).animationName,
@@ -290,7 +314,7 @@ async function inspect(viewport, name) {
   await page.waitForTimeout(1500);
   await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
   if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
-  results[name] = { overflow, navStructure, navInteraction, agentSize, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, consoleErrors };
+  results[name] = { overflow, navStructure, navInteraction, agentSize, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, partnerLinkAudit, partnerNavigation, consoleErrors };
   await page.close();
 }
 
