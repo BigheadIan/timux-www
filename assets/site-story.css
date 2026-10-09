@@ -67,7 +67,7 @@
 .story-desktop .case-visual{perspective:1100px}
 .story-desktop .case-flow-item{transition:background .25s,border-color .25s,box-shadow .25s}
 .story-desktop .case-flow-item.case-focus{background:#f0ebfc;border-color:#b7a5e8;box-shadow:inset 3px 0 #8165d6}
-.story-desktop .case-screen,.story-desktop .phone{transform:translate3d(var(--screen-x,0px),var(--screen-y,0px),0) rotateY(var(--screen-angle,0deg)) scale(var(--screen-scale,1));will-change:transform}
+.story-desktop .case-screen,.story-desktop .phone{transform:translate3d(var(--screen-x,0px),var(--screen-y,0px),var(--screen-z,0px)) rotateY(var(--screen-angle,0deg)) scale(var(--screen-scale,1));opacity:var(--screen-opacity,1);filter:saturate(var(--screen-saturation,1)) brightness(var(--screen-brightness,1));will-change:transform,opacity,filter}
 .story-desktop .model-track{display:block;height:230vh;position:relative}
 .story-desktop .model-stage{position:sticky;top:100px;min-height:calc(100vh - 140px);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 .model-orb{position:relative;width:100%;max-width:580px;aspect-ratio:1}

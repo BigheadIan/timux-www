@@ -152,10 +152,19 @@
       const q=progress(track,true), phase=Math.min(2,Math.floor(q*3)); card.dataset.casePhase=String(phase);
       steps.forEach((step,i)=>step.classList.toggle('case-focus',i===phase));
       screens.forEach((screen,i)=>{
-        screen.style.setProperty('--screen-x',`${Math.sin(q*Math.PI)*(i%2?-24:24)}px`);
-        screen.style.setProperty('--screen-y',`${(q-.5)*(i%2?70:-50)}px`);
-        screen.style.setProperty('--screen-angle',`${(1-q)*(i%2?7:-7)}deg`);
-        screen.style.setProperty('--screen-scale',String(1+Math.sin(q*Math.PI)*.065));
+        const focus=screens.length===3 ? i/2 : i/Math.max(1,screens.length-1);
+        const proximity=clamp(1-Math.abs(q-focus)*2);
+        const side=i-(screens.length-1)/2;
+        const farAngle=side===0 ? (q<.5?8:-8) : side*12;
+        screen.style.setProperty('--screen-x',`${Math.sin(q*Math.PI)*(i%2?-28:28)}px`);
+        screen.style.setProperty('--screen-y',`${(q-.5)*(i%2?76:-56)-proximity*10}px`);
+        screen.style.setProperty('--screen-z',`${-72+proximity*144}px`);
+        screen.style.setProperty('--screen-angle',`${farAngle*(1-proximity)}deg`);
+        screen.style.setProperty('--screen-scale',String(.76+proximity*.48));
+        screen.style.setProperty('--screen-opacity',String(.72+proximity*.28));
+        screen.style.setProperty('--screen-saturation',String(.68+proximity*.32));
+        screen.style.setProperty('--screen-brightness',String(.78+proximity*.22));
+        screen.style.zIndex=String(1+Math.round(proximity*2));
       });
       const panel=card.querySelector('.ai-decision,.audit-panel');
       if(panel)panel.style.clipPath=`inset(0 ${100*(1-range(q,.15,.48))}% 0 0 round 18px)`;

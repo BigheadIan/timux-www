@@ -47,6 +47,7 @@ if(pausedBefore!==pausedAfter||!await page.locator('.partner-orbit').evaluate(e=
 await page.mouse.move(0,0);await page.waitForTimeout(300);
 await page.screenshot({path:`${output}/partner-orbit.png`});
 const cases=[];
+const mjDepthSamples=[];
 const count=await page.locator('.case-track').count();
 for(let i=0;i<count;i++){
   await page.locator('.case-track').nth(i).evaluate(e=>scrollTo({top:e.getBoundingClientRect().top+scrollY-110,behavior:'instant'}));
@@ -73,6 +74,29 @@ for(let i=0;i<count;i++){
   }
   cases.push(sample);
   await page.screenshot({path:`${output}/case-${i}.png`});
+}
+for(const [q,expectedNear] of [[0,0],[.5,1],[1,2]]){
+  await page.evaluate(q=>{
+    const track=document.querySelector('#case-mj').parentElement,rect=track.getBoundingClientRect();
+    scrollTo({top:rect.top+scrollY-80+q*Math.max(1,rect.height-innerHeight+80),behavior:'instant'});
+  },q);
+  await page.waitForTimeout(180);
+  const state=await page.locator('#case-mj').evaluate(card=>{
+    const phones=[...card.querySelectorAll('.phone')];
+    const visual=card.querySelector('.case-visual').getBoundingClientRect();
+    const info=card.querySelector('.case-info').getBoundingClientRect();
+    return {
+      ratio:visual.width/info.width,
+      scales:phones.map(phone=>Number(getComputedStyle(phone).getPropertyValue('--screen-scale'))),
+      widths:phones.map(phone=>phone.getBoundingClientRect().width),
+      z:phones.map(phone=>Number(getComputedStyle(phone).getPropertyValue('--screen-z').replace('px','')))
+    };
+  });
+  const actualNear=state.scales.indexOf(Math.max(...state.scales));
+  if(state.ratio<1.95||actualNear!==expectedNear||state.scales[expectedNear]-Math.min(...state.scales)<.45||state.widths[expectedNear]/Math.min(...state.widths)<1.45||state.z[expectedNear]<60){
+    throw Error(`MJ phone depth/layout invalid at ${q}: ${JSON.stringify({expectedNear,actualNear,state})}`);
+  }
+  mjDepthSamples.push({q,expectedNear,...state});
 }
 async function sampleRoute(selector,points){
   const samples=[];
@@ -134,6 +158,6 @@ if(!await staticPage.locator('h1').isVisible()||await staticPage.locator('.model
 await staticContext.close();
 await browser.close();
 if(errors.length)throw Error(JSON.stringify(errors));
-const results={orbit:{before:orbitBefore,after:orbitAfter,center:orbitCenter,backgroundContinues:backgroundBefore!==backgroundAfter,cardPaused:pausedBefore===pausedAfter},cases,adoptionProgression,roadmapProgression,reversedRoute,sweep,metrics,errors};
+const results={orbit:{before:orbitBefore,after:orbitAfter,center:orbitCenter,backgroundContinues:backgroundBefore!==backgroundAfter,cardPaused:pausedBefore===pausedAfter},cases,mjDepthSamples,adoptionProgression,roadmapProgression,reversedRoute,sweep,metrics,errors};
 fs.writeFileSync(`${output}/motion-results.json`,JSON.stringify(results,null,2));
 console.log(JSON.stringify(results,null,2));

@@ -234,7 +234,7 @@ for (const [source, target] of translations) html = html.split(source).join(targ
 
 html = html
   .replace('<html lang="zh-Hant">', '<html lang="en">')
-  .replace('homepage-v30-partner-case-links-20261009', 'homepage-en-v5-partner-case-links-20261009')
+  .replace('homepage-v31-mj-depth-20261009', 'homepage-en-v6-mj-depth-20261009')
   .replace('<link rel="canonical" href="https://www.timux.site/">', '<link rel="canonical" href="https://www.timux.site/en/">')
   .replace('<meta property="og:locale" content="zh_TW">', '<meta property="og:locale" content="en_US">')
   .replace('<meta property="og:url" content="https://www.timux.site/">', '<meta property="og:url" content="https://www.timux.site/en/">')
