@@ -158,9 +158,9 @@
         const farAngle=side===0 ? (q<.5?8:-8) : side*12;
         screen.style.setProperty('--screen-x',`${Math.sin(q*Math.PI)*(i%2?-28:28)}px`);
         screen.style.setProperty('--screen-y',`${(q-.5)*(i%2?76:-56)-proximity*10}px`);
-        screen.style.setProperty('--screen-z',`${-72+proximity*144}px`);
+        screen.style.setProperty('--screen-z',`${-64+proximity*98}px`);
         screen.style.setProperty('--screen-angle',`${farAngle*(1-proximity)}deg`);
-        screen.style.setProperty('--screen-scale',String(.76+proximity*.48));
+        screen.style.setProperty('--screen-scale',String(.76+proximity*.34));
         screen.style.setProperty('--screen-opacity',String(.72+proximity*.28));
         screen.style.setProperty('--screen-saturation',String(.68+proximity*.32));
         screen.style.setProperty('--screen-brightness',String(.78+proximity*.22));

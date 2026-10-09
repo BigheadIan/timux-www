@@ -93,7 +93,7 @@ for(const [q,expectedNear] of [[0,0],[.5,1],[1,2]]){
     };
   });
   const actualNear=state.scales.indexOf(Math.max(...state.scales));
-  if(state.ratio<1.95||actualNear!==expectedNear||state.scales[expectedNear]-Math.min(...state.scales)<.45||state.widths[expectedNear]/Math.min(...state.widths)<1.45||state.z[expectedNear]<60){
+  if(state.ratio<1.95||actualNear!==expectedNear||state.scales[expectedNear]-Math.min(...state.scales)<.33||state.widths[expectedNear]/Math.min(...state.widths)<1.65||state.z[expectedNear]<30){
     throw Error(`MJ phone depth/layout invalid at ${q}: ${JSON.stringify({expectedNear,actualNear,state})}`);
   }
   mjDepthSamples.push({q,expectedNear,...state});
