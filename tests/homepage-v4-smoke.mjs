@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v34-compact-journeys-20261009") {
+  if (marker !== "homepage-v35-agent-workbench-20261009") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -282,6 +282,31 @@ async function inspect(viewport, name) {
   const agentSize = await page.locator(".bubble").first().evaluate((element) => getComputedStyle(element).fontSize);
   if (agentSize !== "18px") throw new Error(`${name}: agent font is ${agentSize}`);
 
+  const agentWorkbench = await page.locator("#agent .agent-layout").evaluate((layout) => {
+    const intro = layout.firstElementChild;
+    const workbench = layout.lastElementChild;
+    const feed = layout.querySelector(".chat-feed");
+    const layoutRect = layout.getBoundingClientRect();
+    const introRect = intro.getBoundingClientRect();
+    const workbenchRect = workbench.getBoundingClientRect();
+    const feedStyle = getComputedStyle(feed);
+    return {
+      direction: getComputedStyle(layout).gridTemplateColumns,
+      introWidth: Math.round(introRect.width),
+      workbenchWidth: Math.round(workbenchRect.width),
+      workbenchRatio: Number((workbenchRect.width / layoutRect.width).toFixed(3)),
+      overflowY: feedStyle.overflowY,
+      scrollbarColor: feedStyle.scrollbarColor
+    };
+  });
+  if (viewport.width >= 1100) {
+    if (agentWorkbench.workbenchRatio < 0.68 || agentWorkbench.workbenchRatio > 0.76 || agentWorkbench.overflowY !== "scroll") {
+      throw new Error(`${name}: advisor workbench proportion invalid ${JSON.stringify(agentWorkbench)}`);
+    }
+  } else if (agentWorkbench.workbenchRatio < 0.95 || !["auto", "scroll"].includes(agentWorkbench.overflowY)) {
+    throw new Error(`${name}: stacked advisor workbench invalid ${JSON.stringify(agentWorkbench)}`);
+  }
+
   const removedReplyReading = await page.evaluate(() => ({
     inlineMic: Boolean(document.querySelector("#micButton")),
     inlineTts: Boolean(document.querySelector("#ttsButton")),
@@ -323,7 +348,7 @@ async function inspect(viewport, name) {
   await page.waitForTimeout(1500);
   await page.screenshot({ path: `${outputDir}/${name}-hero.png`, fullPage: false });
   if (consoleErrors.length) throw new Error(`${name}: console errors ${JSON.stringify(consoleErrors)}`);
-  results[name] = { overflow, navStructure, navInteraction, agentSize, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, partnerNavigations, consoleErrors };
+  results[name] = { overflow, navStructure, navInteraction, agentSize, agentWorkbench, starters, images: images.length, removedReplyReading, widget, motion, scaleLoopMotion, partnerNavigations, consoleErrors };
   await page.close();
 }
 
