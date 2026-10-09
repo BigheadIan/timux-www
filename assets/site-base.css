@@ -443,7 +443,7 @@
       position: relative;
       min-height: 620px;
       display: grid;
-      grid-template-columns: .76fr 1.24fr;
+      grid-template-columns: .66fr 1.34fr;
       overflow: hidden;
       border: 1px solid var(--paper-line);
       border-radius: 32px;
@@ -459,7 +459,7 @@
       padding: 44px;
     }
     @media (min-width: 1121px) {
-      .case-card.reverse .case-info { padding-inline: 34px; }
+      .case-card .case-info { padding-inline: 34px; }
     }
     .case-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
     .case-brand img { width: 62px; height: 48px; object-fit: contain; }

@@ -56,8 +56,8 @@ for(let i=0;i<count;i++){
     ? await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')
     : await page.locator('.case-card').nth(i).locator('.case-screen,.phone').first().evaluate(e=>getComputedStyle(e).transform);
   for(let j=0;j<8;j++){await page.mouse.wheel(0,55);await page.waitForTimeout(70);}
-  const sample=await page.locator('.case-card').nth(i).evaluate(e=>({phase:e.dataset.casePhase,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,transform:e.querySelector('.case-screen,.phone')?getComputedStyle(e.querySelector('.case-screen,.phone')).transform:null,replaySequence:e.querySelector('[data-case-replay]')?.dataset.replaySequence||null}));
-  if(sample.top<77||sample.bottom>1080||i>0&&before===sample.transform)throw Error(`case ${i} motion/layout: ${JSON.stringify(sample)}`);
+  const sample=await page.locator('.case-card').nth(i).evaluate(e=>({phase:e.dataset.casePhase,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,visualRatio:e.querySelector('.case-visual').getBoundingClientRect().width/e.querySelector('.case-info').getBoundingClientRect().width,transform:e.querySelector('.case-screen,.phone')?getComputedStyle(e.querySelector('.case-screen,.phone')).transform:null,replaySequence:e.querySelector('[data-case-replay]')?.dataset.replaySequence||null}));
+  if(sample.top<77||sample.bottom>1080||sample.visualRatio<1.95||i>0&&before===sample.transform)throw Error(`case ${i} motion/layout: ${JSON.stringify(sample)}`);
   if(i===0){
     const replayProgress=[];
     for(const [q,expected,messages] of [[.16,'1',1],[.52,'3',2],[.88,'5',3],[.16,'1',1],[.88,'5',3]]){
