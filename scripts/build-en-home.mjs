@@ -7,6 +7,7 @@ let html = await readFile(resolve(root, 'index.html'), 'utf8');
 html = html.replaceAll('data-language-link=""', 'data-language-link');
 
 const translations = [
+  ['返回頂部', 'Back to top'],
   ['從客服到現場營運，讓 AI 在人的監督下完成任務。','From service to field operations, AI gets work done with human oversight.'],
   ['探索解決方案 ↓','Explore solutions ↓'], ['查看實戰案例 →','Explore case studies →'],
   ['從一段工作，<br>創造改變。','Start with a workflow.<br>Make a difference.'],
@@ -260,7 +261,7 @@ for (const [source, target] of translations) html = html.split(source).join(targ
 
 html = html
   .replace('<html lang="zh-Hant"', '<html lang="en"')
-  .replace('homepage-v36-clean-workbench-20261009', 'homepage-en-v11-clean-workbench-20261009')
+  .replace('homepage-v37-back-to-top-20261009', 'homepage-en-v12-back-to-top-20261009')
   .replace('<link rel="canonical" href="https://www.timux.site/">', '<link rel="canonical" href="https://www.timux.site/en/">')
   .replace('<meta property="og:locale" content="zh_TW">', '<meta property="og:locale" content="en_US">')
   .replace('<meta property="og:url" content="https://www.timux.site/">', '<meta property="og:url" content="https://www.timux.site/en/">')

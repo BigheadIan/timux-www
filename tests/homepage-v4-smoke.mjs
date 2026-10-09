@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v36-clean-workbench-20261009") {
+  if (marker !== "homepage-v37-back-to-top-20261009") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 

@@ -1,0 +1,43 @@
+/* Keep both navigation and support reachable in the lower-right corner. */
+.back-to-top {
+  position: fixed;
+  right: calc(96px + env(safe-area-inset-right, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 999997;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 64px;
+  height: 60px;
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #191b32, #101826) padding-box,
+    linear-gradient(135deg, #a78bfa, #67e8d4) border-box;
+  color: #f7f7ff;
+  box-shadow: 0 4px 20px #090d2440;
+  font-family: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.back-to-top svg { width: 21px; height: 21px; flex-shrink: 0; }
+.back-to-top span { font-family: inherit; font-size: 11px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+@media (hover: hover) {
+  .back-to-top:hover { transform: translateY(-3px); box-shadow: 0 6px 24px #8876ed55; }
+}
+.back-to-top:focus-visible { outline: 3px solid #67e8d4; outline-offset: 4px; }
+@media (max-width: 480px) {
+  .back-to-top {
+    right: calc(91px + env(safe-area-inset-right, 0px));
+    bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+  }
+  /* The mobile support view is full-screen; do not cover its message input. */
+  body:has(.timux-chat-window.open) .back-to-top { visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: none; }
+  .back-to-top:hover { transform: none; }
+}
