@@ -4,8 +4,34 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 let html = await readFile(resolve(root, 'index.html'), 'utf8');
+html = html.replaceAll('data-language-link=""', 'data-language-link');
 
 const translations = [
+  ['從客服到現場營運，讓 AI 在人的監督下完成任務。','From service to field operations, AI gets work done with human oversight.'],
+  ['探索解決方案 ↓','Explore solutions ↓'], ['查看實戰案例 →','Explore case studies →'],
+  ['從一段工作，<br>創造改變。','Start with a workflow.<br>Make a difference.'],
+  ['看 AI 如何進入真實工作 ↗','See AI at work ↗'], ['回答、核對、轉接。','Answer. Verify. Hand off.'],
+  ['讓正確資料更容易被找到。','Make the right knowledge easier to find.'],
+  ['把 LINE 回報變成可追蹤紀錄。','Turn LINE reports into traceable records.'],
+  ['讓跨系統任務持續推進。','Keep work moving across systems.'], ['討論需求 →','Talk to us →'],
+  ['從需求，到使用。','From need to adoption.'], ['聚焦試點範圍','Focus the pilot'], ['驗證真實情境','Validate real scenarios'], ['建立可控流程','Build a controlled workflow'],
+  ['每一個提問，<br>都有<span>下一站。</span>','Every question.<br>A clear <span>next step.</span>'],
+  ['理解意圖，核對資訊，讓服務順暢交接。','Understand intent. Verify information. Keep service moving.'],
+  ['旅客服務旅程','The passenger journey'], ['情境演示','Illustrative scenario'], ['聽懂旅客的問題','Understand the question'], ['旅客詢問','Passenger question'],
+  ['299 路，今天 18:30<br>從捷運輔大站發車嗎？','Route 299 at 18:30 today:<br>does it leave MRT Fu Jen University?'],
+  ['讓回答有依據','Ground the answer'], ['固定時刻表已核對','Scheduled timetable verified'], ['今日臨時異動，仍需確認。','Live changes today still need verification.'],
+  ['路線・站點・時間','Route · Stop · Time'], ['客服直接接續處理','An agent continues with context'],
+  ['從一句詢問，到下一步行動。','From one question to the next action.'], ['體驗 AI 客服','Explore AI customer service'],
+  ['前線每一步，<br>管理<span>看得見。</span>','Every field action.<br><span>In clear view.</span>'],
+  ['熟悉的 LINE，接起可追蹤的現場工作。','Connect familiar LINE workflows to traceable field work.'],
+  ['行動打卡','Mobile check-in'], ['在現場完成','Done on site'], ['集中紀錄','Unified records'], ['資訊不散落','One place to look'], ['主管覆核','Human review'], ['有依據地確認','Verify with evidence'],
+  ['LINE 工作入口','LINE work menu'], ['銘將行動打卡','MJ mobile check-in'], ['銘將出勤紀錄','MJ attendance records'], ['LINE / 入口','LINE / WORK MENU'], ['RECORDS / 紀錄','RECORDS / ATTENDANCE'],
+  ['資料來自現場，判斷回到人。','Data from the field. Decisions with people.'], ['出勤紀錄','Attendance'],
+  ['對準結果，完成工作。','Align outcomes. Complete work.'], ['對準經營結果。','Align on business outcomes.'], ['讓任務走到完成。','Take tasks through to completion.'], ['讓過程保持可控。','Keep execution under control.'],
+  ['90 天，分階段前進。','90 days. Step by step.'], ['參考節奏依資料與範圍調整，達標才擴大。','Timing depends on data and scope. Scale only when agreed criteria are met.'],
+  ['先聊一段工作。','Start with one workflow.'], ['AI 協助梳理需求，專人與你深入討論。','AI helps frame your needs. Our team explores them with you.'],
+  ['我是 Timux AI 顧問。你想改善哪一段工作？','I’m the Timux AI advisor. Which workflow would you like to improve?'],
+  ['帶一個真實問題，<br>開始討論。','Bring a real challenge.<br>Let’s talk.'], ['告訴我們想改善哪段工作。','Tell us which workflow you want to improve.'], ['合作範圍與費用，事前共同確認。','We agree on scope and fees before work begins.'], ['AI 客服','AI Customer Service'],
   ['時光智造 Timux｜企業 AI 導入顧問與落地團隊', 'Timux Technology | Enterprise AI Adoption & Execution'],
   ['讓 AI 進入客服、企業知識、現場營運與跨系統流程。時光智造從需求盤點、試點驗證到受控上線，協助企業把 AI 變成真正完成工作的能力。', 'Bring AI into customer service, enterprise knowledge, field operations, and cross-system workflows. Timux helps teams discover needs, validate pilots, and adopt AI under clear human oversight.'],
   ['企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux', 'enterprise AI adoption,AI consulting,AI agents,AI customer service,enterprise knowledge,workflow automation,system integration,Timux'],
@@ -233,8 +259,8 @@ translations.sort((a, b) => b[0].length - a[0].length);
 for (const [source, target] of translations) html = html.split(source).join(target);
 
 html = html
-  .replace('<html lang="zh-Hant">', '<html lang="en">')
-  .replace('homepage-v33-balanced-cases-20261009', 'homepage-en-v8-balanced-cases-20261009')
+  .replace('<html lang="zh-Hant"', '<html lang="en"')
+  .replace('homepage-v34-compact-journeys-20261009', 'homepage-en-v9-compact-journeys-20261009')
   .replace('<link rel="canonical" href="https://www.timux.site/">', '<link rel="canonical" href="https://www.timux.site/en/">')
   .replace('<meta property="og:locale" content="zh_TW">', '<meta property="og:locale" content="en_US">')
   .replace('<meta property="og:url" content="https://www.timux.site/">', '<meta property="og:url" content="https://www.timux.site/en/">')
@@ -270,5 +296,7 @@ html = html
   .replace('/90|九十|四階段|AI Adoption|合作流程|CORE|SCALE|TRUST/i', '/90|weeks?|stages?|adoption|approach|CORE|SCALE|TRUST/i');
 
 await mkdir(resolve(root, 'en'), { recursive: true });
+// The interactive demo is Chinese-only; do not turn its CTA into a self-link.
+html = html.replace('href="/en/#case-southeast">Explore AI customer service <b>', 'href="/demo/customer-service/">Explore demo (Chinese) <b>');
 await writeFile(resolve(root, 'en/index.html'), html);
 console.log('Generated en/index.html');

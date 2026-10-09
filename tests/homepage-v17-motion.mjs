@@ -48,56 +48,44 @@ await page.mouse.move(0,0);await page.waitForTimeout(300);
 await page.screenshot({path:`${output}/partner-orbit.png`});
 const cases=[];
 const mjDepthSamples=[];
-const count=await page.locator('.case-track').count();
-for(let i=0;i<count;i++){
-  await page.locator('.case-track').nth(i).evaluate(e=>scrollTo({top:e.getBoundingClientRect().top+scrollY-110,behavior:'instant'}));
-  await page.waitForTimeout(180);
-  const before=i===0
-    ? await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')
-    : await page.locator('.case-card').nth(i).locator('.case-screen,.phone').first().evaluate(e=>getComputedStyle(e).transform);
-  for(let j=0;j<8;j++){await page.mouse.wheel(0,55);await page.waitForTimeout(70);}
-  const sample=await page.locator('.case-card').nth(i).evaluate(e=>({phase:e.dataset.casePhase,top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,visualRatio:e.querySelector('.case-visual').getBoundingClientRect().width/e.querySelector('.case-info').getBoundingClientRect().width,transform:e.querySelector('.case-screen,.phone')?getComputedStyle(e.querySelector('.case-screen,.phone')).transform:null,replaySequence:e.querySelector('[data-case-replay]')?.dataset.replaySequence||null}));
-  if(sample.top<77||sample.bottom>1080||sample.visualRatio<1.95||i>0&&before===sample.transform)throw Error(`case ${i} motion/layout: ${JSON.stringify(sample)}`);
-  if(i===0){
-    const replayProgress=[];
-    for(const [q,expected,messages] of [[.16,'1',1],[.52,'3',2],[.88,'5',3],[.16,'1',1],[.88,'5',3]]){
-      await page.evaluate(q=>{
-        const track=document.querySelector('#case-southeast').parentElement,rect=track.getBoundingClientRect();
-        scrollTo({top:rect.top+scrollY-80+q*Math.max(1,rect.height-innerHeight+80),behavior:'instant'});
-      },q);
-      await page.waitForTimeout(180);
-      const state=await page.locator('[data-case-replay]').evaluate(element=>({sequence:element.dataset.replaySequence,stage:element.dataset.replayStage,visibleMessages:element.querySelectorAll('.replay-message.is-visible').length,activeSteps:element.closest('.case-card').querySelectorAll('.case-replay-step.replay-selected').length}));
-      replayProgress.push(state.sequence);
-      if(state.sequence!==expected||state.visibleMessages!==messages||state.activeSteps!==1)throw Error(`case replay scroll progression invalid at ${q}: ${JSON.stringify(state)}`);
-    }
-    sample.replaySequence=`${before}->${replayProgress.join('->')}`;
-  }
-  cases.push(sample);
-  await page.screenshot({path:`${output}/case-${i}.png`});
+async function positionCase(id,q){
+  await page.evaluate(({id,q})=>{
+    const scene=document.getElementById(id),track=scene.closest('.case-journey-track');
+    scrollTo({top:track.getBoundingClientRect().top+scrollY-80+q*(track.offsetHeight-scene.offsetHeight),behavior:'instant'});
+  },{id,q});
+  await page.waitForTimeout(320);
 }
-for(const [q,expectedNear] of [[0,0],[.5,1],[1,2]]){
-  await page.evaluate(q=>{
-    const track=document.querySelector('#case-mj').parentElement,rect=track.getBoundingClientRect();
-    scrollTo({top:rect.top+scrollY-80+q*Math.max(1,rect.height-innerHeight+80),behavior:'instant'});
-  },q);
-  await page.waitForTimeout(180);
-  const state=await page.locator('#case-mj').evaluate(card=>{
-    const phones=[...card.querySelectorAll('.phone')];
-    const visual=card.querySelector('.case-visual').getBoundingClientRect();
-    const info=card.querySelector('.case-info').getBoundingClientRect();
+for(const q of [.12,.5,.88,.12,.88]){
+  await positionCase('case-southeast',q);
+  const sample=await page.locator('#case-southeast').evaluate(e=>({
+    phase:Number(e.dataset.journeyPhase), top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,
+    progress:Number(e.style.getPropertyValue('--journey-progress')),
+    active:e.querySelectorAll('.station-active').length,
+    complete:e.querySelectorAll('.station-complete').length,
+    traveller:[e.querySelector('.route-traveller').getAttribute('cx'),e.querySelector('.route-traveller').getAttribute('cy')],
+    footerTop:e.querySelector('.scene-foot').getBoundingClientRect().top,
+    footerBottom:e.querySelector('.scene-foot').getBoundingClientRect().bottom
+  }));
+  if(sample.phase!==Math.floor(q*3)||sample.active!==1||sample.top<78||sample.bottom>1081||sample.footerBottom>sample.bottom+1||Math.abs(sample.progress-q)>.005)throw Error('case journey invalid: '+JSON.stringify(sample));
+  cases.push(sample);
+}
+await page.screenshot({path:output+'/case-0.png'});
+for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
+  await positionCase('case-mj',q);
+  const state=await page.locator('#case-mj').evaluate(scene=>{
+    const devices=[...scene.querySelectorAll('.device')],box=scene.getBoundingClientRect();
     return {
-      ratio:visual.width/info.width,
-      scales:phones.map(phone=>Number(getComputedStyle(phone).getPropertyValue('--screen-scale'))),
-      widths:phones.map(phone=>phone.getBoundingClientRect().width),
-      z:phones.map(phone=>Number(getComputedStyle(phone).getPropertyValue('--screen-z').replace('px','')))
+      scales:devices.map(e=>Number(e.style.getPropertyValue('--device-scale'))),
+      widths:devices.map(e=>e.getBoundingClientRect().width),
+      bounds:devices.map(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=box.top&&r.bottom<=box.bottom}),
+      transforms:devices.map(e=>getComputedStyle(e).transform)
     };
   });
   const actualNear=state.scales.indexOf(Math.max(...state.scales));
-  if(state.ratio<1.95||actualNear!==expectedNear||state.scales[expectedNear]-Math.min(...state.scales)<.33||state.widths[expectedNear]/Math.min(...state.widths)<1.65||state.z[expectedNear]<30){
-    throw Error(`MJ phone depth/layout invalid at ${q}: ${JSON.stringify({expectedNear,actualNear,state})}`);
-  }
+  if(actualNear!==expectedNear||Math.max(...state.scales)-Math.min(...state.scales)<.38||state.bounds.some(v=>!v))throw Error('MJ depth invalid: '+JSON.stringify({q,state}));
   mjDepthSamples.push({q,expectedNear,...state});
 }
+await page.screenshot({path:output+'/case-1.png'});
 async function sampleRoute(selector,points){
   const samples=[];
   for(const q of points){
@@ -149,7 +137,7 @@ for(const size of [{width:1600,height:900},{width:1366,height:768},{width:1100,h
 await page.emulateMedia({reducedMotion:'reduce'});
 if(await page.locator('html').evaluate(e=>e.classList.contains('story-desktop')))throw Error('reduced motion not respected');
 await page.waitForTimeout(100);
-if(await page.locator('[data-case-replay]').getAttribute('data-replay-sequence')!=='5')throw Error('case replay reduced-motion fallback incomplete');
+if(await page.locator('#case-southeast .station-complete').count()!==3||await page.locator('html').evaluate(e=>e.classList.contains('journey-motion')))throw Error('case journey reduced-motion fallback incomplete');
 await context.close();
 const staticContext=await browser.newContext({javaScriptEnabled:false,viewport:{width:1920,height:1080}});
 const staticPage=await staticContext.newPage();

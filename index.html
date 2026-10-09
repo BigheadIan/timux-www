@@ -1,12 +1,16 @@
 <!doctype html>
-<html lang="zh-Hant">
-<head>
+<html lang="zh-Hant" class="home-refresh"><head>
   <script>
     document.documentElement.classList.add('story-home');
+    if (innerWidth >= 1100) {
+      const scale = Math.min(1, (innerWidth - 144) / 1600, (innerHeight - 80) / 1000);
+      document.documentElement.style.setProperty('--case-scale', String(scale));
+      document.documentElement.style.setProperty('--case-height', `${1000 * scale}px`);
+    }
     if (matchMedia('(min-width: 1100px) and (min-height: 700px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('story-desktop');
   </script>
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -46,7 +50,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="時光智造 Timux">
-  <meta name="timux-build" content="homepage-v33-balanced-cases-20261009">
+  <meta name="timux-build" content="homepage-v34-compact-journeys-20261009">
   <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
   <meta name="description" content="讓 AI 進入客服、企業知識、現場營運與跨系統流程。時光智造從需求盤點、試點驗證到受控上線，協助企業把 AI 變成真正完成工作的能力。">
   <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
@@ -68,8 +72,8 @@
   <meta name="twitter:description" content="從真實業務痛點、資料與流程出發，把 AI 做成企業真正用得起來、能安全擴大的工作能力。">
   <meta name="twitter:image" content="https://www.timux.site/images/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Noto+Sans+TC:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -107,10 +111,12 @@
   <link rel="stylesheet" href="/assets/site-base.css?v=20261009-v33">
 <link rel="stylesheet" href="/assets/site-conversion.css?v=20261007-v28">
 <link rel="stylesheet" href="/assets/site-story.css?v=20261009-v31">
-<script src="/assets/site-story.js?v=20261009-v32" defer></script>
-<script src="/assets/site-case-replay.js?v=20261007-v28" defer></script>
-<script src="/assets/site-orbit.js?v=20261009-v29" defer></script>
-<script src="/assets/site-mega-nav.js?v=20261007-v26" defer></script>
+<script src="/assets/site-story.js?v=20261009-v34" defer=""></script>
+<link rel="stylesheet" href="/assets/site-home-refresh.css?v=20261009-v34">
+<link rel="stylesheet" href="/assets/site-case-journey.css?v=20261009-v34">
+<script src="/assets/site-case-journey.js?v=20261009-v34" defer></script>
+<script src="/assets/site-orbit.js?v=20261009-v29" defer=""></script>
+<script src="/assets/site-mega-nav.js?v=20261007-v26" defer=""></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要內容</a>
@@ -118,9 +124,9 @@
     <div class="shell nav-inner">
       <a class="brand" href="/" aria-label="Timux 首頁">
         <img src="/assets/logo-icon.png" alt="">
-        <span><strong>時光智造 Timux</strong><small>AI adoption & execution</small></span>
+        <span><strong>時光智造 Timux</strong><small>AI adoption &amp; execution</small></span>
       </a>
-      <div class="nav-directory" data-nav-directory>
+      <div class="nav-directory" data-nav-directory="">
         <div class="nav-entry">
           <a class="nav-trigger" href="/#solutions" aria-haspopup="true" aria-expanded="false" aria-controls="nav-solutions"><span class="intl-nav-copy"><span class="intl-nav-zh">解決方案</span><small class="intl-nav-en">Solutions</small></span><span class="intl-nav-arrow" aria-hidden="true">⌄</span></a>
           <div class="mega-panel" id="nav-solutions" aria-hidden="true">
@@ -185,7 +191,7 @@
           </div>
         </div>
       </div>
-      <div class="intl-lang" role="group" aria-label="語言切換"><a class="is-active" href="/" lang="zh-Hant" hreflang="zh-Hant" aria-current="page" data-language-link>繁中</a><i></i><a href="/en/" lang="en" hreflang="en" data-language-link>EN</a></div>
+      <div class="intl-lang" role="group" aria-label="語言切換"><a class="is-active" href="/" lang="zh-Hant" hreflang="zh-Hant" aria-current="page" data-language-link="">繁中</a><i></i><a href="/en/" lang="en" hreflang="en" data-language-link="">EN</a></div>
       <a class="button ghost nav-cta" href="/#contact" data-track="contact_click"><span class="intl-nav-copy"><span class="intl-nav-zh">討論需求 ↗</span><small class="intl-nav-en">Talk to us</small></span></a>
       <details class="mobile-nav">
         <summary>選單</summary>
@@ -193,7 +199,7 @@
           <details><summary><span class="intl-mobile-summary">解決方案<small>Solutions</small></span></summary><div><a href="/#solution-customer">客服與銷售回應</a><a href="/#solution-knowledge">企業知識與 SOP</a><a href="/#solution-operations">現場營運與 LINE</a><a href="/#solution-automation">跨系統任務與自動化</a></div></details>
           <details><summary><span class="intl-mobile-summary">實戰案例<small>Case Studies</small></span></summary><div><a href="/#case-southeast">東南客運 AI 客服</a><a href="/#case-mj">銘將保全 LINE 營運</a><a href="/demo/">案例體驗中心</a></div></details>
           <details><summary><span class="intl-mobile-summary">導入方法<small>AI Adoption</small></span></summary><div><a href="/#method">CORE · SCALE · TRUST</a><a href="/#adoption">三步開始</a><a href="/method/#roadmap">90 天導入路徑</a><a href="/#agent">問 AI 顧問</a></div></details>
-          <div class="intl-mobile-lang" role="group" aria-label="語言切換"><a class="is-active" href="/" lang="zh-Hant" hreflang="zh-Hant" aria-current="page" data-language-link>繁中</a><i></i><a href="/en/" lang="en" hreflang="en" data-language-link>ENGLISH</a></div>
+          <div class="intl-mobile-lang" role="group" aria-label="語言切換"><a class="is-active" href="/" lang="zh-Hant" hreflang="zh-Hant" aria-current="page" data-language-link="">繁中</a><i></i><a href="/en/" lang="en" hreflang="en" data-language-link="">ENGLISH</a></div>
           <a class="mobile-nav-direct" href="/#contact">討論我的需求 ↗</a>
         </div>
       </details>
@@ -207,18 +213,16 @@
           <div class="hero-copy">
             <p class="eyebrow">企業 AI 導入與執行</p>
             <h1><span class="line">AI 進入工作現場，</span><span class="line prism-text">真正把事做完。</span></h1>
-            <div class="intl-hero-scope" aria-label="服務重點"><span>AI Adoption</span><span>Workflow Design</span><span>Responsible Execution</span></div>
-            <p class="hero-lead">從客服、企業知識、現場回報到跨系統任務，Timux 協助你盤點流程、驗證成效，並在人的監督下把 AI 接進日常營運。</p>
+
+            <p class="hero-lead">從客服到現場營運，讓 AI 在人的監督下完成任務。</p>
             <div class="hero-actions">
-              <a class="button white" href="#solutions" data-track="solution_explore">選擇想改善的流程 ↓</a>
-              <a class="button ghost" href="#cases" data-track="case_open">查看真實案例 →</a>
+              <a class="button white" href="#solutions" data-track="solution_explore">探索解決方案 ↓</a>
+              <a class="button ghost" href="#cases" data-track="case_open">查看實戰案例 →</a>
             </div>
-            <div class="intl-hero-proof" aria-label="AI 導入三步驟"><div><b>01 / DISCOVER</b><span>從真實工作找到問題</span></div><div><b>02 / VALIDATE</b><span>用資料與案例驗證</span></div><div><b>03 / ADOPT</b><span>在清楚邊界內使用</span></div></div>
-            <div class="proof-line" aria-label="可導入的四類工作">
-              <span>客服與銷售</span><span>企業知識</span><span>現場營運</span><span>系統自動化</span>
-            </div>
-            <div class="engine-caption"><span class="engine-step">01 / 03</span><strong>讓分散訊號，進入同一段工作。</strong><p>從一個真實需求開始，看 AI 如何協助團隊完成下一步。</p><div class="engine-meter"><i></i></div></div>
-          </div>
+
+
+            <div class="engine-caption"><span class="engine-step">01 / 03</span><strong>讓分散訊號，進入同一段工作。</strong><p hidden="">從一個真實需求開始，看 AI 如何協助團隊完成下一步。</p><div class="engine-meter"><i></i></div></div>
+          <div class="layout-hero-index"><a href="#solutions"><b>01</b> 解決方案 <span>↗</span></a><a href="#cases"><b>02</b> 實戰案例 <span>↗</span></a><a href="#method"><b>03</b> 導入方法 <span>↗</span></a></div></div>
           <div class="workflow-demo" aria-label="AI 工作流程示意">
             <div class="workflow-demo-head">
               <div><small>LIVE WORKFLOW</small><strong>AI 如何接進一段工作</strong></div>
@@ -249,7 +253,7 @@
       <section class="trust partner-orbit" aria-labelledby="partnerOrbitTitle">
       <div class="shell trust-inner">
         <div class="partner-orbit-axis" aria-hidden="true"></div>
-        <div class="trust-copy-anchor"><div class="trust-copy" id="partnerOrbitTitle"><span class="mono">Selected experience</span><strong>公開合作與實作經驗</strong><small>真實工作現場，持續累積的交付經驗</small></div></div>
+        <div class="trust-copy-anchor"><div class="trust-copy" id="partnerOrbitTitle"><span class="mono">Selected experience</span><strong>公開合作與實作經驗</strong></div></div>
         <div class="logo-row" role="list" aria-label="合作與實作案例">
           <div class="logo-card logo-southeast" role="listitem"><a class="logo-card-link" href="#case-southeast" aria-label="查看東南客運案例" data-track="partner_case_open"><img src="/assets/clients/southeast-bus.png" width="240" height="180" decoding="async" alt="東南客運"></a></div>
           <div class="logo-card logo-dragon" role="listitem"><img src="/assets/clients/dragontr.png" width="685" height="252" decoding="async" alt="金龍旅遊"></div>
@@ -266,37 +270,37 @@
     <section class="section solutions-section" id="solutions">
       <div class="shell">
         <div class="section-head solution-heading">
-          <div><p class="eyebrow paper-eyebrow">Start with your workflow</p><h2>先從你最想改善的<br>一段工作開始。</h2><p class="intl-section-en">Start with one workflow that matters.</p></div>
-          <p>不必先決定要用哪個模型。選擇目前最常卡住、最需要等待或最容易遺漏的工作，我們再一起確認資料、角色與適合驗證的範圍。</p>
-        </div>
+          <div><p class="eyebrow paper-eyebrow">01 / SOLUTIONS</p><h2>從一段工作，<br>創造改變。</h2><span class="layout-keyline" aria-hidden="true"></span></div>
+
+        <a class="layout-section-link" href="#cases">看 AI 如何進入真實工作 ↗</a></div>
         <div class="solution-grid">
           <article class="solution-card featured" id="solution-customer">
             <div class="solution-top"><span>01</span><b>Customer</b></div>
-            <h3>客服與銷售回應</h3>
-            <p>詢問量大、資訊分散，或人工接手時需要重新問一次。</p>
-            <ul><li>理解意圖與補問條件</li><li>依核准知識回答</li><li>保留上下文交給人</li></ul>
-            <a href="#contact" data-solution="客服與銷售回應">帶這個需求開始 →</a>
+            <h3>AI 客服</h3>
+            <p>回答、核對、轉接。</p>
+
+            <a href="#contact" data-solution="客服與銷售回應">討論需求 →</a>
           </article>
           <article class="solution-card" id="solution-knowledge">
             <div class="solution-top"><span>02</span><b>Knowledge</b></div>
-            <h3>企業知識與 SOP</h3>
-            <p>文件很多、版本難找，新人與跨部門常重複詢問。</p>
-            <ul><li>從核准內容找答案</li><li>保留引用與資料邊界</li><li>把缺口回饋給管理者</li></ul>
-            <a href="#contact" data-solution="企業知識與 SOP">帶這個需求開始 →</a>
+            <h3>企業知識</h3>
+            <p>讓正確資料更容易被找到。</p>
+
+            <a href="#contact" data-solution="企業知識與 SOP">討論需求 →</a>
           </article>
           <article class="solution-card" id="solution-operations">
             <div class="solution-top"><span>03</span><b>Operations</b></div>
-            <h3>現場營運與 LINE 流程</h3>
-            <p>回報散落在群組、表單與紙本，主管難以持續追蹤。</p>
-            <ul><li>在熟悉入口完成回報</li><li>把資料整理成可查紀錄</li><li>例外情況提醒人工覆核</li></ul>
-            <a href="#contact" data-solution="現場營運與 LINE 流程">帶這個需求開始 →</a>
+            <h3>現場營運</h3>
+            <p>把 LINE 回報變成可追蹤紀錄。</p>
+
+            <a href="#contact" data-solution="現場營運與 LINE 流程">討論需求 →</a>
           </article>
           <article class="solution-card" id="solution-automation">
             <div class="solution-top"><span>04</span><b>Automation</b></div>
-            <h3>跨系統任務與自動化</h3>
-            <p>資訊要在多個系統間重複搬運，交接後容易失去進度。</p>
-            <ul><li>串起表單、資料與任務</li><li>高風險動作保留審批</li><li>留下狀態與處理紀錄</li></ul>
-            <a href="#contact" data-solution="跨系統任務與自動化">帶這個需求開始 →</a>
+            <h3>流程自動化</h3>
+            <p>讓跨系統任務持續推進。</p>
+
+            <a href="#contact" data-solution="跨系統任務與自動化">討論需求 →</a>
           </article>
         </div>
       </div>
@@ -305,125 +309,35 @@
     <section class="section adoption-section" id="adoption">
       <div class="shell">
         <div class="section-head">
-          <div><p class="eyebrow paper-eyebrow">How to start</p><h2>三步看懂，<br>AI 如何從需求走到使用。</h2><p class="intl-section-en">From a clear use case to controlled adoption.</p></div>
-          <p>先聚焦一段工作，再用真實情境驗證。達到共同確認的標準後，才逐步接入正式流程。</p>
+          <div><p class="eyebrow paper-eyebrow">02 / HOW WE WORK</p><h2>從需求，到使用。</h2></div>
+
         </div>
         <div class="adoption-path">
-          <article><span>01</span><small>CHOOSE</small><h3>選一段工作</h3><p>說明現在怎麼做、誰參與，以及最常卡住的一個案例。</p><b>得到：清楚的試點範圍</b></article>
+          <article><span>01</span><small>CHOOSE</small><h3>選一段工作</h3><b>聚焦試點範圍</b></article>
           <i aria-hidden="true">→</i>
-          <article><span>02</span><small>VERIFY</small><h3>看演示並驗證</h3><p>用獲准資料與真實案例，對照 AI 與原本做法的結果。</p><b>得到：可操作試點與例外清單</b></article>
+          <article><span>02</span><small>VERIFY</small><h3>看演示並驗證</h3><b>驗證真實情境</b></article>
           <i aria-hidden="true">→</i>
-          <article><span>03</span><small>ADOPT</small><h3>受控上線</h3><p>確認權限、人工接手與驗收方式，再逐步擴大使用範圍。</p><b>得到：可追蹤、可接手的工作流程</b></article>
+          <article><span>03</span><small>ADOPT</small><h3>受控上線</h3><b>建立可控流程</b></article>
         </div>
         <div class="adoption-actions"><a class="button dark" href="/demo/customer-service/" data-track="demo_start" data-scenario="customer-service">先看 AI 客服實戰 ↗</a><a class="text-link" href="/method/">查看完整 90 天導入方式 →</a></div>
       </div>
     </section>
 
-    <section class="section cases" id="cases">
-    <div class="shell">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow paper-eyebrow">Built in real operations</p>
-          <h2>每個案例，都從<br>真實工作現場開始。</h2>
-          <p class="intl-section-en">Built in real operations, designed for responsible scale.</p>
-        </div>
-        <p>不只展示模型能做什麼，更要讓企業看見資料、人工接管、後台與持續訓練如何一起運作。</p>
-      </div>
-
-      <div class="case-grid">
-        <article class="case-card" id="case-southeast">
-          <div class="case-info">
-            <div class="case-brand"><img src="/assets/clients/southeast-bus.png" alt="" loading="lazy"><span class="mono">AI customer service</span></div>
-            <div class="intl-case-meta"><span>Challenge</span><span>Approach</span><span>Human Oversight</span></div>
-            <h3>東南客運：AI 不只回答，也知道什麼時候該交給人。</h3><a class="text-link" href="/demo/customer-service/">跟著案例看一次 →</a>
-            <p>同一個客服入口，先理解問題與路線意圖；能由核准知識回答的立即處理，需要即時官方資訊或人工判斷的則安全轉接。</p>
-            <div class="case-flow" aria-label="案例動畫步驟">
-              <button type="button" class="case-flow-item case-replay-step" data-replay-step="0"><i>01</i><span><b>理解旅客意圖</b><span>辨識班次、站點、遺失物與客訴情境</span></span></button>
-              <button type="button" class="case-flow-item case-replay-step" data-replay-step="1"><i>02</i><span><b>核對知識與即時性</b><span>靜態知識直接回答，動態資訊不猜測</span></span></button>
-              <button type="button" class="case-flow-item case-replay-step" data-replay-step="2"><i>03</i><span><b>人工接手有上下文</b><span>保留對話與必要資訊，減少重複詢問</span></span></button>
-            </div>
-          </div>
-          <div class="case-visual case-replay-visual">
-            <div class="case-replay" data-case-replay data-replay-sequence="0" data-replay-stage="0" data-replay-paused="false">
-              <div class="case-replay-head">
-                <div><span class="replay-brand-dot"></span><b>TIMUX SERVICE INTELLIGENCE</b><small>LIVE WORKFLOW REPLAY</small></div>
-                <span class="replay-status"><i></i><span data-replay-status>情境準備中</span></span>
-              </div>
-              <div class="case-replay-progress" aria-hidden="true"><i></i></div>
-              <div class="case-replay-layout">
-                <section class="replay-conversation" aria-label="AI 客服對話重演">
-                  <div class="replay-panel-label"><span>PASSENGER CONVERSATION</span><b data-replay-counter>01 / 03</b></div>
-                  <div class="replay-thread">
-                    <div class="replay-message passenger" data-replay-show="1">
-                      <span class="replay-avatar">PAX</span>
-                      <div><small>旅客 · 剛剛</small><p>請問 299 路今天 18:30 從捷運輔大站發車嗎？</p></div>
-                    </div>
-                    <div class="replay-message ai typing" data-replay-only="2">
-                      <span class="replay-avatar">AI</span>
-                      <div><small>Timux AI 正在核對</small><p><i></i><i></i><i></i></p></div>
-                    </div>
-                    <div class="replay-message ai" data-replay-show="3">
-                      <span class="replay-avatar">AI</span>
-                      <div><small>Timux AI · 已回覆</small><p>我可以先幫你確認固定時刻表。今天是否臨時調整，需要以官方即時資訊為準。</p></div>
-                    </div>
-                    <div class="replay-message handoff" data-replay-show="5">
-                      <span class="replay-avatar">HUM</span>
-                      <div><small>已建立人工接手</small><p>路線、站點與時間已整理，客服可直接確認即時班次，不必重新詢問。</p></div>
-                    </div>
-                  </div>
-                </section>
-                <aside class="replay-intelligence" aria-label="AI 判斷與接手狀態">
-                  <div class="replay-panel-label"><span>DECISION INTELLIGENCE</span><b>TRACE ON</b></div>
-                  <div class="replay-signal-card" data-replay-show="1">
-                    <div><span>意圖辨識</span><strong>班次確認</strong></div>
-                    <div class="replay-score"><i></i><b>94%</b></div>
-                    <div class="replay-entities"><span>299 路</span><span>捷運輔大站</span><span>18:30</span></div>
-                  </div>
-                  <div class="replay-check-card" data-replay-show="3">
-                    <div><span>知識核對</span><b>2 / 3 VERIFIED</b></div>
-                    <p class="is-ok"><i>✓</i><span>路線與站點資料</span></p>
-                    <p class="is-ok"><i>✓</i><span>固定時刻表</span></p>
-                    <p class="is-warn"><i>!</i><span>今日即時異動</span></p>
-                  </div>
-                  <div class="replay-boundary-card" data-replay-show="4">
-                    <span>HUMAN OVERSIGHT</span>
-                    <b>即時資訊不猜測</b>
-                    <p>保留對話、已辨識條件與知識核對結果，再交給客服確認。</p>
-                  </div>
-                </aside>
-              </div>
-              <div class="case-replay-foot"><span><i></i> 滾動頁面 · 自動推進</span><b data-replay-stage-label>01 理解意圖</b></div>
-            </div>
-          </div>
-        </article>
-
-        <article class="case-card reverse" id="case-mj">
-          <div class="case-info">
-            <div class="case-brand"><img src="/assets/clients/mj-security.png" alt="" loading="lazy"><span class="mono">LINE 行動作業</span></div>
-            <div class="intl-case-meta"><span>Challenge</span><span>Approach</span><span>Human Oversight</span></div>
-            <h3>銘將保全：把行動作業，接回可追蹤的紀錄。</h3>
-            <p>前線用熟悉的 LINE 完成打卡與回報，把現場資訊整理為可查閱的紀錄，讓主管有依據地確認出勤與處理情況。</p>
-            <div class="case-flow">
-              <div class="case-flow-item"><i>01</i><div><b>前線資料即時結構化</b><span>打卡、GPS、班別與工作日誌進入同一流程</span></div></div>
-              <div class="case-flow-item"><i>02</i><div><b>出勤紀錄集中查閱</b><span>以紀錄與位置資訊，協助人工確認</span></div></div>
-              <div class="case-flow-item"><i>03</i><div><b>主管依據紀錄確認</b><span>保留需要進一步處理的上下文</span></div></div>
-            </div>
-          </div>
-          <div class="case-visual phone-stage">
-            <div class="phone one"><img src="/images/cases/mj-line-bot-rich-menu.png" alt="銘將保全 LINE 機器人與功能入口" loading="lazy"></div>
-            <div class="phone two"><img src="/images/cases/mj-liff-clock.png" alt="銘將保全 LIFF 行動打卡畫面" loading="lazy"></div>
-            <div class="phone three"><img src="/images/cases/mj-liff-attendance.png" alt="銘將保全 LIFF 出勤紀錄畫面" loading="lazy"></div>
-            <div class="audit-panel">
-              <strong>資料與覆核流程</strong>
-              <div class="audit-check">GPS 與哨所位置校對</div>
-              <div class="audit-check">出勤與回報紀錄查閱</div>
-              <div class="audit-check">人工覆核後留下處置紀錄</div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section><section class="section model-section" id="method"><div class="shell"><div class="section-head"><div><p class="eyebrow paper-eyebrow">CORE · SCALE · TRUST</p><h2>真正的 AI 肌肉，<br>是從驚艷走到可用。</h2></div><p>體驗讓你看見能力；三個模型讓能力對準經營結果、走完整個流程，並在清楚的責任與邊界內運作。</p></div><div class="model-grid model-pie-grid"><article class="core-card"><div class="pie-shell"><div class="model-pie core-pie" role="img" aria-label="CORE：C 降低成本、O 提升營運效率、R 管理風險、E 提升收入與利潤"><span class="pie-center"><b class="model-code">CORE</b><span>經營結果</span></span><span class="pie-label pie-label-1"><b>C</b><span>降低成本</span></span><span class="pie-label pie-label-2"><b>O</b><span>營運效率</span></span><span class="pie-label pie-label-3"><b>R</b><span>管理風險</span></span><span class="pie-label pie-label-4"><b>E</b><span>收入利潤</span></span></div></div><h3>CORE · 做對的事</h3><p class="model-summary">先確認 AI 要改善哪一項經營結果，再建立基線與優先順序。</p></article><article class="scale-card"><div class="pie-shell scale-shell"><svg class="scale-loop-arrow" viewBox="0 0 320 320" aria-hidden="true" focusable="false"><defs><marker id="scale-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><path d="M160 10a150 150 0 1 1-115 54" marker-end="url(#scale-arrowhead)"></path></svg><div class="model-pie scale-pie" role="img" aria-label="SCALE 執行閉環：S 感知訊號、C 補足情境、A 權限審批、L 啟動行動、E 復盤進化"><span class="pie-center"><b class="model-code">SCALE</b><span>執行閉環</span></span><span class="pie-label pie-label-1"><b>S</b><span>感知訊號</span></span><span class="pie-label pie-label-2"><b>C</b><span>補足情境</span></span><span class="pie-label pie-label-3"><b>A</b><span>權限審批</span></span><span class="pie-label pie-label-4"><b>L</b><span>啟動行動</span></span><span class="pie-label pie-label-5"><b>E</b><span>復盤進化</span></span></div></div><h3>SCALE · 把事情做完</h3><p class="model-summary">讓每個訊號走過完整流程，最後以真實結果進入下一輪改進。</p></article><article class="trust-card"><div class="pie-shell"><div class="model-pie trust-pie" role="img" aria-label="TRUST：T 證據透明、R 行動可恢復、U 人保有決策權、S 權限有範圍、T 結果可追溯"><span class="pie-center"><b class="model-code">TRUST</b><span>治理原則</span></span><span class="pie-label pie-label-1"><b>T</b><span>證據透明</span></span><span class="pie-label pie-label-2"><b>R</b><span>可恢復</span></span><span class="pie-label pie-label-3"><b>U</b><span>人保決策</span></span><span class="pie-label pie-label-4"><b>S</b><span>權限範圍</span></span><span class="pie-label pie-label-5"><b>T</b><span>結果追溯</span></span></div></div><h3>TRUST · 放心地使用</h3><p class="model-summary">重要動作保留清楚證據、責任與邊界，異常發生時知道如何接手。</p></article></div><div class="model-equation"><b>CORE</b><span>決定改善什麼</span><i>×</i><b>SCALE</b><span>讓工作走到完成</span><i>×</i><b>TRUST</b><span>確保過程可控</span></div><div class="section-tail"><p>這不是三個口號，而是每一個試點都會被問到的三組問題。</p><a class="button dark" href="/method/#discovery">看三模型如何進入需求分析 ↗</a></div></div></section><section class="section roadmap-section" id="roadmap"><div class="shell"><div class="section-head"><div><p class="eyebrow paper-eyebrow">Step 3 · A 90-day path to adoption</p><h2>看過能力與理念，<br>再看 90 天怎麼落地。</h2></div><p>先選一段範圍清楚的工作。約 13 週的參考節奏，依資料、系統接入與雙方確認的範圍調整；不是一次取代所有流程。</p></div><div class="phase-grid"><article class="phase-card"><div class="phase-top"><span>01</span><b>第 1–2 週</b></div><h3>基線與流程確認</h3><p class="phase-tagline">從真實工作找到對的問題。</p><p>訪談執行同仁、主管與系統負責人，回看正常及異常案例，確認資料、交接與現況指標。</p><dl><dt>你會得到</dt><dd>現況流程圖、需求優先順序、責任與驗收方式。</dd><dt>階段確認</dt><dd>問題、範圍與成功標準取得共識。</dd></dl></article><article class="phase-card"><div class="phase-top"><span>02</span><b>第 3–6 週</b></div><h3>並行驗證</h3><p class="phase-tagline">先對照，再決定是否交付。</p><p>建立試點系統，以獲准資料只讀分析，與原有人工結果對照，找出誤判、漏判及例外。</p><dl><dt>你會得到</dt><dd>可操作試點、結果對照、例外清單與調整規則。</dd><dt>階段確認</dt><dd>選定情境的結果達到共同確認的品質門檻。</dd></dl></article><article class="phase-card"><div class="phase-top"><span>03</span><b>第 7–10 週</b></div><h3>受控執行</h3><p class="phase-tagline">在清楚的邊界內進入工作。</p><p>限定人員與操作範圍，小規模接入實際流程；必要動作保留人工批准，異常有人接手。</p><dl><dt>你會得到</dt><dd>試點流程、權限與審批設定、操作及異常紀錄。</dd><dt>階段確認</dt><dd>團隊用得起來，異常處理與恢復方式已驗證。</dd></dl></article><article class="phase-card"><div class="phase-top"><span>04</span><b>第 11–13 週</b></div><h3>聯合驗收</h3><p class="phase-tagline">用結果，決定下一步。</p><p>與業務、財務及技術負責人依相關指標核對正確性、等待時間、實際效益及異常。</p><dl><dt>你會得到</dt><dd>驗收報告、操作交接說明、擴大或調整建議。</dd><dt>階段確認</dt><dd>達標才擴大；未達標則調整驗證或暫停相關操作。</dd></dl></article></div><div class="section-tail"><p>達標才擴大；資料或規則不穩定，就回到驗證。</p><a class="text-link" href="/method/#roadmap">了解你的參與與每階段驗收 →</a></div></div></section><section class="section agent-section" id="agent"><div class="shell agent-layout"><div><p class="eyebrow">Explore your next step</p><h2>還不確定從哪裡開始？<br>先聊一段工作。</h2><p>AI 顧問能協助釐清問題與介紹方法；深入的需求判斷，由 Ian 與你及實際使用者一起完成。</p><a class="text-link" href="#contact">也可以直接找 Ian，不必先與 AI 對話 →</a><p class="fine">右下角提供時光智造文字客服與電話式語音對話。</p></div><div class="prism-frame">              <div class="chat-main">
+    <section class="case-collection" id="cases"><div class="case-journey-track"><section class="case-scene a-bus" id="case-southeast" aria-labelledby="case-southeast-title"><div class="scene-inner">
+ <div class="chapter"><span>SELECTED WORK / 01</span><span>AI CUSTOMER SERVICE</span></div>
+ <header class="a-bus-title"><div class="client-mark"><img src="/assets/clients/southeast-bus.png" alt="東南客運" loading="lazy" decoding="async"><span>東南客運</span></div><h2 class="case-headline" id="case-southeast-title">每一個提問，<br>都有<span>下一站。</span></h2><p>理解意圖，核對資訊，讓服務順暢交接。</p></header>
+ <div class="route-key"><span class="dot"></span>旅客服務旅程<span class="demo-tag">情境演示</span></div>
+ <svg class="service-route" viewBox="0 0 1600 640" aria-hidden="true"><defs><linearGradient id="service-route-gradient"><stop stop-color="#76e2d0"></stop><stop offset=".5" stop-color="#a393f6"></stop><stop offset="1" stop-color="#d0c6ff"></stop></linearGradient></defs><path class="route-shadow" d="M-80 410H260Q400 410 440 320T700 240H900Q1050 240 1100 370T1360 470H1690"></path><path class="route-main" d="M-80 410H260Q400 410 440 320T700 240H900Q1050 240 1100 370T1360 470H1690" pathLength="1"></path><circle class="route-traveller" r="8" cx="-80" cy="410"></circle><circle cx="210" cy="410" r="12"></circle><circle cx="800" cy="240" r="12"></circle><circle cx="1410" cy="470" r="12"></circle></svg>
+ <div class="station station-one"><div class="station-copy"><em>01 / UNDERSTAND</em><h3>聽懂旅客的問題</h3></div><div class="speech passenger"><small>旅客詢問</small><p>299 路，今天 18:30<br>從捷運輔大站發車嗎？</p><span class="route-chip">299 <i>→</i> 18:30</span></div></div>
+ <div class="station station-two"><div class="station-copy"><em>02 / VERIFY</em><h3>讓回答有依據</h3></div><div class="verify-note"><span>✓</span><div><b>固定時刻表已核對</b><p>今日臨時異動，仍需確認。</p></div></div></div>
+ <div class="station station-three"><div class="station-copy"><em>03 / HAND OFF</em><h3>帶著上下文交給人</h3></div><div class="handoff-note"><div class="human-icon">↗</div><p>路線・站點・時間<br><b>客服直接接續處理</b></p></div></div>
+ <footer class="scene-foot"><span>從一句詢問，到下一步行動。</span><a href="/demo/customer-service/">體驗 AI 客服 <b>↗</b></a></footer>
+ </div></section></div><div class="case-journey-track"><section class="case-scene a-mj" id="case-mj" aria-labelledby="case-mj-title"><div class="scene-inner">
+ <div class="chapter"><span>SELECTED WORK / 02</span><span>LINE OPERATIONS</span></div>
+ <div class="editorial-title"><div class="client-mark"><img src="/assets/clients/mj-security.png" alt="銘將保全" loading="lazy" decoding="async"><span>銘將保全</span></div><h2 class="case-headline" id="case-mj-title">前線每一步，<br>管理<span>看得見。</span></h2><p>熟悉的 LINE，接起可追蹤的現場工作。</p><div class="editorial-steps"><div><i>01</i><b>行動打卡</b><span>在現場完成</span></div><div><i>02</i><b>集中紀錄</b><span>資訊不散落</span></div><div><i>03</i><b>主管覆核</b><span>有依據地確認</span></div></div></div>
+ <div class="runway"><span class="runway-word" aria-hidden="true">IN THE FIELD</span><div class="runway-orbit"></div><figure class="device runway-left"><img src="/images/cases/mj-line-bot-rich-menu.png" alt="LINE 工作入口" loading="lazy" decoding="async"></figure><figure class="device runway-center"><img src="/images/cases/mj-liff-clock.png" alt="銘將行動打卡" loading="lazy" decoding="async"></figure><figure class="device runway-right"><img src="/images/cases/mj-liff-attendance.png" alt="銘將出勤紀錄" loading="lazy" decoding="async"></figure><span class="phone-caption left-caption">LINE / 入口</span><span class="phone-caption right-caption">RECORDS / 紀錄</span></div>
+ <footer class="scene-foot"><span>資料來自現場，判斷回到人。</span><span class="foot-index">LINE <i>／</i> GPS <i>／</i> 出勤紀錄</span></footer>
+ </div></section></div></section><section class="section model-section" id="method"><div class="shell"><div class="section-head"><div><p class="eyebrow paper-eyebrow">04 / OUR PRINCIPLES</p><h2>對準結果，完成工作。</h2></div></div><div class="model-grid model-pie-grid"><article class="core-card"><div class="pie-shell"><div class="model-pie core-pie" role="img" aria-label="CORE：C 降低成本、O 提升營運效率、R 管理風險、E 提升收入與利潤"><span class="pie-center"><b class="model-code">CORE</b><span>經營結果</span></span><span class="pie-label pie-label-1"><b>C</b><span>降低成本</span></span><span class="pie-label pie-label-2"><b>O</b><span>營運效率</span></span><span class="pie-label pie-label-3"><b>R</b><span>管理風險</span></span><span class="pie-label pie-label-4"><b>E</b><span>收入利潤</span></span></div></div><h3>CORE · 做對的事</h3><p class="model-summary">對準經營結果。</p></article><article class="scale-card"><div class="pie-shell scale-shell"><svg class="scale-loop-arrow" viewBox="0 0 320 320" aria-hidden="true" focusable="false"><defs><marker id="scale-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><path d="M160 10a150 150 0 1 1-115 54" marker-end="url(#scale-arrowhead)"></path></svg><div class="model-pie scale-pie" role="img" aria-label="SCALE 執行閉環：S 感知訊號、C 補足情境、A 權限審批、L 啟動行動、E 復盤進化"><span class="pie-center"><b class="model-code">SCALE</b><span>執行閉環</span></span><span class="pie-label pie-label-1"><b>S</b><span>感知訊號</span></span><span class="pie-label pie-label-2"><b>C</b><span>補足情境</span></span><span class="pie-label pie-label-3"><b>A</b><span>權限審批</span></span><span class="pie-label pie-label-4"><b>L</b><span>啟動行動</span></span><span class="pie-label pie-label-5"><b>E</b><span>復盤進化</span></span></div></div><h3>SCALE · 把事情做完</h3><p class="model-summary">讓任務走到完成。</p></article><article class="trust-card"><div class="pie-shell"><div class="model-pie trust-pie" role="img" aria-label="TRUST：T 證據透明、R 行動可恢復、U 人保有決策權、S 權限有範圍、T 結果可追溯"><span class="pie-center"><b class="model-code">TRUST</b><span>治理原則</span></span><span class="pie-label pie-label-1"><b>T</b><span>證據透明</span></span><span class="pie-label pie-label-2"><b>R</b><span>可恢復</span></span><span class="pie-label pie-label-3"><b>U</b><span>人保決策</span></span><span class="pie-label pie-label-4"><b>S</b><span>權限範圍</span></span><span class="pie-label pie-label-5"><b>T</b><span>結果追溯</span></span></div></div><h3>TRUST · 放心地使用</h3><p class="model-summary">讓過程保持可控。</p></article></div><div class="model-equation"><b>CORE</b><span>決定改善什麼</span><i>×</i><b>SCALE</b><span>讓工作走到完成</span><i>×</i><b>TRUST</b><span>確保過程可控</span></div><div class="section-tail"><a class="button dark" href="/method/#discovery">看三模型如何進入需求分析 ↗</a></div></div></section><section class="section roadmap-section" id="roadmap"><div class="shell"><div class="section-head"><div><p class="eyebrow paper-eyebrow">05 / THE ROAD TO ADOPTION</p><h2>90 天，分階段前進。</h2></div></div><div class="phase-grid"><article class="phase-card"><div class="phase-top"><span>01</span><b>第 1–2 週</b></div><h3>基線與流程確認</h3><p class="phase-tagline">從真實工作找到對的問題。</p></article><article class="phase-card"><div class="phase-top"><span>02</span><b>第 3–6 週</b></div><h3>並行驗證</h3><p class="phase-tagline">先對照，再決定是否交付。</p></article><article class="phase-card"><div class="phase-top"><span>03</span><b>第 7–10 週</b></div><h3>受控執行</h3><p class="phase-tagline">在清楚的邊界內進入工作。</p></article><article class="phase-card"><div class="phase-top"><span>04</span><b>第 11–13 週</b></div><h3>聯合驗收</h3><p class="phase-tagline">用結果，決定下一步。</p></article></div><div class="section-tail"><p>參考節奏依資料與範圍調整，達標才擴大。</p><a class="text-link" href="/method/#roadmap">了解你的參與與每階段驗收 →</a></div></div></section><section class="section agent-section" id="agent"><div class="shell agent-layout"><div><p class="eyebrow">06 / LET’S TALK</p><h2>先聊一段工作。</h2><p>AI 協助梳理需求，專人與你深入討論。</p><a class="text-link" href="#contact">也可以直接找 Ian，不必先與 AI 對話 →</a></div><div class="prism-frame">              <div class="chat-main">
                 <div class="app-head">
                   <div><h3>Timux AI 導入顧問</h3><p>了解方法、整理問題、找到合適的下一步</p></div>
                   <div class="agent-badge"><i class="live-dot"></i> AI 顧問</div>
@@ -431,7 +345,7 @@
                 <div class="chat-feed" id="chatFeed" aria-live="polite">
                   <div class="message assistant">
                     <p class="message-label mono">Timux Agent</p>
-                    <div class="bubble">我是 Timux 的 AI 導入顧問，不是 Ian 本人。你可以先體驗案例、了解 90 天合作方式，或直接找 Ian。若還不確定從哪裡開始，也可以告訴我一段工作上的困難。</div>
+                    <div class="bubble">我是 Timux AI 顧問。你想改善哪一段工作？</div>
                     <div id="starterArea">
                       <p class="starter-label">從你現在最想了解的事開始：</p>
                       <div class="chips" id="starterQuestions"></div>
@@ -441,10 +355,10 @@
                 <form class="chat-compose" id="agentForm">
                   <input id="agentInput" maxlength="1200" autocomplete="off" aria-label="輸入問題" placeholder="例如：我們每天有 200 筆客服訊息，怎麼開始？">
                   <button class="send-btn" id="sendButton" type="submit" aria-label="傳送問題">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4z"></path></svg>
                   </button>
                 </form>
-              </div><div class="agent-shortcuts"><a href="/demo/">案例體驗</a><a href="/method/">90 天導入方法</a><a href="#contact">找 Ian 討論</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">Start with your real work</p><h2>帶一個真實問題，<br>開始有意義的討論。</h2><p>不必先寫完整需求書。告訴 Ian 一段想改善的工作，我們從現有做法、參與角色與困難開始，判斷適合先驗證的範圍。</p><p>深入訪談、試點範圍、費用與雙方投入，會在合作前確認。</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">直接寄信給 Ian →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">想改善哪段工作？</label><input id="workflow" name="workflow" maxlength="160" placeholder="例如：跨部門交接、客服或文件查找" required><label for="context">最近遇到什麼情況？</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="簡單描述一個案例即可，請勿填入個人或敏感資料。"></textarea><button class="button dark" type="submit">整理我的討論摘要 ↓</button><p class="fine">內容只在此頁整理，不會自動送出。你可以修改後再寄信。</p><div id="draftResult" hidden><label for="summary">確認或修改你的摘要</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">開啟 Email 草稿 ↗</a><button type="button" class="button outline" id="copyDraft">複製摘要</button></div><p class="fine">開啟草稿後，請在信箱完成寄送；此頁不代表詢問已送達。</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/"><img src="/assets/logo-icon.png" alt=""><strong>時光智造 Timux</strong></a><span>智造交給 AI，時光留給所愛。</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer><script src="/assets/site-conversion.js?v=20261007-v26" defer></script>  <script>
+              </div><div class="agent-shortcuts"><a href="/demo/">案例體驗</a><a href="/method/">90 天導入方法</a><a href="#contact">找 Ian 討論</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>帶一個真實問題，<br>開始討論。</h2><p>告訴我們想改善哪段工作。</p><p>合作範圍與費用，事前共同確認。</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">直接寄信給 Ian →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">想改善哪段工作？</label><input id="workflow" name="workflow" maxlength="160" placeholder="例如：跨部門交接、客服或文件查找" required=""><label for="context">最近遇到什麼情況？</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="簡單描述一個案例即可，請勿填入個人或敏感資料。"></textarea><button class="button dark" type="submit">整理我的討論摘要 ↓</button><p class="fine">內容只在此頁整理，不會自動送出。你可以修改後再寄信。</p><div id="draftResult" hidden=""><label for="summary">確認或修改你的摘要</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">開啟 Email 草稿 ↗</a><button type="button" class="button outline" id="copyDraft">複製摘要</button></div><p class="fine">開啟草稿後，請在信箱完成寄送；此頁不代表詢問已送達。</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/"><img src="/assets/logo-icon.png" alt=""><strong>時光智造 Timux</strong></a><span>智造交給 AI，時光留給所愛。</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer><script src="/assets/site-conversion.js?v=20261007-v26" defer=""></script>  <script>
     (() => {
       const apiBase = "https://digitalhuman.timux.site";
       const endpoint = `${apiBase}/api/digital-human/website-chat`;
@@ -613,5 +527,6 @@
       }).observe(document.body, { childList: true, subtree: true });
     })();
   </script>
-</body>
-</html>
+
+
+</body></html>

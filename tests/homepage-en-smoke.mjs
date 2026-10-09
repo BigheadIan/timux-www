@@ -45,7 +45,7 @@ for (const [name, viewport] of Object.entries({ desktop: { width: 1920, height: 
     }).map((element) => element.textContent.trim()).slice(0, 10)
   }));
 
-  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v8-balanced-cases-20261009' ||
+  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v9-compact-journeys-20261009' ||
       audit.canonical !== 'https://www.timux.site/en/' || audit.title !== 'Timux Technology | Enterprise AI Adoption & Execution' ||
       audit.h1 !== 'Bring AI into real work,and get work done.' || audit.activeLanguage !== 'EN' ||
       audit.navPrimary.join('|') !== 'Solutions|Case Studies|AI Adoption' || audit.overflow > 1 ||
@@ -57,13 +57,12 @@ for (const [name, viewport] of Object.entries({ desktop: { width: 1920, height: 
 
   await page.locator('#case-southeast').scrollIntoViewIfNeeded();
   await page.waitForTimeout(700);
-  const replay = await page.locator('[data-case-replay]').evaluate((element) => ({
-    stage: element.dataset.replayStage,
-    sequence: element.dataset.replaySequence,
-    status: element.querySelector('[data-replay-status]')?.textContent.trim(),
-    visibleMessages: [...element.querySelectorAll('.replay-message.is-visible')].length
+  const replay = await page.locator('#case-southeast').evaluate((element) => ({
+    phase: element.dataset.journeyPhase,
+    stations: element.querySelectorAll('.station').length,
+    text: element.innerText
   }));
-  if (!replay.sequence || /[\u3400-\u9fff]/.test(replay.status || '')) throw new Error(`${name}: English replay invalid ${JSON.stringify(replay)}`);
+  if (!replay.phase || replay.stations !== 3 || /[\u3400-\u9fff]/.test(replay.text || '')) throw new Error(`${name}: English journey invalid ${JSON.stringify(replay)}`);
   await page.screenshot({ path: `${output}/${name}-case-replay.png`, fullPage: false });
 
   if (name === 'desktop') {

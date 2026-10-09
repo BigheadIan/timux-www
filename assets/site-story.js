@@ -56,6 +56,8 @@
   const modelStage = make('div', 'model-stage');
   modelStage.innerHTML = english ? '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><defs><marker id="orb-flow-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path class="orb-flow-head" d="M1 1 L11 6 L1 11 Z"/></marker></defs><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><circle class="orb-loop" cx="250" cy="250" r="216"/><path class="orb-flow" d="M250 34 A216 216 0 0 1 466 250" marker-end="url(#orb-flow-head)"/><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/></svg><div class="orb-center"><b>CORE</b><span>Do the right work</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>Align on outcomes,<br>then move work forward.</h3><p class="model-story-description">Reduce cost, improve operations, manage risk, or grow revenue: first define what should change.</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>' : '<div class="model-orb" aria-hidden="true"><svg viewBox="0 0 500 500"><defs><marker id="orb-flow-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path class="orb-flow-head" d="M1 1 L11 6 L1 11 Z"/></marker></defs><circle class="orb-guide" cx="250" cy="250" r="206"/><g class="orb-segments"></g><circle class="orb-loop" cx="250" cy="250" r="216"/><path class="orb-flow" d="M250 34 A216 216 0 0 1 466 250" marker-end="url(#orb-flow-head)"/><path class="orb-shield" pathLength="1" d="M250 20 L452 100 L436 290 Q410 410 250 482 Q90 410 64 290 L48 100 Z"/></svg><div class="orb-center"><b>CORE</b><span>做對的事</span></div></div><div class="model-story-copy"><p class="eyebrow">ONE SYSTEM / THREE PRINCIPLES</p><h3>先對準結果，<br>再讓工作前進。</h3><p class="model-story-description">降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。</p><div class="model-chapters"><span>01 CORE</span><span>02 SCALE</span><span>03 TRUST</span></div></div>';
   modelTrack.append(modelStage); models.before(modelTrack);
+  modelStage.querySelector('.model-story-copy').append(make('a','layout-method-link',english ? 'Explore the adoption approach ↗' : '探索完整導入方法 ↗'));
+  modelStage.querySelector('.layout-method-link').href = english ? '/en/#roadmap' : '/method/';
   const ns = 'http://www.w3.org/2000/svg';
   const segments = Array.from({length:5}, (_,i) => {
     const p = document.createElementNS(ns,'path'); p.setAttribute('fill', colors[i]);
@@ -67,13 +69,13 @@
     return `M${a} A${radius} ${radius} 0 0 1 ${b} L${c} A112 112 0 0 0 ${d} Z`;
   }
   const descriptions = english ? [
-    ['CORE','Do the right work','Align on outcomes,<br>then move work forward.','Reduce cost, improve operations, manage risk, or grow revenue: first define what should change.'],
-    ['SCALE','Finish the work','Every signal<br>gets a next step.','Sense, add context, approve, act, and learn. Let AI complete the workflow, then improve from results.'],
-    ['TRUST','Use AI with confidence','Extend capability,<br>keep boundaries clear.','Transparent evidence, recoverable actions, human decisions, scoped permissions, and traceable results.']
+    ['CORE','Do the right work','Align on outcomes,<br>then move work forward.','Align on business outcomes.'],
+    ['SCALE','Finish the work','Every signal<br>gets a next step.','Take tasks through to completion.'],
+    ['TRUST','Use AI with confidence','Extend capability,<br>keep boundaries clear.','Keep execution under control.']
   ] : [
-    ['CORE','做對的事','先對準結果，<br>再讓工作前進。','降低成本、提升營運、管理風險，或改善收入：先確認這次真正要改變什麼。'],
-    ['SCALE','把事情做完','每一個訊號，<br>都有下一步。','感知、補足情境、審批、行動、復盤。讓 AI 走過完整流程，再用結果持續改進。'],
-    ['TRUST','放心地使用','能力向外延伸，<br>邊界始終清楚。','證據透明、確認恢復方式、人保有決策、權限有範圍、結果可追溯。']
+    ['CORE','做對的事','先對準結果，<br>再讓工作前進。','對準經營結果。'],
+    ['SCALE','把事情做完','每一個訊號，<br>都有下一步。','讓任務走到完成。'],
+    ['TRUST','放心地使用','能力向外延伸，<br>邊界始終清楚。','讓過程保持可控。']
   ];
 
   let enabled = false, frame = 0, modelIndex = -1, heroIndex = -1;

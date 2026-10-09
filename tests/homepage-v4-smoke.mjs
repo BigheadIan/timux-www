@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v33-balanced-cases-20261009") {
+  if (marker !== "homepage-v34-compact-journeys-20261009") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -101,12 +101,14 @@ async function inspect(viewport, name) {
     heroScopes: document.querySelectorAll('.intl-hero-scope span').length,
     heroProofSteps: document.querySelectorAll('.intl-hero-proof > div').length,
     sectionSubtitles: document.querySelectorAll('.intl-section-en').length,
-    caseTags: document.querySelectorAll('.intl-case-meta span').length
+    caseScenes: document.querySelectorAll('.case-scene').length,
+    caseHeadings: document.querySelectorAll('.case-headline').length,
+    heroIndex: document.querySelectorAll('.layout-hero-index>a').length
   }));
   if (internationalLayer.navEnglish.join('|') !== 'Solutions|Case Studies|AI Adoption|Talk to us' ||
       internationalLayer.mobileEnglish.join('|') !== 'Solutions|Case Studies|AI Adoption' ||
-      internationalLayer.heroScopes !== 3 || internationalLayer.heroProofSteps !== 3 ||
-      internationalLayer.sectionSubtitles !== 3 || internationalLayer.caseTags !== 6) {
+      internationalLayer.heroScopes !== 0 || internationalLayer.heroProofSteps !== 0 ||
+      internationalLayer.sectionSubtitles !== 0 || internationalLayer.caseScenes !== 2 || internationalLayer.caseHeadings !== 2 || internationalLayer.heroIndex !== 3) {
     throw new Error(`${name}: international layer invalid ${JSON.stringify(internationalLayer)}`);
   }
   let navInteraction;
@@ -166,7 +168,8 @@ async function inspect(viewport, name) {
       if (style.display === "none" || style.visibility === "hidden" || rect.width === 0 || rect.height === 0) continue;
       const size = Number.parseFloat(style.fontSize);
       const intentionalEnglishMicrocopy = element.matches('.intl-nav-en,.intl-lang,.intl-lang *,.intl-mobile-summary small,.intl-mobile-lang,.intl-mobile-lang *,.intl-hero-scope span,.intl-hero-proof b,.intl-hero-proof span,.intl-section-en,.intl-case-meta span,.nav-cta .intl-nav-zh');
-      if (size < (intentionalEnglishMicrocopy ? 9 : 14)) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
+      const compactLabel = element.matches('.eyebrow,.layout-hero-index b,.solution-card>a,.adoption-path b,.adoption-path small,.case-scene .chapter span,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps i,.contact-form>.fine');
+      if (size < (intentionalEnglishMicrocopy ? 9 : compactLabel ? 10 : 14)) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
     }
     return failures;
   });
@@ -460,7 +463,7 @@ await reducedPage.close();
 const transitionPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await installCallMocks(transitionPage);
 await transitionPage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
-const methodLink = transitionPage.locator('.model-section a[href^="/method/"]');
+const methodLink = transitionPage.locator('.model-section .section-tail a[href^="/method/"]');
 await methodLink.click({ noWaitAfter: true });
 await transitionPage.waitForFunction(() => document.querySelector('.page-transition')?.classList.contains('is-leaving'), null, { timeout: 400 });
 await transitionPage.waitForURL(/\/method\//, { timeout: 5000 });
