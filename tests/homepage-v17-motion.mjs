@@ -85,6 +85,13 @@ for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
   if(actualNear!==expectedNear||Math.max(...state.scales)-Math.min(...state.scales)<.38||state.bounds.some(v=>!v))throw Error('MJ depth invalid: '+JSON.stringify({q,state}));
   mjDepthSamples.push({q,expectedNear,...state});
 }
+const mjEntry=await page.locator('#case-mj').evaluate(scene=>({
+  enabled:document.documentElement.classList.contains('case-entry-motion'),
+  visible:scene.classList.contains('case-entry-visible'),
+  opacity:getComputedStyle(scene.querySelector('.case-headline')).opacity,
+  transform:getComputedStyle(scene.querySelector('.case-headline')).transform
+}));
+if(!mjEntry.enabled||!mjEntry.visible||Number(mjEntry.opacity)<.99||mjEntry.transform!=='none')throw Error('MJ entry motion incomplete: '+JSON.stringify(mjEntry));
 await page.screenshot({path:output+'/case-1.png'});
 async function sampleRoute(selector,points){
   const samples=[];
@@ -138,6 +145,7 @@ await page.emulateMedia({reducedMotion:'reduce'});
 if(await page.locator('html').evaluate(e=>e.classList.contains('story-desktop')))throw Error('reduced motion not respected');
 await page.waitForTimeout(100);
 if(await page.locator('#case-southeast .station-complete').count()!==3||await page.locator('html').evaluate(e=>e.classList.contains('journey-motion')))throw Error('case journey reduced-motion fallback incomplete');
+if(await page.locator('html').evaluate(e=>e.classList.contains('case-entry-motion'))||await page.locator('#case-mj .case-headline').evaluate(e=>getComputedStyle(e).opacity)!=='1')throw Error('MJ entry reduced-motion fallback incomplete');
 await context.close();
 const staticContext=await browser.newContext({javaScriptEnabled:false,viewport:{width:1920,height:1080}});
 const staticPage=await staticContext.newPage();

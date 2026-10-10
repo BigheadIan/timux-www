@@ -13,6 +13,29 @@
     const route = scene.querySelector('.route-main');
     return {track, scene, route, length: route?.getTotalLength(), traveller: scene.querySelector('.route-traveller'), stations: [...scene.querySelectorAll('.station')], phones: [...scene.querySelectorAll('.device')]};
   });
+  const mjScene = document.querySelector('.case-scene.a-mj');
+  let entryObserver;
+  function configureMjEntry() {
+    entryObserver?.disconnect();
+    entryObserver = undefined;
+    root.classList.toggle('case-entry-motion', !reduced.matches);
+    if (!mjScene || reduced.matches) {
+      mjScene?.classList.add('case-entry-visible');
+      return;
+    }
+    const rect = mjScene.getBoundingClientRect();
+    if (rect.top < innerHeight * .88 && rect.bottom > innerHeight * .12) {
+      mjScene.classList.add('case-entry-visible');
+      return;
+    }
+    entryObserver = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      mjScene.classList.add('case-entry-visible');
+      entryObserver?.disconnect();
+      entryObserver = undefined;
+    }, {threshold:.12,rootMargin:'0px 0px -8%'});
+    entryObserver.observe(mjScene);
+  }
   function measure() {
     measurements = scenes.map(({track,scene}) => ({top:track.getBoundingClientRect().top + scrollY, travel:Math.max(1,track.offsetHeight - scene.offsetHeight)}));
   }
@@ -53,6 +76,7 @@
       root.style.setProperty('--case-height',`${1000*Math.max(.4,scale)}px`);
     }
     root.classList.toggle('journey-motion', desktop.matches && !reduced.matches);
+    configureMjEntry();
     measure(); requestPaint();
   }
   addEventListener('scroll',requestPaint,{passive:true});

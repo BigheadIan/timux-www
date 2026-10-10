@@ -23,6 +23,33 @@
 .case-scene .editorial-steps>div{border-top:2px solid transparent;padding-top:10px;transition:border-color .25s}
 .case-scene .editorial-steps>.is-current{border-color:#856ec5}
 .case-scene .editorial-steps{gap:30px}
+.case-entry-motion .a-mj .chapter,
+.case-entry-motion .a-mj .client-mark,
+.case-entry-motion .a-mj .case-headline,
+.case-entry-motion .a-mj .editorial-title>p,
+.case-entry-motion .a-mj .editorial-steps>div,
+.case-entry-motion .a-mj .runway,
+.case-entry-motion .a-mj .scene-foot{
+  transition:opacity .72s cubic-bezier(.22,1,.36,1),transform .82s cubic-bezier(.22,1,.36,1),filter .72s ease;
+}
+.case-entry-motion .a-mj:not(.case-entry-visible) .chapter,
+.case-entry-motion .a-mj:not(.case-entry-visible) .client-mark,
+.case-entry-motion .a-mj:not(.case-entry-visible) .case-headline,
+.case-entry-motion .a-mj:not(.case-entry-visible) .editorial-title>p,
+.case-entry-motion .a-mj:not(.case-entry-visible) .editorial-steps>div,
+.case-entry-motion .a-mj:not(.case-entry-visible) .runway,
+.case-entry-motion .a-mj:not(.case-entry-visible) .scene-foot{
+  opacity:0;transform:translate3d(0,64px,0);filter:blur(5px)
+}
+.case-entry-motion .a-mj.case-entry-visible .chapter{transition-delay:0s}
+.case-entry-motion .a-mj.case-entry-visible .client-mark{transition-delay:.07s}
+.case-entry-motion .a-mj.case-entry-visible .case-headline{transition-delay:.14s}
+.case-entry-motion .a-mj.case-entry-visible .editorial-title>p{transition-delay:.21s}
+.case-entry-motion .a-mj.case-entry-visible .editorial-steps>div:nth-child(1){transition-delay:.28s}
+.case-entry-motion .a-mj.case-entry-visible .editorial-steps>div:nth-child(2){transition-delay:.36s}
+.case-entry-motion .a-mj.case-entry-visible .editorial-steps>div:nth-child(3){transition-delay:.44s}
+.case-entry-motion .a-mj.case-entry-visible .runway{transition-delay:.2s}
+.case-entry-motion .a-mj.case-entry-visible .scene-foot{transition-delay:.5s}
 .case-scene .station h3{line-height:1.35}
 .case-scene .verify-note>span,.case-scene .human-icon{flex-shrink:0}
 .case-scene .chapter{font-size:14px}
@@ -102,4 +129,5 @@ html[lang=en] .case-scene .editorial-steps b{font-size:17px}
   .case-scene *{transition:none!important}
   .case-scene .route-main{stroke-dashoffset:0}
   .case-scene .device{will-change:auto}
+  .a-mj .chapter,.a-mj .client-mark,.a-mj .case-headline,.a-mj .editorial-title>p,.a-mj .editorial-steps>div,.a-mj .runway,.a-mj .scene-foot{opacity:1!important;transform:none!important;filter:none!important}
 }
