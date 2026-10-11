@@ -47,6 +47,7 @@ if(pausedBefore!==pausedAfter||!await page.locator('.partner-orbit').evaluate(e=
 await page.mouse.move(0,0);await page.waitForTimeout(300);
 await page.screenshot({path:`${output}/partner-orbit.png`});
 const cases=[];
+const chapterPanelTops=[];
 const mjDepthSamples=[];
 async function positionCase(id,q){
   await page.evaluate(({id,q})=>{
@@ -64,24 +65,21 @@ for(const q of [.12,.5,.88,.12,.88]){
     complete:e.querySelectorAll('.station-complete').length,
     traveller:[e.querySelector('.route-traveller').getAttribute('cx'),e.querySelector('.route-traveller').getAttribute('cy')],
     footerTop:e.querySelector('.scene-foot').getBoundingClientRect().top,
-    footerBottom:e.querySelector('.scene-foot').getBoundingClientRect().bottom
+    footerBottom:e.querySelector('.scene-foot').getBoundingClientRect().bottom,
+    chapterPanelTop:e.closest('.case-journey-track').nextElementSibling.getBoundingClientRect().top
   }));
   if(sample.phase!==Math.floor(q*3)||sample.active!==1||sample.top<78||sample.bottom>1081||sample.footerBottom>sample.bottom+1||Math.abs(sample.progress-q)>.005)throw Error('case journey invalid: '+JSON.stringify(sample));
   cases.push(sample);
+  chapterPanelTops.push(sample.chapterPanelTop);
 }
+if(!(chapterPanelTops[0]>900&&chapterPanelTops[1]<750&&chapterPanelTops[2]<450))throw Error('MJ chapter panel did not rise across the previous scene: '+JSON.stringify(chapterPanelTops));
 await page.screenshot({path:output+'/case-0.png'});
-const mjEntryBefore=await page.locator('#case-mj').evaluate(scene=>{
-  const inner=getComputedStyle(scene.querySelector('.scene-inner'));
-  const headline=getComputedStyle(scene.querySelector('.case-headline'));
-  return {
-    visible:scene.classList.contains('case-entry-visible'),
-    innerOpacity:Number(inner.opacity),
-    entryOffset:new DOMMatrixReadOnly(inner.transform).m42,
-    headlineOpacity:Number(headline.opacity),
-    headlineTransform:headline.transform
-  };
+const chapterPanel=await page.locator('#case-mj').evaluate(scene=>{
+  const track=scene.closest('.case-journey-track'),previous=track.previousElementSibling,style=getComputedStyle(track);
+  const previousTop=previous.getBoundingClientRect().top+scrollY,trackTop=track.getBoundingClientRect().top+scrollY;
+  return {overlap:previousTop+previous.offsetHeight-trackTop,viewportHeight:innerHeight,borderRadius:parseFloat(style.borderTopLeftRadius),background:style.backgroundColor,zIndex:Number(style.zIndex)};
 });
-if(mjEntryBefore.visible||mjEntryBefore.innerOpacity>.1||mjEntryBefore.entryOffset<250||mjEntryBefore.headlineOpacity<.99||mjEntryBefore.headlineTransform!=='none')throw Error('MJ whole-module entry did not start below viewport: '+JSON.stringify(mjEntryBefore));
+if(chapterPanel.overlap<chapterPanel.viewportHeight*.7||chapterPanel.overlap>chapterPanel.viewportHeight*.8||chapterPanel.borderRadius<30||chapterPanel.background!=='rgb(245, 244, 240)'||chapterPanel.zIndex!==2)throw Error('MJ chapter panel styling invalid: '+JSON.stringify(chapterPanel));
 for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
   await positionCase('case-mj',q);
   const state=await page.locator('#case-mj').evaluate(scene=>{
@@ -97,15 +95,6 @@ for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
   if(actualNear!==expectedNear||Math.max(...state.scales)-Math.min(...state.scales)<.38||state.bounds.some(v=>!v))throw Error('MJ depth invalid: '+JSON.stringify({q,state}));
   mjDepthSamples.push({q,expectedNear,...state});
 }
-const mjEntry=await page.locator('#case-mj').evaluate(scene=>({
-  enabled:document.documentElement.classList.contains('case-entry-motion'),
-  visible:scene.classList.contains('case-entry-visible'),
-  innerOpacity:Number(getComputedStyle(scene.querySelector('.scene-inner')).opacity),
-  entryOffset:new DOMMatrixReadOnly(getComputedStyle(scene.querySelector('.scene-inner')).transform).m42,
-  headlineOpacity:Number(getComputedStyle(scene.querySelector('.case-headline')).opacity),
-  headlineTransform:getComputedStyle(scene.querySelector('.case-headline')).transform
-}));
-if(!mjEntry.enabled||!mjEntry.visible||mjEntry.innerOpacity<.99||Math.abs(mjEntry.entryOffset)>1||mjEntry.headlineOpacity<.99||mjEntry.headlineTransform!=='none')throw Error('MJ whole-module entry motion incomplete: '+JSON.stringify(mjEntry));
 await page.screenshot({path:output+'/case-1.png'});
 async function sampleRoute(selector,points){
   const samples=[];
@@ -159,7 +148,7 @@ await page.emulateMedia({reducedMotion:'reduce'});
 if(await page.locator('html').evaluate(e=>e.classList.contains('story-desktop')))throw Error('reduced motion not respected');
 await page.waitForTimeout(100);
 if(await page.locator('#case-southeast .station-complete').count()!==3||await page.locator('html').evaluate(e=>e.classList.contains('journey-motion')))throw Error('case journey reduced-motion fallback incomplete');
-if(await page.locator('html').evaluate(e=>e.classList.contains('case-entry-motion'))||await page.locator('#case-mj .case-headline').evaluate(e=>getComputedStyle(e).opacity)!=='1')throw Error('MJ entry reduced-motion fallback incomplete');
+if(parseFloat(await page.locator('#case-mj').evaluate(e=>getComputedStyle(e.closest('.case-journey-track')).marginTop))!==0)throw Error('MJ chapter overlap reduced-motion fallback incomplete');
 await context.close();
 const staticContext=await browser.newContext({javaScriptEnabled:false,viewport:{width:1920,height:1080}});
 const staticPage=await staticContext.newPage();
