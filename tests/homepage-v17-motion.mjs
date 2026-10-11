@@ -70,6 +70,18 @@ for(const q of [.12,.5,.88,.12,.88]){
   cases.push(sample);
 }
 await page.screenshot({path:output+'/case-0.png'});
+const mjEntryBefore=await page.locator('#case-mj').evaluate(scene=>{
+  const inner=getComputedStyle(scene.querySelector('.scene-inner'));
+  const headline=getComputedStyle(scene.querySelector('.case-headline'));
+  return {
+    visible:scene.classList.contains('case-entry-visible'),
+    innerOpacity:Number(inner.opacity),
+    entryOffset:new DOMMatrixReadOnly(inner.transform).m42,
+    headlineOpacity:Number(headline.opacity),
+    headlineTransform:headline.transform
+  };
+});
+if(mjEntryBefore.visible||mjEntryBefore.innerOpacity>.1||mjEntryBefore.entryOffset<250||mjEntryBefore.headlineOpacity<.99||mjEntryBefore.headlineTransform!=='none')throw Error('MJ whole-module entry did not start below viewport: '+JSON.stringify(mjEntryBefore));
 for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
   await positionCase('case-mj',q);
   const state=await page.locator('#case-mj').evaluate(scene=>{
@@ -88,10 +100,12 @@ for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
 const mjEntry=await page.locator('#case-mj').evaluate(scene=>({
   enabled:document.documentElement.classList.contains('case-entry-motion'),
   visible:scene.classList.contains('case-entry-visible'),
-  opacity:getComputedStyle(scene.querySelector('.case-headline')).opacity,
-  transform:getComputedStyle(scene.querySelector('.case-headline')).transform
+  innerOpacity:Number(getComputedStyle(scene.querySelector('.scene-inner')).opacity),
+  entryOffset:new DOMMatrixReadOnly(getComputedStyle(scene.querySelector('.scene-inner')).transform).m42,
+  headlineOpacity:Number(getComputedStyle(scene.querySelector('.case-headline')).opacity),
+  headlineTransform:getComputedStyle(scene.querySelector('.case-headline')).transform
 }));
-if(!mjEntry.enabled||!mjEntry.visible||Number(mjEntry.opacity)<.99||mjEntry.transform!=='none')throw Error('MJ entry motion incomplete: '+JSON.stringify(mjEntry));
+if(!mjEntry.enabled||!mjEntry.visible||mjEntry.innerOpacity<.99||Math.abs(mjEntry.entryOffset)>1||mjEntry.headlineOpacity<.99||mjEntry.headlineTransform!=='none')throw Error('MJ whole-module entry motion incomplete: '+JSON.stringify(mjEntry));
 await page.screenshot({path:output+'/case-1.png'});
 async function sampleRoute(selector,points){
   const samples=[];
