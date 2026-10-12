@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v56-mobile-carousel-readable';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v57-mobile-human-transition';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -78,7 +78,7 @@ for (const path of ['', 'en/']) {
     });
 
     const maxHeight = path ? 14200 : 14000;
-    if (!state.marker?.includes('mobile-carousel-readable') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    if (!state.marker?.includes('mobile-human-transition') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionHeights.filter(Boolean).length !== 1 || state.solutionHeights.some(height => height > 305)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
@@ -120,6 +120,7 @@ for (const path of ['', 'en/']) {
           bottom: rect.bottom,
           resultVisible: result ? getComputedStyle(result).display !== 'none' : false,
           resultText: result?.textContent.replace(/\s+/g, ' ').trim() || '',
+          animationDuration: current ? getComputedStyle(current).animationDuration : '',
           expectedTerm
         };
       }, heroTerms[index]);
@@ -128,6 +129,7 @@ for (const path of ['', 'en/']) {
         const resultTerms = path ? ['Execute', 'Write back', 'Record'] : ['執行任務', '回寫系統', '留下紀錄'];
         if (!heroState.resultVisible || resultTerms.some(term => !heroState.resultText.includes(term))) throw Error(`mobile hero result regression ${path} ${JSON.stringify(heroState)}`);
       }
+      if (index === 3 && heroState.animationDuration !== '0.75s') throw Error(`mobile hero 03-to-04 transition regression ${path} ${JSON.stringify({viewport, heroState})}`);
       await page.waitForTimeout(320);
       await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-hero-${index + 1}.png`});
     }
