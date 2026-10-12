@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v55-mobile-carousel-dwell';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v56-mobile-carousel-readable';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -77,8 +77,8 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 12500 : 12200;
-    if (!state.marker?.includes('mobile-carousel-dwell') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    const maxHeight = path ? 14200 : 14000;
+    if (!state.marker?.includes('mobile-carousel-readable') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionHeights.filter(Boolean).length !== 1 || state.solutionHeights.some(height => height > 305)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
@@ -169,7 +169,7 @@ for (const path of ['', 'en/']) {
           expectedCount: spec.count
         };
       }, spec);
-      const expectedBeatDistance = viewport.width <= 370 ? 165 : 170;
+      const expectedBeatDistance = viewport.width <= 370 ? 240 : 250;
       const flowStoryRange = expectedBeatDistance * spec.count;
       if (Math.abs(flowTrack.range - (expectedBeatDistance * (spec.count + 1))) > 3 || flowTrack.shellHeight > viewport.height - 70) throw Error(`mobile flow sizing regression ${path} ${JSON.stringify({viewport, spec, flowTrack})}`);
       for (let index = 0; index < spec.count; index += 1) {
@@ -196,9 +196,18 @@ for (const path of ['', 'en/']) {
       await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...flowTrack, distance: flowStoryRange + (expectedBeatDistance / 2)});
       const flowDwell = await page.locator(spec.section).evaluate((section, spec) => ({active: section.querySelector(spec.tabs)?.dataset.active, top: section.querySelector(':scope > .shell').getBoundingClientRect().top}), spec);
       if (flowDwell.active !== String(spec.count - 1) || Math.abs(flowDwell.top - 70) > 2) throw Error(`mobile flow final dwell regression ${path} ${JSON.stringify({viewport, spec, flowTrack, flowDwell})}`);
+      for (let index = 0; index < spec.count; index += 1) {
+        const start = expectedBeatDistance * (index + 0.5);
+        await page.evaluate(({top, start}) => scrollTo({top: top + start, behavior: 'instant'}), {...flowTrack, start});
+        await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+        const expected = Math.min(index + 1, spec.count - 1);
+        await page.waitForFunction(({selector, expectedIndex}) => document.querySelector(selector)?.dataset.active === String(expectedIndex), {selector: spec.tabs, expectedIndex: expected});
+      }
       await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), flowTrack);
       await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
-      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
+      await page.waitForTimeout(80);
+      const flowFlick = Number(await page.locator(spec.tabs).getAttribute('data-active'));
+      if (flowFlick > 1) throw Error(`mobile flow one-flick skipped a stage ${path} ${JSON.stringify({viewport, spec, flowFlick})}`);
       await page.locator(`${spec.tabs} button`).first().click();
       await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '0', spec.tabs);
       await page.locator(spec.surface).evaluate(element => {
@@ -222,7 +231,7 @@ for (const path of ['', 'en/']) {
           sceneHeight: scene.offsetHeight
         };
       });
-      const caseBeatDistance = viewport.width <= 370 ? 170 : 180;
+      const caseBeatDistance = viewport.width <= 370 ? 240 : 250;
       const caseStoryRange = caseBeatDistance * 3;
       const expectedCaseRange = caseBeatDistance * 4;
       if (Math.abs(caseTrack.range - expectedCaseRange) > 3 || caseTrack.sceneHeight > viewport.height - 70) throw Error(`mobile case sizing regression ${path} ${JSON.stringify({viewport, spec, caseTrack})}`);
@@ -245,9 +254,18 @@ for (const path of ['', 'en/']) {
       await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...caseTrack, distance: caseStoryRange + (caseBeatDistance / 2)});
       const caseDwell = await page.locator(spec.scene).evaluate((scene, spec) => ({active: scene.querySelector(spec.tabs)?.dataset.active, top: scene.getBoundingClientRect().top}), spec);
       if (caseDwell.active !== '2' || Math.abs(caseDwell.top - 70) > 2) throw Error(`mobile case final dwell regression ${path} ${JSON.stringify({viewport, spec, caseTrack, caseDwell})}`);
+      for (let index = 0; index < 3; index += 1) {
+        const start = caseBeatDistance * (index + 0.5);
+        await page.evaluate(({top, start}) => scrollTo({top: top + start, behavior: 'instant'}), {...caseTrack, start});
+        await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+        const expected = Math.min(index + 1, 2);
+        await page.waitForFunction(({selector, expectedIndex}) => document.querySelector(selector)?.dataset.active === String(expectedIndex), {selector: spec.tabs, expectedIndex: expected});
+      }
       await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), caseTrack);
       await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
-      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
+      await page.waitForTimeout(80);
+      const caseFlick = Number(await page.locator(spec.tabs).getAttribute('data-active'));
+      if (caseFlick > 1) throw Error(`mobile case one-flick skipped a stage ${path} ${JSON.stringify({viewport, spec, caseFlick})}`);
       await page.locator(`${spec.tabs} button`).first().click();
       await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '0', spec.tabs);
       await page.locator(`${spec.scene} .scene-inner`).evaluate(element => {
@@ -287,7 +305,7 @@ for (const path of ['', 'en/']) {
         range: section.offsetHeight - shell.offsetHeight
       };
     });
-    const modelTailDistance = viewport.width <= 370 ? 170 : 180;
+    const modelTailDistance = viewport.width <= 370 ? 240 : 250;
     const modelStoryRange = methodTrack.range - modelTailDistance;
     const modelBeatDistance = modelStoryRange / 3;
     if (modelBeatDistance < 165) throw Error(`mobile model pacing regression ${path} ${JSON.stringify({viewport, methodTrack, modelStoryRange})}`);
@@ -316,10 +334,19 @@ for (const path of ['', 'en/']) {
     await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...methodTrack, distance: modelStoryRange + (modelTailDistance / 2)});
     const modelDwell = await page.locator('#method').evaluate(section => ({active: section.querySelector('.mobile-model-tabs')?.dataset.active, top: section.querySelector(':scope > .shell').getBoundingClientRect().top}));
     if (modelDwell.active !== '2' || Math.abs(modelDwell.top - 70) > 2) throw Error(`mobile model final dwell regression ${path} ${JSON.stringify({viewport, methodTrack, modelDwell})}`);
+    for (let index = 0; index < 3; index += 1) {
+      const start = modelBeatDistance * (index + 0.5);
+      await page.evaluate(({top, start}) => scrollTo({top: top + start, behavior: 'instant'}), {...methodTrack, start});
+      await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+      const expected = Math.min(index + 1, 2);
+      await page.waitForFunction(expectedIndex => document.querySelector('.mobile-model-tabs')?.dataset.active === String(expectedIndex), expected);
+    }
 
     await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), methodTrack);
     await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
-    await page.waitForFunction(() => document.querySelector('.mobile-model-tabs')?.dataset.active === '1');
+    await page.waitForTimeout(80);
+    const modelFlick = Number(await page.locator('.mobile-model-tabs').getAttribute('data-active'));
+    if (modelFlick > 1) throw Error(`mobile model one-flick skipped a stage ${path} ${JSON.stringify({viewport, modelFlick})}`);
 
     await page.locator('.mobile-model-tabs button').first().click();
     await page.waitForFunction(() => document.querySelector('.mobile-model-tabs')?.dataset.active === '0');

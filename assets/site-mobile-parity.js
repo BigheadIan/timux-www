@@ -198,7 +198,7 @@
         carousel.metric = null;
         return;
       }
-      const stageDistance = innerWidth <= 370 ? 170 : 180;
+      const stageDistance = innerWidth <= 370 ? 240 : 250;
       const storyRange = carousel.items.length * stageDistance;
       const tailDistance = stageDistance;
       const travel = storyRange + tailDistance;
@@ -295,8 +295,8 @@
     methodSection.style.removeProperty('--mobile-model-track-height');
     const shell = methodSection.querySelector(':scope > .shell');
     const shellHeight = shell?.offsetHeight || innerHeight;
-    const storyRange = Math.max(modelCards.length * (innerWidth <= 370 ? 170 : 180), methodSection.offsetHeight - shellHeight);
-    const tailDistance = innerWidth <= 370 ? 170 : 180;
+    const storyRange = Math.max(modelCards.length * (innerWidth <= 370 ? 240 : 250), methodSection.offsetHeight - shellHeight);
+    const tailDistance = innerWidth <= 370 ? 240 : 250;
     methodSection.style.setProperty('--mobile-model-track-height', `${Math.ceil(shellHeight + storyRange + tailDistance)}px`);
     modelTrackMetric = {
       top: methodSection.getBoundingClientRect().top + scrollY - modelStageOffset,
@@ -379,7 +379,7 @@
         carousel.metric = null;
         return;
       }
-      const beatDistance = innerWidth <= 370 ? 165 : 170;
+      const beatDistance = innerWidth <= 370 ? 240 : 250;
       const storyRange = carousel.items.length * beatDistance;
       const tailDistance = beatDistance;
       carousel.section.style.setProperty('--mobile-flow-track-height', `${Math.ceil(carousel.shell.offsetHeight + storyRange + tailDistance)}px`);
