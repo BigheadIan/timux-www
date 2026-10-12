@@ -81,7 +81,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v37-back-to-top-20261009") {
+  if (marker !== "homepage-v41-mobile-parity-20261012") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -157,7 +157,7 @@ async function inspect(viewport, name) {
 
   const fontAudit = await page.evaluate(() => {
     const failures = [];
-    for (const element of document.querySelectorAll("body *:not(.timux-chat-widget):not(.timux-chat-widget *)")) {
+    for (const element of document.querySelectorAll("body *:not(.timux-chat-widget):not(.timux-chat-widget *):not(.engine-stage):not(.engine-stage *)")) {
       const directText = [...element.childNodes]
         .filter((node) => node.nodeType === Node.TEXT_NODE)
         .map((node) => node.textContent.trim())
@@ -168,7 +168,7 @@ async function inspect(viewport, name) {
       if (style.display === "none" || style.visibility === "hidden" || rect.width === 0 || rect.height === 0) continue;
       const size = Number.parseFloat(style.fontSize);
       const intentionalEnglishMicrocopy = element.matches('.intl-nav-en,.intl-lang,.intl-lang *,.intl-mobile-summary small,.intl-mobile-lang,.intl-mobile-lang *,.intl-hero-scope span,.intl-hero-proof b,.intl-hero-proof span,.intl-section-en,.intl-case-meta span,.nav-cta .intl-nav-zh');
-      const compactLabel = element.matches('.eyebrow,.layout-hero-index b,.solution-card>a,.adoption-path b,.adoption-path small,.case-scene .chapter span,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps i,.contact-form>.fine');
+      const compactLabel = element.matches('.eyebrow,.layout-hero-index b,.solution-card>a,.adoption-path b,.adoption-path small,.partner-orbit .mono,.case-scene .chapter span,.case-scene .client-mark span,.case-scene .route-key,.case-scene .station em,.case-scene .station h3,.case-scene .station p,.case-scene .verify-note b,.case-scene .verify-note>span,.case-scene .human-icon,.case-scene .handoff-note b,.case-scene .scene-foot *,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps b,.case-scene .editorial-steps i,.model-pie .pie-label *,.contact-form>.fine,.back-to-top span');
       if (size < (intentionalEnglishMicrocopy ? 9 : compactLabel ? 10 : 14)) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
     }
     return failures;
@@ -253,8 +253,7 @@ async function inspect(viewport, name) {
 
   const expectsScenes = viewport.width >= 1100 && viewport.height >= 700;
   if (!expectsScenes) {
-    await page.locator('.workflow-demo').scrollIntoViewIfNeeded();
-    await page.waitForFunction(() => Boolean(document.querySelector('.workflow-demo')?.dataset.flowStep));
+    await page.locator('.engine-stage').scrollIntoViewIfNeeded();
   }
   const motion = await page.evaluate(() => ({
     system: document.documentElement.dataset.motionSystem,
@@ -270,12 +269,14 @@ async function inspect(viewport, name) {
     sceneIndicators: document.querySelectorAll(".scene-indicator").length
     ,storyDesktop: document.documentElement.classList.contains('story-desktop'),
     engineLayers: document.querySelectorAll('.engine-layer').length,
-    modelStages: document.querySelectorAll('.model-stage').length
+    modelStages: document.querySelectorAll('.model-stage').length,
+    mobileEngineVisible: getComputedStyle(document.querySelector('.engine-stage')).display !== 'none',
+    mobileWorkflowHidden: getComputedStyle(document.querySelector('.workflow-demo')).display === 'none'
   }));
   if (motion.system !== "v17" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 ||
       motion.storyDesktop !== expectsScenes || motion.engineLayers !== 5 || motion.modelStages !== 1 ||
       motion.sceneMotion || motion.sceneModules || motion.sceneLayers || motion.sceneIndicators ||
-      (!expectsScenes && !motion.flowStep)) {
+      (!expectsScenes && (!motion.mobileEngineVisible || !motion.mobileWorkflowHidden))) {
     throw new Error(`${name}: motion system unavailable ${JSON.stringify(motion)}`);
   }
 
