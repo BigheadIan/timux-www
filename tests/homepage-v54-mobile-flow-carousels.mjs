@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v53-mobile-carousel-pacing';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v54-mobile-flow-carousels';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -56,7 +56,6 @@ for (const path of ['', 'en/']) {
         },
         partnerColumns: style('.partner-orbit .logo-row').gridTemplateColumns.split(' ').length,
         partnerHeight: rect('.partner-orbit').height,
-        solutionColumns: style('.solution-grid').gridTemplateColumns.split(' ').length,
         solutionHeights: solutionCards.map(card => Math.round(card.getBoundingClientRect().height)),
         solutionPositions: solutionCards.map(card => getComputedStyle(card).position),
         adoptionPositions: adoptionCards.map(card => getComputedStyle(card).position),
@@ -68,6 +67,8 @@ for (const path of ['', 'en/']) {
         caseScenePositions: [...document.querySelectorAll('.case-scene')].map(scene => getComputedStyle(scene).position),
         tabs: [...document.querySelectorAll('.mobile-choice-tabs')].map(tabs => ({display: getComputedStyle(tabs).display, count: tabs.querySelectorAll('button').length})),
         active: {
+          solutions: document.querySelectorAll('.solution-grid > article.is-mobile-current').length,
+          adoption: document.querySelectorAll('.adoption-path > article.is-mobile-current').length,
           stations: document.querySelectorAll('.a-bus .station.is-mobile-current').length,
           devices: document.querySelectorAll('.a-mj .device.is-mobile-current').length,
           models: document.querySelectorAll('.model-pie-grid > article.is-mobile-current').length
@@ -76,13 +77,13 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 10600 : 10200;
-    if (!state.marker?.includes('mobile-carousel-pacing') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    const maxHeight = path ? 11000 : 10700;
+    if (!state.marker?.includes('mobile-flow-carousels') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
-    if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
-    if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions.some(position => position === 'sticky') || state.methodShellPosition !== 'sticky' || state.caseScenePositions.some(position => position !== 'sticky')) throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
-    if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 4 || state.tabs.some(tabs => tabs.display === 'none') || state.tabs.find(tabs => tabs.count === 5) == null || state.tabs.filter(tabs => tabs.count === 3).length !== 3 || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
+    if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionHeights.filter(Boolean).length !== 1 || state.solutionHeights.some(height => height > 305)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
+    if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions[0] !== 'sticky' || state.sectionPositions[1] !== 'sticky' || state.sectionPositions[2] === 'sticky' || state.methodShellPosition !== 'sticky' || state.caseScenePositions.some(position => position !== 'sticky')) throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
+    if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 6 || state.tabs.some(tabs => tabs.display === 'none') || state.tabs.filter(tabs => tabs.count === 5).length !== 1 || state.tabs.filter(tabs => tabs.count === 4).length !== 1 || state.tabs.filter(tabs => tabs.count === 3).length !== 4 || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
     if (state.controls.some(control => control.display !== 'none')) throw Error(`floating control regression ${path} ${JSON.stringify(state.controls)}`);
 
     const heroTrack = await page.locator('.engine-track').evaluate(track => {
@@ -140,6 +141,56 @@ for (const path of ['', 'en/']) {
       element.dispatchEvent(new TouchEvent('touchend', {changedTouches: [end], bubbles: true}));
     });
     await page.waitForFunction(() => document.querySelector('.mobile-engine-tabs')?.dataset.active === '1');
+
+    for (const spec of [
+      {section: '#solutions', shell: '#solutions > .shell', tabs: '.mobile-solution-tabs', item: '.solution-grid > article.is-mobile-current', surface: '.solution-grid', count: 4, name: 'solutions'},
+      {section: '#adoption', shell: '#adoption > .shell', tabs: '.mobile-adoption-tabs', item: '.adoption-path > article.is-mobile-current', surface: '.adoption-path', count: 3, name: 'adoption'}
+    ]) {
+      const flowTrack = await page.locator(spec.section).evaluate((section, spec) => {
+        const shell = section.querySelector(':scope > .shell');
+        return {
+          top: section.getBoundingClientRect().top + scrollY - 70,
+          range: section.offsetHeight - shell.offsetHeight,
+          shellHeight: shell.offsetHeight,
+          expectedCount: spec.count
+        };
+      }, spec);
+      const expectedBeatDistance = viewport.width <= 370 ? 165 : 170;
+      if (Math.abs(flowTrack.range - (expectedBeatDistance * spec.count)) > 3 || flowTrack.shellHeight > viewport.height - 70) throw Error(`mobile flow sizing regression ${path} ${JSON.stringify({viewport, spec, flowTrack})}`);
+      for (let index = 0; index < spec.count; index += 1) {
+        const progress = (index + 0.5) / spec.count;
+        await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...flowTrack, progress});
+        await page.waitForFunction(({selector, expected}) => document.querySelector(selector)?.dataset.active === String(expected), {selector: spec.tabs, expected: index});
+        const flowState = await page.locator(spec.section).evaluate((section, spec) => {
+          const shell = section.querySelector(':scope > .shell').getBoundingClientRect();
+          const current = section.querySelector(spec.item);
+          const card = current?.getBoundingClientRect();
+          return {
+            active: section.querySelector(spec.tabs)?.dataset.active,
+            current: section.querySelectorAll(spec.item).length,
+            visibleCards: [...section.querySelectorAll(spec.name === 'solutions' ? '.solution-grid > article' : '.adoption-path > article')].filter(item => item.getBoundingClientRect().height > 0).length,
+            animation: current ? getComputedStyle(current).animationName : '',
+            shell: {top: shell.top, bottom: shell.bottom},
+            card: card ? {top: card.top, bottom: card.bottom} : null
+          };
+        }, spec);
+        const expectedAnimation = spec.name === 'solutions' ? 'mobile-solution-enter' : 'mobile-adoption-enter';
+        if (flowState.active !== String(index) || flowState.current !== 1 || flowState.visibleCards !== 1 || flowState.animation !== expectedAnimation || Math.abs(flowState.shell.top - 70) > 2 || flowState.shell.bottom > viewport.height + 1 || !flowState.card || flowState.card.top < flowState.shell.top || flowState.card.bottom > flowState.shell.bottom) throw Error(`mobile flow scroll regression ${path} ${JSON.stringify({viewport, spec, index, flowState})}`);
+        await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-flow-${spec.name}-${index + 1}.png`});
+      }
+      await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), flowTrack);
+      await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
+      await page.locator(`${spec.tabs} button`).first().click();
+      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '0', spec.tabs);
+      await page.locator(spec.surface).evaluate(element => {
+        const start = new Touch({identifier: 1, target: element, clientX: 300, clientY: 260});
+        const end = new Touch({identifier: 1, target: element, clientX: 80, clientY: 260});
+        element.dispatchEvent(new TouchEvent('touchstart', {touches: [start], bubbles: true}));
+        element.dispatchEvent(new TouchEvent('touchend', {changedTouches: [end], bubbles: true}));
+      });
+      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
+    }
 
     for (const spec of [
       {track: '.case-journey-track:first-child', scene: '#case-southeast', tabs: '.mobile-case-tabs', item: '.station.is-mobile-current', name: 'bus'},
@@ -281,13 +332,15 @@ const desktopState = await desktop.evaluate(() => ({
   mobileLayout: document.documentElement.classList.contains('mobile-layout-v43'),
   tabsHidden: [...document.querySelectorAll('.mobile-choice-tabs')].every(tabs => getComputedStyle(tabs).display === 'none'),
   solutionColumns: getComputedStyle(document.querySelector('.solution-grid')).gridTemplateColumns.split(' ').length,
+  visibleSolutions: [...document.querySelectorAll('.solution-grid > article')].filter(card => getComputedStyle(card).display !== 'none').length,
+  visibleAdoption: [...document.querySelectorAll('.adoption-path > article')].filter(card => getComputedStyle(card).display !== 'none').length,
   visibleModels: [...document.querySelectorAll('.model-pie-grid > article')].filter(card => getComputedStyle(card).display !== 'none').length,
   visibleStations: [...document.querySelectorAll('.a-bus .station')].filter(card => getComputedStyle(card).display !== 'none').length,
   visibleDevices: [...document.querySelectorAll('.a-mj .device')].filter(card => getComputedStyle(card).display !== 'none').length,
   overviewHidden: getComputedStyle(document.querySelector('.mobile-engine-overview')).display === 'none',
   visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => layer.getBoundingClientRect().width > 0).length
 }));
-if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.journeyScroll !== 'active' || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3 || desktopState.visibleStations !== 3 || desktopState.visibleDevices !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
+if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.journeyScroll !== 'active' || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleSolutions !== 4 || desktopState.visibleAdoption !== 3 || desktopState.visibleModels !== 3 || desktopState.visibleStations !== 3 || desktopState.visibleDevices !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
 await desktop.screenshot({path: `${output}/desktop-1920-hero.png`});
 await desktop.close();
 
@@ -296,10 +349,12 @@ await reducedPage.goto(base, {waitUntil: 'networkidle'});
 const reducedState = await reducedPage.evaluate(() => ({
   engineAnimation: getComputedStyle(document.querySelector('.engine-layer')).animationName,
   revealOpacity: getComputedStyle(document.querySelector('[data-mobile-reveal]')).opacity,
+  solutionAnimation: getComputedStyle(document.querySelector('.solution-card.is-mobile-current')).animationName,
+  adoptionAnimation: getComputedStyle(document.querySelector('.adoption-path > article.is-mobile-current')).animationName,
   stationAnimation: getComputedStyle(document.querySelector('.station.is-mobile-current')).animationName,
   deviceAnimation: getComputedStyle(document.querySelector('.device.is-mobile-current')).animationName
 }));
-if (reducedState.engineAnimation !== 'none' || reducedState.revealOpacity !== '1' || reducedState.stationAnimation !== 'none' || reducedState.deviceAnimation !== 'none') throw Error(`reduced motion regression ${JSON.stringify(reducedState)}`);
+if (reducedState.engineAnimation !== 'none' || reducedState.revealOpacity !== '1' || reducedState.solutionAnimation !== 'none' || reducedState.adoptionAnimation !== 'none' || reducedState.stationAnimation !== 'none' || reducedState.deviceAnimation !== 'none') throw Error(`reduced motion regression ${JSON.stringify(reducedState)}`);
 await reducedPage.close();
 
 await browser.close();

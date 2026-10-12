@@ -293,6 +293,85 @@
     addHorizontalSwipe(modelGrid, modelTabs, modelCards, scrollToModel);
   }
 
+  const solutionSection = document.querySelector('#solutions');
+  const solutionShell = solutionSection?.querySelector(':scope > .shell');
+  const solutionGrid = solutionSection?.querySelector('.solution-grid');
+  const solutionCards = solutionGrid ? [...solutionGrid.querySelectorAll(':scope > article')] : [];
+  const solutionTabs = solutionCards.length ? makeTabs(
+    solutionCards,
+    solutionCards.map((_, index) => String(index + 1).padStart(2, '0')),
+    'mobile-solution-tabs'
+  ) : null;
+  if (solutionTabs && solutionGrid) {
+    solutionTabs.setAttribute('aria-label', english ? 'Solution categories' : '解決方案類別');
+    [...solutionTabs.querySelectorAll('button')].forEach((button, index) => {
+      button.setAttribute('aria-label', `${String(index + 1).padStart(2, '0')} ${solutionCards[index].querySelector('h3')?.textContent || ''}`);
+    });
+    solutionGrid.before(solutionTabs);
+  }
+
+  const adoptionSection = document.querySelector('#adoption');
+  const adoptionShell = adoptionSection?.querySelector(':scope > .shell');
+  const adoptionPath = adoptionSection?.querySelector('.adoption-path');
+  const adoptionCards = adoptionPath ? [...adoptionPath.querySelectorAll(':scope > article')] : [];
+  const adoptionTabs = adoptionCards.length ? makeTabs(
+    adoptionCards,
+    adoptionCards.map((card, index) => `${String(index + 1).padStart(2, '0')} ${card.querySelector('small')?.textContent || ''}`),
+    'mobile-adoption-tabs'
+  ) : null;
+  if (adoptionTabs && adoptionPath) {
+    adoptionTabs.setAttribute('aria-label', english ? 'Adoption steps' : '導入步驟');
+    adoptionPath.before(adoptionTabs);
+  }
+
+  const flowStageOffset = 70;
+  const flowCarousels = [
+    {section: solutionSection, shell: solutionShell, surface: solutionGrid, tabs: solutionTabs, items: solutionCards},
+    {section: adoptionSection, shell: adoptionShell, surface: adoptionPath, tabs: adoptionTabs, items: adoptionCards}
+  ].filter(carousel => carousel.section && carousel.shell && carousel.surface && carousel.tabs && carousel.items.length);
+
+  function measureFlowTracks() {
+    flowCarousels.forEach(carousel => {
+      if (!phone.matches) {
+        carousel.section.style.removeProperty('--mobile-flow-track-height');
+        carousel.metric = null;
+        return;
+      }
+      const beatDistance = innerWidth <= 370 ? 165 : 170;
+      carousel.section.style.setProperty('--mobile-flow-track-height', `${Math.ceil(carousel.shell.offsetHeight + (carousel.items.length * beatDistance))}px`);
+    });
+    if (!phone.matches) return;
+    flowCarousels.forEach(carousel => {
+      carousel.metric = {
+        top: carousel.section.getBoundingClientRect().top + scrollY - flowStageOffset,
+        range: Math.max(1, carousel.section.offsetHeight - carousel.shell.offsetHeight)
+      };
+    });
+  }
+
+  function selectFlowsFromScroll() {
+    if (!phone.matches) return;
+    flowCarousels.forEach(carousel => {
+      const track = carousel.metric;
+      if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
+      const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
+      const index = Math.min(carousel.items.length - 1, Math.floor(progress * carousel.items.length));
+      if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
+      carousel.section.style.setProperty('--mobile-flow-progress', String(progress));
+    });
+  }
+
+  function scrollToFlow(carousel, index) {
+    if (!phone.matches || !carousel.metric) return;
+    const progress = (index + 0.5) / carousel.items.length;
+    scrollTo({top: carousel.metric.top + (carousel.metric.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+  }
+
+  flowCarousels.forEach(carousel => {
+    carousel.tabs.addEventListener('mobile-choice-change', event => scrollToFlow(carousel, event.detail.index));
+    addHorizontalSwipe(carousel.surface, carousel.tabs, carousel.items, index => scrollToFlow(carousel, index));
+  });
+
   const revealTargets = [
     ...document.querySelectorAll('.partner-orbit .logo-card'),
     ...document.querySelectorAll('.solution-card'),
@@ -310,7 +389,7 @@
 
   function configure() {
     root.classList.toggle('mobile-layout-v43', phone.matches);
-    [heroTabs, busTabs, fieldTabs, modelTabs].filter(Boolean).forEach(tabs => {
+    [heroTabs, busTabs, fieldTabs, modelTabs, solutionTabs, adoptionTabs].filter(Boolean).forEach(tabs => {
       const active = Number(tabs.dataset.active || 0);
       tabs._selectMobileChoice(active);
     });
@@ -321,10 +400,12 @@
     measureHeroTrack();
     measureCaseTracks();
     measureModelTrack();
+    measureFlowTracks();
     requestAnimationFrame(() => {
       selectHeroFromScroll();
       selectCasesFromScroll();
       selectModelFromScroll();
+      selectFlowsFromScroll();
     });
   }
 
@@ -336,6 +417,7 @@
       selectHeroFromScroll();
       selectCasesFromScroll();
       selectModelFromScroll();
+      selectFlowsFromScroll();
     });
   }, {passive: true});
 
