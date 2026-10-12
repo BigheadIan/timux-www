@@ -82,6 +82,7 @@
   }
 
   const heroStageOffset = 70;
+  let heroTrackMetric = null;
 
   function restoreHeroLayerCopy() {
     heroLayers.forEach((layer, index) => {
@@ -100,23 +101,27 @@
     if (!phone.matches) {
       heroTrack.style.removeProperty('--mobile-hero-track-height');
       heroStage?.setAttribute('aria-hidden', 'true');
+      heroTrackMetric = null;
       return;
     }
     restoreHeroLayerCopy();
     heroStage?.removeAttribute('aria-hidden');
     const travel = innerWidth <= 370 ? 500 : 560;
     heroTrack.style.setProperty('--mobile-hero-track-height', `${Math.ceil(heroScene.offsetHeight + travel)}px`);
+    heroTrackMetric = {
+      top: heroTrack.getBoundingClientRect().top + scrollY - heroStageOffset,
+      range: Math.max(1, heroTrack.offsetHeight - heroScene.offsetHeight)
+    };
   }
 
   function getHeroTrack() {
-    if (!heroTrack || !heroScene) return null;
-    const top = heroTrack.getBoundingClientRect().top + scrollY - heroStageOffset;
-    return {top, range: Math.max(1, heroTrack.offsetHeight - heroScene.offsetHeight)};
+    return heroTrackMetric;
   }
 
   function selectHeroFromScroll() {
     if (!phone.matches || !heroTabs || !heroScene) return;
     const track = getHeroTrack();
+    if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
     const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
     const index = Math.min(heroLayers.length - 1, Math.floor(progress * heroLayers.length));
     if (heroTabs.dataset.active !== String(index)) heroTabs._selectMobileChoice(index);
@@ -126,6 +131,7 @@
   function scrollToHero(index) {
     if (!phone.matches || !heroTabs) return;
     const track = getHeroTrack();
+    if (!track) return;
     const progress = heroLayers.length > 1 ? index / (heroLayers.length - 1) : 0;
     scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
@@ -162,22 +168,30 @@
     caseCarousels.forEach(carousel => {
       if (!phone.matches) {
         carousel.track.style.removeProperty('--mobile-case-track-height');
+        carousel.metric = null;
         return;
       }
       const travel = innerWidth <= 370 ? 330 : 360;
       carousel.track.style.setProperty('--mobile-case-track-height', `${Math.ceil(carousel.scene.offsetHeight + travel)}px`);
     });
+    if (!phone.matches) return;
+    caseCarousels.forEach(carousel => {
+      carousel.metric = {
+        top: carousel.track.getBoundingClientRect().top + scrollY - caseStageOffset,
+        range: Math.max(1, carousel.track.offsetHeight - carousel.scene.offsetHeight)
+      };
+    });
   }
 
   function getCaseTrack(carousel) {
-    const top = carousel.track.getBoundingClientRect().top + scrollY - caseStageOffset;
-    return {top, range: Math.max(1, carousel.track.offsetHeight - carousel.scene.offsetHeight)};
+    return carousel.metric;
   }
 
   function selectCasesFromScroll() {
     if (!phone.matches) return;
     caseCarousels.forEach(carousel => {
       const track = getCaseTrack(carousel);
+      if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
       const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
       const index = Math.min(carousel.items.length - 1, Math.floor(progress * carousel.items.length));
       if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
@@ -188,6 +202,7 @@
   function scrollToCase(carousel, index) {
     if (!phone.matches) return;
     const track = getCaseTrack(carousel);
+    if (!track) return;
     const progress = carousel.items.length > 1 ? index / (carousel.items.length - 1) : 0;
     scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
@@ -232,17 +247,28 @@
 
   const methodSection = document.querySelector('#method');
   const modelStageOffset = 70;
+  let modelTrackMetric = null;
+
+  function measureModelTrack() {
+    if (!phone.matches || !methodSection) {
+      modelTrackMetric = null;
+      return;
+    }
+    const shell = methodSection.querySelector(':scope > .shell');
+    modelTrackMetric = {
+      top: methodSection.getBoundingClientRect().top + scrollY - modelStageOffset,
+      range: Math.max(1, methodSection.offsetHeight - (shell?.offsetHeight || innerHeight))
+    };
+  }
 
   function getModelTrack() {
-    if (!methodSection) return null;
-    const shell = methodSection.querySelector(':scope > .shell');
-    const top = methodSection.getBoundingClientRect().top + scrollY - modelStageOffset;
-    return {top, range: Math.max(1, methodSection.offsetHeight - (shell?.offsetHeight || innerHeight))};
+    return modelTrackMetric;
   }
 
   function selectModelFromScroll() {
     if (!phone.matches || !modelTabs || !methodSection) return;
     const track = getModelTrack();
+    if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
     const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
     const index = Math.min(modelCards.length - 1, Math.floor(progress * modelCards.length));
     if (modelTabs.dataset.active !== String(index)) modelTabs._selectMobileChoice(index);
@@ -252,6 +278,7 @@
   function scrollToModel(index) {
     if (!phone.matches || !modelTabs) return;
     const track = getModelTrack();
+    if (!track) return;
     const progress = modelCards.length > 1 ? index / (modelCards.length - 1) : 0;
     scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
@@ -288,6 +315,7 @@
     }
     measureHeroTrack();
     measureCaseTracks();
+    measureModelTrack();
     requestAnimationFrame(() => {
       selectHeroFromScroll();
       selectCasesFromScroll();
@@ -295,16 +323,9 @@
     });
   }
 
-  let controlsTimer = 0;
-  let lastScroll = scrollY;
   let mobileStoryFrame = 0;
   addEventListener('scroll', () => {
     if (!phone.matches) return;
-    const moved = Math.abs(scrollY - lastScroll) > 2;
-    lastScroll = scrollY;
-    if (moved && scrollY > 180) document.body.classList.add('mobile-controls-hidden');
-    clearTimeout(controlsTimer);
-    controlsTimer = setTimeout(() => document.body.classList.remove('mobile-controls-hidden'), 480);
     if (!mobileStoryFrame) mobileStoryFrame = requestAnimationFrame(() => {
       mobileStoryFrame = 0;
       selectHeroFromScroll();
@@ -313,7 +334,11 @@
     });
   }, {passive: true});
 
-  addEventListener('resize', configure, {passive: true});
+  let configureTimer = 0;
+  addEventListener('resize', () => {
+    clearTimeout(configureTimer);
+    configureTimer = setTimeout(configure, 140);
+  }, {passive: true});
   phone.addEventListener('change', configure);
   reduced.addEventListener('change', configure);
   addEventListener('load', configure, {once: true});

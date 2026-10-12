@@ -7,6 +7,7 @@
   const reduced = matchMedia('(prefers-reduced-motion:reduce)');
   const clamp = value => Math.max(0, Math.min(1, value));
   let frame = 0;
+  let enabled = false;
   let measurements = [];
   const scenes = tracks.map(track => {
     const scene = track.querySelector('.case-scene');
@@ -18,7 +19,6 @@
   }
   function paint() {
     frame = 0;
-    const enabled = desktop.matches && !reduced.matches;
     scenes.forEach(({scene,route,length,traveller,stations,phones}, index) => {
       const m = measurements[index];
       const q = enabled ? clamp((scrollY - m.top + 80) / m.travel) : .5;
@@ -45,21 +45,34 @@
       scene.querySelectorAll('.editorial-steps>div').forEach((step,i) => step.classList.toggle('is-current', enabled && i===phase));
     });
   }
-  const requestPaint = () => { if (!frame) frame = requestAnimationFrame(paint); };
+  const requestPaint = () => { if (enabled && !frame) frame = requestAnimationFrame(paint); };
   function configure() {
+    enabled = desktop.matches && !reduced.matches;
+    root.dataset.journeyScroll = enabled ? 'active' : 'idle';
     if (innerWidth >= 1100) {
       const scale = Math.min(1, (innerWidth-144)/1600, (innerHeight-80)/1000);
       root.style.setProperty('--case-scale',String(Math.max(.4,scale)));
       root.style.setProperty('--case-height',`${1000*Math.max(.4,scale)}px`);
     }
-    root.classList.toggle('journey-motion', desktop.matches && !reduced.matches);
-    measure(); requestPaint();
+    root.classList.toggle('journey-motion', enabled);
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
+    if (enabled) {
+      measure();
+      requestPaint();
+    } else {
+      paint();
+    }
   }
   addEventListener('scroll',requestPaint,{passive:true});
   addEventListener('resize',configure,{passive:true});
   addEventListener('load',configure,{once:true});
   desktop.addEventListener('change',configure); reduced.addEventListener('change',configure);
   document.fonts?.ready.then(configure);
-  new ResizeObserver(() => {measure();requestPaint();}).observe(document.querySelector('main'));
+  new ResizeObserver(() => {
+    if (!enabled) return;
+    measure();
+    requestPaint();
+  }).observe(document.querySelector('main'));
   configure();
 })();

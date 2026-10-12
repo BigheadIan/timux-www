@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v50-mobile-engine-carousel';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v51-mobile-scroll-performance';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -38,6 +38,7 @@ for (const path of ['', 'en/']) {
       }).filter(Boolean);
       return {
         marker: document.querySelector('meta[name="timux-build"]')?.content,
+        journeyScroll: document.documentElement.dataset.journeyScroll,
         overflow: document.documentElement.scrollWidth - innerWidth,
         scrollHeight: document.documentElement.scrollHeight,
         heroHeight: rect('.outcome-hero').height,
@@ -76,7 +77,7 @@ for (const path of ['', 'en/']) {
     });
 
     const maxHeight = path ? 9500 : 9100;
-    if (!state.marker?.includes('mobile-engine-carousel') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    if (!state.marker?.includes('mobile-scroll-performance') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
@@ -260,6 +261,7 @@ await desktop.goto(base, {waitUntil: 'networkidle'});
 const desktopState = await desktop.evaluate(() => ({
   overflow: document.documentElement.scrollWidth - innerWidth,
   storyDesktop: document.documentElement.classList.contains('story-desktop'),
+  journeyScroll: document.documentElement.dataset.journeyScroll,
   mobileLayout: document.documentElement.classList.contains('mobile-layout-v43'),
   tabsHidden: [...document.querySelectorAll('.mobile-choice-tabs')].every(tabs => getComputedStyle(tabs).display === 'none'),
   solutionColumns: getComputedStyle(document.querySelector('.solution-grid')).gridTemplateColumns.split(' ').length,
@@ -269,7 +271,7 @@ const desktopState = await desktop.evaluate(() => ({
   overviewHidden: getComputedStyle(document.querySelector('.mobile-engine-overview')).display === 'none',
   visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => layer.getBoundingClientRect().width > 0).length
 }));
-if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3 || desktopState.visibleStations !== 3 || desktopState.visibleDevices !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
+if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.journeyScroll !== 'active' || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3 || desktopState.visibleStations !== 3 || desktopState.visibleDevices !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
 await desktop.screenshot({path: `${output}/desktop-1920-hero.png`});
 await desktop.close();
 
