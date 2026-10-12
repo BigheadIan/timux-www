@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v45-mobile-overview';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v46-mobile-case-fit';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -71,8 +71,8 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 7900 : 7450;
-    if (!state.marker?.includes('mobile-overview') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    const maxHeight = path ? 8100 : 7650;
+    if (!state.marker?.includes('mobile-case-fit') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > 620 || state.engineHeight < 275 || state.engineHeight > 295 || state.visibleEngineLayers !== 0 || state.engineAnimations.some(name => name !== 'none')) throw Error(`static hero regression ${path} ${JSON.stringify(state)}`);
     const overviewTerms = path ? ['UNDERSTAND', 'VERIFY', 'Human confirms', 'Write back'] : ['理解意圖', '核對資料', '人員確認', '回寫系統'];
     if (state.overview.display === 'none' || state.overview.width < viewport.width - 40 || state.overview.svgWidth < viewport.width - 70 || overviewTerms.some(term => !state.overview.text.includes(term))) throw Error(`overview regression ${path} ${JSON.stringify(state.overview)}`);
@@ -81,7 +81,7 @@ for (const path of ['', 'en/']) {
     if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 3 || state.tabs.some(tabs => tabs.display === 'none' || tabs.count !== 3) || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
     if (state.controls.some(control => control.display !== 'none')) throw Error(`floating control regression ${path} ${JSON.stringify(state.controls)}`);
 
-    for (const selector of ['.mobile-case-tabs', '.mobile-field-tabs', '.mobile-model-tabs']) {
+    for (const selector of ['.mobile-case-tabs', '.mobile-model-tabs']) {
       const buttons = page.locator(`${selector} button`);
       await buttons.last().click();
       const tabState = await page.locator(selector).evaluate(tabs => ({
@@ -89,6 +89,27 @@ for (const path of ['', 'en/']) {
         active: tabs.dataset.active
       }));
       if (tabState.selected !== 2 || tabState.active !== '2') throw Error(`selector interaction regression ${selector} ${JSON.stringify(tabState)}`);
+    }
+
+    const fieldButtons = page.locator('.mobile-field-tabs button');
+    for (let index = 0; index < await fieldButtons.count(); index += 1) {
+      await fieldButtons.nth(index).click();
+      const fit = await page.locator('#case-mj').evaluate((scene) => {
+        const runway = scene.querySelector('.runway').getBoundingClientRect();
+        const device = scene.querySelector('.device.is-mobile-current').getBoundingClientRect();
+        const footer = scene.querySelector('.scene-foot').getBoundingClientRect();
+        const sceneRect = scene.getBoundingClientRect();
+        return {
+          active: scene.querySelectorAll('.device.is-mobile-current').length,
+          selected: [...scene.querySelectorAll('.mobile-field-tabs button')].findIndex(button => button.getAttribute('aria-selected') === 'true'),
+          runwayHeight: runway.height,
+          deviceHeight: device.height,
+          topClearance: device.top - runway.top,
+          bottomClearance: runway.bottom - device.bottom,
+          footerClearance: sceneRect.bottom - footer.bottom
+        };
+      });
+      if (fit.active !== 1 || fit.selected !== index || fit.topClearance < 38 || fit.bottomClearance < 9 || fit.footerClearance < 40) throw Error(`mobile field fit regression ${path} ${JSON.stringify({viewport, index, fit})}`);
     }
 
     await page.evaluate(() => scrollTo({top: 0, behavior: 'instant'}));
@@ -100,9 +121,18 @@ for (const path of ['', 'en/']) {
     await page.locator('#case-southeast').scrollIntoViewIfNeeded();
     await page.waitForTimeout(80);
     await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-bus.png`});
-    await page.locator('#case-mj').scrollIntoViewIfNeeded();
+    await page.evaluate(() => { location.hash = 'case-mj'; });
     await page.waitForTimeout(80);
-    await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-mj.png`});
+    const anchorFit = await page.locator('#case-mj').evaluate((scene) => {
+      const nav = document.querySelector('.nav').getBoundingClientRect();
+      const title = scene.querySelector('.case-headline').getBoundingClientRect();
+      return {navBottom: nav.bottom, titleTop: title.top};
+    });
+    if (anchorFit.titleTop < anchorFit.navBottom + 20) throw Error(`mobile anchor overlap ${path} ${JSON.stringify({viewport, anchorFit})}`);
+    for (let index = 0; index < await fieldButtons.count(); index += 1) {
+      await fieldButtons.nth(index).click();
+      await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-mj-${index + 1}.png`});
+    }
 
     if (errors.length) throw Error(`runtime regression ${path} ${JSON.stringify(errors)}`);
     results.push({path: path || '/', viewport, ...state, errors});
