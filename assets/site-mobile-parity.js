@@ -7,6 +7,20 @@
 
   root.classList.add('mobile-parity');
 
+  function stageIndexAt(distance, stageDistances) {
+    let boundary = 0;
+    for (let index = 0; index < stageDistances.length; index += 1) {
+      boundary += stageDistances[index];
+      if (distance < boundary) return index;
+    }
+    return Math.max(0, stageDistances.length - 1);
+  }
+
+  function stageCenter(stageDistances, index) {
+    const before = stageDistances.slice(0, index).reduce((sum, distance) => sum + distance, 0);
+    return before + ((stageDistances[index] || 0) / 2);
+  }
+
   function makeTabs(items, labels, className = '') {
     const tabs = document.createElement('div');
     tabs.className = `mobile-choice-tabs ${className}`.trim();
@@ -106,14 +120,21 @@
     }
     restoreHeroLayerCopy();
     heroStage?.removeAttribute('aria-hidden');
-    // Keep each of the five story beats on screen long enough to read after a
-    // natural mobile flick. The previous 500/560px runway made one gesture
-    // cross multiple beats on iOS and embedded WebViews.
-    const travel = innerWidth <= 370 ? 900 : 980;
+    // The first two beats keep the accepted rhythm. Beats 03–05 get a longer
+    // runway, then the final result remains pinned for one extra reading beat.
+    const stageDistances = innerWidth <= 370
+      ? [180, 180, 230, 230, 230]
+      : [196, 196, 250, 250, 250];
+    const storyRange = stageDistances.reduce((sum, distance) => sum + distance, 0);
+    const tailDistance = innerWidth <= 370 ? 220 : 230;
+    const travel = storyRange + tailDistance;
     heroTrack.style.setProperty('--mobile-hero-track-height', `${Math.ceil(heroScene.offsetHeight + travel)}px`);
     heroTrackMetric = {
       top: heroTrack.getBoundingClientRect().top + scrollY - heroStageOffset,
-      range: Math.max(1, heroTrack.offsetHeight - heroScene.offsetHeight)
+      range: Math.max(1, heroTrack.offsetHeight - heroScene.offsetHeight),
+      storyRange,
+      tailDistance,
+      stageDistances
     };
   }
 
@@ -125,8 +146,9 @@
     if (!phone.matches || !heroTabs || !heroScene) return;
     const track = getHeroTrack();
     if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-    const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
-    const index = Math.min(heroLayers.length - 1, Math.floor(progress * heroLayers.length));
+    const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
+    const progress = Math.max(0, Math.min(1, distance / track.storyRange));
+    const index = stageIndexAt(distance, track.stageDistances);
     if (heroTabs.dataset.active !== String(index)) heroTabs._selectMobileChoice(index);
     heroScene.style.setProperty('--mobile-engine-progress', String(progress));
   }
@@ -137,8 +159,8 @@
     if (!track) return;
     // Land tab/swipe navigation in the middle of the selected beat, leaving
     // useful scroll room before the following beat becomes active.
-    const progress = heroLayers.length ? (index + 0.5) / heroLayers.length : 0;
-    scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+    const distance = stageCenter(track.stageDistances, index);
+    scrollTo({top: track.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
   const busScene = document.querySelector('.a-bus');
@@ -176,14 +198,23 @@
         carousel.metric = null;
         return;
       }
-      const travel = innerWidth <= 370 ? 510 : 540;
+      const stageDistance = innerWidth <= 370 ? 170 : 180;
+      const storyRange = carousel.items.length * stageDistance;
+      const tailDistance = stageDistance;
+      const travel = storyRange + tailDistance;
       carousel.track.style.setProperty('--mobile-case-track-height', `${Math.ceil(carousel.scene.offsetHeight + travel)}px`);
+      carousel.stageDistances = carousel.items.map(() => stageDistance);
+      carousel.storyRange = storyRange;
+      carousel.tailDistance = tailDistance;
     });
     if (!phone.matches) return;
     caseCarousels.forEach(carousel => {
       carousel.metric = {
         top: carousel.track.getBoundingClientRect().top + scrollY - caseStageOffset,
-        range: Math.max(1, carousel.track.offsetHeight - carousel.scene.offsetHeight)
+        range: Math.max(1, carousel.track.offsetHeight - carousel.scene.offsetHeight),
+        storyRange: carousel.storyRange,
+        tailDistance: carousel.tailDistance,
+        stageDistances: carousel.stageDistances
       };
     });
   }
@@ -197,8 +228,9 @@
     caseCarousels.forEach(carousel => {
       const track = getCaseTrack(carousel);
       if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-      const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
-      const index = Math.min(carousel.items.length - 1, Math.floor(progress * carousel.items.length));
+      const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
+      const progress = Math.max(0, Math.min(1, distance / track.storyRange));
+      const index = stageIndexAt(distance, track.stageDistances);
       if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
       carousel.scene.style.setProperty('--mobile-case-progress', String(progress));
     });
@@ -208,8 +240,8 @@
     if (!phone.matches) return;
     const track = getCaseTrack(carousel);
     if (!track) return;
-    const progress = carousel.items.length ? (index + 0.5) / carousel.items.length : 0;
-    scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+    const distance = stageCenter(track.stageDistances, index);
+    scrollTo({top: track.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
   function addHorizontalSwipe(surface, tabs, items, selectByIndex) {
@@ -256,13 +288,22 @@
 
   function measureModelTrack() {
     if (!phone.matches || !methodSection) {
+      methodSection?.style.removeProperty('--mobile-model-track-height');
       modelTrackMetric = null;
       return;
     }
+    methodSection.style.removeProperty('--mobile-model-track-height');
     const shell = methodSection.querySelector(':scope > .shell');
+    const shellHeight = shell?.offsetHeight || innerHeight;
+    const storyRange = Math.max(modelCards.length * (innerWidth <= 370 ? 170 : 180), methodSection.offsetHeight - shellHeight);
+    const tailDistance = innerWidth <= 370 ? 170 : 180;
+    methodSection.style.setProperty('--mobile-model-track-height', `${Math.ceil(shellHeight + storyRange + tailDistance)}px`);
     modelTrackMetric = {
       top: methodSection.getBoundingClientRect().top + scrollY - modelStageOffset,
-      range: Math.max(1, methodSection.offsetHeight - (shell?.offsetHeight || innerHeight))
+      range: Math.max(1, methodSection.offsetHeight - shellHeight),
+      storyRange,
+      tailDistance,
+      stageDistances: modelCards.map(() => storyRange / modelCards.length)
     };
   }
 
@@ -274,8 +315,9 @@
     if (!phone.matches || !modelTabs || !methodSection) return;
     const track = getModelTrack();
     if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-    const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
-    const index = Math.min(modelCards.length - 1, Math.floor(progress * modelCards.length));
+    const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
+    const progress = Math.max(0, Math.min(1, distance / track.storyRange));
+    const index = stageIndexAt(distance, track.stageDistances);
     if (modelTabs.dataset.active !== String(index)) modelTabs._selectMobileChoice(index);
     methodSection.style.setProperty('--mobile-model-progress', String(progress));
   }
@@ -284,8 +326,8 @@
     if (!phone.matches || !modelTabs) return;
     const track = getModelTrack();
     if (!track) return;
-    const progress = modelCards.length ? (index + 0.5) / modelCards.length : 0;
-    scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+    const distance = stageCenter(track.stageDistances, index);
+    scrollTo({top: track.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
   if (modelTabs && modelGrid) {
@@ -338,13 +380,21 @@
         return;
       }
       const beatDistance = innerWidth <= 370 ? 165 : 170;
-      carousel.section.style.setProperty('--mobile-flow-track-height', `${Math.ceil(carousel.shell.offsetHeight + (carousel.items.length * beatDistance))}px`);
+      const storyRange = carousel.items.length * beatDistance;
+      const tailDistance = beatDistance;
+      carousel.section.style.setProperty('--mobile-flow-track-height', `${Math.ceil(carousel.shell.offsetHeight + storyRange + tailDistance)}px`);
+      carousel.stageDistances = carousel.items.map(() => beatDistance);
+      carousel.storyRange = storyRange;
+      carousel.tailDistance = tailDistance;
     });
     if (!phone.matches) return;
     flowCarousels.forEach(carousel => {
       carousel.metric = {
         top: carousel.section.getBoundingClientRect().top + scrollY - flowStageOffset,
-        range: Math.max(1, carousel.section.offsetHeight - carousel.shell.offsetHeight)
+        range: Math.max(1, carousel.section.offsetHeight - carousel.shell.offsetHeight),
+        storyRange: carousel.storyRange,
+        tailDistance: carousel.tailDistance,
+        stageDistances: carousel.stageDistances
       };
     });
   }
@@ -354,8 +404,9 @@
     flowCarousels.forEach(carousel => {
       const track = carousel.metric;
       if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-      const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
-      const index = Math.min(carousel.items.length - 1, Math.floor(progress * carousel.items.length));
+      const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
+      const progress = Math.max(0, Math.min(1, distance / track.storyRange));
+      const index = stageIndexAt(distance, track.stageDistances);
       if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
       carousel.section.style.setProperty('--mobile-flow-progress', String(progress));
     });
@@ -363,8 +414,8 @@
 
   function scrollToFlow(carousel, index) {
     if (!phone.matches || !carousel.metric) return;
-    const progress = (index + 0.5) / carousel.items.length;
-    scrollTo({top: carousel.metric.top + (carousel.metric.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+    const distance = stageCenter(carousel.metric.stageDistances, index);
+    scrollTo({top: carousel.metric.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
   flowCarousels.forEach(carousel => {

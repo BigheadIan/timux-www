@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v54-mobile-flow-carousels';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v55-mobile-carousel-dwell';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -77,8 +77,8 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 11000 : 10700;
-    if (!state.marker?.includes('mobile-flow-carousels') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    const maxHeight = path ? 12500 : 12200;
+    if (!state.marker?.includes('mobile-carousel-dwell') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionHeights.filter(Boolean).length !== 1 || state.solutionHeights.some(height => height > 305)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
@@ -94,15 +94,19 @@ for (const path of ['', 'en/']) {
         sceneHeight: scene.offsetHeight
       };
     });
-    const expectedHeroRange = viewport.width <= 370 ? 900 : 980;
-    if (Math.abs(heroTrack.range - expectedHeroRange) > 3 || heroTrack.sceneHeight > viewport.height - 70) throw Error(`mobile hero track regression ${path} ${JSON.stringify({viewport, heroTrack})}`);
-    const heroBeatDistance = heroTrack.range / 5;
-    if (heroBeatDistance < 175) throw Error(`mobile hero pacing regression ${path} ${JSON.stringify({viewport, heroTrack, heroBeatDistance})}`);
+    const heroDistances = viewport.width <= 370 ? [180, 180, 230, 230, 230] : [196, 196, 250, 250, 250];
+    const heroStoryRange = heroDistances.reduce((sum, distance) => sum + distance, 0);
+    const heroTailDistance = viewport.width <= 370 ? 220 : 230;
+    const expectedHeroRange = heroStoryRange + heroTailDistance;
+    if (Math.abs(heroTrack.range - expectedHeroRange) > 3 || heroTrack.sceneHeight > viewport.height - 70 || heroDistances.slice(2).some(distance => distance < 230)) throw Error(`mobile hero track regression ${path} ${JSON.stringify({viewport, heroTrack, heroDistances})}`);
     const heroTerms = path
       ? ['Signal received', 'Knowledge checked', 'Rules applied', 'Human decision', 'Action recorded']
       : ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
-    for (const [index, progress] of [[0, 0], [1, .25], [2, .5], [3, .75], [4, 1]]) {
-      await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...heroTrack, progress});
+    let heroCursor = 0;
+    for (let index = 0; index < heroDistances.length; index += 1) {
+      const distance = heroCursor + (heroDistances[index] / 2);
+      heroCursor += heroDistances[index];
+      await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...heroTrack, distance});
       await page.waitForFunction(expected => document.querySelector('.mobile-engine-tabs')?.dataset.active === String(expected), index);
       const heroState = await page.locator('.outcome-hero').evaluate((scene, expectedTerm) => {
         const rect = scene.getBoundingClientRect();
@@ -126,6 +130,16 @@ for (const path of ['', 'en/']) {
       }
       await page.waitForTimeout(320);
       await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-hero-${index + 1}.png`});
+    }
+    await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...heroTrack, distance: heroStoryRange + (heroTailDistance / 2)});
+    const heroDwell = await page.locator('.outcome-hero').evaluate(scene => ({active: scene.querySelector('.mobile-engine-tabs')?.dataset.active, top: scene.getBoundingClientRect().top}));
+    if (heroDwell.active !== '4' || Math.abs(heroDwell.top - 70) > 2) throw Error(`mobile hero final dwell regression ${path} ${JSON.stringify({viewport, heroTrack, heroDwell})}`);
+    for (const index of [2, 3, 4]) {
+      const start = heroDistances.slice(0, index).reduce((sum, distance) => sum + distance, 0) + (heroDistances[index] / 2);
+      await page.evaluate(({top, start}) => scrollTo({top: top + start, behavior: 'instant'}), {...heroTrack, start});
+      await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+      const expected = Math.min(index + 1, 4);
+      await page.waitForFunction(expectedIndex => document.querySelector('.mobile-engine-tabs')?.dataset.active === String(expectedIndex), expected);
     }
     await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), heroTrack);
     await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
@@ -156,10 +170,11 @@ for (const path of ['', 'en/']) {
         };
       }, spec);
       const expectedBeatDistance = viewport.width <= 370 ? 165 : 170;
-      if (Math.abs(flowTrack.range - (expectedBeatDistance * spec.count)) > 3 || flowTrack.shellHeight > viewport.height - 70) throw Error(`mobile flow sizing regression ${path} ${JSON.stringify({viewport, spec, flowTrack})}`);
+      const flowStoryRange = expectedBeatDistance * spec.count;
+      if (Math.abs(flowTrack.range - (expectedBeatDistance * (spec.count + 1))) > 3 || flowTrack.shellHeight > viewport.height - 70) throw Error(`mobile flow sizing regression ${path} ${JSON.stringify({viewport, spec, flowTrack})}`);
       for (let index = 0; index < spec.count; index += 1) {
-        const progress = (index + 0.5) / spec.count;
-        await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...flowTrack, progress});
+        const distance = expectedBeatDistance * (index + 0.5);
+        await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...flowTrack, distance});
         await page.waitForFunction(({selector, expected}) => document.querySelector(selector)?.dataset.active === String(expected), {selector: spec.tabs, expected: index});
         const flowState = await page.locator(spec.section).evaluate((section, spec) => {
           const shell = section.querySelector(':scope > .shell').getBoundingClientRect();
@@ -178,6 +193,9 @@ for (const path of ['', 'en/']) {
         if (flowState.active !== String(index) || flowState.current !== 1 || flowState.visibleCards !== 1 || flowState.animation !== expectedAnimation || Math.abs(flowState.shell.top - 70) > 2 || flowState.shell.bottom > viewport.height + 1 || !flowState.card || flowState.card.top < flowState.shell.top || flowState.card.bottom > flowState.shell.bottom) throw Error(`mobile flow scroll regression ${path} ${JSON.stringify({viewport, spec, index, flowState})}`);
         await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-flow-${spec.name}-${index + 1}.png`});
       }
+      await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...flowTrack, distance: flowStoryRange + (expectedBeatDistance / 2)});
+      const flowDwell = await page.locator(spec.section).evaluate((section, spec) => ({active: section.querySelector(spec.tabs)?.dataset.active, top: section.querySelector(':scope > .shell').getBoundingClientRect().top}), spec);
+      if (flowDwell.active !== String(spec.count - 1) || Math.abs(flowDwell.top - 70) > 2) throw Error(`mobile flow final dwell regression ${path} ${JSON.stringify({viewport, spec, flowTrack, flowDwell})}`);
       await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), flowTrack);
       await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
       await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
@@ -204,10 +222,13 @@ for (const path of ['', 'en/']) {
           sceneHeight: scene.offsetHeight
         };
       });
-      const expectedCaseRange = viewport.width <= 370 ? 510 : 540;
-      if (Math.abs(caseTrack.range - expectedCaseRange) > 3 || (caseTrack.range / 3) < 165 || caseTrack.sceneHeight > viewport.height - 70) throw Error(`mobile case sizing regression ${path} ${JSON.stringify({viewport, spec, caseTrack})}`);
-      for (const [index, progress] of [[0, 0], [1, .5], [2, 1]]) {
-        await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...caseTrack, progress});
+      const caseBeatDistance = viewport.width <= 370 ? 170 : 180;
+      const caseStoryRange = caseBeatDistance * 3;
+      const expectedCaseRange = caseBeatDistance * 4;
+      if (Math.abs(caseTrack.range - expectedCaseRange) > 3 || caseTrack.sceneHeight > viewport.height - 70) throw Error(`mobile case sizing regression ${path} ${JSON.stringify({viewport, spec, caseTrack})}`);
+      for (let index = 0; index < 3; index += 1) {
+        const distance = caseBeatDistance * (index + 0.5);
+        await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...caseTrack, distance});
         await page.waitForFunction(({selector, expected}) => document.querySelector(selector)?.dataset.active === String(expected), {selector: spec.tabs, expected: index});
         const caseState = await page.locator(spec.scene).evaluate((scene, spec) => {
           const rect = scene.getBoundingClientRect();
@@ -221,6 +242,9 @@ for (const path of ['', 'en/']) {
         if (caseState.active !== String(index) || caseState.current !== 1 || Math.abs(caseState.top - 70) > 2 || caseState.bottom > viewport.height + 1) throw Error(`mobile case scroll regression ${path} ${JSON.stringify({viewport, spec, index, caseState})}`);
         await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-${spec.name}-${index + 1}.png`});
       }
+      await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...caseTrack, distance: caseStoryRange + (caseBeatDistance / 2)});
+      const caseDwell = await page.locator(spec.scene).evaluate((scene, spec) => ({active: scene.querySelector(spec.tabs)?.dataset.active, top: scene.getBoundingClientRect().top}), spec);
+      if (caseDwell.active !== '2' || Math.abs(caseDwell.top - 70) > 2) throw Error(`mobile case final dwell regression ${path} ${JSON.stringify({viewport, spec, caseTrack, caseDwell})}`);
       await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), caseTrack);
       await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
       await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
@@ -263,9 +287,13 @@ for (const path of ['', 'en/']) {
         range: section.offsetHeight - shell.offsetHeight
       };
     });
-    if ((methodTrack.range / 3) < 165) throw Error(`mobile model pacing regression ${path} ${JSON.stringify({viewport, methodTrack})}`);
-    for (const [index, progress] of [[0, 0], [1, .5], [2, 1]]) {
-      await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...methodTrack, progress});
+    const modelTailDistance = viewport.width <= 370 ? 170 : 180;
+    const modelStoryRange = methodTrack.range - modelTailDistance;
+    const modelBeatDistance = modelStoryRange / 3;
+    if (modelBeatDistance < 165) throw Error(`mobile model pacing regression ${path} ${JSON.stringify({viewport, methodTrack, modelStoryRange})}`);
+    for (let index = 0; index < 3; index += 1) {
+      const distance = modelBeatDistance * (index + 0.5);
+      await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...methodTrack, distance});
       await page.waitForFunction(expected => document.querySelector('.mobile-model-tabs')?.dataset.active === String(expected), index);
       const modelState = await page.locator('#method').evaluate(section => {
         const shell = section.querySelector(':scope > .shell').getBoundingClientRect();
@@ -285,6 +313,9 @@ for (const path of ['', 'en/']) {
       if (modelState.active !== String(index) || modelState.current !== 1 || modelState.card.top < modelState.shell.top || modelState.tail.bottom > modelState.shell.bottom || modelState.cardBlank > 24 || modelState.contentGap < 8 || modelState.contentGap > 18) throw Error(`mobile model scroll regression ${path} ${JSON.stringify({viewport, index, modelState})}`);
       await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-model-${index + 1}.png`});
     }
+    await page.evaluate(({top, distance}) => scrollTo({top: top + distance, behavior: 'instant'}), {...methodTrack, distance: modelStoryRange + (modelTailDistance / 2)});
+    const modelDwell = await page.locator('#method').evaluate(section => ({active: section.querySelector('.mobile-model-tabs')?.dataset.active, top: section.querySelector(':scope > .shell').getBoundingClientRect().top}));
+    if (modelDwell.active !== '2' || Math.abs(modelDwell.top - 70) > 2) throw Error(`mobile model final dwell regression ${path} ${JSON.stringify({viewport, methodTrack, modelDwell})}`);
 
     await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), methodTrack);
     await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
