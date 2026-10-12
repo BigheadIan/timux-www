@@ -79,6 +79,50 @@
   ) : null;
   if (modelTabs) modelGrid.before(modelTabs);
 
+  const methodSection = document.querySelector('#method');
+  const modelStageOffset = 70;
+
+  function getModelTrack() {
+    if (!methodSection) return null;
+    const top = methodSection.getBoundingClientRect().top + scrollY - modelStageOffset;
+    return {top, range: Math.max(1, methodSection.offsetHeight - innerHeight)};
+  }
+
+  function selectModelFromScroll() {
+    if (!phone.matches || !modelTabs || !methodSection) return;
+    const track = getModelTrack();
+    const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
+    const index = Math.min(modelCards.length - 1, Math.floor(progress * modelCards.length));
+    if (modelTabs.dataset.active !== String(index)) modelTabs._selectMobileChoice(index);
+    methodSection.style.setProperty('--mobile-model-progress', String(progress));
+  }
+
+  function scrollToModel(index) {
+    if (!phone.matches || !modelTabs) return;
+    const track = getModelTrack();
+    const progress = modelCards.length > 1 ? index / (modelCards.length - 1) : 0;
+    scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+  }
+
+  if (modelTabs && modelGrid) {
+    modelTabs.addEventListener('mobile-choice-change', event => scrollToModel(event.detail.index));
+    let swipeStart = null;
+    modelGrid.addEventListener('touchstart', event => {
+      const touch = event.touches[0];
+      swipeStart = touch ? {x: touch.clientX, y: touch.clientY} : null;
+    }, {passive: true});
+    modelGrid.addEventListener('touchend', event => {
+      const touch = event.changedTouches[0];
+      if (!swipeStart || !touch) return;
+      const dx = touch.clientX - swipeStart.x;
+      const dy = touch.clientY - swipeStart.y;
+      swipeStart = null;
+      if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+      const active = Number(modelTabs.dataset.active || 0);
+      scrollToModel(Math.max(0, Math.min(modelCards.length - 1, active + (dx < 0 ? 1 : -1))));
+    }, {passive: true});
+  }
+
   const revealTargets = [
     ...document.querySelectorAll('.partner-orbit .logo-card'),
     ...document.querySelectorAll('.solution-card'),
@@ -104,10 +148,12 @@
       document.body.classList.remove('mobile-controls-hidden');
       revealTargets.forEach(target => target.classList.remove('is-mobile-visible'));
     }
+    requestAnimationFrame(selectModelFromScroll);
   }
 
   let controlsTimer = 0;
   let lastScroll = scrollY;
+  let modelFrame = 0;
   addEventListener('scroll', () => {
     if (!phone.matches) return;
     const moved = Math.abs(scrollY - lastScroll) > 2;
@@ -115,6 +161,10 @@
     if (moved && scrollY > 180) document.body.classList.add('mobile-controls-hidden');
     clearTimeout(controlsTimer);
     controlsTimer = setTimeout(() => document.body.classList.remove('mobile-controls-hidden'), 480);
+    if (!modelFrame) modelFrame = requestAnimationFrame(() => {
+      modelFrame = 0;
+      selectModelFromScroll();
+    });
   }, {passive: true});
 
   addEventListener('resize', configure, {passive: true});
