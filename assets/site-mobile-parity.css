@@ -334,3 +334,58 @@
   html.mobile-layout-v43 .a-bus .station.is-mobile-current,
   html.mobile-layout-v43 .a-mj .device.is-mobile-current{animation:none!important}
 }
+
+/* V50: the phone hero stays in place while five execution stages advance with a short scroll. */
+@media(max-width:820px){
+  html.mobile-layout-v43 .dark-world{overflow:visible!important}
+  html.mobile-layout-v43 .engine-track{position:relative!important;height:var(--mobile-hero-track-height,auto)!important;overflow:visible!important}
+  html.mobile-layout-v43 .outcome-hero{position:sticky!important;top:70px!important;box-sizing:border-box;height:auto!important;min-height:0!important;padding:18px 0 12px!important;overflow:hidden!important}
+  html.mobile-layout-v43 .outcome-hero .eyebrow{margin-bottom:8px}
+  html.mobile-layout-v43 .outcome-hero h1{font-size:clamp(31px,8.7vw,38px);line-height:1.06}
+  html.mobile-layout-v43 .outcome-hero .hero-lead{margin-top:9px;font-size:13px;line-height:1.48}
+  html.mobile-layout-v43 .outcome-hero .hero-actions{margin-top:11px}
+  html.mobile-layout-v43 .outcome-hero .hero-actions .button{min-height:40px;padding:9px 7px}
+  html.mobile-layout-v43 .outcome-hero .engine-stage{position:relative!important;inset:auto!important;height:clamp(430px,calc(100svh - 300px),550px);margin-top:11px;overflow:hidden;perspective:none;touch-action:pan-y;overscroll-behavior-x:contain}
+  html.mobile-layout-v43 .engine-grid,
+  html.mobile-layout-v43 .engine-orbit,
+  html.mobile-layout-v43 .engine-coordinate,
+  html.mobile-layout-v43 .engine-footer,
+  html.mobile-layout-v43 .mobile-engine-overview{display:none!important}
+  html.mobile-layout-v43 .engine-stack{position:absolute;inset:49px 0 0;display:block!important;transform:none!important;transform-style:flat}
+  html.mobile-layout-v43 .engine-layer,
+  html.mobile-layout-v43 .engine-layer:nth-child(n){position:absolute;inset:0;box-sizing:border-box;display:none;width:auto;height:auto;padding:14px 15px 12px;border-radius:16px;opacity:1;transform:none;transform-style:flat;box-shadow:0 14px 30px #0008,inset 0 1px #ffffff20;backface-visibility:visible;will-change:auto}
+  html.mobile-layout-v43 .engine-layer.is-mobile-current{display:flex;flex-direction:column;animation:mobile-engine-card-in .28s cubic-bezier(.22,1,.36,1) both!important}
+  html.mobile-layout-v43 .engine-layer-head{font-size:11px;letter-spacing:.055em}
+  html.mobile-layout-v43 .engine-layer-head b{font-size:12px}
+  html.mobile-layout-v43 .engine-layer svg{flex:1 1 auto;width:100%;height:106px;min-height:76px}
+  html.mobile-layout-v43 .engine-layer svg text{font-size:13px}
+  html.mobile-layout-v43 .engine-layer>p{margin:2px 0 0;overflow:visible;color:#c2ccda;font-size:11px;line-height:1.35;text-overflow:clip;white-space:normal}
+  html.mobile-layout-v43 .mobile-engine-tabs{position:absolute;z-index:5;inset:0 0 auto;grid-template-columns:repeat(5,minmax(0,1fr));height:42px;margin:0;padding:4px;border-color:#72dfcf38;background:#0b1018d9}
+  html.mobile-layout-v43 .mobile-engine-tabs button{min-height:32px;padding:4px 2px;font-size:9px}
+  html.mobile-layout-v43 .mobile-engine-tabs button[aria-selected="true"]{background:linear-gradient(135deg,#72dfcf24,#a590ff26);box-shadow:inset 0 0 0 1px #72dfcf72}
+  html.mobile-layout-v43 .engine-layer:nth-child(5) svg{height:66px;min-height:54px}
+  .mobile-engine-result{display:none;margin-top:7px;padding-top:7px;border-top:1px solid #ffffff1d;color:#dce5ee}
+  .engine-layer.is-mobile-current .mobile-engine-result{display:block}
+  .mobile-engine-result>div{display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:10px;font-weight:650;white-space:nowrap}
+  .mobile-engine-result i{color:#72dfcf;font-style:normal}
+  .mobile-engine-result small{display:block;margin-top:6px;color:#8f9bac;font-size:8px;letter-spacing:.02em;text-align:center}
+  html[lang="en"].mobile-layout-v43 .outcome-hero .engine-stage{height:clamp(400px,calc(100svh - 335px),520px)}
+}
+
+@media(max-width:370px){
+  html.mobile-layout-v43 .outcome-hero{padding-top:14px!important;padding-bottom:9px!important}
+  html.mobile-layout-v43 .outcome-hero h1{font-size:30px}
+  html.mobile-layout-v43 .outcome-hero .hero-lead{font-size:12px}
+  html.mobile-layout-v43 .outcome-hero .engine-stage{height:clamp(420px,calc(100svh - 300px),450px);margin-top:9px}
+  html.mobile-layout-v43 .engine-stack{inset:47px 0 0}
+  html.mobile-layout-v43 .engine-layer,
+  html.mobile-layout-v43 .engine-layer:nth-child(n){padding:12px 13px 10px}
+  html.mobile-layout-v43 .engine-layer svg{height:92px;min-height:66px}
+  html.mobile-layout-v43 .engine-layer:nth-child(5) svg{height:56px;min-height:45px}
+}
+
+@media(max-width:820px) and (prefers-reduced-motion:reduce){
+  html.mobile-layout-v43 .engine-layer.is-mobile-current{animation:none!important}
+}
+
+@keyframes mobile-engine-card-in{from{opacity:.3;transform:translateX(14px) scale(.985)}to{opacity:1;transform:none}}

@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v49-mobile-case-carousel';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v50-mobile-engine-carousel';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -41,6 +41,8 @@ for (const path of ['', 'en/']) {
         overflow: document.documentElement.scrollWidth - innerWidth,
         scrollHeight: document.documentElement.scrollHeight,
         heroHeight: rect('.outcome-hero').height,
+        heroTrackHeight: rect('.engine-track').height,
+        heroPosition: style('.outcome-hero').position,
         engineHeight: rect('.engine-stage').height,
         visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => layer.getBoundingClientRect().width > 0).length,
         engineAnimations: [...document.querySelectorAll('.engine-layer')].map(layer => getComputedStyle(layer).animationName),
@@ -73,15 +75,63 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 8900 : 8500;
-    if (!state.marker?.includes('mobile-case-carousel') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
-    if (state.heroHeight > 620 || state.engineHeight < 275 || state.engineHeight > 295 || state.visibleEngineLayers !== 0 || state.engineAnimations.some(name => name !== 'none')) throw Error(`static hero regression ${path} ${JSON.stringify(state)}`);
-    const overviewTerms = path ? ['UNDERSTAND', 'VERIFY', 'Human confirms', 'Write back'] : ['理解意圖', '核對資料', '人員確認', '回寫系統'];
-    if (state.overview.display === 'none' || state.overview.width < viewport.width - 40 || state.overview.svgWidth < viewport.width - 70 || overviewTerms.some(term => !state.overview.text.includes(term))) throw Error(`overview regression ${path} ${JSON.stringify(state.overview)}`);
+    const maxHeight = path ? 9500 : 9100;
+    if (!state.marker?.includes('mobile-engine-carousel') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
+    if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
     if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions.some(position => position === 'sticky') || state.methodShellPosition !== 'sticky' || state.caseScenePositions.some(position => position !== 'sticky')) throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
-    if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 3 || state.tabs.some(tabs => tabs.display === 'none' || tabs.count !== 3) || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
+    if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 4 || state.tabs.some(tabs => tabs.display === 'none') || state.tabs.find(tabs => tabs.count === 5) == null || state.tabs.filter(tabs => tabs.count === 3).length !== 3 || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
     if (state.controls.some(control => control.display !== 'none')) throw Error(`floating control regression ${path} ${JSON.stringify(state.controls)}`);
+
+    const heroTrack = await page.locator('.engine-track').evaluate(track => {
+      const scene = track.querySelector('.outcome-hero');
+      return {
+        top: track.getBoundingClientRect().top + scrollY - 70,
+        range: track.offsetHeight - scene.offsetHeight,
+        sceneHeight: scene.offsetHeight
+      };
+    });
+    const expectedHeroRange = viewport.width <= 370 ? 500 : 560;
+    if (Math.abs(heroTrack.range - expectedHeroRange) > 3 || heroTrack.sceneHeight > viewport.height - 70) throw Error(`mobile hero track regression ${path} ${JSON.stringify({viewport, heroTrack})}`);
+    const heroTerms = path
+      ? ['Signal received', 'Knowledge checked', 'Rules applied', 'Human decision', 'Action recorded']
+      : ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
+    for (const [index, progress] of [[0, 0], [1, .25], [2, .5], [3, .75], [4, 1]]) {
+      await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...heroTrack, progress});
+      await page.waitForFunction(expected => document.querySelector('.mobile-engine-tabs')?.dataset.active === String(expected), index);
+      const heroState = await page.locator('.outcome-hero').evaluate((scene, expectedTerm) => {
+        const rect = scene.getBoundingClientRect();
+        const current = scene.querySelector('.engine-layer.is-mobile-current');
+        const result = current?.querySelector('.mobile-engine-result');
+        return {
+          active: scene.querySelector('.mobile-engine-tabs').dataset.active,
+          current: scene.querySelectorAll('.engine-layer.is-mobile-current').length,
+          text: current?.textContent.replace(/\s+/g, ' ').trim() || '',
+          top: rect.top,
+          bottom: rect.bottom,
+          resultVisible: result ? getComputedStyle(result).display !== 'none' : false,
+          resultText: result?.textContent.replace(/\s+/g, ' ').trim() || '',
+          expectedTerm
+        };
+      }, heroTerms[index]);
+      if (heroState.active !== String(index) || heroState.current !== 1 || !heroState.text.includes(heroTerms[index]) || Math.abs(heroState.top - 70) > 2 || heroState.bottom > viewport.height + 1) throw Error(`mobile hero scroll regression ${path} ${JSON.stringify({viewport, index, heroState})}`);
+      if (index === 4) {
+        const resultTerms = path ? ['Execute', 'Write back', 'Record'] : ['執行任務', '回寫系統', '留下紀錄'];
+        if (!heroState.resultVisible || resultTerms.some(term => !heroState.resultText.includes(term))) throw Error(`mobile hero result regression ${path} ${JSON.stringify(heroState)}`);
+      }
+      await page.waitForTimeout(320);
+      await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-hero-${index + 1}.png`});
+    }
+    await page.locator('.mobile-engine-tabs button').first().click();
+    await page.waitForFunction(() => document.querySelector('.mobile-engine-tabs')?.dataset.active === '0');
+    await page.locator('.engine-stage').evaluate(element => {
+      const start = new Touch({identifier: 1, target: element, clientX: 300, clientY: 300});
+      const end = new Touch({identifier: 1, target: element, clientX: 80, clientY: 300});
+      element.dispatchEvent(new TouchEvent('touchstart', {touches: [start], bubbles: true}));
+      element.dispatchEvent(new TouchEvent('touchend', {changedTouches: [end], bubbles: true}));
+    });
+    await page.waitForFunction(() => document.querySelector('.mobile-engine-tabs')?.dataset.active === '1');
 
     for (const spec of [
       {track: '.case-journey-track:first-child', scene: '#case-southeast', tabs: '.mobile-case-tabs', item: '.station.is-mobile-current', name: 'bus'},

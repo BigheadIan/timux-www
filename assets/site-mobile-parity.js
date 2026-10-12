@@ -1,4 +1,4 @@
-/* V49: mobile-native layout controls with compact scroll-driven story carousels. */
+/* V50: mobile-native layout controls with compact scroll-driven story carousels. */
 (() => {
   const phone = matchMedia('(max-width: 820px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -49,6 +49,85 @@
     tabs._selectMobileChoice = select;
     select(0);
     return tabs;
+  }
+
+  const heroTrack = document.querySelector('.engine-track');
+  const heroScene = document.querySelector('.outcome-hero');
+  const heroStage = heroScene?.querySelector('.engine-stage');
+  const heroLayers = heroStage ? [...heroStage.querySelectorAll('.engine-layer')] : [];
+  const heroLayerNames = english
+    ? ['Signal received', 'Knowledge checked', 'Rules applied', 'Human decision', 'Action recorded']
+    : ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
+  const heroLayerDetails = english
+    ? ['Customer request · Field report · Work task', 'Approved documents · Available data · Sources', 'Permission scope · Exceptions · Priorities', 'Approval for critical actions · Human handoff', 'Execute · Preserve evidence · Improve']
+    : ['客戶詢問 · 現場回報 · 工作任務', '核准文件 · 可用資料 · 引用依據', '權限範圍 · 例外條件 · 處理順序', '重要操作先批准 · 異常有人接手', '執行任務 · 留下證據 · 持續改進'];
+  const heroTabs = heroLayers.length ? makeTabs(
+    heroLayers,
+    heroLayers.map((_, index) => String(index + 1).padStart(2, '0')),
+    'mobile-engine-tabs'
+  ) : null;
+
+  if (heroTabs && heroStage) {
+    heroTabs.setAttribute('aria-label', english ? 'Execution engine stages' : '執行引擎階段');
+    [...heroTabs.querySelectorAll('button')].forEach((button, index) => {
+      button.setAttribute('aria-label', `${String(index + 1).padStart(2, '0')} ${heroLayerNames[index]}`);
+    });
+    heroStage.prepend(heroTabs);
+    const result = document.createElement('div');
+    result.className = 'mobile-engine-result';
+    result.innerHTML = english
+      ? '<div><span>Execute</span><i>→</i><span>Write back</span><i>→</i><span>Record</span></div><small>Grounded · Human oversight · Traceable</small>'
+      : '<div><span>執行任務</span><i>→</i><span>回寫系統</span><i>→</i><span>留下紀錄</span></div><small>資料有依據 · 人保有決策 · 結果可追蹤</small>';
+    heroLayers.at(-1)?.append(result);
+  }
+
+  const heroStageOffset = 70;
+
+  function restoreHeroLayerCopy() {
+    heroLayers.forEach((layer, index) => {
+      const title = layer.querySelector('.engine-layer-head b');
+      const detail = layer.querySelector(':scope > p');
+      if (title) title.textContent = heroLayerNames[index];
+      if (detail) detail.textContent = heroLayerDetails[index];
+      layer.classList.remove('is-assembled');
+      layer.style.removeProperty('opacity');
+      layer.style.removeProperty('transform');
+    });
+  }
+
+  function measureHeroTrack() {
+    if (!heroTrack || !heroScene) return;
+    if (!phone.matches) {
+      heroTrack.style.removeProperty('--mobile-hero-track-height');
+      heroStage?.setAttribute('aria-hidden', 'true');
+      return;
+    }
+    restoreHeroLayerCopy();
+    heroStage?.removeAttribute('aria-hidden');
+    const travel = innerWidth <= 370 ? 500 : 560;
+    heroTrack.style.setProperty('--mobile-hero-track-height', `${Math.ceil(heroScene.offsetHeight + travel)}px`);
+  }
+
+  function getHeroTrack() {
+    if (!heroTrack || !heroScene) return null;
+    const top = heroTrack.getBoundingClientRect().top + scrollY - heroStageOffset;
+    return {top, range: Math.max(1, heroTrack.offsetHeight - heroScene.offsetHeight)};
+  }
+
+  function selectHeroFromScroll() {
+    if (!phone.matches || !heroTabs || !heroScene) return;
+    const track = getHeroTrack();
+    const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
+    const index = Math.min(heroLayers.length - 1, Math.floor(progress * heroLayers.length));
+    if (heroTabs.dataset.active !== String(index)) heroTabs._selectMobileChoice(index);
+    heroScene.style.setProperty('--mobile-engine-progress', String(progress));
+  }
+
+  function scrollToHero(index) {
+    if (!phone.matches || !heroTabs) return;
+    const track = getHeroTrack();
+    const progress = heroLayers.length > 1 ? index / (heroLayers.length - 1) : 0;
+    scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
   const busScene = document.querySelector('.a-bus');
@@ -132,6 +211,11 @@
     }, {passive: true});
   }
 
+  if (heroTabs && heroStage) {
+    heroTabs.addEventListener('mobile-choice-change', event => scrollToHero(event.detail.index));
+    addHorizontalSwipe(heroStage, heroTabs, heroLayers, scrollToHero);
+  }
+
   caseCarousels.forEach(carousel => {
     carousel.tabs.addEventListener('mobile-choice-change', event => scrollToCase(carousel, event.detail.index));
     addHorizontalSwipe(carousel.surface, carousel.tabs, carousel.items, index => scrollToCase(carousel, index));
@@ -194,7 +278,7 @@
 
   function configure() {
     root.classList.toggle('mobile-layout-v43', phone.matches);
-    [busTabs, fieldTabs, modelTabs].filter(Boolean).forEach(tabs => {
+    [heroTabs, busTabs, fieldTabs, modelTabs].filter(Boolean).forEach(tabs => {
       const active = Number(tabs.dataset.active || 0);
       tabs._selectMobileChoice(active);
     });
@@ -202,8 +286,10 @@
       document.body.classList.remove('mobile-controls-hidden');
       revealTargets.forEach(target => target.classList.remove('is-mobile-visible'));
     }
+    measureHeroTrack();
     measureCaseTracks();
     requestAnimationFrame(() => {
+      selectHeroFromScroll();
       selectCasesFromScroll();
       selectModelFromScroll();
     });
@@ -221,6 +307,7 @@
     controlsTimer = setTimeout(() => document.body.classList.remove('mobile-controls-hidden'), 480);
     if (!mobileStoryFrame) mobileStoryFrame = requestAnimationFrame(() => {
       mobileStoryFrame = 0;
+      selectHeroFromScroll();
       selectCasesFromScroll();
       selectModelFromScroll();
     });
