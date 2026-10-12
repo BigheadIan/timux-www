@@ -84,8 +84,9 @@
 
   function getModelTrack() {
     if (!methodSection) return null;
+    const shell = methodSection.querySelector(':scope > .shell');
     const top = methodSection.getBoundingClientRect().top + scrollY - modelStageOffset;
-    return {top, range: Math.max(1, methodSection.offsetHeight - innerHeight)};
+    return {top, range: Math.max(1, methodSection.offsetHeight - (shell?.offsetHeight || innerHeight))};
   }
 
   function selectModelFromScroll() {
