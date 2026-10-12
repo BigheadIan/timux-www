@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v51-mobile-scroll-performance';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v52-mobile-carousel-pacing';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -76,8 +76,8 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 9500 : 9100;
-    if (!state.marker?.includes('mobile-scroll-performance') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    const maxHeight = path ? 10000 : 9600;
+    if (!state.marker?.includes('mobile-carousel-pacing') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
@@ -93,8 +93,10 @@ for (const path of ['', 'en/']) {
         sceneHeight: scene.offsetHeight
       };
     });
-    const expectedHeroRange = viewport.width <= 370 ? 500 : 560;
+    const expectedHeroRange = viewport.width <= 370 ? 900 : 980;
     if (Math.abs(heroTrack.range - expectedHeroRange) > 3 || heroTrack.sceneHeight > viewport.height - 70) throw Error(`mobile hero track regression ${path} ${JSON.stringify({viewport, heroTrack})}`);
+    const heroBeatDistance = heroTrack.range / 5;
+    if (heroBeatDistance < 175) throw Error(`mobile hero pacing regression ${path} ${JSON.stringify({viewport, heroTrack, heroBeatDistance})}`);
     const heroTerms = path
       ? ['Signal received', 'Knowledge checked', 'Rules applied', 'Human decision', 'Action recorded']
       : ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
@@ -124,6 +126,11 @@ for (const path of ['', 'en/']) {
       await page.waitForTimeout(320);
       await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-hero-${index + 1}.png`});
     }
+    await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), heroTrack);
+    await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+    await page.waitForFunction(() => document.querySelector('.mobile-engine-tabs')?.dataset.active === '1');
+    const oneFlickState = await page.locator('.mobile-engine-tabs').evaluate(tabs => ({active: tabs.dataset.active, selected: [...tabs.querySelectorAll('button')].findIndex(button => button.getAttribute('aria-selected') === 'true')}));
+    if (oneFlickState.active !== '1' || oneFlickState.selected !== 1) throw Error(`mobile hero one-flick pacing regression ${path} ${JSON.stringify({viewport, heroTrack, oneFlickState})}`);
     await page.locator('.mobile-engine-tabs button').first().click();
     await page.waitForFunction(() => document.querySelector('.mobile-engine-tabs')?.dataset.active === '0');
     await page.locator('.engine-stage').evaluate(element => {

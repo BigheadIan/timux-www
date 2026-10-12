@@ -106,7 +106,10 @@
     }
     restoreHeroLayerCopy();
     heroStage?.removeAttribute('aria-hidden');
-    const travel = innerWidth <= 370 ? 500 : 560;
+    // Keep each of the five story beats on screen long enough to read after a
+    // natural mobile flick. The previous 500/560px runway made one gesture
+    // cross multiple beats on iOS and embedded WebViews.
+    const travel = innerWidth <= 370 ? 900 : 980;
     heroTrack.style.setProperty('--mobile-hero-track-height', `${Math.ceil(heroScene.offsetHeight + travel)}px`);
     heroTrackMetric = {
       top: heroTrack.getBoundingClientRect().top + scrollY - heroStageOffset,
@@ -132,7 +135,9 @@
     if (!phone.matches || !heroTabs) return;
     const track = getHeroTrack();
     if (!track) return;
-    const progress = heroLayers.length > 1 ? index / (heroLayers.length - 1) : 0;
+    // Land tab/swipe navigation in the middle of the selected beat, leaving
+    // useful scroll room before the following beat becomes active.
+    const progress = heroLayers.length ? (index + 0.5) / heroLayers.length : 0;
     scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
