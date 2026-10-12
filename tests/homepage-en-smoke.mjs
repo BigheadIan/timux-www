@@ -1,5 +1,8 @@
-import playwright from '../../playtime/node_modules/playwright/index.js';
 import fs from 'node:fs';
+
+const localPlaywright = new URL('../../playtime/node_modules/playwright/index.js', import.meta.url);
+const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/index.js', import.meta.url);
+const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const rootURL = process.env.HOMEPAGE_ROOT_URL || 'http://127.0.0.1:8787/';
 const englishURL = new URL('/en/', rootURL).href;
@@ -45,7 +48,7 @@ for (const [name, viewport] of Object.entries({ desktop: { width: 1920, height: 
     }).map((element) => element.textContent.trim()).slice(0, 10)
   }));
 
-  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v16-mobile-parity-20261012' ||
+  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v17-mobile-story-20261012' ||
       audit.canonical !== 'https://www.timux.site/en/' || audit.title !== 'Timux Technology | Enterprise AI Adoption & Execution' ||
       audit.h1 !== 'Bring AI into real work,and get work done.' || audit.activeLanguage !== 'EN' ||
       audit.navPrimary.join('|') !== 'Solutions|Case Studies|AI Adoption' || audit.overflow > 1 ||

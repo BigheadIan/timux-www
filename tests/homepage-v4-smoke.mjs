@@ -1,5 +1,8 @@
-import playwright from "../../playtime/node_modules/playwright/index.js";
 import fs from "node:fs";
+
+const localPlaywright = new URL("../../playtime/node_modules/playwright/index.js", import.meta.url);
+const worktreePlaywright = new URL("../../../playtime/node_modules/playwright/index.js", import.meta.url);
+const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const { chromium } = playwright;
 const baseURL = process.env.HOMEPAGE_URL || "http://127.0.0.1:8787/";
@@ -81,7 +84,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v41-mobile-parity-20261012") {
+  if (marker !== "homepage-v42-mobile-story-20261012") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 

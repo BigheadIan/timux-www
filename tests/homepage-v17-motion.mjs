@@ -1,5 +1,8 @@
-import playwright from '../../playtime/node_modules/playwright/index.js';
 import fs from 'node:fs';
+
+const localPlaywright = new URL('../../playtime/node_modules/playwright/index.js', import.meta.url);
+const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/index.js', import.meta.url);
+const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const url=process.env.HOMEPAGE_URL||'http://127.0.0.1:8787/';
 const output=process.env.HOMEPAGE_QA_OUTPUT||'output/playwright/homepage-v17-motion';
