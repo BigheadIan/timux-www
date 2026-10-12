@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v44-mobile-static';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v45-mobile-overview';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -42,8 +42,15 @@ for (const path of ['', 'en/']) {
         scrollHeight: document.documentElement.scrollHeight,
         heroHeight: rect('.outcome-hero').height,
         engineHeight: rect('.engine-stage').height,
-        visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => getComputedStyle(layer).display !== 'none').length,
+        visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => layer.getBoundingClientRect().width > 0).length,
         engineAnimations: [...document.querySelectorAll('.engine-layer')].map(layer => getComputedStyle(layer).animationName),
+        overview: {
+          display: style('.mobile-engine-overview').display,
+          width: rect('.mobile-engine-overview').width,
+          height: rect('.mobile-engine-overview').height,
+          text: document.querySelector('.mobile-engine-overview').textContent.replace(/\s+/g, ' ').trim(),
+          svgWidth: rect('.mobile-overview-map').width
+        },
         partnerColumns: style('.partner-orbit .logo-row').gridTemplateColumns.split(' ').length,
         partnerHeight: rect('.partner-orbit').height,
         solutionColumns: style('.solution-grid').gridTemplateColumns.split(' ').length,
@@ -64,9 +71,11 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 7800 : 7350;
-    if (!state.marker?.includes('mobile-static') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
-    if (state.heroHeight > 500 || state.engineHeight < 170 || state.engineHeight > 190 || state.visibleEngineLayers !== 1 || state.engineAnimations.some(name => name !== 'none')) throw Error(`static hero regression ${path} ${JSON.stringify(state)}`);
+    const maxHeight = path ? 7900 : 7450;
+    if (!state.marker?.includes('mobile-overview') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    if (state.heroHeight > 620 || state.engineHeight < 275 || state.engineHeight > 295 || state.visibleEngineLayers !== 0 || state.engineAnimations.some(name => name !== 'none')) throw Error(`static hero regression ${path} ${JSON.stringify(state)}`);
+    const overviewTerms = path ? ['UNDERSTAND', 'VERIFY', 'Human confirms', 'Write back'] : ['理解意圖', '核對資料', '人員確認', '回寫系統'];
+    if (state.overview.display === 'none' || state.overview.width < viewport.width - 40 || state.overview.svgWidth < viewport.width - 70 || overviewTerms.some(term => !state.overview.text.includes(term))) throw Error(`overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
     if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions.some(position => position === 'sticky')) throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
     if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 3 || state.tabs.some(tabs => tabs.display === 'none' || tabs.count !== 3) || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
@@ -109,9 +118,11 @@ const desktopState = await desktop.evaluate(() => ({
   mobileLayout: document.documentElement.classList.contains('mobile-layout-v43'),
   tabsHidden: [...document.querySelectorAll('.mobile-choice-tabs')].every(tabs => getComputedStyle(tabs).display === 'none'),
   solutionColumns: getComputedStyle(document.querySelector('.solution-grid')).gridTemplateColumns.split(' ').length,
-  visibleModels: [...document.querySelectorAll('.model-pie-grid > article')].filter(card => getComputedStyle(card).display !== 'none').length
+  visibleModels: [...document.querySelectorAll('.model-pie-grid > article')].filter(card => getComputedStyle(card).display !== 'none').length,
+  overviewHidden: getComputedStyle(document.querySelector('.mobile-engine-overview')).display === 'none',
+  visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => layer.getBoundingClientRect().width > 0).length
 }));
-if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
+if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
 await desktop.screenshot({path: `${output}/desktop-1920-hero.png`});
 await desktop.close();
 

@@ -30,6 +30,40 @@
     stack.append(el); return el;
   });
   stage.append(stack);
+  const mobileOverview = make('div', 'mobile-engine-overview', english ? `
+    <div class="mobile-overview-head"><span>ONE WORKFLOW</span><strong>How real work reaches completion</strong></div>
+    <svg class="mobile-overview-map" viewBox="0 0 320 206" role="img" aria-label="A request enters, AI understands and verifies, people supervise key decisions, then the task is executed and recorded.">
+      <defs><marker id="mobile-flow-arrow-en" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#72dfcf"/></marker></defs>
+      <g class="mobile-overview-edges" fill="none" stroke="#72dfcf" stroke-width="1.4" marker-end="url(#mobile-flow-arrow-en)">
+        <path d="M46 38 V49 H54 V60"/><path d="M160 38 V49 H54 V60"/><path d="M274 38 V49 H54 V60"/>
+        <path d="M98 79 H114"/><path d="M204 79 H220"/>
+        <path d="M266 98 V108 H82 V116"/><path d="M266 98 V108 H238 V116"/>
+        <path d="M82 150 V160 H160 V170"/><path d="M238 150 V160 H160 V170"/>
+      </g>
+      <g class="mobile-overview-inputs"><rect x="4" y="8" width="84" height="30" rx="10"/><rect x="118" y="8" width="84" height="30" rx="10"/><rect x="232" y="8" width="84" height="30" rx="10"/><text x="46" y="27">Customer</text><text x="160" y="27">Field</text><text x="274" y="27">Work task</text></g>
+      <g class="mobile-overview-process"><rect x="10" y="60" width="88" height="38" rx="12"/><rect x="116" y="60" width="88" height="38" rx="12"/><rect x="222" y="60" width="88" height="38" rx="12"/><text x="54" y="76"><tspan x="54">UNDERSTAND</tspan><tspan x="54" dy="14">intent</tspan></text><text x="160" y="76"><tspan x="160">VERIFY</tspan><tspan x="160" dy="14">sources</tspan></text><text x="266" y="76"><tspan x="266">DECIDE</tspan><tspan x="266" dy="14">by rules</tspan></text></g>
+      <g class="mobile-overview-ai"><rect x="22" y="116" width="120" height="34" rx="11"/><text x="82" y="137">AI executes</text></g>
+      <g class="mobile-overview-human"><rect x="178" y="116" width="120" height="34" rx="11"/><text x="238" y="137">Human confirms</text></g>
+      <g class="mobile-overview-output"><rect x="34" y="170" width="252" height="32" rx="11"/><text x="160" y="190">Execute · Write back · Record</text></g>
+    </svg>
+    <div class="mobile-overview-proof"><span>Grounded</span><span>Human oversight</span><span>Traceable</span></div>` : `
+    <div class="mobile-overview-head"><span>ONE WORKFLOW</span><strong>一段真實工作，如何走到完成</strong></div>
+    <svg class="mobile-overview-map" viewBox="0 0 320 206" role="img" aria-label="需求進入後，由 AI 理解與核對，人在關鍵節點監督，再執行任務並留下紀錄。">
+      <defs><marker id="mobile-flow-arrow-zh" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#72dfcf"/></marker></defs>
+      <g class="mobile-overview-edges" fill="none" stroke="#72dfcf" stroke-width="1.4" marker-end="url(#mobile-flow-arrow-zh)">
+        <path d="M46 38 V49 H54 V60"/><path d="M160 38 V49 H54 V60"/><path d="M274 38 V49 H54 V60"/>
+        <path d="M98 79 H114"/><path d="M204 79 H220"/>
+        <path d="M266 98 V108 H82 V116"/><path d="M266 98 V108 H238 V116"/>
+        <path d="M82 150 V160 H160 V170"/><path d="M238 150 V160 H160 V170"/>
+      </g>
+      <g class="mobile-overview-inputs"><rect x="4" y="8" width="84" height="30" rx="10"/><rect x="118" y="8" width="84" height="30" rx="10"/><rect x="232" y="8" width="84" height="30" rx="10"/><text x="46" y="27">客戶詢問</text><text x="160" y="27">現場回報</text><text x="274" y="27">工作任務</text></g>
+      <g class="mobile-overview-process"><rect x="10" y="60" width="88" height="38" rx="12"/><rect x="116" y="60" width="88" height="38" rx="12"/><rect x="222" y="60" width="88" height="38" rx="12"/><text x="54" y="76"><tspan x="54">理解意圖</tspan><tspan x="54" dy="14">補齊情境</tspan></text><text x="160" y="76"><tspan x="160">核對資料</tspan><tspan x="160" dy="14">引用依據</tspan></text><text x="266" y="76"><tspan x="266">規則判斷</tspan><tspan x="266" dy="14">權限與例外</tspan></text></g>
+      <g class="mobile-overview-ai"><rect x="22" y="116" width="120" height="34" rx="11"/><text x="82" y="137">AI 執行下一步</text></g>
+      <g class="mobile-overview-human"><rect x="178" y="116" width="120" height="34" rx="11"/><text x="238" y="137">人員確認／接手</text></g>
+      <g class="mobile-overview-output"><rect x="34" y="170" width="252" height="32" rx="11"/><text x="160" y="190">執行任務 · 回寫系統 · 留下紀錄</text></g>
+    </svg>
+    <div class="mobile-overview-proof"><span>資料有依據</span><span>人保有決策</span><span>結果可追蹤</span></div>`);
+  stage.append(mobileOverview);
   stage.append(make('div', 'engine-footer', english ? '<span>Grounded in data</span><span>Humans decide</span><span>Results traceable</span>' : '<span>資料有依據</span><span>人保有決策</span><span>結果可追蹤</span>'));
   const caption = document.querySelector('.engine-caption');
 
