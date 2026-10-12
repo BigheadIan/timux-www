@@ -176,7 +176,7 @@
         carousel.metric = null;
         return;
       }
-      const travel = innerWidth <= 370 ? 330 : 360;
+      const travel = innerWidth <= 370 ? 510 : 540;
       carousel.track.style.setProperty('--mobile-case-track-height', `${Math.ceil(carousel.scene.offsetHeight + travel)}px`);
     });
     if (!phone.matches) return;
@@ -208,7 +208,7 @@
     if (!phone.matches) return;
     const track = getCaseTrack(carousel);
     if (!track) return;
-    const progress = carousel.items.length > 1 ? index / (carousel.items.length - 1) : 0;
+    const progress = carousel.items.length ? (index + 0.5) / carousel.items.length : 0;
     scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 
@@ -284,7 +284,7 @@
     if (!phone.matches || !modelTabs) return;
     const track = getModelTrack();
     if (!track) return;
-    const progress = modelCards.length > 1 ? index / (modelCards.length - 1) : 0;
+    const progress = modelCards.length ? (index + 0.5) / modelCards.length : 0;
     scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
   }
 

@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v52-mobile-carousel-pacing';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v53-mobile-carousel-pacing';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -76,7 +76,7 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 10000 : 9600;
+    const maxHeight = path ? 10600 : 10200;
     if (!state.marker?.includes('mobile-carousel-pacing') || state.journeyScroll !== 'idle' || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > viewport.height - 60 || state.heroPosition !== 'sticky' || state.engineHeight < 398 || state.engineHeight > 555 || state.visibleEngineLayers !== 1) throw Error(`mobile hero sizing regression ${path} ${JSON.stringify(state)}`);
     if (state.overview.display !== 'none') throw Error(`legacy overview regression ${path} ${JSON.stringify(state.overview)}`);
@@ -153,7 +153,8 @@ for (const path of ['', 'en/']) {
           sceneHeight: scene.offsetHeight
         };
       });
-      if (caseTrack.range < 325 || caseTrack.range > 365 || caseTrack.sceneHeight > viewport.height - 70) throw Error(`mobile case sizing regression ${path} ${JSON.stringify({viewport, spec, caseTrack})}`);
+      const expectedCaseRange = viewport.width <= 370 ? 510 : 540;
+      if (Math.abs(caseTrack.range - expectedCaseRange) > 3 || (caseTrack.range / 3) < 165 || caseTrack.sceneHeight > viewport.height - 70) throw Error(`mobile case sizing regression ${path} ${JSON.stringify({viewport, spec, caseTrack})}`);
       for (const [index, progress] of [[0, 0], [1, .5], [2, 1]]) {
         await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...caseTrack, progress});
         await page.waitForFunction(({selector, expected}) => document.querySelector(selector)?.dataset.active === String(expected), {selector: spec.tabs, expected: index});
@@ -169,6 +170,9 @@ for (const path of ['', 'en/']) {
         if (caseState.active !== String(index) || caseState.current !== 1 || Math.abs(caseState.top - 70) > 2 || caseState.bottom > viewport.height + 1) throw Error(`mobile case scroll regression ${path} ${JSON.stringify({viewport, spec, index, caseState})}`);
         await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-${spec.name}-${index + 1}.png`});
       }
+      await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), caseTrack);
+      await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
       await page.locator(`${spec.tabs} button`).first().click();
       await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '0', spec.tabs);
       await page.locator(`${spec.scene} .scene-inner`).evaluate(element => {
@@ -208,6 +212,7 @@ for (const path of ['', 'en/']) {
         range: section.offsetHeight - shell.offsetHeight
       };
     });
+    if ((methodTrack.range / 3) < 165) throw Error(`mobile model pacing regression ${path} ${JSON.stringify({viewport, methodTrack})}`);
     for (const [index, progress] of [[0, 0], [1, .5], [2, 1]]) {
       await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...methodTrack, progress});
       await page.waitForFunction(expected => document.querySelector('.mobile-model-tabs')?.dataset.active === String(expected), index);
@@ -229,6 +234,10 @@ for (const path of ['', 'en/']) {
       if (modelState.active !== String(index) || modelState.current !== 1 || modelState.card.top < modelState.shell.top || modelState.tail.bottom > modelState.shell.bottom || modelState.cardBlank > 24 || modelState.contentGap < 8 || modelState.contentGap > 18) throw Error(`mobile model scroll regression ${path} ${JSON.stringify({viewport, index, modelState})}`);
       await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-model-${index + 1}.png`});
     }
+
+    await page.evaluate(({top}) => scrollTo({top, behavior: 'instant'}), methodTrack);
+    await page.evaluate(() => scrollBy({top: 240, behavior: 'instant'}));
+    await page.waitForFunction(() => document.querySelector('.mobile-model-tabs')?.dataset.active === '1');
 
     await page.locator('.mobile-model-tabs button').first().click();
     await page.waitForFunction(() => document.querySelector('.mobile-model-tabs')?.dataset.active === '0');
