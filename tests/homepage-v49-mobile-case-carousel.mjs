@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v48-mobile-model-compact';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v49-mobile-case-carousel';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -62,6 +62,7 @@ for (const path of ['', 'en/']) {
         methodShellPosition: style('#method > .shell').position,
         casesTouch: Math.round(firstCase.bottom - secondCase.top),
         caseTrackPositions: [...document.querySelectorAll('.case-journey-track')].map(track => getComputedStyle(track).position),
+        caseScenePositions: [...document.querySelectorAll('.case-scene')].map(scene => getComputedStyle(scene).position),
         tabs: [...document.querySelectorAll('.mobile-choice-tabs')].map(tabs => ({display: getComputedStyle(tabs).display, count: tabs.querySelectorAll('button').length})),
         active: {
           stations: document.querySelectorAll('.a-bus .station.is-mobile-current').length,
@@ -72,24 +73,53 @@ for (const path of ['', 'en/']) {
       };
     });
 
-    const maxHeight = path ? 8550 : 8150;
-    if (!state.marker?.includes('mobile-model-compact') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    const maxHeight = path ? 8900 : 8500;
+    if (!state.marker?.includes('mobile-case-carousel') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
     if (state.heroHeight > 620 || state.engineHeight < 275 || state.engineHeight > 295 || state.visibleEngineLayers !== 0 || state.engineAnimations.some(name => name !== 'none')) throw Error(`static hero regression ${path} ${JSON.stringify(state)}`);
     const overviewTerms = path ? ['UNDERSTAND', 'VERIFY', 'Human confirms', 'Write back'] : ['理解意圖', '核對資料', '人員確認', '回寫系統'];
     if (state.overview.display === 'none' || state.overview.width < viewport.width - 40 || state.overview.svgWidth < viewport.width - 70 || overviewTerms.some(term => !state.overview.text.includes(term))) throw Error(`overview regression ${path} ${JSON.stringify(state.overview)}`);
     if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
-    if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions.some(position => position === 'sticky') || state.methodShellPosition !== 'sticky') throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
+    if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions.some(position => position === 'sticky') || state.methodShellPosition !== 'sticky' || state.caseScenePositions.some(position => position !== 'sticky')) throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
     if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 3 || state.tabs.some(tabs => tabs.display === 'none' || tabs.count !== 3) || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
     if (state.controls.some(control => control.display !== 'none')) throw Error(`floating control regression ${path} ${JSON.stringify(state.controls)}`);
 
-    for (const selector of ['.mobile-case-tabs']) {
-      const buttons = page.locator(`${selector} button`);
-      await buttons.last().click();
-      const tabState = await page.locator(selector).evaluate(tabs => ({
-        selected: [...tabs.querySelectorAll('button')].findIndex(button => button.getAttribute('aria-selected') === 'true'),
-        active: tabs.dataset.active
-      }));
-      if (tabState.selected !== 2 || tabState.active !== '2') throw Error(`selector interaction regression ${selector} ${JSON.stringify(tabState)}`);
+    for (const spec of [
+      {track: '.case-journey-track:first-child', scene: '#case-southeast', tabs: '.mobile-case-tabs', item: '.station.is-mobile-current', name: 'bus'},
+      {track: '.case-journey-track:last-child', scene: '#case-mj', tabs: '.mobile-field-tabs', item: '.device.is-mobile-current', name: 'mj'}
+    ]) {
+      const caseTrack = await page.locator(spec.track).evaluate((track) => {
+        const scene = track.querySelector('.case-scene');
+        return {
+          top: track.getBoundingClientRect().top + scrollY - 70,
+          range: track.offsetHeight - scene.offsetHeight,
+          sceneHeight: scene.offsetHeight
+        };
+      });
+      if (caseTrack.range < 325 || caseTrack.range > 365 || caseTrack.sceneHeight > viewport.height - 70) throw Error(`mobile case sizing regression ${path} ${JSON.stringify({viewport, spec, caseTrack})}`);
+      for (const [index, progress] of [[0, 0], [1, .5], [2, 1]]) {
+        await page.evaluate(({top, range, progress}) => scrollTo({top: top + (range * progress), behavior: 'instant'}), {...caseTrack, progress});
+        await page.waitForFunction(({selector, expected}) => document.querySelector(selector)?.dataset.active === String(expected), {selector: spec.tabs, expected: index});
+        const caseState = await page.locator(spec.scene).evaluate((scene, spec) => {
+          const rect = scene.getBoundingClientRect();
+          return {
+            active: scene.querySelector(spec.tabs).dataset.active,
+            current: scene.querySelectorAll(spec.item).length,
+            top: rect.top,
+            bottom: rect.bottom
+          };
+        }, spec);
+        if (caseState.active !== String(index) || caseState.current !== 1 || Math.abs(caseState.top - 70) > 2 || caseState.bottom > viewport.height + 1) throw Error(`mobile case scroll regression ${path} ${JSON.stringify({viewport, spec, index, caseState})}`);
+        await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-${spec.name}-${index + 1}.png`});
+      }
+      await page.locator(`${spec.tabs} button`).first().click();
+      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '0', spec.tabs);
+      await page.locator(`${spec.scene} .scene-inner`).evaluate(element => {
+        const start = new Touch({identifier: 1, target: element, clientX: 300, clientY: 360});
+        const end = new Touch({identifier: 1, target: element, clientX: 80, clientY: 360});
+        element.dispatchEvent(new TouchEvent('touchstart', {touches: [start], bubbles: true}));
+        element.dispatchEvent(new TouchEvent('touchend', {changedTouches: [end], bubbles: true}));
+      });
+      await page.waitForFunction(selector => document.querySelector(selector)?.dataset.active === '1', spec.tabs);
     }
 
     const fieldButtons = page.locator('.mobile-field-tabs button');
@@ -110,7 +140,7 @@ for (const path of ['', 'en/']) {
           footerClearance: sceneRect.bottom - footer.bottom
         };
       });
-      if (fit.active !== 1 || fit.selected !== index || fit.topClearance < 38 || fit.bottomClearance < 9 || fit.footerClearance < 40) throw Error(`mobile field fit regression ${path} ${JSON.stringify({viewport, index, fit})}`);
+      if (fit.active !== 1 || fit.selected !== index || fit.topClearance < 20 || fit.bottomClearance < 8 || fit.footerClearance < 8) throw Error(`mobile field fit regression ${path} ${JSON.stringify({viewport, index, fit})}`);
     }
 
     const methodTrack = await page.locator('#method').evaluate(section => {
@@ -169,11 +199,6 @@ for (const path of ['', 'en/']) {
       return {navBottom: nav.bottom, titleTop: title.top};
     });
     if (anchorFit.titleTop < anchorFit.navBottom + 20) throw Error(`mobile anchor overlap ${path} ${JSON.stringify({viewport, anchorFit})}`);
-    for (let index = 0; index < await fieldButtons.count(); index += 1) {
-      await fieldButtons.nth(index).click();
-      await page.screenshot({path: `${output}/${path ? 'en-' : 'zh-'}${viewport.width}-case-mj-${index + 1}.png`});
-    }
-
     if (errors.length) throw Error(`runtime regression ${path} ${JSON.stringify(errors)}`);
     results.push({path: path || '/', viewport, ...state, errors});
     await page.close();
@@ -189,10 +214,12 @@ const desktopState = await desktop.evaluate(() => ({
   tabsHidden: [...document.querySelectorAll('.mobile-choice-tabs')].every(tabs => getComputedStyle(tabs).display === 'none'),
   solutionColumns: getComputedStyle(document.querySelector('.solution-grid')).gridTemplateColumns.split(' ').length,
   visibleModels: [...document.querySelectorAll('.model-pie-grid > article')].filter(card => getComputedStyle(card).display !== 'none').length,
+  visibleStations: [...document.querySelectorAll('.a-bus .station')].filter(card => getComputedStyle(card).display !== 'none').length,
+  visibleDevices: [...document.querySelectorAll('.a-mj .device')].filter(card => getComputedStyle(card).display !== 'none').length,
   overviewHidden: getComputedStyle(document.querySelector('.mobile-engine-overview')).display === 'none',
   visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => layer.getBoundingClientRect().width > 0).length
 }));
-if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
+if (desktopState.overflow > 1 || !desktopState.storyDesktop || desktopState.mobileLayout || !desktopState.tabsHidden || desktopState.solutionColumns !== 2 || desktopState.visibleModels !== 3 || desktopState.visibleStations !== 3 || desktopState.visibleDevices !== 3 || !desktopState.overviewHidden || desktopState.visibleEngineLayers !== 5) throw Error(`desktop regression ${JSON.stringify(desktopState)}`);
 await desktop.screenshot({path: `${output}/desktop-1920-hero.png`});
 await desktop.close();
 
@@ -200,9 +227,11 @@ const reducedPage = await browser.newPage({viewport: {width: 390, height: 844}, 
 await reducedPage.goto(base, {waitUntil: 'networkidle'});
 const reducedState = await reducedPage.evaluate(() => ({
   engineAnimation: getComputedStyle(document.querySelector('.engine-layer')).animationName,
-  revealOpacity: getComputedStyle(document.querySelector('[data-mobile-reveal]')).opacity
+  revealOpacity: getComputedStyle(document.querySelector('[data-mobile-reveal]')).opacity,
+  stationAnimation: getComputedStyle(document.querySelector('.station.is-mobile-current')).animationName,
+  deviceAnimation: getComputedStyle(document.querySelector('.device.is-mobile-current')).animationName
 }));
-if (reducedState.engineAnimation !== 'none' || reducedState.revealOpacity !== '1') throw Error(`reduced motion regression ${JSON.stringify(reducedState)}`);
+if (reducedState.engineAnimation !== 'none' || reducedState.revealOpacity !== '1' || reducedState.stationAnimation !== 'none' || reducedState.deviceAnimation !== 'none') throw Error(`reduced motion regression ${JSON.stringify(reducedState)}`);
 await reducedPage.close();
 
 await browser.close();

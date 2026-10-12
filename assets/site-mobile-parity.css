@@ -293,3 +293,44 @@
 }
 
 @keyframes mobile-model-enter{from{opacity:.35;transform:translateX(18px) scale(.985)}to{opacity:1;transform:none}}
+
+/* V49: Southeast Bus and MJ Security stay in view while vertical scrolling advances each three-step story. */
+@media(max-width:820px){
+  html.mobile-layout-v43 .case-collection{overflow:visible!important}
+  html.mobile-layout-v43 .case-collection>.case-journey-track{height:var(--mobile-case-track-height,auto)!important;overflow:visible!important}
+  html.mobile-layout-v43 .case-scene{position:sticky!important;top:70px!important;height:auto!important;padding:16px 0 12px;overflow:hidden!important}
+  html.mobile-layout-v43 .case-scene .scene-inner{width:calc(100% - (var(--phone-gutter) * 2))}
+  html.mobile-layout-v43 .case-scene .chapter{margin-bottom:12px}
+  html.mobile-layout-v43 .case-scene .case-headline,
+  html[lang=en].mobile-layout-v43 .case-scene .case-headline{margin-top:8px;font-size:31px}
+  html.mobile-layout-v43 .case-scene header>p,
+  html.mobile-layout-v43 .case-scene .editorial-title>p{margin-top:7px;font-size:13px;line-height:1.4}
+  html.mobile-layout-v43 .a-bus .route-key{margin-top:12px}
+  html.mobile-layout-v43 .case-scene .mobile-choice-tabs{margin:8px 0}
+  html.mobile-layout-v43 .a-bus .station{min-height:190px;padding:18px}
+  html.mobile-layout-v43 .case-scene .scene-foot{margin-top:10px;padding-top:8px}
+  html.mobile-layout-v43 .a-mj .runway{margin-top:6px;padding:24px 0 8px}
+  html.mobile-layout-v43 .a-mj .runway-word{top:0;font-size:22px}
+  html.mobile-layout-v43 .a-mj .runway-orbit{bottom:22px;height:110px}
+  html.mobile-layout-v43 .a-mj .device,
+  html.mobile-layout-v43 .a-mj .runway-left,
+  html.mobile-layout-v43 .a-mj .runway-center,
+  html.mobile-layout-v43 .a-mj .runway-right{width:min(168px,42vw)}
+}
+
+@media(max-width:370px){
+  html.mobile-layout-v43 .case-scene{padding-top:12px;padding-bottom:9px}
+  html.mobile-layout-v43 .case-scene .chapter{margin-bottom:9px}
+  html.mobile-layout-v43 .case-scene .case-headline,
+  html[lang=en].mobile-layout-v43 .case-scene .case-headline{font-size:29px}
+  html.mobile-layout-v43 .a-bus .station{min-height:180px;padding:16px}
+  html.mobile-layout-v43 .a-mj .device,
+  html.mobile-layout-v43 .a-mj .runway-left,
+  html.mobile-layout-v43 .a-mj .runway-center,
+  html.mobile-layout-v43 .a-mj .runway-right{width:40vw}
+}
+
+@media(max-width:820px) and (prefers-reduced-motion:reduce){
+  html.mobile-layout-v43 .a-bus .station.is-mobile-current,
+  html.mobile-layout-v43 .a-mj .device.is-mobile-current{animation:none!important}
+}

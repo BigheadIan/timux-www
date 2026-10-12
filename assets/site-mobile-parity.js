@@ -1,4 +1,4 @@
-/* V43: mobile-native layout controls. No scroll pinning or layered section choreography. */
+/* V49: mobile-native layout controls with compact scroll-driven story carousels. */
 (() => {
   const phone = matchMedia('(max-width: 820px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -70,6 +70,73 @@
   ) : null;
   if (fieldTabs) fieldScene.querySelector('.runway')?.before(fieldTabs);
 
+  const caseStageOffset = 70;
+  const caseCarousels = [
+    {scene: busScene, tabs: busTabs, items: stations, surface: busScene?.querySelector('.scene-inner')},
+    {scene: fieldScene, tabs: fieldTabs, items: devices, surface: fieldScene?.querySelector('.scene-inner')}
+  ].filter(carousel => carousel.scene && carousel.tabs && carousel.items.length).map(carousel => ({
+    ...carousel,
+    track: carousel.scene.closest('.case-journey-track')
+  }));
+
+  function measureCaseTracks() {
+    caseCarousels.forEach(carousel => {
+      if (!phone.matches) {
+        carousel.track.style.removeProperty('--mobile-case-track-height');
+        return;
+      }
+      const travel = innerWidth <= 370 ? 330 : 360;
+      carousel.track.style.setProperty('--mobile-case-track-height', `${Math.ceil(carousel.scene.offsetHeight + travel)}px`);
+    });
+  }
+
+  function getCaseTrack(carousel) {
+    const top = carousel.track.getBoundingClientRect().top + scrollY - caseStageOffset;
+    return {top, range: Math.max(1, carousel.track.offsetHeight - carousel.scene.offsetHeight)};
+  }
+
+  function selectCasesFromScroll() {
+    if (!phone.matches) return;
+    caseCarousels.forEach(carousel => {
+      const track = getCaseTrack(carousel);
+      const progress = Math.max(0, Math.min(1, (scrollY - track.top) / track.range));
+      const index = Math.min(carousel.items.length - 1, Math.floor(progress * carousel.items.length));
+      if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
+      carousel.scene.style.setProperty('--mobile-case-progress', String(progress));
+    });
+  }
+
+  function scrollToCase(carousel, index) {
+    if (!phone.matches) return;
+    const track = getCaseTrack(carousel);
+    const progress = carousel.items.length > 1 ? index / (carousel.items.length - 1) : 0;
+    scrollTo({top: track.top + (track.range * progress), behavior: reduced.matches ? 'instant' : 'smooth'});
+  }
+
+  function addHorizontalSwipe(surface, tabs, items, selectByIndex) {
+    if (!surface || !tabs) return;
+    let swipeStart = null;
+    surface.addEventListener('touchstart', event => {
+      const touch = event.touches[0];
+      swipeStart = touch ? {x: touch.clientX, y: touch.clientY} : null;
+    }, {passive: true});
+    surface.addEventListener('touchend', event => {
+      const touch = event.changedTouches[0];
+      if (!swipeStart || !touch) return;
+      const dx = touch.clientX - swipeStart.x;
+      const dy = touch.clientY - swipeStart.y;
+      swipeStart = null;
+      if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+      const active = Number(tabs.dataset.active || 0);
+      selectByIndex(Math.max(0, Math.min(items.length - 1, active + (dx < 0 ? 1 : -1))));
+    }, {passive: true});
+  }
+
+  caseCarousels.forEach(carousel => {
+    carousel.tabs.addEventListener('mobile-choice-change', event => scrollToCase(carousel, event.detail.index));
+    addHorizontalSwipe(carousel.surface, carousel.tabs, carousel.items, index => scrollToCase(carousel, index));
+  });
+
   const modelGrid = document.querySelector('.model-pie-grid');
   const modelCards = modelGrid ? [...modelGrid.querySelectorAll(':scope > article')] : [];
   const modelTabs = modelCards.length ? makeTabs(
@@ -107,21 +174,7 @@
 
   if (modelTabs && modelGrid) {
     modelTabs.addEventListener('mobile-choice-change', event => scrollToModel(event.detail.index));
-    let swipeStart = null;
-    modelGrid.addEventListener('touchstart', event => {
-      const touch = event.touches[0];
-      swipeStart = touch ? {x: touch.clientX, y: touch.clientY} : null;
-    }, {passive: true});
-    modelGrid.addEventListener('touchend', event => {
-      const touch = event.changedTouches[0];
-      if (!swipeStart || !touch) return;
-      const dx = touch.clientX - swipeStart.x;
-      const dy = touch.clientY - swipeStart.y;
-      swipeStart = null;
-      if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-      const active = Number(modelTabs.dataset.active || 0);
-      scrollToModel(Math.max(0, Math.min(modelCards.length - 1, active + (dx < 0 ? 1 : -1))));
-    }, {passive: true});
+    addHorizontalSwipe(modelGrid, modelTabs, modelCards, scrollToModel);
   }
 
   const revealTargets = [
@@ -149,12 +202,16 @@
       document.body.classList.remove('mobile-controls-hidden');
       revealTargets.forEach(target => target.classList.remove('is-mobile-visible'));
     }
-    requestAnimationFrame(selectModelFromScroll);
+    measureCaseTracks();
+    requestAnimationFrame(() => {
+      selectCasesFromScroll();
+      selectModelFromScroll();
+    });
   }
 
   let controlsTimer = 0;
   let lastScroll = scrollY;
-  let modelFrame = 0;
+  let mobileStoryFrame = 0;
   addEventListener('scroll', () => {
     if (!phone.matches) return;
     const moved = Math.abs(scrollY - lastScroll) > 2;
@@ -162,8 +219,9 @@
     if (moved && scrollY > 180) document.body.classList.add('mobile-controls-hidden');
     clearTimeout(controlsTimer);
     controlsTimer = setTimeout(() => document.body.classList.remove('mobile-controls-hidden'), 480);
-    if (!modelFrame) modelFrame = requestAnimationFrame(() => {
-      modelFrame = 0;
+    if (!mobileStoryFrame) mobileStoryFrame = requestAnimationFrame(() => {
+      mobileStoryFrame = 0;
+      selectCasesFromScroll();
       selectModelFromScroll();
     });
   }, {passive: true});
@@ -171,5 +229,7 @@
   addEventListener('resize', configure, {passive: true});
   phone.addEventListener('change', configure);
   reduced.addEventListener('change', configure);
+  addEventListener('load', configure, {once: true});
+  document.fonts?.ready.then(configure);
   configure();
 })();
