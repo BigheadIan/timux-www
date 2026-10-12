@@ -5,7 +5,7 @@ const worktreePlaywright = new URL('../../../playtime/node_modules/playwright/in
 const playwright = (await import(fs.existsSync(localPlaywright) ? localPlaywright : worktreePlaywright)).default;
 
 const base = process.env.HOMEPAGE_URL || 'http://127.0.0.1:8787/';
-const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v43-mobile-native';
+const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v44-mobile-static';
 fs.mkdirSync(output, {recursive: true});
 const browser = await playwright.chromium.launch({headless: true});
 const results = [];
@@ -42,6 +42,8 @@ for (const path of ['', 'en/']) {
         scrollHeight: document.documentElement.scrollHeight,
         heroHeight: rect('.outcome-hero').height,
         engineHeight: rect('.engine-stage').height,
+        visibleEngineLayers: [...document.querySelectorAll('.engine-layer')].filter(layer => getComputedStyle(layer).display !== 'none').length,
+        engineAnimations: [...document.querySelectorAll('.engine-layer')].map(layer => getComputedStyle(layer).animationName),
         partnerColumns: style('.partner-orbit .logo-row').gridTemplateColumns.split(' ').length,
         partnerHeight: rect('.partner-orbit').height,
         solutionColumns: style('.solution-grid').gridTemplateColumns.split(' ').length,
@@ -58,17 +60,17 @@ for (const path of ['', 'en/']) {
           devices: document.querySelectorAll('.a-mj .device.is-mobile-current').length,
           models: document.querySelectorAll('.model-pie-grid > article.is-mobile-current').length
         },
-        controls
+        controls: controls.map(control => ({...control, display: getComputedStyle(document.querySelector(control.selector)).display}))
       };
     });
 
-    const maxHeight = path ? 7950 : 7600;
-    if (!state.marker?.includes('mobile-native') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
-    if (state.heroHeight > 760 || state.engineHeight < 220 || state.engineHeight > 240) throw Error(`hero sizing regression ${path} ${JSON.stringify(state)}`);
-    if (state.partnerColumns !== 3 || state.partnerHeight > 380 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
+    const maxHeight = path ? 7800 : 7350;
+    if (!state.marker?.includes('mobile-static') || state.overflow > 1 || state.scrollHeight > maxHeight) throw Error(`mobile frame regression ${path} ${JSON.stringify({viewport, state})}`);
+    if (state.heroHeight > 500 || state.engineHeight < 170 || state.engineHeight > 190 || state.visibleEngineLayers !== 1 || state.engineAnimations.some(name => name !== 'none')) throw Error(`static hero regression ${path} ${JSON.stringify(state)}`);
+    if (state.partnerColumns !== 3 || state.partnerHeight > 260 || state.solutionColumns !== 2 || state.solutionHeights.some(height => height > 260)) throw Error(`phone grid regression ${path} ${JSON.stringify(state)}`);
     if ([...state.solutionPositions, ...state.adoptionPositions, ...state.phasePositions, ...state.caseTrackPositions].some(position => position === 'absolute' || position === 'sticky') || state.sectionPositions.some(position => position === 'sticky')) throw Error(`layered layout regression ${path} ${JSON.stringify(state)}`);
     if (Math.abs(state.casesTouch) > 2 || state.tabs.length !== 3 || state.tabs.some(tabs => tabs.display === 'none' || tabs.count !== 3) || Object.values(state.active).some(count => count !== 1)) throw Error(`mobile selector regression ${path} ${JSON.stringify(state)}`);
-    if (state.controls.some(control => control.width > 52 || control.height > 52 || control.bottom < 8 || control.right < 8)) throw Error(`floating control regression ${path} ${JSON.stringify(state.controls)}`);
+    if (state.controls.some(control => control.display !== 'none')) throw Error(`floating control regression ${path} ${JSON.stringify(state.controls)}`);
 
     for (const selector of ['.mobile-case-tabs', '.mobile-field-tabs', '.mobile-model-tabs']) {
       const buttons = page.locator(`${selector} button`);
