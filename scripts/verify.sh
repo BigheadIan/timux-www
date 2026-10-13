@@ -50,8 +50,10 @@ node --check assets/site-case-replay.js
 node --check assets/site-case-journey.js
 node --check assets/site-orbit.js
 node --check assets/site-mega-nav.js
+node --check assets/site-mobile-parity.js
 node --check tests/homepage-v4-smoke.mjs
 node --check tests/homepage-v17-motion.mjs
 node --check tests/homepage-en-smoke.mjs
+node --check tests/homepage-v58-mobile-solution-carousel.mjs
 node --check scripts/build-en-home.mjs
-git diff --check -- index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js tests scripts
+git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js tests scripts

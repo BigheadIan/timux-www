@@ -1,4 +1,4 @@
-/* V50: mobile-native layout controls with compact scroll-driven story carousels. */
+/* V58: mobile-native layout controls with user-controlled solution browsing. */
 (() => {
   const phone = matchMedia('(max-width: 820px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -21,7 +21,7 @@
     return before + ((stageDistances[index] || 0) / 2);
   }
 
-  function makeTabs(items, labels, className = '') {
+  function makeTabs(items, labels, className = '', {hideInactive = true} = {}) {
     const tabs = document.createElement('div');
     tabs.className = `mobile-choice-tabs ${className}`.trim();
     tabs.style.setProperty('--mobile-choice-count', String(items.length));
@@ -48,7 +48,7 @@
       items.forEach((item, index) => {
         const active = index === activeIndex;
         item.classList.toggle('is-mobile-current', active);
-        if (phone.matches) {
+        if (phone.matches && hideInactive) {
           item.setAttribute('aria-hidden', active ? 'false' : 'true');
           if ('inert' in item) item.inert = !active;
         } else {
@@ -342,14 +342,57 @@
   const solutionTabs = solutionCards.length ? makeTabs(
     solutionCards,
     solutionCards.map((_, index) => String(index + 1).padStart(2, '0')),
-    'mobile-solution-tabs'
+    'mobile-solution-tabs',
+    {hideInactive: false}
   ) : null;
+  let solutionProgress = null;
   if (solutionTabs && solutionGrid) {
     solutionTabs.setAttribute('aria-label', english ? 'Solution categories' : '解決方案類別');
     [...solutionTabs.querySelectorAll('button')].forEach((button, index) => {
       button.setAttribute('aria-label', `${String(index + 1).padStart(2, '0')} ${solutionCards[index].querySelector('h3')?.textContent || ''}`);
     });
     solutionGrid.before(solutionTabs);
+    solutionProgress = document.createElement('div');
+    solutionProgress.className = 'mobile-solution-progress';
+    solutionProgress.innerHTML = english
+      ? '<span class="mobile-solution-swipe-label"><b>\u2190</b> Swipe to explore <b>\u2192</b></span><span class="mobile-solution-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'
+      : '<span class="mobile-solution-swipe-label"><b>\u2190</b> 左右滑動查看 <b>\u2192</b></span><span class="mobile-solution-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+    solutionGrid.after(solutionProgress);
+  }
+
+  function setSolutionProgress(index) {
+    if (!solutionTabs || !solutionProgress) return;
+    if (solutionTabs.dataset.active !== String(index)) solutionTabs._selectMobileChoice(index);
+    [...solutionProgress.querySelectorAll('i')].forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+  }
+
+  function solutionScrollLeft(index) {
+    const first = solutionCards[0];
+    const card = solutionCards[index];
+    return first && card ? card.offsetLeft - first.offsetLeft : 0;
+  }
+
+  function scrollToSolution(index, behavior = reduced.matches ? 'instant' : 'smooth') {
+    if (!phone.matches || !solutionGrid) return;
+    setSolutionProgress(index);
+    solutionGrid.scrollTo({left: solutionScrollLeft(index), behavior});
+  }
+
+  if (solutionTabs && solutionGrid) {
+    setSolutionProgress(0);
+    solutionTabs.addEventListener('mobile-choice-change', event => scrollToSolution(event.detail.index));
+    let solutionScrollFrame = 0;
+    solutionGrid.addEventListener('scroll', () => {
+      if (!phone.matches || solutionScrollFrame) return;
+      solutionScrollFrame = requestAnimationFrame(() => {
+        solutionScrollFrame = 0;
+        const left = solutionGrid.scrollLeft;
+        const index = solutionCards.reduce((closest, card, cardIndex) => (
+          Math.abs(solutionScrollLeft(cardIndex) - left) < Math.abs(solutionScrollLeft(closest) - left) ? cardIndex : closest
+        ), 0);
+        setSolutionProgress(index);
+      });
+    }, {passive: true});
   }
 
   const adoptionSection = document.querySelector('#adoption');
@@ -368,7 +411,6 @@
 
   const flowStageOffset = 70;
   const flowCarousels = [
-    {section: solutionSection, shell: solutionShell, surface: solutionGrid, tabs: solutionTabs, items: solutionCards},
     {section: adoptionSection, shell: adoptionShell, surface: adoptionPath, tabs: adoptionTabs, items: adoptionCards}
   ].filter(carousel => carousel.section && carousel.shell && carousel.surface && carousel.tabs && carousel.items.length);
 
@@ -452,6 +494,8 @@
     measureCaseTracks();
     measureModelTrack();
     measureFlowTracks();
+    solutionSection?.style.removeProperty('--mobile-flow-track-height');
+    if (phone.matches && solutionTabs) scrollToSolution(Number(solutionTabs.dataset.active || 0), 'instant');
     requestAnimationFrame(() => {
       selectHeroFromScroll();
       selectCasesFromScroll();
