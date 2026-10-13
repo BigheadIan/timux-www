@@ -1,4 +1,4 @@
-/* V58: mobile-native layout controls with user-controlled solution browsing. */
+/* V59: every staged mobile story is a user-controlled native carousel. */
 (() => {
   const phone = matchMedia('(max-width: 820px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -7,21 +7,7 @@
 
   root.classList.add('mobile-parity');
 
-  function stageIndexAt(distance, stageDistances) {
-    let boundary = 0;
-    for (let index = 0; index < stageDistances.length; index += 1) {
-      boundary += stageDistances[index];
-      if (distance < boundary) return index;
-    }
-    return Math.max(0, stageDistances.length - 1);
-  }
-
-  function stageCenter(stageDistances, index) {
-    const before = stageDistances.slice(0, index).reduce((sum, distance) => sum + distance, 0);
-    return before + ((stageDistances[index] || 0) / 2);
-  }
-
-  function makeTabs(items, labels, className = '', {hideInactive = true} = {}) {
+  function makeTabs(items, labels, className = '') {
     const tabs = document.createElement('div');
     tabs.className = `mobile-choice-tabs ${className}`.trim();
     tabs.style.setProperty('--mobile-choice-count', String(items.length));
@@ -46,29 +32,90 @@
 
     function select(activeIndex, userInitiated = false) {
       items.forEach((item, index) => {
-        const active = index === activeIndex;
-        item.classList.toggle('is-mobile-current', active);
-        if (phone.matches && hideInactive) {
-          item.setAttribute('aria-hidden', active ? 'false' : 'true');
-          if ('inert' in item) item.inert = !active;
-        } else {
-          item.removeAttribute('aria-hidden');
-          if ('inert' in item) item.inert = false;
-        }
+        item.classList.toggle('is-mobile-current', index === activeIndex);
+        item.removeAttribute('aria-hidden');
+        if ('inert' in item) item.inert = false;
       });
       buttons.forEach((button, index) => button.setAttribute('aria-selected', index === activeIndex ? 'true' : 'false'));
       tabs.dataset.active = String(activeIndex);
       if (userInitiated) tabs.dispatchEvent(new CustomEvent('mobile-choice-change', {detail: {index: activeIndex}}));
     }
+
     tabs._selectMobileChoice = select;
     select(0);
     return tabs;
   }
 
+  function wrapItems(items, className) {
+    if (!items.length || !items[0].parentElement) return null;
+    const wrapper = document.createElement('div');
+    wrapper.className = `mobile-carousel-track ${className}`;
+    items[0].before(wrapper);
+    items.forEach(item => wrapper.append(item));
+    return wrapper;
+  }
+
+  function makeProgress(count, theme = 'dark') {
+    const progress = document.createElement('div');
+    progress.className = `mobile-carousel-progress is-${theme}`;
+    progress.innerHTML = `
+      <span class="mobile-carousel-swipe-label"><b>←</b> ${english ? 'Swipe to explore' : '左右滑動查看'} <b>→</b></span>
+      <span class="mobile-carousel-dots" aria-hidden="true">${'<i></i>'.repeat(count)}</span>`;
+    return progress;
+  }
+
+  const carousels = [];
+
+  function setupCarousel({name, surface, tabs, items, theme = 'dark'}) {
+    if (!surface || !tabs || !items.length) return null;
+    surface.classList.add('mobile-swipe-surface');
+    surface.dataset.mobileCarousel = name;
+    items.forEach(item => item.classList.add('mobile-swipe-card'));
+    const progress = makeProgress(items.length, theme);
+    surface.after(progress);
+
+    function targetLeft(index) {
+      const first = items[0];
+      const item = items[index];
+      return first && item ? item.offsetLeft - first.offsetLeft : 0;
+    }
+
+    function select(index) {
+      if (tabs.dataset.active !== String(index)) tabs._selectMobileChoice(index);
+      [...progress.querySelectorAll('i')].forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+    }
+
+    function scrollToIndex(index, behavior = reduced.matches ? 'instant' : 'smooth') {
+      if (!phone.matches) return;
+      select(index);
+      surface.scrollTo({left: targetLeft(index), behavior});
+    }
+
+    tabs.addEventListener('mobile-choice-change', event => scrollToIndex(event.detail.index));
+    let scrollFrame = 0;
+    surface.addEventListener('scroll', () => {
+      if (!phone.matches || scrollFrame) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0;
+        const left = surface.scrollLeft;
+        const index = items.reduce((closest, item, itemIndex) => (
+          Math.abs(targetLeft(itemIndex) - left) < Math.abs(targetLeft(closest) - left) ? itemIndex : closest
+        ), 0);
+        select(index);
+      });
+    }, {passive: true});
+
+    select(0);
+    const carousel = {name, surface, tabs, items, progress, scrollToIndex};
+    carousels.push(carousel);
+    return carousel;
+  }
+
   const heroTrack = document.querySelector('.engine-track');
   const heroScene = document.querySelector('.outcome-hero');
   const heroStage = heroScene?.querySelector('.engine-stage');
-  const heroLayers = heroStage ? [...heroStage.querySelectorAll('.engine-layer')] : [];
+  const heroStack = heroStage?.querySelector('.engine-stack');
+  const heroLayers = heroStack ? [...heroStack.querySelectorAll('.engine-layer')] : [];
   const heroLayerNames = english
     ? ['Signal received', 'Knowledge checked', 'Rules applied', 'Human decision', 'Action recorded']
     : ['訊號進來', '知識核對', '規則判斷', '人的決策', '行動與紀錄'];
@@ -81,24 +128,12 @@
     'mobile-engine-tabs'
   ) : null;
 
-  if (heroTabs && heroStage) {
+  if (heroTabs && heroStage && heroStack) {
     heroTabs.setAttribute('aria-label', english ? 'Execution engine stages' : '執行引擎階段');
     [...heroTabs.querySelectorAll('button')].forEach((button, index) => {
       button.setAttribute('aria-label', `${String(index + 1).padStart(2, '0')} ${heroLayerNames[index]}`);
     });
     heroStage.prepend(heroTabs);
-    const result = document.createElement('div');
-    result.className = 'mobile-engine-result';
-    result.innerHTML = english
-      ? '<div><span>Execute</span><i>→</i><span>Write back</span><i>→</i><span>Record</span></div><small>Grounded · Human oversight · Traceable</small>'
-      : '<div><span>執行任務</span><i>→</i><span>回寫系統</span><i>→</i><span>留下紀錄</span></div><small>資料有依據 · 人保有決策 · 結果可追蹤</small>';
-    heroLayers.at(-1)?.append(result);
-  }
-
-  const heroStageOffset = 70;
-  let heroTrackMetric = null;
-
-  function restoreHeroLayerCopy() {
     heroLayers.forEach((layer, index) => {
       const title = layer.querySelector('.engine-layer-head b');
       const detail = layer.querySelector(':scope > p');
@@ -108,295 +143,32 @@
       layer.style.removeProperty('opacity');
       layer.style.removeProperty('transform');
     });
+    const result = document.createElement('div');
+    result.className = 'mobile-engine-result';
+    result.innerHTML = english
+      ? '<div><span>Execute</span><i>→</i><span>Write back</span><i>→</i><span>Record</span></div><small>Grounded · Human oversight · Traceable</small>'
+      : '<div><span>執行任務</span><i>→</i><span>回寫系統</span><i>→</i><span>留下紀錄</span></div><small>資料有依據 · 人保有決策 · 結果可追蹤</small>';
+    heroLayers.at(-1)?.append(result);
+    setupCarousel({name: 'engine', surface: heroStack, tabs: heroTabs, items: heroLayers, theme: 'dark'});
   }
 
-  function measureHeroTrack() {
-    if (!heroTrack || !heroScene) return;
-    if (!phone.matches) {
-      heroTrack.style.removeProperty('--mobile-hero-track-height');
-      heroStage?.setAttribute('aria-hidden', 'true');
-      heroTrackMetric = null;
-      return;
-    }
-    restoreHeroLayerCopy();
-    heroStage?.removeAttribute('aria-hidden');
-    // The first two beats keep the accepted rhythm. Beats 03–05 get a longer
-    // runway, then the final result remains pinned for one extra reading beat.
-    const stageDistances = innerWidth <= 370
-      ? [180, 180, 230, 230, 230]
-      : [196, 196, 250, 250, 250];
-    const storyRange = stageDistances.reduce((sum, distance) => sum + distance, 0);
-    const tailDistance = innerWidth <= 370 ? 220 : 230;
-    const travel = storyRange + tailDistance;
-    heroTrack.style.setProperty('--mobile-hero-track-height', `${Math.ceil(heroScene.offsetHeight + travel)}px`);
-    heroTrackMetric = {
-      top: heroTrack.getBoundingClientRect().top + scrollY - heroStageOffset,
-      range: Math.max(1, heroTrack.offsetHeight - heroScene.offsetHeight),
-      storyRange,
-      tailDistance,
-      stageDistances
-    };
-  }
-
-  function getHeroTrack() {
-    return heroTrackMetric;
-  }
-
-  function selectHeroFromScroll() {
-    if (!phone.matches || !heroTabs || !heroScene) return;
-    const track = getHeroTrack();
-    if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-    const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
-    const progress = Math.max(0, Math.min(1, distance / track.storyRange));
-    const index = stageIndexAt(distance, track.stageDistances);
-    if (heroTabs.dataset.active !== String(index)) heroTabs._selectMobileChoice(index);
-    heroScene.style.setProperty('--mobile-engine-progress', String(progress));
-  }
-
-  function scrollToHero(index) {
-    if (!phone.matches || !heroTabs) return;
-    const track = getHeroTrack();
-    if (!track) return;
-    // Land tab/swipe navigation in the middle of the selected beat, leaving
-    // useful scroll room before the following beat becomes active.
-    const distance = stageCenter(track.stageDistances, index);
-    scrollTo({top: track.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
-  }
-
-  const busScene = document.querySelector('.a-bus');
-  const stations = busScene ? [...busScene.querySelectorAll('.station')] : [];
-  const busTabs = stations.length ? makeTabs(
-    stations,
-    stations.map((station, index) => `${String(index + 1).padStart(2, '0')} ${station.querySelector('em')?.textContent?.split('/').pop().trim() || ''}`),
-    'mobile-case-tabs'
-  ) : null;
-  if (busTabs) busScene.querySelector('.route-key')?.after(busTabs);
-
-  const fieldScene = document.querySelector('.a-mj');
-  const devices = fieldScene ? [...fieldScene.querySelectorAll('.device')] : [];
-  const fieldSteps = fieldScene ? [...fieldScene.querySelectorAll('.editorial-steps > div')] : [];
-  const fieldTabs = devices.length ? makeTabs(
-    devices,
-    devices.map((_, index) => `${String(index + 1).padStart(2, '0')} ${fieldSteps[index]?.querySelector('b')?.textContent || ''}`),
-    'mobile-field-tabs'
-  ) : null;
-  if (fieldTabs) fieldScene.querySelector('.runway')?.before(fieldTabs);
-
-  const caseStageOffset = 70;
-  const caseCarousels = [
-    {scene: busScene, tabs: busTabs, items: stations, surface: busScene?.querySelector('.scene-inner')},
-    {scene: fieldScene, tabs: fieldTabs, items: devices, surface: fieldScene?.querySelector('.scene-inner')}
-  ].filter(carousel => carousel.scene && carousel.tabs && carousel.items.length).map(carousel => ({
-    ...carousel,
-    track: carousel.scene.closest('.case-journey-track')
-  }));
-
-  function measureCaseTracks() {
-    caseCarousels.forEach(carousel => {
-      if (!phone.matches) {
-        carousel.track.style.removeProperty('--mobile-case-track-height');
-        carousel.metric = null;
-        return;
-      }
-      const stageDistance = innerWidth <= 370 ? 240 : 250;
-      const storyRange = carousel.items.length * stageDistance;
-      const tailDistance = stageDistance;
-      const travel = storyRange + tailDistance;
-      carousel.track.style.setProperty('--mobile-case-track-height', `${Math.ceil(carousel.scene.offsetHeight + travel)}px`);
-      carousel.stageDistances = carousel.items.map(() => stageDistance);
-      carousel.storyRange = storyRange;
-      carousel.tailDistance = tailDistance;
-    });
-    if (!phone.matches) return;
-    caseCarousels.forEach(carousel => {
-      carousel.metric = {
-        top: carousel.track.getBoundingClientRect().top + scrollY - caseStageOffset,
-        range: Math.max(1, carousel.track.offsetHeight - carousel.scene.offsetHeight),
-        storyRange: carousel.storyRange,
-        tailDistance: carousel.tailDistance,
-        stageDistances: carousel.stageDistances
-      };
-    });
-  }
-
-  function getCaseTrack(carousel) {
-    return carousel.metric;
-  }
-
-  function selectCasesFromScroll() {
-    if (!phone.matches) return;
-    caseCarousels.forEach(carousel => {
-      const track = getCaseTrack(carousel);
-      if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-      const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
-      const progress = Math.max(0, Math.min(1, distance / track.storyRange));
-      const index = stageIndexAt(distance, track.stageDistances);
-      if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
-      carousel.scene.style.setProperty('--mobile-case-progress', String(progress));
-    });
-  }
-
-  function scrollToCase(carousel, index) {
-    if (!phone.matches) return;
-    const track = getCaseTrack(carousel);
-    if (!track) return;
-    const distance = stageCenter(track.stageDistances, index);
-    scrollTo({top: track.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
-  }
-
-  function addHorizontalSwipe(surface, tabs, items, selectByIndex) {
-    if (!surface || !tabs) return;
-    let swipeStart = null;
-    surface.addEventListener('touchstart', event => {
-      const touch = event.touches[0];
-      swipeStart = touch ? {x: touch.clientX, y: touch.clientY} : null;
-    }, {passive: true});
-    surface.addEventListener('touchend', event => {
-      const touch = event.changedTouches[0];
-      if (!swipeStart || !touch) return;
-      const dx = touch.clientX - swipeStart.x;
-      const dy = touch.clientY - swipeStart.y;
-      swipeStart = null;
-      if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-      const active = Number(tabs.dataset.active || 0);
-      selectByIndex(Math.max(0, Math.min(items.length - 1, active + (dx < 0 ? 1 : -1))));
-    }, {passive: true});
-  }
-
-  if (heroTabs && heroStage) {
-    heroTabs.addEventListener('mobile-choice-change', event => scrollToHero(event.detail.index));
-    addHorizontalSwipe(heroStage, heroTabs, heroLayers, scrollToHero);
-  }
-
-  caseCarousels.forEach(carousel => {
-    carousel.tabs.addEventListener('mobile-choice-change', event => scrollToCase(carousel, event.detail.index));
-    addHorizontalSwipe(carousel.surface, carousel.tabs, carousel.items, index => scrollToCase(carousel, index));
-  });
-
-  const modelGrid = document.querySelector('.model-pie-grid');
-  const modelCards = modelGrid ? [...modelGrid.querySelectorAll(':scope > article')] : [];
-  const modelTabs = modelCards.length ? makeTabs(
-    modelCards,
-    modelCards.map(card => card.querySelector('.model-code')?.textContent || ''),
-    'mobile-model-tabs'
-  ) : null;
-  if (modelTabs) modelGrid.before(modelTabs);
-
-  const methodSection = document.querySelector('#method');
-  const modelStageOffset = 70;
-  let modelTrackMetric = null;
-
-  function measureModelTrack() {
-    if (!phone.matches || !methodSection) {
-      methodSection?.style.removeProperty('--mobile-model-track-height');
-      modelTrackMetric = null;
-      return;
-    }
-    methodSection.style.removeProperty('--mobile-model-track-height');
-    const shell = methodSection.querySelector(':scope > .shell');
-    const shellHeight = shell?.offsetHeight || innerHeight;
-    const storyRange = Math.max(modelCards.length * (innerWidth <= 370 ? 240 : 250), methodSection.offsetHeight - shellHeight);
-    const tailDistance = innerWidth <= 370 ? 240 : 250;
-    methodSection.style.setProperty('--mobile-model-track-height', `${Math.ceil(shellHeight + storyRange + tailDistance)}px`);
-    modelTrackMetric = {
-      top: methodSection.getBoundingClientRect().top + scrollY - modelStageOffset,
-      range: Math.max(1, methodSection.offsetHeight - shellHeight),
-      storyRange,
-      tailDistance,
-      stageDistances: modelCards.map(() => storyRange / modelCards.length)
-    };
-  }
-
-  function getModelTrack() {
-    return modelTrackMetric;
-  }
-
-  function selectModelFromScroll() {
-    if (!phone.matches || !modelTabs || !methodSection) return;
-    const track = getModelTrack();
-    if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-    const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
-    const progress = Math.max(0, Math.min(1, distance / track.storyRange));
-    const index = stageIndexAt(distance, track.stageDistances);
-    if (modelTabs.dataset.active !== String(index)) modelTabs._selectMobileChoice(index);
-    methodSection.style.setProperty('--mobile-model-progress', String(progress));
-  }
-
-  function scrollToModel(index) {
-    if (!phone.matches || !modelTabs) return;
-    const track = getModelTrack();
-    if (!track) return;
-    const distance = stageCenter(track.stageDistances, index);
-    scrollTo({top: track.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
-  }
-
-  if (modelTabs && modelGrid) {
-    modelTabs.addEventListener('mobile-choice-change', event => scrollToModel(event.detail.index));
-    addHorizontalSwipe(modelGrid, modelTabs, modelCards, scrollToModel);
-  }
-
-  const solutionSection = document.querySelector('#solutions');
-  const solutionShell = solutionSection?.querySelector(':scope > .shell');
-  const solutionGrid = solutionSection?.querySelector('.solution-grid');
+  const solutionGrid = document.querySelector('#solutions .solution-grid');
   const solutionCards = solutionGrid ? [...solutionGrid.querySelectorAll(':scope > article')] : [];
   const solutionTabs = solutionCards.length ? makeTabs(
     solutionCards,
     solutionCards.map((_, index) => String(index + 1).padStart(2, '0')),
-    'mobile-solution-tabs',
-    {hideInactive: false}
+    'mobile-solution-tabs'
   ) : null;
-  let solutionProgress = null;
   if (solutionTabs && solutionGrid) {
     solutionTabs.setAttribute('aria-label', english ? 'Solution categories' : '解決方案類別');
     [...solutionTabs.querySelectorAll('button')].forEach((button, index) => {
       button.setAttribute('aria-label', `${String(index + 1).padStart(2, '0')} ${solutionCards[index].querySelector('h3')?.textContent || ''}`);
     });
     solutionGrid.before(solutionTabs);
-    solutionProgress = document.createElement('div');
-    solutionProgress.className = 'mobile-solution-progress';
-    solutionProgress.innerHTML = english
-      ? '<span class="mobile-solution-swipe-label"><b>\u2190</b> Swipe to explore <b>\u2192</b></span><span class="mobile-solution-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'
-      : '<span class="mobile-solution-swipe-label"><b>\u2190</b> 左右滑動查看 <b>\u2192</b></span><span class="mobile-solution-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
-    solutionGrid.after(solutionProgress);
-  }
-
-  function setSolutionProgress(index) {
-    if (!solutionTabs || !solutionProgress) return;
-    if (solutionTabs.dataset.active !== String(index)) solutionTabs._selectMobileChoice(index);
-    [...solutionProgress.querySelectorAll('i')].forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
-  }
-
-  function solutionScrollLeft(index) {
-    const first = solutionCards[0];
-    const card = solutionCards[index];
-    return first && card ? card.offsetLeft - first.offsetLeft : 0;
-  }
-
-  function scrollToSolution(index, behavior = reduced.matches ? 'instant' : 'smooth') {
-    if (!phone.matches || !solutionGrid) return;
-    setSolutionProgress(index);
-    solutionGrid.scrollTo({left: solutionScrollLeft(index), behavior});
-  }
-
-  if (solutionTabs && solutionGrid) {
-    setSolutionProgress(0);
-    solutionTabs.addEventListener('mobile-choice-change', event => scrollToSolution(event.detail.index));
-    let solutionScrollFrame = 0;
-    solutionGrid.addEventListener('scroll', () => {
-      if (!phone.matches || solutionScrollFrame) return;
-      solutionScrollFrame = requestAnimationFrame(() => {
-        solutionScrollFrame = 0;
-        const left = solutionGrid.scrollLeft;
-        const index = solutionCards.reduce((closest, card, cardIndex) => (
-          Math.abs(solutionScrollLeft(cardIndex) - left) < Math.abs(solutionScrollLeft(closest) - left) ? cardIndex : closest
-        ), 0);
-        setSolutionProgress(index);
-      });
-    }, {passive: true});
+    setupCarousel({name: 'solutions', surface: solutionGrid, tabs: solutionTabs, items: solutionCards, theme: 'light'});
   }
 
   const adoptionSection = document.querySelector('#adoption');
-  const adoptionShell = adoptionSection?.querySelector(':scope > .shell');
   const adoptionPath = adoptionSection?.querySelector('.adoption-path');
   const adoptionCards = adoptionPath ? [...adoptionPath.querySelectorAll(':scope > article')] : [];
   const adoptionTabs = adoptionCards.length ? makeTabs(
@@ -407,63 +179,50 @@
   if (adoptionTabs && adoptionPath) {
     adoptionTabs.setAttribute('aria-label', english ? 'Adoption steps' : '導入步驟');
     adoptionPath.before(adoptionTabs);
+    setupCarousel({name: 'adoption', surface: adoptionPath, tabs: adoptionTabs, items: adoptionCards, theme: 'light'});
   }
 
-  const flowStageOffset = 70;
-  const flowCarousels = [
-    {section: adoptionSection, shell: adoptionShell, surface: adoptionPath, tabs: adoptionTabs, items: adoptionCards}
-  ].filter(carousel => carousel.section && carousel.shell && carousel.surface && carousel.tabs && carousel.items.length);
-
-  function measureFlowTracks() {
-    flowCarousels.forEach(carousel => {
-      if (!phone.matches) {
-        carousel.section.style.removeProperty('--mobile-flow-track-height');
-        carousel.metric = null;
-        return;
-      }
-      const beatDistance = innerWidth <= 370 ? 240 : 250;
-      const storyRange = carousel.items.length * beatDistance;
-      const tailDistance = beatDistance;
-      carousel.section.style.setProperty('--mobile-flow-track-height', `${Math.ceil(carousel.shell.offsetHeight + storyRange + tailDistance)}px`);
-      carousel.stageDistances = carousel.items.map(() => beatDistance);
-      carousel.storyRange = storyRange;
-      carousel.tailDistance = tailDistance;
-    });
-    if (!phone.matches) return;
-    flowCarousels.forEach(carousel => {
-      carousel.metric = {
-        top: carousel.section.getBoundingClientRect().top + scrollY - flowStageOffset,
-        range: Math.max(1, carousel.section.offsetHeight - carousel.shell.offsetHeight),
-        storyRange: carousel.storyRange,
-        tailDistance: carousel.tailDistance,
-        stageDistances: carousel.stageDistances
-      };
-    });
+  const busScene = document.querySelector('.a-bus');
+  const stations = busScene ? [...busScene.querySelectorAll('.station')] : [];
+  const busTabs = stations.length ? makeTabs(
+    stations,
+    stations.map((station, index) => `${String(index + 1).padStart(2, '0')} ${station.querySelector('em')?.textContent?.split('/').pop().trim() || ''}`),
+    'mobile-case-tabs'
+  ) : null;
+  if (busTabs && busScene) {
+    const busTrack = wrapItems(stations, 'mobile-bus-track');
+    busTabs.setAttribute('aria-label', english ? 'Southeast Bus story steps' : '東南客運案例步驟');
+    busScene.querySelector('.route-key')?.after(busTabs);
+    setupCarousel({name: 'southeast', surface: busTrack, tabs: busTabs, items: stations, theme: 'dark'});
   }
 
-  function selectFlowsFromScroll() {
-    if (!phone.matches) return;
-    flowCarousels.forEach(carousel => {
-      const track = carousel.metric;
-      if (!track || scrollY < track.top - innerHeight || scrollY > track.top + track.range + innerHeight) return;
-      const distance = Math.max(0, Math.min(track.range, scrollY - track.top));
-      const progress = Math.max(0, Math.min(1, distance / track.storyRange));
-      const index = stageIndexAt(distance, track.stageDistances);
-      if (carousel.tabs.dataset.active !== String(index)) carousel.tabs._selectMobileChoice(index);
-      carousel.section.style.setProperty('--mobile-flow-progress', String(progress));
-    });
+  const fieldScene = document.querySelector('.a-mj');
+  const devices = fieldScene ? [...fieldScene.querySelectorAll('.device')] : [];
+  const fieldSteps = fieldScene ? [...fieldScene.querySelectorAll('.editorial-steps > div')] : [];
+  const fieldTabs = devices.length ? makeTabs(
+    devices,
+    devices.map((_, index) => `${String(index + 1).padStart(2, '0')} ${fieldSteps[index]?.querySelector('b')?.textContent || ''}`),
+    'mobile-field-tabs'
+  ) : null;
+  if (fieldTabs && fieldScene) {
+    const fieldTrack = wrapItems(devices, 'mobile-field-track');
+    fieldTabs.setAttribute('aria-label', english ? 'MJ Security story steps' : '銘將保全案例步驟');
+    fieldScene.querySelector('.runway')?.before(fieldTabs);
+    setupCarousel({name: 'mj', surface: fieldTrack, tabs: fieldTabs, items: devices, theme: 'light'});
   }
 
-  function scrollToFlow(carousel, index) {
-    if (!phone.matches || !carousel.metric) return;
-    const distance = stageCenter(carousel.metric.stageDistances, index);
-    scrollTo({top: carousel.metric.top + distance, behavior: reduced.matches ? 'instant' : 'smooth'});
+  const modelGrid = document.querySelector('.model-pie-grid');
+  const modelCards = modelGrid ? [...modelGrid.querySelectorAll(':scope > article')] : [];
+  const modelTabs = modelCards.length ? makeTabs(
+    modelCards,
+    modelCards.map(card => card.querySelector('.model-code')?.textContent || ''),
+    'mobile-model-tabs'
+  ) : null;
+  if (modelTabs && modelGrid) {
+    modelTabs.setAttribute('aria-label', english ? 'Operating principles' : '營運原則');
+    modelGrid.before(modelTabs);
+    setupCarousel({name: 'principles', surface: modelGrid, tabs: modelTabs, items: modelCards, theme: 'dark'});
   }
-
-  flowCarousels.forEach(carousel => {
-    carousel.tabs.addEventListener('mobile-choice-change', event => scrollToFlow(carousel, event.detail.index));
-    addHorizontalSwipe(carousel.surface, carousel.tabs, carousel.items, index => scrollToFlow(carousel, index));
-  });
 
   const revealTargets = [
     ...document.querySelectorAll('.partner-orbit .logo-card'),
@@ -482,39 +241,28 @@
 
   function configure() {
     root.classList.toggle('mobile-layout-v43', phone.matches);
-    [heroTabs, busTabs, fieldTabs, modelTabs, solutionTabs, adoptionTabs].filter(Boolean).forEach(tabs => {
-      const active = Number(tabs.dataset.active || 0);
-      tabs._selectMobileChoice(active);
+    heroTrack?.style.removeProperty('--mobile-hero-track-height');
+    adoptionSection?.style.removeProperty('--mobile-flow-track-height');
+    document.querySelector('#method')?.style.removeProperty('--mobile-model-track-height');
+    document.querySelectorAll('.case-journey-track').forEach(track => track.style.removeProperty('--mobile-case-track-height'));
+    heroScene?.style.removeProperty('--mobile-engine-progress');
+    adoptionSection?.style.removeProperty('--mobile-flow-progress');
+    document.querySelector('#method')?.style.removeProperty('--mobile-model-progress');
+    document.querySelectorAll('.case-scene').forEach(scene => scene.style.removeProperty('--mobile-case-progress'));
+    if (heroStage) {
+      if (phone.matches) heroStage.removeAttribute('aria-hidden');
+      else heroStage.setAttribute('aria-hidden', 'true');
+    }
+    carousels.forEach(carousel => {
+      const active = Number(carousel.tabs.dataset.active || 0);
+      carousel.tabs._selectMobileChoice(active);
+      if (phone.matches) carousel.scrollToIndex(active, 'instant');
     });
     if (!phone.matches) {
       document.body.classList.remove('mobile-controls-hidden');
       revealTargets.forEach(target => target.classList.remove('is-mobile-visible'));
     }
-    measureHeroTrack();
-    measureCaseTracks();
-    measureModelTrack();
-    measureFlowTracks();
-    solutionSection?.style.removeProperty('--mobile-flow-track-height');
-    if (phone.matches && solutionTabs) scrollToSolution(Number(solutionTabs.dataset.active || 0), 'instant');
-    requestAnimationFrame(() => {
-      selectHeroFromScroll();
-      selectCasesFromScroll();
-      selectModelFromScroll();
-      selectFlowsFromScroll();
-    });
   }
-
-  let mobileStoryFrame = 0;
-  addEventListener('scroll', () => {
-    if (!phone.matches) return;
-    if (!mobileStoryFrame) mobileStoryFrame = requestAnimationFrame(() => {
-      mobileStoryFrame = 0;
-      selectHeroFromScroll();
-      selectCasesFromScroll();
-      selectModelFromScroll();
-      selectFlowsFromScroll();
-    });
-  }, {passive: true});
 
   let configureTimer = 0;
   addEventListener('resize', () => {

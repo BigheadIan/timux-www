@@ -55,5 +55,6 @@ node --check tests/homepage-v4-smoke.mjs
 node --check tests/homepage-v17-motion.mjs
 node --check tests/homepage-en-smoke.mjs
 node --check tests/homepage-v58-mobile-solution-carousel.mjs
+node --check tests/homepage-v59-mobile-manual-carousels.mjs
 node --check scripts/build-en-home.mjs
 git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js tests scripts
