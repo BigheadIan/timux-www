@@ -64,7 +64,7 @@ for (const path of ['', 'en/']) {
       })
     }), modules);
 
-    const expectedMarker = path ? 'homepage-en-v34-mobile-manual-carousels-20261013' : 'homepage-v59-mobile-manual-carousels-20261013';
+    const expectedMarker = path ? 'homepage-en-v35-mobile-mj-carousel-end-20261013' : 'homepage-v60-mobile-mj-carousel-end-20261013';
     if (audit.marker !== expectedMarker || audit.pageOverflow > 1) throw Error(`page shell regression ${path} ${JSON.stringify({viewport, audit})}`);
     for (const state of audit.modules) {
       if (state.display !== 'flex' || state.overflowX !== 'auto' || !state.snap.includes('x') || state.itemCount !== state.expected || state.visibleCount !== state.expected || state.cardWidth >= state.surfaceWidth - 18 || state.nextPeek < 20 || state.sticky || state.progressDisplay === 'none' || state.dotCount !== state.expected || state.activeDot !== 0 || state.selected !== 0 || state.scrollLeft !== 0) {
@@ -97,6 +97,22 @@ for (const path of ['', 'en/']) {
       });
       const selected = await tabs.evaluate(element => ({active: element.dataset.active, selected: [...element.querySelectorAll('button')].findIndex(button => button.getAttribute('aria-selected') === 'true')}));
       if (selected.active !== '1' || selected.selected !== 1 || afterTab.activeDot !== 1 || Math.abs(afterTab.left - afterTab.target) > 5) throw Error(`tab selection regression ${spec.name} ${path} ${JSON.stringify({viewport, selected, afterTab})}`);
+      if (spec.name === 'mj') {
+        await tabs.locator('button').last().click();
+        await page.waitForTimeout(450);
+        const last = await surface.evaluate((element, sectionSelector) => {
+          const items = [...element.querySelectorAll(':scope > .mobile-swipe-card')];
+          const progress = element.nextElementSibling;
+          return {
+            left: element.scrollLeft,
+            target: items.at(-1).offsetLeft - items[0].offsetLeft,
+            max: element.scrollWidth - element.clientWidth,
+            active: document.querySelector(sectionSelector)?.querySelector('.mobile-choice-tabs')?.dataset.active,
+            activeDot: [...progress.querySelectorAll('i')].findIndex(dot => dot.classList.contains('is-active'))
+          };
+        }, spec.section);
+        if (last.active !== '2' || last.activeDot !== 2 || Math.abs(last.left - last.max) > 5 || last.target - last.left > 24) throw Error(`MJ last-card tab regression ${path} ${JSON.stringify({viewport, last})}`);
+      }
       await tabs.locator('button').first().click();
       await page.waitForTimeout(350);
     }
@@ -110,16 +126,21 @@ for (const path of ['', 'en/']) {
         const box = await surface.boundingBox();
         const y = box.y + Math.min(box.height - 20, Math.max(30, box.height / 2));
         const startX = box.x + box.width - 28;
-        const endX = box.x + 42;
-        await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x: startX, y}]});
-        for (let step = 1; step <= 7; step += 1) {
-          await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: startX + ((endX - startX) * step / 7), y}]});
+        const endX = startX - Math.min(180, box.width * .55);
+        let previousLeft = 0;
+        for (let expectedIndex = 1; expectedIndex < spec.count; expectedIndex += 1) {
+          await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x: startX, y}]});
+          for (let step = 1; step <= 7; step += 1) {
+            await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: startX + ((endX - startX) * step / 7), y}]});
+          }
+          await cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+          await page.waitForTimeout(500);
+          const swipe = await surface.evaluate((element, sectionSelector) => ({left: element.scrollLeft, active: document.querySelector(sectionSelector)?.querySelector('.mobile-choice-tabs')?.dataset.active}), spec.section);
+          if (swipe.active !== String(expectedIndex) || swipe.left < previousLeft + 60) throw Error(`touch swipe regression ${spec.name} step ${expectedIndex} ${JSON.stringify({swipe, previousLeft})}`);
+          results.push({path: '/', viewport, module: spec.name, step: expectedIndex, swipe});
+          previousLeft = swipe.left;
+          if (spec.name === 'mj' && expectedIndex === spec.count - 1) await page.screenshot({path: `${output}/zh-390-mj-last.png`});
         }
-        await cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
-        await page.waitForTimeout(500);
-        const swipe = await surface.evaluate((element, sectionSelector) => ({left: element.scrollLeft, active: document.querySelector(sectionSelector)?.querySelector('.mobile-choice-tabs')?.dataset.active}), spec.section);
-        if (swipe.active !== '1' || swipe.left < 100) throw Error(`touch swipe regression ${spec.name} ${JSON.stringify({swipe})}`);
-        results.push({path: '/', viewport, module: spec.name, swipe});
         await page.locator(`${spec.section} .mobile-choice-tabs button`).first().click();
         await page.waitForTimeout(350);
       }

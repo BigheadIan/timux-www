@@ -554,12 +554,12 @@
   html.mobile-layout-v43 .a-mj .runway{height:auto!important;min-height:0!important;margin-top:6px;padding:6px 0 0;overflow:visible!important}
   html.mobile-layout-v43 .a-mj .runway-word,
   html.mobile-layout-v43 .a-mj .runway-orbit{display:none!important}
-  html.mobile-layout-v43 .a-mj .mobile-field-track{align-items:flex-start;padding-top:4px!important}
+  html.mobile-layout-v43 .a-mj .mobile-field-track{--mobile-field-card:min(58vw,210px);align-items:flex-start;padding-top:4px!important;padding-right:calc(100% - var(--mobile-field-card))!important}
   html.mobile-layout-v43 .a-mj .mobile-field-track>.device,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-left,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-center,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-right{
-    flex:0 0 min(58vw,210px)!important;
+    flex:0 0 var(--mobile-field-card)!important;
     width:auto!important;
     height:auto!important;
     aspect-ratio:294/644;
@@ -581,10 +581,11 @@
   html.mobile-layout-v43 .mobile-swipe-surface>.mobile-swipe-card{flex-basis:calc(100% - 42px)!important}
   html.mobile-layout-v43 .mobile-carousel-progress{font-size:11px}
   html.mobile-layout-v43 .engine-stack.mobile-swipe-surface>.engine-layer{min-height:260px!important}
+  html.mobile-layout-v43 .a-mj .mobile-field-track{--mobile-field-card:min(58vw,200px)}
   html.mobile-layout-v43 .a-mj .mobile-field-track>.device,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-left,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-center,
-  html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-right{flex-basis:min(58vw,200px)!important}
+  html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-right{flex-basis:var(--mobile-field-card)!important}
 }
 
 @media(max-width:820px) and (prefers-reduced-motion:reduce){
