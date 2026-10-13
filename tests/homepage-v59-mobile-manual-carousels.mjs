@@ -64,11 +64,14 @@ for (const path of ['', 'en/']) {
       })
     }), modules);
 
-    const expectedMarker = path ? 'homepage-en-v35-mobile-mj-carousel-end-20261013' : 'homepage-v60-mobile-mj-carousel-end-20261013';
+    const expectedMarker = path ? 'homepage-en-v36-mobile-mj-proportions-20261013' : 'homepage-v61-mobile-mj-proportions-20261013';
     if (audit.marker !== expectedMarker || audit.pageOverflow > 1) throw Error(`page shell regression ${path} ${JSON.stringify({viewport, audit})}`);
     for (const state of audit.modules) {
       if (state.display !== 'flex' || state.overflowX !== 'auto' || !state.snap.includes('x') || state.itemCount !== state.expected || state.visibleCount !== state.expected || state.cardWidth >= state.surfaceWidth - 18 || state.nextPeek < 20 || state.sticky || state.progressDisplay === 'none' || state.dotCount !== state.expected || state.activeDot !== 0 || state.selected !== 0 || state.scrollLeft !== 0) {
         throw Error(`initial carousel regression ${path} ${JSON.stringify({viewport, state})}`);
+      }
+      if (state.name === 'mj' && (state.cardWidth / state.surfaceWidth < .68 || state.cardWidth / state.surfaceWidth > .8)) {
+        throw Error(`MJ card proportion regression ${path} ${JSON.stringify({viewport, state})}`);
       }
     }
 
@@ -139,7 +142,10 @@ for (const path of ['', 'en/']) {
           if (swipe.active !== String(expectedIndex) || swipe.left < previousLeft + 60) throw Error(`touch swipe regression ${spec.name} step ${expectedIndex} ${JSON.stringify({swipe, previousLeft})}`);
           results.push({path: '/', viewport, module: spec.name, step: expectedIndex, swipe});
           previousLeft = swipe.left;
-          if (spec.name === 'mj' && expectedIndex === spec.count - 1) await page.screenshot({path: `${output}/zh-390-mj-last.png`});
+          if (spec.name === 'mj' && expectedIndex === spec.count - 1) {
+            await page.waitForFunction(() => [...document.querySelectorAll('[data-mobile-carousel="mj"] img')].every(image => image.complete && image.naturalWidth > 0));
+            await page.screenshot({path: `${output}/zh-390-mj-last.png`});
+          }
         }
         await page.locator(`${spec.section} .mobile-choice-tabs button`).first().click();
         await page.waitForTimeout(350);

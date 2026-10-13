@@ -554,7 +554,7 @@
   html.mobile-layout-v43 .a-mj .runway{height:auto!important;min-height:0!important;margin-top:6px;padding:6px 0 0;overflow:visible!important}
   html.mobile-layout-v43 .a-mj .runway-word,
   html.mobile-layout-v43 .a-mj .runway-orbit{display:none!important}
-  html.mobile-layout-v43 .a-mj .mobile-field-track{--mobile-field-card:min(58vw,210px);align-items:flex-start;padding-top:4px!important;padding-right:calc(100% - var(--mobile-field-card))!important}
+  html.mobile-layout-v43 .a-mj .mobile-field-track{--mobile-field-card:min(72vw,280px);align-items:flex-start;padding-top:4px!important;padding-right:calc(100% - var(--mobile-field-card))!important}
   html.mobile-layout-v43 .a-mj .mobile-field-track>.device,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-left,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-center,
@@ -581,7 +581,7 @@
   html.mobile-layout-v43 .mobile-swipe-surface>.mobile-swipe-card{flex-basis:calc(100% - 42px)!important}
   html.mobile-layout-v43 .mobile-carousel-progress{font-size:11px}
   html.mobile-layout-v43 .engine-stack.mobile-swipe-surface>.engine-layer{min-height:260px!important}
-  html.mobile-layout-v43 .a-mj .mobile-field-track{--mobile-field-card:min(58vw,200px)}
+  html.mobile-layout-v43 .a-mj .mobile-field-track{--mobile-field-card:min(72vw,266px)}
   html.mobile-layout-v43 .a-mj .mobile-field-track>.device,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-left,
   html.mobile-layout-v43 .a-mj .mobile-field-track>.runway-center,
