@@ -43,6 +43,7 @@ assert.match(analytics, /requestAnimationFrame\(measureDepth\)/);
 assert.match(css, /\.about-variant\[hidden\]/);
 assert.match(css, /html\[data-about-variant="B"\]/);
 assert.match(css, /@media \(max-width: 600px\)/);
+assert.match(css, /\.about-nav-links\s*\{[^}]*align-self:\s*stretch/, 'desktop About navigation keeps its underline below the label');
 assert.match(docs, /standalone `\/about\/`/);
 assert.match(docs, /does not persist a lead or confirm receipt/);
 

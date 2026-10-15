@@ -185,7 +185,7 @@ html[data-about-variant="B"] .about-variant[data-ab-variant="A"] { display: none
 .about-page .about-experiment { padding: 0; border: 0; }
 .about-page-nav { position: sticky; top: 0; }
 .about-page-nav .nav-inner { min-height: 78px; }
-.about-nav-links { display: flex; align-items: stretch; gap: 4px; margin-left: auto; }
+.about-nav-links { align-self: stretch; display: flex; align-items: stretch; gap: 4px; margin-left: auto; }
 .about-nav-links > a { position: relative; display: flex; align-items: center; padding: 0 15px; color: #b9bbc5; font-size: 14px; font-weight: 650; white-space: nowrap; }
 .about-nav-links > a::after { position: absolute; right: 15px; bottom: 14px; left: 15px; height: 2px; content: ""; background: linear-gradient(90deg,#67dfd0,#8b73ff); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
 .about-nav-links > a:hover,.about-nav-links > a:focus-visible,.about-nav-links > a.is-active { color: #fff; }
