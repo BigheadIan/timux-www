@@ -1,19 +1,106 @@
 (() => {
   const english = document.documentElement.lang === 'en';
+  const experimentId = 'about_copy_v1';
+  let experimentVariant = document.documentElement.dataset.aboutVariant || '';
+  if (experimentVariant !== 'A' && experimentVariant !== 'B') {
+    try { experimentVariant = localStorage.getItem('timux_about_variant_v1') || ''; } catch {}
+  }
+  if (experimentVariant !== 'A' && experimentVariant !== 'B') experimentVariant = '';
+  const pageGroup = location.pathname === '/' || location.pathname === '/en/'
+    ? 'homepage'
+    : location.pathname.startsWith('/demo/customer-service')
+      ? 'customer_service_demo'
+      : location.pathname.startsWith('/demo')
+        ? 'demo_hub'
+        : location.pathname.startsWith('/method')
+          ? 'method'
+          : 'other';
   const track = (event, params = {}) => {
     if (!['www.timux.site', 'timux.site'].includes(location.hostname)) return;
-    if (typeof window.gtag === 'function') window.gtag('event', event, params);
+    const enriched = {...params};
+    if (experimentVariant) {
+      if (!enriched.experiment_id) enriched.experiment_id = experimentId;
+      if (!enriched.experiment_variant) enriched.experiment_variant = experimentVariant;
+    }
+    if (!enriched.page_group) enriched.page_group = pageGroup;
+    if (typeof window.gtag === 'function') window.gtag('event', event, enriched);
   };
+  window.timuxTrack = track;
+
+  if (experimentVariant) {
+    track('experiment_page_view', {page_path: location.pathname});
+    try {
+      const sessionKey = `timux_ab_session_${experimentId}`;
+      if (!sessionStorage.getItem(sessionKey)) {
+        sessionStorage.setItem(sessionKey, '1');
+        track('experiment_session_started');
+      }
+      const firstSeenKey = `timux_ab_first_seen_${experimentId}`;
+      const today = new Date();
+      const currentDay = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+      const firstSeen = Number(localStorage.getItem(firstSeenKey) || 0);
+      if (!firstSeen) localStorage.setItem(firstSeenKey, String(currentDay));
+      else {
+        const daysSinceFirst = Math.max(0, Math.floor((currentDay - firstSeen) / 86400000));
+        const returnKey = `timux_ab_return_${experimentId}_${currentDay}`;
+        if (daysSinceFirst > 0 && !localStorage.getItem(returnKey)) {
+          localStorage.setItem(returnKey, '1');
+          track('experiment_return_visit', {days_since_first: daysSinceFirst});
+        }
+      }
+    } catch {}
+
+    const depthMarks = [25, 50, 75, 90];
+    const sentDepths = new Set();
+    const measureDepth = () => {
+      const distance = document.documentElement.scrollHeight - innerHeight;
+      const depth = distance > 0 ? Math.round((scrollY / distance) * 100) : 100;
+      depthMarks.forEach(mark => {
+        if (depth >= mark && !sentDepths.has(mark)) {
+          sentDepths.add(mark);
+          track('page_scroll_depth', {percent_scrolled: mark});
+        }
+      });
+    };
+    addEventListener('scroll', measureDepth, {passive: true});
+    measureDepth();
+
+    let visibleSince = document.hidden ? 0 : performance.now();
+    let visibleMs = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && visibleSince) {
+        visibleMs += performance.now() - visibleSince;
+        visibleSince = 0;
+      } else if (!document.hidden && !visibleSince) visibleSince = performance.now();
+    });
+    addEventListener('pagehide', () => {
+      if (visibleSince) visibleMs += performance.now() - visibleSince;
+      track('page_engagement_summary', {
+        engagement_time_msec: Math.round(visibleMs),
+        engagement_bucket: visibleMs >= 60000 ? '60s_plus' : visibleMs >= 30000 ? '30_59s' : visibleMs >= 10000 ? '10_29s' : 'under_10s'
+      });
+    }, {once: true});
+  }
+
   document.addEventListener('click', event => {
     const link = event.target.closest('[data-track]');
     if (link) track(link.dataset.track, {method: link.dataset.method || 'navigation', scenario: link.dataset.scenario || 'general'});
+    if (event.target.closest('#starterQuestions .chip, #chatFeed .chip')) track('agent_interaction', {method: 'suggestion'});
   });
+  const agentForm = document.getElementById('agentForm');
+  if (agentForm) agentForm.addEventListener('submit', () => track('agent_interaction', {method: 'typed_question'}));
   const form = document.getElementById('contactDraft');
   if (form) {
     const workflowInput = document.getElementById('workflow');
     const summary = document.getElementById('summary');
     const email = document.getElementById('emailDraft');
     const scenario = new URLSearchParams(location.search).get('scenario');
+    let formStarted = false;
+    form.addEventListener('input', () => {
+      if (formStarted) return;
+      formStarted = true;
+      track('contact_form_started', {scenario: scenario === 'customer-service' ? scenario : 'general'});
+    });
     if (scenario === 'customer-service') workflowInput.value = english ? 'Use AI customer service in our company workflow' : '想將 AI 客服用在公司的工作流程';
     document.querySelectorAll('[data-solution]').forEach(link => {
       link.addEventListener('click', () => {
@@ -33,11 +120,15 @@
       updateEmail();
       document.getElementById('draftResult').hidden = false;
       summary.focus();
-      track('contact_draft_ready', {scenario: scenario === 'customer-service' ? scenario : 'general'});
+      track('contact_draft_ready', {
+        scenario: scenario === 'customer-service' ? scenario : 'general',
+        context_provided: Boolean(document.getElementById('context').value.trim())
+      });
     });
     summary.addEventListener('input', updateEmail);
     document.getElementById('copyDraft').addEventListener('click', async () => {
       const status = document.getElementById('copyStatus');
+      track('contact_summary_copied', {scenario: scenario === 'customer-service' ? scenario : 'general'});
       try { await navigator.clipboard.writeText(summary.value); status.textContent = english ? 'Summary copied. Paste it into your email and send when ready.' : '摘要已複製，請貼到 Email 並自行寄送。'; }
       catch { summary.focus(); summary.select(); status.textContent = english ? 'Copy the selected summary above, then paste it into your email.' : '請複製上方已選取的摘要，再貼到 Email。'; }
     });

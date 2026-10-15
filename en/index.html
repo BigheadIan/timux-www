@@ -50,7 +50,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="Timux Technology">
-  <meta name="timux-build" content="homepage-en-v36-mobile-mj-proportions-20261013">
+  <meta name="timux-build" content="homepage-v61-mobile-mj-proportions-20261013">
   <title>Timux Technology | Enterprise AI Adoption & Execution</title>
   <meta name="description" content="Bring AI into customer service, enterprise knowledge, field operations, and cross-system workflows. Timux helps teams discover needs, validate pilots, and adopt AI under clear human oversight.">
   <meta name="keywords" content="enterprise AI adoption,AI consulting,AI agents,AI customer service,enterprise knowledge,workflow automation,system integration,Timux">
@@ -119,6 +119,26 @@
 <script src="/assets/site-mega-nav.js?v=20261007-v26" defer=""></script>
 <link rel="stylesheet" href="/assets/site-back-to-top.css?v=20261009-v37">
 <link rel="stylesheet" href="/assets/site-mobile-parity.css?v=20261013-v61">
+<script>
+  (() => {
+    const key = "timux_about_variant_v1";
+    const preview = new URLSearchParams(location.search).get("about_variant")?.toUpperCase();
+    let variant = preview === "A" || preview === "B" ? preview : "";
+    if (!variant) {
+      try { variant = localStorage.getItem(key) || ""; } catch {}
+      if (variant !== "A" && variant !== "B") {
+        const draw = globalThis.crypto?.getRandomValues ? crypto.getRandomValues(new Uint8Array(1))[0] : Math.floor(Math.random() * 256);
+        variant = draw % 2 === 0 ? "A" : "B";
+        try { localStorage.setItem(key, variant); } catch {
+          try { sessionStorage.setItem(key, variant); } catch {}
+        }
+      }
+    }
+    document.documentElement.dataset.aboutVariant = variant;
+    if (preview === "A" || preview === "B") document.documentElement.dataset.aboutPreview = "true";
+  })();
+</script>
+<link rel="stylesheet" href="/assets/site-about-ab.css?v=20261015-ab1">
 <script src="/assets/site-mobile-parity.js?v=20261013-v61" defer></script>
 <script src="/assets/site-back-to-top.js?v=20261009-v37" defer></script>
 </head>
@@ -271,6 +291,57 @@
       </section>
     </div>
 
+    <section class="about-experiment" id="about" data-about-experiment="about_copy_v1" aria-label="About Timux">
+      <div class="shell">
+        <article class="about-variant" data-ab-variant="A">
+          <header class="about-intro">
+            <div class="about-kicker"><p class="eyebrow paper-eyebrow">ABOUT TIMUX / BRAND STORY</p><strong>Enterprise AI adoption and execution team</strong></div>
+            <div class="about-copy">
+              <h2><span>Timux Technology,</span><br>Let AI complete the work, so people can focus on what matters most.</h2>
+              <p class="about-lead">Timux believes technology creates value not by adding more complex tools, but by reducing repetitive work and giving people more time for judgment, creativity, and human connection.</p>
+              <p class="about-detail">We start with real workflows and connect AI, enterprise knowledge, software, and operations. Timux helps AI do more than answer questions: within clear permissions and human oversight, it helps teams find information, move tasks forward, and complete work.</p>
+            </div>
+          </header>
+          <div class="about-focus-grid" aria-label="What Timux is building">
+            <article class="about-card"><small>01 / CUSTOMER</small><h3>AI Customer Service</h3><p>Understand questions, verify information, and hand off to people with the full context when needed.</p></article>
+            <article class="about-card"><small>02 / KNOWLEDGE</small><h3>Enterprise Knowledge</h3><p>Organize documents, systems, and team experience so approved knowledge is easier to find and use.</p></article>
+            <article class="about-card"><small>03 / OPERATIONS</small><h3>Field Operations</h3><p>Turn LINE reports, attendance, and execution results into records that teams can keep tracking.</p></article>
+            <article class="about-card"><small>04 / AUTOMATION</small><h3>Workflow Automation</h3><p>Connect people, data, and systems so cross-team tasks move beyond notification to completion.</p></article>
+          </div>
+          <div class="about-close">
+            <p>Timux wants AI to become a reliable, long-term partner at work: <strong>Let AI handle the work, and save time for what you love.</strong></p>
+            <div class="about-actions"><a class="button dark" href="#cases" data-track="about_cta_click" data-method="case">Explore Timux case studies →</a><a class="button outline" href="#contact" data-track="about_cta_click" data-method="contact">Discuss your needs with Timux ↗</a></div>
+          </div>
+        </article>
+
+        <article class="about-variant" data-ab-variant="B" hidden aria-hidden="true">
+          <header class="about-intro">
+            <div class="about-kicker"><p class="eyebrow paper-eyebrow">ABOUT TIMUX / BUSINESS VALUE</p><strong>Enterprise AI adoption and execution team</strong></div>
+            <div class="about-copy">
+              <h2><span>Timux,</span><br>Move AI from a one-time demo into everyday work.</h2>
+              <p class="about-lead">Many organizations see what AI can do but still need a practical way to connect it to existing operations. Timux closes the gap between seeing the possibility and putting it to work.</p>
+              <p class="about-detail">We begin with one concrete workflow, understand how people, information, and systems work together, then place AI where it helps most. Timux focuses not on how much technology is shown, but on whether information moves faster, handoffs improve, and work gets completed.</p>
+            </div>
+          </header>
+          <div class="about-process-grid" aria-label="How Timux puts AI to work">
+            <article class="about-card"><small>01 / CHOOSE</small><h3>Start with a real need</h3><p>Identify a recurring, fragmented, or easily interrupted workflow and define the outcome worth improving.</p></article>
+            <article class="about-card"><small>02 / VERIFY</small><h3>Validate in real scenarios</h3><p>Use approved data and real cases to verify that AI can provide grounded information and work with existing processes.</p></article>
+            <article class="about-card"><small>03 / ADOPT</small><h3>Move into daily operations in stages</h3><p>Establish permissions, human confirmation, and exception handoffs, then expand only after shared criteria are met.</p></article>
+          </div>
+          <div class="about-focus-grid" aria-label="Timux focus areas">
+            <article class="about-card"><small>CUSTOMER SERVICE</small><h3>Give service a clear next step</h3><p>Answer, verify, and hand off with the context needed to reduce repeated questions.</p></article>
+            <article class="about-card"><small>ENTERPRISE KNOWLEDGE</small><h3>Make knowledge easier to use</h3><p>Help approved content, versions, and sources move clearly across the organization.</p></article>
+            <article class="about-card"><small>FIELD OPERATIONS</small><h3>Make field work traceable</h3><p>Turn frontline reports into verifiable, handoff-ready operational records.</p></article>
+            <article class="about-card"><small>WORKFLOW AUTOMATION</small><h3>Take tasks through to completion</h3><p>Connect notifications, approvals, system actions, and outcomes into a complete workflow.</p></article>
+          </div>
+          <div class="about-close">
+            <p>Timux does more than help AI provide answers; it turns answers into the <strong>next action.</strong></p>
+            <div class="about-actions"><a class="button dark" href="#cases" data-track="about_cta_click" data-method="case">Explore Timux case studies →</a><a class="button outline" href="#contact" data-track="about_cta_click" data-method="contact">Discuss your needs with Timux ↗</a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="section solutions-section" id="solutions">
       <div class="shell">
         <div class="section-head solution-heading">
@@ -362,7 +433,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4z"></path></svg>
                   </button>
                 </form>
-              </div><div class="agent-shortcuts"><a href="/en/#cases">Case experience</a><a href="/en/#roadmap">90-day approach</a><a href="#contact">Talk with Ian</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>Bring a real challenge.<br>Let’s talk.</h2><p>Tell us which workflow you want to improve.</p><p>We agree on scope and fees before work begins.</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">Email Ian directly →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">Which workflow would you like to improve?</label><input id="workflow" name="workflow" maxlength="160" placeholder="For example: cross-team handoffs, customer service, or document search" required=""><label for="context">What has been happening recently?</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="Briefly describe one case. Do not enter personal or sensitive information."></textarea><button class="button dark" type="submit">Prepare my discussion summary ↓</button><p class="fine">Your content is prepared only on this page and is not sent automatically. Review it before emailing.</p><div id="draftResult" hidden=""><label for="summary">Review or edit your summary</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">Open email draft ↗</a><button type="button" class="button outline" id="copyDraft">Copy summary</button></div><p class="fine">After opening the draft, send it from your email client. This page does not confirm delivery.</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/en/"><img src="/assets/logo-icon.png" alt=""><strong>Timux Technology</strong></a><span>Let AI handle the work, and save time for what you love.</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer><script src="/assets/site-conversion.js?v=20261007-v26" defer=""></script>  <script>
+              </div><div class="agent-shortcuts"><a href="/en/#cases">Case experience</a><a href="/en/#roadmap">90-day approach</a><a href="#contact">Talk with Ian</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>Bring a real challenge.<br>Let’s talk.</h2><p>Tell us which workflow you want to improve.</p><p>We agree on scope and fees before work begins.</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">Email Ian directly →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">Which workflow would you like to improve?</label><input id="workflow" name="workflow" maxlength="160" placeholder="For example: cross-team handoffs, customer service, or document search" required=""><label for="context">What has been happening recently?</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="Briefly describe one case. Do not enter personal or sensitive information."></textarea><button class="button dark" type="submit">Prepare my discussion summary ↓</button><p class="fine">Your content is prepared only on this page and is not sent automatically. Review it before emailing.</p><div id="draftResult" hidden=""><label for="summary">Review or edit your summary</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">Open email draft ↗</a><button type="button" class="button outline" id="copyDraft">Copy summary</button></div><p class="fine">After opening the draft, send it from your email client. This page does not confirm delivery.</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/en/"><img src="/assets/logo-icon.png" alt=""><strong>Timux Technology</strong></a><span>Let AI handle the work, and save time for what you love.</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer><script src="/assets/site-conversion.js?v=20261015-ab1" defer=""></script><script src="/assets/site-about-ab.js?v=20261015-ab1" defer=""></script>  <script>
     (() => {
       const apiBase = "https://digitalhuman.timux.site";
       const endpoint = `${apiBase}/api/digital-human/website-chat`;

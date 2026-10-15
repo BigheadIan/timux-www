@@ -119,6 +119,26 @@
 <script src="/assets/site-mega-nav.js?v=20261007-v26" defer=""></script>
 <link rel="stylesheet" href="/assets/site-back-to-top.css?v=20261009-v37">
 <link rel="stylesheet" href="/assets/site-mobile-parity.css?v=20261013-v61">
+<script>
+  (() => {
+    const key = "timux_about_variant_v1";
+    const preview = new URLSearchParams(location.search).get("about_variant")?.toUpperCase();
+    let variant = preview === "A" || preview === "B" ? preview : "";
+    if (!variant) {
+      try { variant = localStorage.getItem(key) || ""; } catch {}
+      if (variant !== "A" && variant !== "B") {
+        const draw = globalThis.crypto?.getRandomValues ? crypto.getRandomValues(new Uint8Array(1))[0] : Math.floor(Math.random() * 256);
+        variant = draw % 2 === 0 ? "A" : "B";
+        try { localStorage.setItem(key, variant); } catch {
+          try { sessionStorage.setItem(key, variant); } catch {}
+        }
+      }
+    }
+    document.documentElement.dataset.aboutVariant = variant;
+    if (preview === "A" || preview === "B") document.documentElement.dataset.aboutPreview = "true";
+  })();
+</script>
+<link rel="stylesheet" href="/assets/site-about-ab.css?v=20261015-ab1">
 <script src="/assets/site-mobile-parity.js?v=20261013-v61" defer></script>
 <script src="/assets/site-back-to-top.js?v=20261009-v37" defer></script>
 </head>
@@ -271,6 +291,57 @@
       </section>
     </div>
 
+    <section class="about-experiment" id="about" data-about-experiment="about_copy_v1" aria-label="關於 Timux">
+      <div class="shell">
+        <article class="about-variant" data-ab-variant="A">
+          <header class="about-intro">
+            <div class="about-kicker"><p class="eyebrow paper-eyebrow">ABOUT TIMUX / BRAND STORY</p><strong>企業 AI 導入與應用落地團隊</strong></div>
+            <div class="about-copy">
+              <h2><span>Timux 時光智造，</span><br>讓 AI 完成工作，讓人把時間留給更重要的事。</h2>
+              <p class="about-lead">Timux 相信，科技真正的價值，不是讓企業擁有更多複雜工具，而是幫助人們減少重複工作，把時間重新留給判斷、創造與人和人之間的連結。</p>
+              <p class="about-detail">我們從真實工作場景出發，把 AI、企業知識、軟體系統與營運流程連接起來。Timux 不只讓 AI 回答問題，更讓它在清楚的權限與人的監督下，協助團隊取得資訊、推動任務並完成工作。</p>
+            </div>
+          </header>
+          <div class="about-focus-grid" aria-label="Timux 正在做的事">
+            <article class="about-card"><small>01 / CUSTOMER</small><h3>AI 客戶服務</h3><p>理解問題、核對資料，並在需要時帶著完整上下文交給人工服務。</p></article>
+            <article class="about-card"><small>02 / KNOWLEDGE</small><h3>企業知識應用</h3><p>整理文件、系統與團隊經驗，讓正確知識更容易被找到與使用。</p></article>
+            <article class="about-card"><small>03 / OPERATIONS</small><h3>現場營運管理</h3><p>將 LINE 回報、出勤與執行結果，轉化為可以持續追蹤的紀錄。</p></article>
+            <article class="about-card"><small>04 / AUTOMATION</small><h3>流程自動化</h3><p>串聯人員、資料與系統，讓跨部門任務不只通知，而是走到完成。</p></article>
+          </div>
+          <div class="about-close">
+            <p>Timux 希望 AI 成為企業長期可靠的工作夥伴： <strong>智造交給 AI，時光留給所愛。</strong></p>
+            <div class="about-actions"><a class="button dark" href="#cases" data-track="about_cta_click" data-method="case">查看 Timux 實戰案例 →</a><a class="button outline" href="#contact" data-track="about_cta_click" data-method="contact">與 Timux 討論需求 ↗</a></div>
+          </div>
+        </article>
+
+        <article class="about-variant" data-ab-variant="B" hidden aria-hidden="true">
+          <header class="about-intro">
+            <div class="about-kicker"><p class="eyebrow paper-eyebrow">ABOUT TIMUX / BUSINESS VALUE</p><strong>企業 AI 導入與應用落地團隊</strong></div>
+            <div class="about-copy">
+              <h2><span>Timux，</span><br>讓 AI 從一次展示，走進每天的工作。</h2>
+              <p class="about-lead">許多企業已經看見 AI 的可能，卻仍在尋找真正接進現有業務的方法。Timux 專注縮短從「看見可能」到「實際使用」之間的距離。</p>
+              <p class="about-detail">我們從一項具體工作開始，理解人員、資訊與系統如何協作，再把 AI 放進最適合的位置。Timux 關注的不是展示多少技術，而是資訊是否更快取得、交接是否更順暢，以及任務是否真正完成。</p>
+            </div>
+          </header>
+          <div class="about-process-grid" aria-label="Timux AI 落地方式">
+            <article class="about-card"><small>01 / CHOOSE</small><h3>從真實需求開始</h3><p>找出重複發生、資訊分散或容易中斷的一段工作，先定義值得改善的結果。</p></article>
+            <article class="about-card"><small>02 / VERIFY</small><h3>在實際場景驗證</h3><p>使用獲准資料與真實案例，確認 AI 能否提供有依據的資訊並配合現有流程。</p></article>
+            <article class="about-card"><small>03 / ADOPT</small><h3>逐步進入日常營運</h3><p>建立權限、人工確認與異常接手機制，達到共同標準後再逐步擴大使用。</p></article>
+          </div>
+          <div class="about-focus-grid" aria-label="Timux 聚焦領域">
+            <article class="about-card"><small>CUSTOMER SERVICE</small><h3>讓服務有下一步</h3><p>回答、核對與人工接手，保留必要情境，減少重複詢問。</p></article>
+            <article class="about-card"><small>ENTERPRISE KNOWLEDGE</small><h3>讓知識容易使用</h3><p>讓核准內容、版本與資料來源在組織中清楚流動。</p></article>
+            <article class="about-card"><small>FIELD OPERATIONS</small><h3>讓現場可以追蹤</h3><p>把前線回報整理成可查核、可接手的營運紀錄。</p></article>
+            <article class="about-card"><small>WORKFLOW AUTOMATION</small><h3>讓任務走到完成</h3><p>連接通知、審批、系統操作與後續結果，形成完整流程。</p></article>
+          </div>
+          <div class="about-close">
+            <p>Timux 不只讓 AI 提供答案，更讓答案成為 <strong>下一步行動。</strong></p>
+            <div class="about-actions"><a class="button dark" href="#cases" data-track="about_cta_click" data-method="case">查看 Timux 實戰案例 →</a><a class="button outline" href="#contact" data-track="about_cta_click" data-method="contact">與 Timux 討論需求 ↗</a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="section solutions-section" id="solutions">
       <div class="shell">
         <div class="section-head solution-heading">
@@ -362,7 +433,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4z"></path></svg>
                   </button>
                 </form>
-              </div><div class="agent-shortcuts"><a href="/demo/">案例體驗</a><a href="/method/">90 天導入方法</a><a href="#contact">找 Ian 討論</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>帶一個真實問題，<br>開始討論。</h2><p>告訴我們想改善哪段工作。</p><p>合作範圍與費用，事前共同確認。</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">直接寄信給 Ian →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">想改善哪段工作？</label><input id="workflow" name="workflow" maxlength="160" placeholder="例如：跨部門交接、客服或文件查找" required=""><label for="context">最近遇到什麼情況？</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="簡單描述一個案例即可，請勿填入個人或敏感資料。"></textarea><button class="button dark" type="submit">整理我的討論摘要 ↓</button><p class="fine">內容只在此頁整理，不會自動送出。你可以修改後再寄信。</p><div id="draftResult" hidden=""><label for="summary">確認或修改你的摘要</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">開啟 Email 草稿 ↗</a><button type="button" class="button outline" id="copyDraft">複製摘要</button></div><p class="fine">開啟草稿後，請在信箱完成寄送；此頁不代表詢問已送達。</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/"><img src="/assets/logo-icon.png" alt=""><strong>時光智造 Timux</strong></a><span>智造交給 AI，時光留給所愛。</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer><script src="/assets/site-conversion.js?v=20261007-v26" defer=""></script>  <script>
+              </div><div class="agent-shortcuts"><a href="/demo/">案例體驗</a><a href="/method/">90 天導入方法</a><a href="#contact">找 Ian 討論</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>帶一個真實問題，<br>開始討論。</h2><p>告訴我們想改善哪段工作。</p><p>合作範圍與費用，事前共同確認。</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">直接寄信給 Ian →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">想改善哪段工作？</label><input id="workflow" name="workflow" maxlength="160" placeholder="例如：跨部門交接、客服或文件查找" required=""><label for="context">最近遇到什麼情況？</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="簡單描述一個案例即可，請勿填入個人或敏感資料。"></textarea><button class="button dark" type="submit">整理我的討論摘要 ↓</button><p class="fine">內容只在此頁整理，不會自動送出。你可以修改後再寄信。</p><div id="draftResult" hidden=""><label for="summary">確認或修改你的摘要</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">開啟 Email 草稿 ↗</a><button type="button" class="button outline" id="copyDraft">複製摘要</button></div><p class="fine">開啟草稿後，請在信箱完成寄送；此頁不代表詢問已送達。</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/"><img src="/assets/logo-icon.png" alt=""><strong>時光智造 Timux</strong></a><span>智造交給 AI，時光留給所愛。</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer><script src="/assets/site-conversion.js?v=20261015-ab1" defer=""></script><script src="/assets/site-about-ab.js?v=20261015-ab1" defer=""></script>  <script>
     (() => {
       const apiBase = "https://digitalhuman.timux.site";
       const endpoint = `${apiBase}/api/digital-human/website-chat`;

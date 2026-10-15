@@ -51,10 +51,12 @@ node --check assets/site-case-journey.js
 node --check assets/site-orbit.js
 node --check assets/site-mega-nav.js
 node --check assets/site-mobile-parity.js
+node --check assets/site-about-ab.js
 node --check tests/homepage-v4-smoke.mjs
 node --check tests/homepage-v17-motion.mjs
 node --check tests/homepage-en-smoke.mjs
 node --check tests/homepage-v58-mobile-solution-carousel.mjs
 node --check tests/homepage-v59-mobile-manual-carousels.mjs
+node tests/about-ab-test.mjs
 node --check scripts/build-en-home.mjs
-git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js tests scripts
+git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js assets/site-about-ab.css assets/site-about-ab.js docs tests scripts
