@@ -64,7 +64,7 @@ for (const path of ['', 'en/']) {
       })
     }), modules);
 
-    const expectedMarker = 'homepage-v62-scroll-performance-20261015';
+    const expectedMarker = 'homepage-v63-case-handoff-20261015';
     if (audit.marker !== expectedMarker || audit.pageOverflow > 1) throw Error(`page shell regression ${path} ${JSON.stringify({viewport, audit})}`);
     for (const state of audit.modules) {
       if (state.display !== 'flex' || state.overflowX !== 'auto' || !state.snap.includes('x') || state.itemCount !== state.expected || state.visibleCount !== state.expected || state.cardWidth >= state.surfaceWidth - 18 || state.nextPeek < 20 || state.sticky || state.progressDisplay === 'none' || state.dotCount !== state.expected || state.activeDot !== 0 || state.selected !== 0 || state.scrollLeft !== 0) {

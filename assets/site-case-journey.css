@@ -14,7 +14,7 @@
 .case-scene .route-shadow{stroke-width:3;opacity:.25;filter:none}
 .case-scene .route-traveller{fill:#e6fff9;stroke:#8ee9d8;stroke-width:2;filter:drop-shadow(0 0 12px #a4fff1)}
 .journey-motion .case-journey-track{height:calc(var(--case-height) + 75vh)}
-.journey-motion .case-journey-track:last-child{margin-top:-75vh}
+.journey-motion .case-journey-track:last-child{margin-top:0}
 .journey-motion .case-scene{position:sticky;top:80px}
 .journey-motion .station{opacity:.45;transform:translateY(14px);transition:opacity .28s,transform .28s}
 .journey-motion .station.station-active,.journey-motion .station.station-complete{opacity:1;transform:none}

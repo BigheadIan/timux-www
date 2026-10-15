@@ -75,14 +75,24 @@ for(const q of [.12,.5,.88,.12,.88]){
   cases.push(sample);
   chapterPanelTops.push(sample.chapterPanelTop);
 }
-if(!(chapterPanelTops[0]>900&&chapterPanelTops[1]<750&&chapterPanelTops[2]<450))throw Error('MJ chapter panel did not rise across the previous scene: '+JSON.stringify(chapterPanelTops));
+const desktopViewportHeight=page.viewportSize().height;
+if(!(chapterPanelTops[0]>desktopViewportHeight*1.5&&chapterPanelTops[1]>desktopViewportHeight*1.25&&chapterPanelTops[2]>desktopViewportHeight))throw Error('MJ chapter panel entered before the previous scene completed: '+JSON.stringify(chapterPanelTops));
+await positionCase('case-southeast',1);
+const chapterHandoff=await page.locator('#case-southeast').evaluate(scene=>({
+  progress:Number(scene.style.getPropertyValue('--journey-progress')),
+  phase:Number(scene.dataset.journeyPhase),
+  previousBottom:scene.getBoundingClientRect().bottom,
+  nextTop:scene.closest('.case-journey-track').nextElementSibling.getBoundingClientRect().top,
+  viewportHeight:innerHeight
+}));
+if(chapterHandoff.progress<.995||chapterHandoff.phase!==2||Math.abs(chapterHandoff.nextTop-chapterHandoff.previousBottom)>2)throw Error('case chapter handoff is not aligned with completion: '+JSON.stringify(chapterHandoff));
 await page.screenshot({path:output+'/case-0.png'});
 const chapterPanel=await page.locator('#case-mj').evaluate(scene=>{
   const track=scene.closest('.case-journey-track'),previous=track.previousElementSibling,style=getComputedStyle(track);
   const previousTop=previous.getBoundingClientRect().top+scrollY,trackTop=track.getBoundingClientRect().top+scrollY;
   return {overlap:previousTop+previous.offsetHeight-trackTop,viewportHeight:innerHeight,borderRadius:parseFloat(style.borderTopLeftRadius),background:style.backgroundColor,zIndex:Number(style.zIndex)};
 });
-if(chapterPanel.overlap<chapterPanel.viewportHeight*.7||chapterPanel.overlap>chapterPanel.viewportHeight*.8||chapterPanel.borderRadius<30||chapterPanel.background!=='rgb(245, 244, 240)'||chapterPanel.zIndex!==2)throw Error('MJ chapter panel styling invalid: '+JSON.stringify(chapterPanel));
+if(Math.abs(chapterPanel.overlap)>1||chapterPanel.borderRadius<30||chapterPanel.background!=='rgb(245, 244, 240)'||chapterPanel.zIndex!==2)throw Error('MJ chapter panel styling invalid: '+JSON.stringify(chapterPanel));
 for(const [q,expectedNear] of [[0,0],[.5,1],[1,2],[.5,1]]){
   await positionCase('case-mj',q);
   const state=await page.locator('#case-mj').evaluate(scene=>{
@@ -162,6 +172,6 @@ if(!await staticPage.locator('h1').isVisible()||await staticPage.locator('.model
 await staticContext.close();
 await browser.close();
 if(errors.length)throw Error(JSON.stringify(errors));
-const results={orbit:{before:orbitBefore,after:orbitAfter,center:orbitCenter,backgroundContinues:backgroundBefore!==backgroundAfter,cardPaused:pausedBefore===pausedAfter},cases,mjDepthSamples,adoptionProgression,roadmapProgression,reversedRoute,sweep,metrics,errors};
+const results={orbit:{before:orbitBefore,after:orbitAfter,center:orbitCenter,backgroundContinues:backgroundBefore!==backgroundAfter,cardPaused:pausedBefore===pausedAfter},cases,chapterHandoff,mjDepthSamples,adoptionProgression,roadmapProgression,reversedRoute,sweep,metrics,errors};
 fs.writeFileSync(`${output}/motion-results.json`,JSON.stringify(results,null,2));
 console.log(JSON.stringify(results,null,2));
