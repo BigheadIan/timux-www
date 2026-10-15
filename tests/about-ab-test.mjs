@@ -39,6 +39,7 @@ for (const event of ['experiment_page_view', 'experiment_return_visit', 'page_sc
 }
 assert.match(analytics, /fields_completed/);
 assert.match(analytics, /context_length_bucket/);
+assert.match(analytics, /requestAnimationFrame\(measureDepth\)/);
 assert.match(css, /\.about-variant\[hidden\]/);
 assert.match(css, /html\[data-about-variant="B"\]/);
 assert.match(css, /@media \(max-width: 600px\)/);

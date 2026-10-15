@@ -66,7 +66,7 @@
       });
     };
     addEventListener('scroll', measureDepth, {passive: true});
-    measureDepth();
+    requestAnimationFrame(measureDepth);
 
     let visibleSince = document.hidden ? 0 : performance.now();
     let visibleMs = 0;
