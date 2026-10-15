@@ -7,6 +7,7 @@ let html = await readFile(resolve(root, 'index.html'), 'utf8');
 html = html.replaceAll('data-language-link=""', 'data-language-link');
 
 const translations = [
+  ['關於我們', 'About Us'],
   ['返回頂部', 'Back to top'],
   ['從客服到現場營運，讓 AI 在人的監督下完成任務。','From service to field operations, AI gets work done with human oversight.'],
   ['探索解決方案 ↓','Explore solutions ↓'], ['查看實戰案例 →','Explore case studies →'],
@@ -315,10 +316,12 @@ html = html
   .replace('<span class="intl-nav-zh">Solutions</span><small class="intl-nav-en">Solutions</small>', '<span class="intl-nav-zh">Solutions</span><small class="intl-nav-en">解決方案</small>')
   .replace('<span class="intl-nav-zh">Case Studies</span><small class="intl-nav-en">Case Studies</small>', '<span class="intl-nav-zh">Case Studies</span><small class="intl-nav-en">實戰案例</small>')
   .replace('<span class="intl-nav-zh">AI Adoption</span><small class="intl-nav-en">AI Adoption</small>', '<span class="intl-nav-zh">AI Adoption</span><small class="intl-nav-en">導入方法</small>')
+  .replace('<span class="intl-nav-zh">About Us</span><small class="intl-nav-en">About Timux</small>', '<span class="intl-nav-zh">About Us</span><small class="intl-nav-en">關於我們</small>')
   .replace('<span class="intl-nav-zh">Talk to us ↗</span><small class="intl-nav-en">Talk to us</small>', '<span class="intl-nav-zh">Talk to us ↗</span><small class="intl-nav-en">討論需求</small>')
   .replace('<span class="intl-mobile-summary">Solutions<small>Solutions</small></span>', '<span class="intl-mobile-summary">Solutions<small>解決方案</small></span>')
   .replace('<span class="intl-mobile-summary">Case Studies<small>Case Studies</small></span>', '<span class="intl-mobile-summary">Case Studies<small>實戰案例</small></span>')
   .replace('<span class="intl-mobile-summary">AI Adoption<small>AI Adoption</small></span>', '<span class="intl-mobile-summary">AI Adoption<small>導入方法</small></span>')
+  .replace('<span class="intl-mobile-summary">About Us<small>About Timux</small></span>', '<span class="intl-mobile-summary">About Us<small>關於我們</small></span>')
   .replace('<p class="intl-section-en">Start with one workflow that matters.</p>', '<p class="intl-section-en">從一段重要的工作開始。</p>');
 
 html = html

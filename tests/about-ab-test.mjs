@@ -17,7 +17,12 @@ for (const [name, html] of [['zh', zh], ['en', en]]) {
   assert.equal((html.match(/data-track="about_cta_click"/g) || []).length, 4, `${name}: equal CTA instrumentation`);
   assert.match(html, /timux_about_variant_v1/, `${name}: stable assignment bootstrap`);
   assert.match(html, /site-about-ab\.js\?v=20261015-ab1/, `${name}: AB runtime loaded`);
+  assert.equal((html.match(/class="nav-trigger nav-about-link"/g) || []).length, 1, `${name}: desktop About menu entry`);
+  assert.equal((html.match(/class="mobile-nav-about"/g) || []).length, 1, `${name}: mobile About menu entry`);
 }
+
+assert.match(zh, /class="nav-trigger nav-about-link" href="\/#about"[^>]*>.*關於我們.*About Timux/);
+assert.match(en, /class="nav-trigger nav-about-link" href="\/en\/#about"[^>]*>.*About Us.*關於我們/);
 
 assert.ok((zh.match(/Timux/g) || []).length >= 12, 'Chinese copy keeps Timux prominent');
 assert.doesNotMatch(en.slice(en.indexOf('id="about"'), en.indexOf('id="solutions"')), /[\u4e00-\u9fff]/, 'English About copy contains no CJK text');

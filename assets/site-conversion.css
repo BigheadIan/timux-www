@@ -319,6 +319,7 @@ html{scroll-behavior:smooth}
 .nav-trigger::before{position:absolute;right:17px;bottom:15px;left:17px;height:2px;content:"";background:linear-gradient(90deg,#67dfd0,#8b73ff);transform:scaleX(0);transform-origin:left;transition:transform .24s ease}
 .nav-trigger>.intl-nav-arrow{color:#777b89;font-size:17px;transition:transform .24s ease,color .24s ease}
 .nav-entry.is-open .nav-trigger,.nav-trigger:hover,.nav-trigger:focus-visible{color:#fff}
+.nav-about-link:hover::before,.nav-about-link:focus-visible::before{transform:scaleX(1)}
 .nav-entry.is-open .nav-trigger::before{transform:scaleX(1)}
 .nav-entry.is-open .nav-trigger>.intl-nav-arrow{color:#9be7da;transform:rotate(180deg)}
 .nav-cta{flex:0 0 auto;margin-left:22px}
@@ -358,6 +359,7 @@ html{scroll-behavior:smooth}
   .nav-mega{--nav-height:70px}.nav-directory{display:none}.nav-cta{margin-left:auto}.mobile-nav{display:block}.mobile-nav>summary{position:relative;min-height:44px;padding:0 4px;list-style:none;font-weight:700}.mobile-nav>summary::-webkit-details-marker{display:none}.mobile-nav>summary::after{margin-left:7px;content:"⌄";color:#8fe1d2}.mobile-nav[open]>summary::after{display:inline-block;transform:rotate(180deg)}
   .mobile-nav>.mobile-nav-panel{position:fixed;top:70px;right:15px;width:min(360px,calc(100vw - 30px));max-height:calc(100vh - 86px);overflow:auto;padding:10px 16px 16px;color:#f0eff5;background:#171923;border:1px solid #555064;border-radius:0 0 16px 16px;box-shadow:0 24px 60px #0009}
   .mobile-nav-panel>details{border-bottom:1px solid #ffffff16}.mobile-nav-panel>details>summary{display:flex;align-items:center;justify-content:space-between;min-height:52px;list-style:none;color:#fff;font-size:15px;font-weight:700}.mobile-nav-panel>details>summary::-webkit-details-marker{display:none}.mobile-nav-panel>details>summary::after{content:"+";color:#8ee2d3;font-size:19px;font-weight:400}.mobile-nav-panel>details[open]>summary::after{content:"−"}.mobile-nav-panel>details>div{padding:0 0 10px}.mobile-nav-panel>details a{display:block;padding:10px 12px;color:#b9bdc9;border-left:1px solid #5d566e;font-size:14px}.mobile-nav-panel .mobile-nav-direct{display:block;margin-top:14px;padding:13px;color:#101219;background:#fff;border-radius:10px;font-size:14px;font-weight:800;text-align:center}
+  .mobile-nav-panel .mobile-nav-about{display:flex;align-items:center;min-height:52px;color:#fff;border-bottom:1px solid #ffffff16;font-size:15px;font-weight:700}
 }
 @media(prefers-reduced-motion:reduce){.mega-panel,.nav-trigger::before,.nav-trigger span,.mega-link{transition:none!important}}
 
