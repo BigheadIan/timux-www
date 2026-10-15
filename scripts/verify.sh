@@ -7,7 +7,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 import re, subprocess, tempfile
 root = Path.cwd()
-pages = ['index.html','en/index.html','method/index.html','demo/index.html','demo/customer-service/index.html']
+pages = ['index.html','en/index.html','about/index.html','en/about/index.html','method/index.html','demo/index.html','demo/customer-service/index.html']
 class Document(HTMLParser):
  def __init__(self):
   super().__init__(); self.refs=[]; self.ids=set(); self.h1=0
@@ -22,7 +22,8 @@ class Document(HTMLParser):
 documents={}
 for name in pages:
  s=(root/name).read_text();d=Document();d.feed(s);documents[name]=d
- assert d.h1==1,(name,'h1 count')
+ expected_h1 = 2 if name in ['about/index.html','en/about/index.html'] else 1
+ assert d.h1==expected_h1,(name,'h1 count')
  expected_lang = 'en' if name == 'en/index.html' else 'zh-Hant'
  assert f'lang="{expected_lang}"' in s,(name,'language')
  for forbidden in ['All systems operational','Policy coverage','待批准','MapleHome','SoFun']:
@@ -59,4 +60,5 @@ node --check tests/homepage-v58-mobile-solution-carousel.mjs
 node --check tests/homepage-v59-mobile-manual-carousels.mjs
 node tests/about-ab-test.mjs
 node --check scripts/build-en-home.mjs
+node --check scripts/build-en-about.mjs
 git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js assets/site-about-ab.css assets/site-about-ab.js docs tests scripts

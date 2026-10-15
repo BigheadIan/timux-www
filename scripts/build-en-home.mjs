@@ -309,6 +309,7 @@ html = html
   .replaceAll('"url": "https://www.timux.site/"', '"url": "https://www.timux.site/en/"')
   .replace('"inLanguage": "zh-Hant"', '"inLanguage": "en"')
   .replaceAll('href="/#', 'href="/en/#')
+  .replaceAll('href="/about/"', 'href="/en/about/"')
   .replaceAll('href="/" aria-label="Timux home"', 'href="/en/" aria-label="Timux home"')
   .replaceAll('<a class="brand" href="/">', '<a class="brand" href="/en/">')
   .replace('<div class="intl-lang" role="group" aria-label="Language switch"><a class="is-active" href="/" lang="zh-Hant" hreflang="zh-Hant" aria-current="page" data-language-link>中文</a><i></i><a href="/en/" lang="en" hreflang="en" data-language-link>EN</a></div>', '<div class="intl-lang" role="group" aria-label="Language switch"><a href="/" lang="zh-Hant" hreflang="zh-Hant" data-language-link>中文</a><i></i><a class="is-active" href="/en/" lang="en" hreflang="en" aria-current="page" data-language-link>EN</a></div>')

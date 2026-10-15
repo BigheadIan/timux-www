@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About Timux | Enterprise AI Adoption & Execution</title>
+  <meta name="description" content="Meet Timux: we connect AI, enterprise knowledge, software, and operations so teams can complete real work with human oversight.">
+  <link rel="canonical" href="https://www.timux.site/en/about/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About Timux Technology">
+  <meta property="og:description" content="Move AI from a one-time demo into everyday work as a reliable, long-term partner.">
+  <meta property="og:url" content="https://www.timux.site/en/about/">
+  <meta property="og:image" content="https://www.timux.site/images/og-image.png">
+  <link rel="icon" href="/assets/logo-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDPR2LSFQ3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    if (["timux.site", "www.timux.site"].includes(location.hostname)) gtag('config', 'G-NDPR2LSFQ3');
+  </script>
+  <script>
+    (() => {
+      const key = 'timux_about_variant_v1';
+      const preview = new URLSearchParams(location.search).get('about_variant')?.toUpperCase();
+      let variant = preview === 'A' || preview === 'B' ? preview : '';
+      if (!variant) {
+        try { variant = localStorage.getItem(key) || ''; } catch {}
+        if (variant !== 'A' && variant !== 'B') {
+          const draw = globalThis.crypto?.getRandomValues ? crypto.getRandomValues(new Uint8Array(1))[0] : Math.floor(Math.random() * 256);
+          variant = draw % 2 === 0 ? 'A' : 'B';
+          try { localStorage.setItem(key, variant); } catch {
+            try { sessionStorage.setItem(key, variant); } catch {}
+          }
+        }
+      }
+      document.documentElement.dataset.aboutVariant = variant;
+      if (preview === 'A' || preview === 'B') document.documentElement.dataset.aboutPreview = 'true';
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/site-base.css?v=20261009-v33">
+  <link rel="stylesheet" href="/assets/site-conversion.css?v=20261007-v28">
+  <link rel="stylesheet" href="/assets/site-about-ab.css?v=20261015-ab2">
+</head>
+<body class="about-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <nav class="nav about-page-nav" aria-label="Main navigation">
+    <div class="shell nav-inner">
+      <a class="brand" href="/en/" aria-label="Timux home"><img src="/assets/logo-icon.png" alt=""><span><strong>Timux Technology</strong><small>AI adoption &amp; execution</small></span></a>
+      <div class="nav-links about-nav-links">
+        <a href="/en/#solutions">Solutions</a>
+        <a href="/en/#cases">Case Studies</a>
+        <a class="is-active" href="/en/about/" aria-current="page">About Us</a>
+        <a href="/en/#roadmap">AI Adoption</a>
+      </div>
+      <div class="intl-lang" role="group" aria-label="Language switch"><a href="/about/" lang="zh-Hant" hreflang="zh-Hant">中文</a><i></i><a class="is-active" href="/en/about/" lang="en" hreflang="en" aria-current="page">EN</a></div>
+      <a class="button ghost nav-cta" href="/en/#contact" data-track="contact_click" data-method="about_nav">Talk to us ↗</a>
+      <details class="mobile-nav">
+        <summary>Menu</summary>
+        <div class="mobile-nav-panel">
+          <a href="/en/#solutions">Solutions</a>
+          <a href="/en/#cases">Case Studies</a>
+          <a class="is-active" href="/en/about/" aria-current="page">About Us</a>
+          <a href="/en/#roadmap">AI Adoption</a>
+          <div class="intl-mobile-lang" role="group" aria-label="Language switch"><a href="/about/" lang="zh-Hant" hreflang="zh-Hant">中文</a><i></i><a class="is-active" href="/en/about/" lang="en" hreflang="en" aria-current="page">ENGLISH</a></div>
+          <a class="mobile-nav-direct" href="/en/#contact" data-track="contact_click" data-method="about_mobile_nav">Discuss my needs ↗</a>
+        </div>
+      </details>
+    </div>
+  </nav>
+
+  <main id="main" class="about-experiment" data-about-experiment="about_copy_v1" aria-label="About Timux">
+    <article class="about-variant" data-ab-variant="A">
+      <header class="about-page-hero">
+        <div class="shell about-intro">
+          <div class="about-kicker"><p class="eyebrow paper-eyebrow">ABOUT TIMUX / BRAND STORY</p><strong>Enterprise AI adoption and execution team</strong></div>
+          <div class="about-copy">
+            <h1><span>Timux Technology,</span><br>Let AI complete the work, so people can focus on what matters most.</h1>
+            <p class="about-lead">Timux believes technology creates value not by adding more complex tools, but by reducing repetitive work and giving people more time for judgment, creativity, and human connection.</p>
+            <p class="about-detail">We start with real workflows and connect AI, enterprise knowledge, software, and operations. Timux helps AI do more than answer questions: within clear permissions and human oversight, it helps teams find information, move tasks forward, and complete work.</p>
+            <div class="about-hero-actions"><a class="button dark" href="/en/#cases" data-track="about_cta_click" data-method="case" data-feature="case_exploration">Explore Timux case studies →</a><a class="button outline" href="/en/#contact" data-track="about_cta_click" data-method="contact" data-feature="contact_intent">Discuss your needs with Timux ↗</a></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="about-page-section about-story-section">
+        <div class="shell about-story-grid">
+          <div><p class="eyebrow paper-eyebrow">WHY TIMUX</p><h2>We care about more than what AI can do.</h2></div>
+          <div class="about-story-copy"><p>What organizations face every day is fragmented information, repeated confirmation, interrupted handoffs, and decisions that people must own. More tools still amount to a demo if they cannot connect to real work.</p><p>Timux begins with one concrete workflow: who uses it, where data comes from, when human confirmation is required, and what evidence remains after completion. We then place AI where it helps most, so teams can use it with confidence and keep improving.</p></div>
+        </div>
+      </section>
+
+      <section class="about-page-section about-work-section">
+        <div class="shell"><div class="about-section-head"><div><p class="eyebrow paper-eyebrow">WHAT WE ARE BUILDING</p><h2>What Timux is building</h2></div><p>From customer-facing service to internal knowledge, field operations, and cross-system tasks, every workflow gets a clear next step.</p></div>
+          <div class="about-focus-grid" aria-label="What Timux is building">
+            <article class="about-card"><small>01 / CUSTOMER</small><h3>AI Customer Service</h3><p>Understand questions, verify information, and hand off to people with the full context when needed.</p></article>
+            <article class="about-card"><small>02 / KNOWLEDGE</small><h3>Enterprise Knowledge</h3><p>Organize documents, systems, and team experience so approved knowledge is easier to find and use.</p></article>
+            <article class="about-card"><small>03 / OPERATIONS</small><h3>Field Operations</h3><p>Turn LINE reports, attendance, and execution results into records teams can keep tracking.</p></article>
+            <article class="about-card"><small>04 / AUTOMATION</small><h3>Workflow Automation</h3><p>Connect people, data, and systems so cross-team tasks move beyond notification to completion.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-page-section about-belief-section">
+        <div class="shell"><div class="about-section-head"><div><p class="eyebrow paper-eyebrow">HOW WE THINK</p><h2>Three principles that stay constant</h2></div></div>
+          <div class="about-process-grid">
+            <article class="about-card"><small>01 / PEOPLE</small><h3>Start with people and their work</h3><p>Understand users, ownership, and the current workflow before assuming every problem needs another tool.</p></article>
+            <article class="about-card"><small>02 / EXECUTION</small><h3>Help AI complete the work</h3><p>Go beyond answers by connecting handoffs, approvals, system actions, and follow-up records.</p></article>
+            <article class="about-card"><small>03 / TRUST</small><h3>Keep every step grounded</h3><p>Keep data sourced, access scoped, critical decisions with people, and exceptions assigned to an owner.</p></article>
+          </div>
+          <div class="about-close"><p>Timux wants AI to become a reliable, long-term partner at work: <strong>Let AI handle the work, and save time for what you love.</strong></p><div class="about-actions"><a class="button dark" href="/en/#roadmap" data-track="about_cta_click" data-method="method" data-feature="method_exploration">Explore the Timux adoption approach →</a><a class="button outline" href="/en/#contact" data-track="about_cta_click" data-method="contact" data-feature="contact_intent">Start a conversation ↗</a></div></div>
+        </div>
+      </section>
+    </article>
+
+    <article class="about-variant" data-ab-variant="B" hidden aria-hidden="true">
+      <header class="about-page-hero">
+        <div class="shell about-intro">
+          <div class="about-kicker"><p class="eyebrow paper-eyebrow">ABOUT TIMUX / BUSINESS VALUE</p><strong>Enterprise AI adoption and execution team</strong></div>
+          <div class="about-copy">
+            <h1><span>Timux,</span><br>Move AI from a one-time demo into everyday work.</h1>
+            <p class="about-lead">Many organizations see what AI can do but still need a practical way to connect it to existing operations. Timux closes the gap between seeing the possibility and putting it to work.</p>
+            <p class="about-detail">We begin with one concrete workflow, understand how people, information, and systems work together, then place AI where it helps most. Timux focuses on whether information moves faster, handoffs improve, and work gets completed.</p>
+            <div class="about-hero-actions"><a class="button dark" href="/en/#cases" data-track="about_cta_click" data-method="case" data-feature="case_exploration">Explore Timux case studies →</a><a class="button outline" href="/en/#contact" data-track="about_cta_click" data-method="contact" data-feature="contact_intent">Discuss your needs with Timux ↗</a></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="about-page-section about-story-section">
+        <div class="shell"><div class="about-section-head"><div><p class="eyebrow paper-eyebrow">FROM NEED TO ADOPTION</p><h2>From a real need to daily operations</h2></div><p>Define the outcome worth improving, validate it with real cases, then expand in stages under clear permissions and ownership.</p></div>
+          <div class="about-process-grid" aria-label="How Timux puts AI to work">
+            <article class="about-card"><small>01 / CHOOSE</small><h3>Start with a real need</h3><p>Identify a recurring, fragmented, or easily interrupted workflow and define the outcome worth improving.</p></article>
+            <article class="about-card"><small>02 / VERIFY</small><h3>Validate in real scenarios</h3><p>Use approved data and real cases to verify that AI provides grounded information and works with existing processes.</p></article>
+            <article class="about-card"><small>03 / ADOPT</small><h3>Move into daily operations in stages</h3><p>Establish permissions, human confirmation, and exception handoffs, then expand after shared criteria are met.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-page-section about-work-section">
+        <div class="shell"><div class="about-section-head"><div><p class="eyebrow paper-eyebrow">BUSINESS OUTCOMES</p><h2>Four workflows Timux focuses on</h2></div><p>Place AI where work waits, repeats, or gets missed, so information and tasks keep moving.</p></div>
+          <div class="about-focus-grid" aria-label="Timux focus areas">
+            <article class="about-card"><small>CUSTOMER SERVICE</small><h3>Give service a clear next step</h3><p>Answer, verify, and hand off with the context needed to reduce repeated questions.</p></article>
+            <article class="about-card"><small>ENTERPRISE KNOWLEDGE</small><h3>Make knowledge easier to use</h3><p>Help approved content, versions, and sources move clearly across the organization.</p></article>
+            <article class="about-card"><small>FIELD OPERATIONS</small><h3>Make field work traceable</h3><p>Turn frontline reports into verifiable, handoff-ready operational records.</p></article>
+            <article class="about-card"><small>WORKFLOW AUTOMATION</small><h3>Take tasks through to completion</h3><p>Connect notifications, approvals, system actions, and outcomes into a complete workflow.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-page-section about-belief-section">
+        <div class="shell"><div class="about-section-head"><div><p class="eyebrow paper-eyebrow">OUR OPERATING MODEL</p><h2>Build an operating model, not just another tool</h2></div></div>
+          <div class="about-model-strip">
+            <div><b>CORE</b><span>Align cost, efficiency, risk, and revenue outcomes</span></div>
+            <div><b>SCALE</b><span>Connect signals, context, approvals, action, and review</span></div>
+            <div><b>TRUST</b><span>Preserve evidence, permissions, human authority, and traceability</span></div>
+          </div>
+          <div class="about-close"><p>Timux does more than help AI provide answers; it turns answers into the <strong>next action.</strong></p><div class="about-actions"><a class="button dark" href="/en/#roadmap" data-track="about_cta_click" data-method="method" data-feature="method_exploration">Explore the Timux adoption approach →</a><a class="button outline" href="/en/#contact" data-track="about_cta_click" data-method="contact" data-feature="contact_intent">Start a conversation ↗</a></div></div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer><div class="shell footer-inner"><a class="brand" href="/en/"><img src="/assets/logo-icon.png" alt=""><strong>Timux Technology</strong></a><span>Let AI handle the work, and save time for what you love.</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer>
+  <script src="/assets/site-conversion.js?v=20261015-ab2" defer></script>
+  <script src="/assets/site-about-ab.js?v=20261015-ab2" defer></script>
+</body>
+</html>

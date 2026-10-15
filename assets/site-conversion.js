@@ -2,12 +2,15 @@
   const english = document.documentElement.lang === 'en';
   const experimentId = 'about_copy_v1';
   let experimentVariant = document.documentElement.dataset.aboutVariant || '';
+  const experimentPreview = document.documentElement.dataset.aboutPreview === 'true';
   if (experimentVariant !== 'A' && experimentVariant !== 'B') {
     try { experimentVariant = localStorage.getItem('timux_about_variant_v1') || ''; } catch {}
   }
-  if (experimentVariant !== 'A' && experimentVariant !== 'B') experimentVariant = '';
+  if (experimentVariant !== 'A' && experimentVariant !== 'B' || experimentPreview) experimentVariant = '';
   const pageGroup = location.pathname === '/' || location.pathname === '/en/'
     ? 'homepage'
+    : location.pathname === '/about/' || location.pathname === '/en/about/'
+      ? 'about_page'
     : location.pathname.startsWith('/demo/customer-service')
       ? 'customer_service_demo'
       : location.pathname.startsWith('/demo')
@@ -85,7 +88,13 @@
   document.addEventListener('click', event => {
     const link = event.target.closest('[data-track]');
     if (link) track(link.dataset.track, {method: link.dataset.method || 'navigation', scenario: link.dataset.scenario || 'general'});
+    const feature = event.target.closest('[data-feature]');
+    if (feature) track('feature_used', {feature_name: feature.dataset.feature});
     if (event.target.closest('#starterQuestions .chip, #chatFeed .chip')) track('agent_interaction', {method: 'suggestion'});
+  });
+  addEventListener('timux:lead-submitted', event => {
+    if (!event.detail?.submissionId) return;
+    track('lead_submit_success', {lead_source: event.detail.source || 'website'});
   });
   const agentForm = document.getElementById('agentForm');
   if (agentForm) agentForm.addEventListener('submit', () => track('agent_interaction', {method: 'typed_question'}));
@@ -122,7 +131,9 @@
       summary.focus();
       track('contact_draft_ready', {
         scenario: scenario === 'customer-service' ? scenario : 'general',
-        context_provided: Boolean(document.getElementById('context').value.trim())
+        context_provided: Boolean(document.getElementById('context').value.trim()),
+        fields_completed: document.getElementById('context').value.trim() ? 2 : 1,
+        context_length_bucket: document.getElementById('context').value.trim().length >= 240 ? 'long' : document.getElementById('context').value.trim().length >= 80 ? 'medium' : document.getElementById('context').value.trim().length ? 'short' : 'none'
       });
     });
     summary.addEventListener('input', updateEmail);
