@@ -48,10 +48,10 @@ for (const [name, viewport] of Object.entries({ desktop: { width: 1920, height: 
     }).map((element) => element.textContent.trim()).slice(0, 10)
   }));
 
-  if (audit.lang !== 'en' || audit.marker !== 'homepage-en-v36-mobile-mj-proportions-20261013' ||
+  if (audit.lang !== 'en' || audit.marker !== 'homepage-v62-scroll-performance-20261015' ||
       audit.canonical !== 'https://www.timux.site/en/' || audit.title !== 'Timux Technology | Enterprise AI Adoption & Execution' ||
       audit.h1 !== 'Bring AI into real work,and get work done.' || audit.activeLanguage !== 'EN' ||
-      audit.navPrimary.join('|') !== 'Solutions|Case Studies|AI Adoption' || audit.overflow > 1 ||
+      audit.navPrimary.join('|') !== 'Solutions|Case Studies|About Us|AI Adoption' || audit.overflow > 1 ||
       audit.untranslatedVisible.length || !audit.alternates.some(([lang, href]) => lang === 'zh-Hant' && href === 'https://www.timux.site/')) {
     throw new Error(`${name}: English page audit failed ${JSON.stringify(audit)}`);
   }

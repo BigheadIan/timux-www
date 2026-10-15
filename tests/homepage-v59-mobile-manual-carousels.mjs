@@ -64,7 +64,7 @@ for (const path of ['', 'en/']) {
       })
     }), modules);
 
-    const expectedMarker = path ? 'homepage-en-v36-mobile-mj-proportions-20261013' : 'homepage-v61-mobile-mj-proportions-20261013';
+    const expectedMarker = 'homepage-v62-scroll-performance-20261015';
     if (audit.marker !== expectedMarker || audit.pageOverflow > 1) throw Error(`page shell regression ${path} ${JSON.stringify({viewport, audit})}`);
     for (const state of audit.modules) {
       if (state.display !== 'flex' || state.overflowX !== 'auto' || !state.snap.includes('x') || state.itemCount !== state.expected || state.visibleCount !== state.expected || state.cardWidth >= state.surfaceWidth - 18 || state.nextPeek < 20 || state.sticky || state.progressDisplay === 'none' || state.dotCount !== state.expected || state.activeDot !== 0 || state.selected !== 0 || state.scrollLeft !== 0) {

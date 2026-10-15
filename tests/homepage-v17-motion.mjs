@@ -109,7 +109,9 @@ async function sampleRoute(selector,points){
     },{selector,q});
     await page.waitForTimeout(140);
     samples.push(await page.locator(selector).evaluate(container=>{
-      const cards=[...container.querySelectorAll(':scope > article')],route=container.previousElementSibling;
+      const cards=[...container.querySelectorAll(':scope > article')];
+      let route=container.previousElementSibling;
+      while(route&&!route.matches('.story-route'))route=route.previousElementSibling;
       return {
         current:cards.findIndex(card=>card.classList.contains('route-current')),
         complete:cards.filter(card=>card.classList.contains('route-complete')).length,

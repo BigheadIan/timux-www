@@ -6,12 +6,15 @@
   const cards=[...row.querySelectorAll('.logo-card')];
   const motion=matchMedia('(min-width: 821px) and (min-height: 600px)');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  let phase=-Math.PI/12,frame=0,last=0,visible=false,paused=false,enabled=false,hoveredCard=null,focusedCard=null;
+  let phase=-Math.PI/12,frame=0,last=0,visible=false,paused=false,enabled=false,hoveredCard=null,focusedCard=null,rx=0,ry=0;
+
+  function measure(){
+    rx=Math.min(row.clientWidth*.39,530);
+    ry=Math.min(row.clientHeight*.355,220);
+  }
 
   function place(){
     if(!enabled)return;
-    const rx=Math.min(row.clientWidth*.39,530);
-    const ry=Math.min(row.clientHeight*.355,220);
     cards.forEach((card,index)=>{
       const angle=phase+index*Math.PI*2/cards.length;
       const depth=(Math.sin(angle)+1)/2;
@@ -39,7 +42,7 @@
   function configure(){
     enabled=motion.matches&&!reduced.matches;
     section.classList.toggle('is-orbiting',enabled);
-    if(enabled){place();start();}
+    if(enabled){measure();place();start();}
     else{
       stop();row.removeAttribute('data-orbit-phase');
       cards.forEach(card=>{card.style.removeProperty('transform');card.style.removeProperty('opacity');card.style.removeProperty('z-index');delete card.dataset.orbitDepth;});
@@ -55,7 +58,8 @@
   });
   document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
   motion.addEventListener('change',configure);reduced.addEventListener('change',configure);
-  addEventListener('resize',()=>{if(enabled)place();},{passive:true});
+  addEventListener('resize',()=>{if(enabled){measure();place();}},{passive:true});
+  new ResizeObserver(()=>{if(enabled){measure();place();}}).observe(row);
   new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting||false;visible?start():stop();},{rootMargin:'160px 0px'}).observe(section);
   configure();
 })();

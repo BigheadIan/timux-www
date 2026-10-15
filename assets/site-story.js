@@ -112,125 +112,181 @@
     ['TRUST','放心地使用','能力向外延伸，<br>邊界始終清楚。','讓過程保持可控。']
   ];
 
+  const captionStep = caption.querySelector('.engine-step');
+  const captionTitle = caption.querySelector('strong');
+  const captionBody = caption.querySelector('p');
+  const captionMeter = caption.querySelector('.engine-meter i');
+  const layerParts = layers.map(layer => ({layer, title:layer.querySelector('b'), detail:layer.querySelector('p')}));
+  const routePairs = [[adoption,adoptionRoute],[phases,phaseRoute]].map(([container,route]) => ({
+    container,
+    route,
+    cards:[...container.querySelectorAll(':scope > article')],
+    arrows:[...container.children].filter(element => element.tagName === 'I')
+  }));
+  const modelOrbFlow = modelStage.querySelector('.orb-flow');
+  const modelOrbShield = modelStage.querySelector('.orb-shield');
+  const modelOrbGuide = modelStage.querySelector('.orb-guide');
+  const modelOrbCode = modelStage.querySelector('.orb-center b');
+  const modelOrbLabel = modelStage.querySelector('.orb-center span');
+  const modelHeading = modelStage.querySelector('h3');
+  const modelDescription = modelStage.querySelector('.model-story-description');
+  const modelChapters = [...modelStage.querySelectorAll('.model-chapters span')];
+  const modelCards = [...models.children];
+  const setStyle = (el,name,value) => { if (el.style.getPropertyValue(name) !== value) el.style.setProperty(name,value); };
+  const setTransform = (el,value) => { if (el.style.transform !== value) el.style.transform=value; };
+  const setText = (el,value) => { if (el.textContent !== value) el.textContent=value; };
+  const setHtml = (el,value) => { if (el.innerHTML !== value) el.innerHTML=value; };
+  const setAttr = (el,name,value) => { value=String(value); if (el.getAttribute(name) !== value) el.setAttribute(name,value); };
+  const setData = (el,name,value) => { value=String(value); if (el.dataset[name] !== value) el.dataset[name]=value; };
+  const setClass = (el,name,value) => { if (el.classList.contains(name) !== value) el.classList.toggle(name,value); };
+  const number = (value,digits=3) => Number(value.toFixed(digits)).toString();
+
   let enabled = false, frame = 0, modelIndex = -1, heroIndex = -1;
-  let measurements = [];
+  let targetScrollY = scrollY, currentScrollY = scrollY, lastFrameTime = 0;
+  const measurements = new Map();
   const tracked = [heroTrack,solutions,adoption,...cases.map(c=>c.track),modelTrack,models,phases];
   function measure() {
-    measurements = tracked.map(el => {const r=el.getBoundingClientRect();return {top:r.top+scrollY,height:r.height};});
+    tracked.forEach(el => {const r=el.getBoundingClientRect();measurements.set(el,{top:r.top+scrollY,height:r.height});});
   }
-  function progress(el, pinned = false) {
-    const m = measurements[tracked.indexOf(el)];
-    return pinned ? clamp((scrollY - m.top + 80) / Math.max(1,m.height-innerHeight+80))
-      : clamp((scrollY+innerHeight*.84-m.top) / Math.min(m.height+innerHeight*.2,innerHeight*.85));
+  function progress(el, pinned = false, y = currentScrollY) {
+    const m = measurements.get(el);
+    return pinned ? clamp((y - m.top + 80) / Math.max(1,m.height-innerHeight+80))
+      : clamp((y+innerHeight*.84-m.top) / Math.min(m.height+innerHeight*.2,innerHeight*.85));
   }
-  function paint() {
+  function isNear(el) {
+    const m=measurements.get(el);
+    return m && m.top+m.height >= targetScrollY-innerHeight*.6 && m.top <= targetScrollY+innerHeight*1.6;
+  }
+  function paint(now) {
     frame = 0;
     if (!enabled) return;
-    const p=progress(heroTrack,true), explode=range(p,.08,.36), assemble=range(p,.60,.90);
-    root.style.setProperty('--engine-progress',p.toFixed(4));
-    stage.style.setProperty('--orbit-turn',`${p*150}deg`);
-    layers.forEach((layer,i) => {
+    const elapsed=lastFrameTime ? Math.min(64,now-lastFrameTime) : 16;
+    lastFrameTime=now;
+    const alpha=1-Math.exp(-elapsed/42);
+    currentScrollY += (targetScrollY-currentScrollY)*alpha;
+    if(Math.abs(targetScrollY-currentScrollY)<.25)currentScrollY=targetScrollY;
+
+    if(isNear(heroTrack)){
+      const p=progress(heroTrack,true), explode=range(p,.08,.36), assemble=range(p,.60,.90);
+      setStyle(stage,'--orbit-turn',`${number(p*150)}deg`);
+      layerParts.forEach(({layer,title,detail},i) => {
       const initialX=(i-2)*16, initialY=(i-2)*26;
       const spreadX=(i-2)*59, spreadY=(i-2)*68;
       const targetX=(i%2===0?-144:144), targetY=(i<2?-108:108);
       const x=lerp(lerp(initialX,spreadX,explode),targetX,assemble);
       const y=lerp(lerp(initialY,spreadY,explode),targetY,assemble);
       const rx=lerp(54,12,explode)*(1-assemble), rz=lerp(-28,-14,explode)*(1-assemble);
-      layer.style.transform=`translate3d(${x}px,${y}px,${(i-2)*36*(1-assemble)}px) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${lerp(1,.64,assemble)})`;
-      layer.style.opacity=i===4 ? String(1-assemble) : '1';
-      layer.style.setProperty('--pulse-offset',`${-(p*200+i*19)}`);
-      layer.querySelector('b').textContent=assemble>.75&&i<4?outputs[i]:layerNames[i];
-      layer.classList.toggle('is-assembled',assemble>.75);
-      layer.querySelector('p').textContent=assemble>.75&&i<4?outputDetails[i]:details[i];
-    });
-    const hi=p<.32?0:p<.67?1:2;
-    if(hi!==heroIndex){
-      heroIndex=hi; hero.dataset.engineStep=String(hi);
-      caption.querySelector('.engine-step').textContent=`0${hi+1} / 03`;
-      caption.querySelector('strong').textContent=(english ? ['Bring scattered signals into one workflow.','Break down each step so decisions have evidence.','Assemble a workflow that fits your team.'] : ['讓分散訊號，進入同一段工作。','拆開每一步，讓判斷有依據。','組成適合你的工作方式。'])[hi];
-      caption.querySelector('p').textContent=(english ? ['Start with one real need and see how AI helps the team reach the next step.','Knowledge, rules, and human decisions stay connected, with approval for critical actions.','Connect service, knowledge, operations, and systems—starting with the workflow that matters most.'] : ['從一個真實需求開始，看 AI 如何協助團隊完成下一步。','知識、規則與人的決策彼此連接，重要操作保留人工確認。','客服、知識、現場與系統整合，從你最想改善的流程開始。'])[hi];
+        setTransform(layer,`translate3d(${number(x)}px,${number(y)}px,${number((i-2)*36*(1-assemble))}px) rotateX(${number(rx)}deg) rotateZ(${number(rz)}deg) scale(${number(lerp(1,.64,assemble),4)})`);
+        setStyle(layer,'opacity',i===4 ? number(1-assemble) : '1');
+        setStyle(layer,'--pulse-offset',number(-(p*200+i*19)));
+        setText(title,assemble>.75&&i<4?outputs[i]:layerNames[i]);
+        setClass(layer,'is-assembled',assemble>.75);
+        setText(detail,assemble>.75&&i<4?outputDetails[i]:details[i]);
+      });
+      const hi=p<.32?0:p<.67?1:2;
+      if(hi!==heroIndex){
+        heroIndex=hi; setData(hero,'engineStep',hi);
+        setText(captionStep,`0${hi+1} / 03`);
+        setText(captionTitle,(english ? ['Bring scattered signals into one workflow.','Break down each step so decisions have evidence.','Assemble a workflow that fits your team.'] : ['讓分散訊號，進入同一段工作。','拆開每一步，讓判斷有依據。','組成適合你的工作方式。'])[hi]);
+        setText(captionBody,(english ? ['Start with one real need and see how AI helps the team reach the next step.','Knowledge, rules, and human decisions stay connected, with approval for critical actions.','Connect service, knowledge, operations, and systems—starting with the workflow that matters most.'] : ['從一個真實需求開始，看 AI 如何協助團隊完成下一步。','知識、規則與人的決策彼此連接，重要操作保留人工確認。','客服、知識、現場與系統整合，從你最想改善的流程開始。'])[hi]);
+      }
+      setTransform(captionMeter,`scaleX(${p.toFixed(4)})`);
     }
-    caption.querySelector('.engine-meter i').style.transform=`scaleX(${p})`;
-    const sp=progress(solutions);
-    solutionCards.forEach((c,i)=>{
-      const t=range(sp,i*.09,.65+i*.09);
-      c.style.setProperty('--card-x',`${(1-t)*(1.5-i)*85}px`);
-      c.style.setProperty('--card-turn',`${(1-t)*(i-1.5)*8}deg`);
-      c.style.setProperty('--card-y',`${(1-t)*65}px`);
-    });
-    [[adoption,adoptionRoute],[phases,phaseRoute]].forEach(([container,route])=>{
-      const q=progress(container), cards=[...container.querySelectorAll(':scope > article')];
+    if(isNear(solutions)){
+      const sp=progress(solutions);
+      solutionCards.forEach((c,i)=>{
+        const t=range(sp,i*.09,.65+i*.09);
+        setStyle(c,'--card-x',`${number((1-t)*(1.5-i)*85)}px`);
+        setStyle(c,'--card-turn',`${number((1-t)*(i-1.5)*8)}deg`);
+        setStyle(c,'--card-y',`${number((1-t)*65)}px`);
+      });
+    }
+    routePairs.forEach(({container,route,cards,arrows})=>{
+      if(!isNear(container))return;
+      const q=progress(container);
       const activeIndex=Math.min(cards.length-1,Math.floor(q*cards.length));
-      route.ink.style.strokeDashoffset=String(1-q);
-      route.head.setAttribute('cx',String(10+980*q));
-      route.root.style.setProperty('--route-progress',q.toFixed(4));
-      route.root.dataset.routeIndex=String(activeIndex);
+      setStyle(route.ink,'stroke-dashoffset',number(1-q,4));
+      setAttr(route.head,'cx',number(10+980*q));
+      setStyle(route.root,'--route-progress',q.toFixed(4));
+      setData(route.root,'routeIndex',activeIndex);
       cards.forEach((card,i)=>{
         const reveal=range(q,Math.max(0,(i-.45)/cards.length),(i+.38)/cards.length);
         const current=i===activeIndex, complete=i<activeIndex;
         const emphasis=current?1:complete?.38:0;
-        card.style.setProperty('--step-lift',`${(1-reveal)*72-emphasis*14}px`);
-        card.style.setProperty('--step-rotate',`${(1-reveal)*-10}deg`);
-        card.style.setProperty('--step-scale',String(.92+reveal*.08+emphasis*.026));
-        card.style.setProperty('--step-opacity',String(.34+reveal*.66));
-        card.style.setProperty('--step-saturation',String(.48+reveal*.52));
-        card.style.zIndex=current?'3':complete?'2':'1';
-        card.classList.toggle('route-current',current);
-        card.classList.toggle('route-complete',complete);
-        card.classList.toggle('route-upcoming',i>activeIndex);
+        setStyle(card,'--step-lift',`${number((1-reveal)*72-emphasis*14)}px`);
+        setStyle(card,'--step-rotate',`${number((1-reveal)*-10)}deg`);
+        setStyle(card,'--step-scale',number(.92+reveal*.08+emphasis*.026,4));
+        setStyle(card,'--step-opacity',number(.34+reveal*.66,4));
+        setStyle(card,'--step-saturation',number(.48+reveal*.52,4));
+        setStyle(card,'z-index',current?'3':complete?'2':'1');
+        setClass(card,'route-current',current);
+        setClass(card,'route-complete',complete);
+        setClass(card,'route-upcoming',i>activeIndex);
       });
-      [...container.children].filter(element=>element.tagName==='I').forEach((arrow,i)=>{
-        arrow.classList.toggle('route-passed',i<activeIndex);
-        arrow.classList.toggle('route-next',i===activeIndex);
+      arrows.forEach((arrow,i)=>{
+        setClass(arrow,'route-passed',i<activeIndex);
+        setClass(arrow,'route-next',i===activeIndex);
       });
     });
     cases.forEach(({track,card,screens,steps})=>{
-      const q=progress(track,true), phase=Math.min(2,Math.floor(q*3)); card.dataset.casePhase=String(phase);
-      steps.forEach((step,i)=>step.classList.toggle('case-focus',i===phase));
+      if(!isNear(track))return;
+      const q=progress(track,true), phase=Math.min(2,Math.floor(q*3)); setData(card,'casePhase',phase);
+      steps.forEach((step,i)=>setClass(step,'case-focus',i===phase));
       screens.forEach((screen,i)=>{
         const focus=screens.length===3 ? i/2 : i/Math.max(1,screens.length-1);
         const proximity=clamp(1-Math.abs(q-focus)*2);
         const side=i-(screens.length-1)/2;
         const farAngle=side===0 ? (q<.5?8:-8) : side*12;
-        screen.style.setProperty('--screen-x',`${Math.sin(q*Math.PI)*(i%2?-28:28)}px`);
-        screen.style.setProperty('--screen-y',`${(q-.5)*(i%2?76:-56)-proximity*10}px`);
-        screen.style.setProperty('--screen-z',`${-64+proximity*98}px`);
-        screen.style.setProperty('--screen-angle',`${farAngle*(1-proximity)}deg`);
-        screen.style.setProperty('--screen-scale',String(.76+proximity*.34));
-        screen.style.setProperty('--screen-opacity',String(.72+proximity*.28));
-        screen.style.setProperty('--screen-saturation',String(.68+proximity*.32));
-        screen.style.setProperty('--screen-brightness',String(.78+proximity*.22));
-        screen.style.zIndex=String(1+Math.round(proximity*2));
+        setStyle(screen,'--screen-x',`${number(Math.sin(q*Math.PI)*(i%2?-28:28))}px`);
+        setStyle(screen,'--screen-y',`${number((q-.5)*(i%2?76:-56)-proximity*10)}px`);
+        setStyle(screen,'--screen-z',`${number(-64+proximity*98)}px`);
+        setStyle(screen,'--screen-angle',`${number(farAngle*(1-proximity))}deg`);
+        setStyle(screen,'--screen-scale',number(.76+proximity*.34,4));
+        setStyle(screen,'--screen-opacity',number(.72+proximity*.28,4));
+        setStyle(screen,'--screen-saturation',number(.68+proximity*.32,4));
+        setStyle(screen,'--screen-brightness',number(.78+proximity*.22,4));
+        setStyle(screen,'z-index',String(1+Math.round(proximity*2)));
       });
       const panel=card.querySelector('.ai-decision,.audit-panel');
-      if(panel)panel.style.clipPath=`inset(0 ${100*(1-range(q,.15,.48))}% 0 0 round 18px)`;
+      if(panel)setStyle(panel,'clip-path',`inset(0 ${number(100*(1-range(q,.15,.48)))}% 0 0 round 18px)`);
     });
-    const mp=progress(modelTrack,true), split=range(mp,.22,.42), mi=mp<.32?0:mp<.68?1:2;
-    const count=4+split, rotate=range(mp,.35,.66)*Math.PI*.45;
-    segments.forEach((segment,i)=>{
-      const start=-Math.PI/2+i*Math.PI*2/count+rotate+.035;
-      const span=i===4?Math.PI*2/count*split:Math.PI*2/count;
-      segment.setAttribute('d',arc(start,start+Math.max(.001,span-.07),170+Math.sin(mp*Math.PI)*8));
-      segment.style.opacity=i===4?String(split):'1';
-    });
-    modelStage.querySelector('.orb-flow').setAttribute('transform',`rotate(${mp*540} 250 250)`);
-    modelStage.querySelector('.orb-shield').style.strokeDashoffset=String(1-range(mp,.66,.95));
-    modelStage.querySelector('.orb-guide').style.transform=`rotate(${mp*90}deg)`;
-    if(mi!==modelIndex){
-      modelIndex=mi; const d=descriptions[mi]; modelStage.dataset.model=d[0];
-      modelStage.querySelector('.orb-center b').textContent=d[0];
-      modelStage.querySelector('.orb-center span').textContent=d[1];
-      modelStage.querySelector('h3').innerHTML=d[2];
-      modelStage.querySelector('.model-story-description').textContent=d[3];
-      modelStage.querySelectorAll('.model-chapters span').forEach((s,i)=>s.classList.toggle('active',i===mi));
+    if(isNear(modelTrack)){
+      const mp=progress(modelTrack,true), split=range(mp,.22,.42), mi=mp<.32?0:mp<.68?1:2;
+      const count=4+split, rotate=range(mp,.35,.66)*Math.PI*.45;
+      segments.forEach((segment,i)=>{
+        const start=-Math.PI/2+i*Math.PI*2/count+rotate+.035;
+        const span=i===4?Math.PI*2/count*split:Math.PI*2/count;
+        setAttr(segment,'d',arc(start,start+Math.max(.001,span-.07),170+Math.sin(mp*Math.PI)*8));
+        setStyle(segment,'opacity',i===4?number(split,4):'1');
+      });
+      setAttr(modelOrbFlow,'transform',`rotate(${number(mp*540)} 250 250)`);
+      setStyle(modelOrbShield,'stroke-dashoffset',number(1-range(mp,.66,.95),4));
+      setTransform(modelOrbGuide,`rotate(${number(mp*90)}deg)`);
+      if(mi!==modelIndex){
+        modelIndex=mi; const d=descriptions[mi]; setData(modelStage,'model',d[0]);
+        setText(modelOrbCode,d[0]);
+        setText(modelOrbLabel,d[1]);
+        setHtml(modelHeading,d[2]);
+        setText(modelDescription,d[3]);
+        modelChapters.forEach((s,i)=>setClass(s,'active',i===mi));
+      }
     }
-    const gridProgress=progress(models);
-    [...models.children].forEach((c,i)=>{
-      c.style.setProperty('--model-x',`${(1-ease(gridProgress))*(1-i)*210}px`);
-      c.style.setProperty('--model-scale',String(.84+.16*ease(gridProgress)));
-    });
+    if(isNear(models)){
+      const gridProgress=progress(models), eased=ease(gridProgress);
+      modelCards.forEach((c,i)=>{
+        setStyle(c,'--model-x',`${number((1-eased)*(1-i)*210)}px`);
+        setStyle(c,'--model-scale',number(.84+.16*eased,4));
+      });
+    }
+    if(currentScrollY!==targetScrollY)frame=requestAnimationFrame(paint);
+    else lastFrameTime=0;
   }
   const requestPaint=()=>{if(enabled&&!frame)frame=requestAnimationFrame(paint);};
+  const onScroll=()=>{
+    targetScrollY=scrollY;
+    if(Math.abs(targetScrollY-currentScrollY)>innerHeight*1.25)currentScrollY=targetScrollY;
+    requestPaint();
+  };
   function configure(){
     enabled=desktop.matches&&!reduced.matches;
     root.classList.toggle('story-desktop',enabled);
@@ -243,6 +299,7 @@
         route.head.setAttribute('cx',reduced.matches?'990':'10');
       });
     }
+    targetScrollY=currentScrollY=scrollY; lastFrameTime=0;
     measure(); requestPaint();
   }
   const mobileRoutes=[[adoption,adoptionRoute],[phases,phaseRoute]];
@@ -255,7 +312,7 @@
     mobileRouteObserver.unobserve(entry.target);
   }),{threshold:.14,rootMargin:'0px 0px -8%'});
   mobileRoutes.forEach(([container])=>mobileRouteObserver.observe(container));
-  addEventListener('scroll',requestPaint,{passive:true});
+  addEventListener('scroll',onScroll,{passive:true});
   let resizeFrame=0;
   addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(configure);},{passive:true});
   desktop.addEventListener('change',configure); reduced.addEventListener('change',configure);
