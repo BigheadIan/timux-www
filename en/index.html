@@ -50,7 +50,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="Timux Technology">
-  <meta name="timux-build" content="homepage-v63-case-handoff-20261015">
+  <meta name="timux-build" content="homepage-v64-case-switcher-20261021">
   <title>Timux Technology | Enterprise AI Adoption & Execution</title>
   <meta name="description" content="Bring AI into customer service, enterprise knowledge, field operations, and cross-system workflows. Timux helps teams discover needs, validate pilots, and adopt AI under clear human oversight.">
   <meta name="keywords" content="enterprise AI adoption,AI consulting,AI agents,AI customer service,enterprise knowledge,workflow automation,system integration,Timux">
@@ -120,6 +120,8 @@
 <link rel="stylesheet" href="/assets/site-back-to-top.css?v=20261009-v37">
 <link rel="stylesheet" href="/assets/site-mobile-parity.css?v=20261013-v61">
 <script src="/assets/site-mobile-parity.js?v=20261013-v61" defer></script>
+<link rel="stylesheet" href="/assets/site-case-switcher.css?v=20261021-v64">
+<script src="/assets/site-case-switcher.js?v=20261021-v64" defer></script>
 <script src="/assets/site-back-to-top.js?v=20261009-v37" defer></script>
 </head>
 <body>
@@ -273,42 +275,39 @@
       </section>
     </div>
 
-    <section class="section solutions-section" id="solutions">
-      <div class="shell">
-        <div class="section-head solution-heading">
-          <div><p class="eyebrow paper-eyebrow">01 / SOLUTIONS</p><h2>Start with a workflow.<br>Make a difference.</h2><span class="layout-keyline" aria-hidden="true"></span></div>
+    <section class="section solutions-section workflow-cases" id="solutions" aria-labelledby="workflowCasesTitle">
+      <div class="shell case-showcase-shell" data-case-switcher>
+        <header class="case-showcase-head">
+          <div class="case-showcase-copy">
+            <p class="eyebrow">REAL WORK / REAL OUTCOMES</p>
+            <h2 id="workflowCasesTitle">AI does more than answer.<br>It carries work forward.</h2>
+            <p>From customer requests and source checks to field execution and system tasks, see one complete workflow.</p>
+          </div>
+          <div class="case-switcher-tabs" role="tablist" aria-label="Case scenarios">
+            <button class="case-switcher-tab is-active" id="case-tab-manufacturing" type="button" role="tab" aria-selected="true" aria-controls="case-panel-manufacturing" tabindex="0" data-case-index="0"><span>01</span><strong>Manufacturing Order Delivery</strong></button>
+            <button class="case-switcher-tab" id="case-tab-property" type="button" role="tab" aria-selected="false" aria-controls="case-panel-property" tabindex="-1" data-case-index="1"><span>02</span><strong>Commercial Property Repair</strong></button>
+          </div>
+        </header>
 
-        <a class="layout-section-link" href="#cases">See AI at work ↗</a></div>
-        <div class="solution-grid">
-          <article class="solution-card featured" id="solution-customer">
-            <div class="solution-top"><span>01</span><b>Customer</b></div>
-            <h3>AI Customer Service</h3>
-            <p>Answer. Verify. Hand off.</p>
-
-            <a href="#contact" data-solution="Customer Service & Sales">Talk to us →</a>
-          </article>
-          <article class="solution-card" id="solution-knowledge">
-            <div class="solution-top"><span>02</span><b>Knowledge</b></div>
-            <h3>Enterprise Knowledge</h3>
-            <p>Make the right knowledge easier to find.</p>
-
-            <a href="#contact" data-solution="Enterprise Knowledge & SOPs">Talk to us →</a>
-          </article>
-          <article class="solution-card" id="solution-operations">
-            <div class="solution-top"><span>03</span><b>Operations</b></div>
-            <h3>Field Operations</h3>
-            <p>Turn LINE reports into traceable records.</p>
-
-            <a href="#contact" data-solution="Field Operations & LINE Workflows">Talk to us →</a>
-          </article>
-          <article class="solution-card" id="solution-automation">
-            <div class="solution-top"><span>04</span><b>Automation</b></div>
-            <h3>Workflow Automation</h3>
-            <p>Keep work moving across systems.</p>
-
-            <a href="#contact" data-solution="Cross-system Tasks & Automation">Talk to us →</a>
-          </article>
+        <div class="case-switcher-stage" aria-live="polite">
+          <figure class="case-switcher-panel is-active" id="case-panel-manufacturing" role="tabpanel" aria-labelledby="case-tab-manufacturing" aria-hidden="false" data-case-panel="manufacturing">
+            <img src="/assets/generated/home-case-switcher-20261021/manufacturing-order-delivery.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Illustrative manufacturing order-delivery scenario with service, engineering, warehouse, and management teams">
+            <figcaption><span>Illustrative business scenario</span><strong>Customer request → Specification check → Field fulfillment → Human approval</strong></figcaption>
+          </figure>
+          <figure class="case-switcher-panel" id="case-panel-property" role="tabpanel" aria-labelledby="case-tab-property" aria-hidden="true" data-case-panel="property">
+            <img src="/assets/generated/home-case-switcher-20261021/commercial-property-repair.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Illustrative commercial-property repair scenario with service, property management, and field engineering teams">
+            <figcaption><span>Illustrative business scenario</span><strong>Service intake → SOP check → Field inspection → Work-order approval</strong></figcaption>
+          </figure>
         </div>
+        <p class="case-swipe-hint"><span aria-hidden="true">↔</span> Swipe to switch cases</p>
+
+        <div class="case-capability-row" aria-label="Four AI workflow capabilities">
+          <article class="case-capability" id="solution-customer"><span class="case-capability-code">IN</span><div><small>Service & Sales</small><h3>Respond to requests</h3><p>Understand the need and continue service.</p></div></article>
+          <article class="case-capability" id="solution-knowledge"><span class="case-capability-code">DATA</span><div><small>Enterprise Knowledge</small><h3>Find the evidence</h3><p>Verify information from approved content.</p></div></article>
+          <article class="case-capability" id="solution-operations"><span class="case-capability-code">RULE</span><div><small>Field Operations</small><h3>Connect field work</h3><p>Keep progress and outcomes traceable.</p></div></article>
+          <article class="case-capability" id="solution-automation"><span class="case-capability-code">HUMAN</span><div><small>System Automation</small><h3>Automate / Human approval</h3><p>Reduce repetition while people retain key decisions.</p></div></article>
+        </div>
+        <div class="case-showcase-foot"><span><b data-case-count>01</b> / 02</span><a href="#cases" data-track="case_open">View the case flow →</a></div>
       </div>
     </section>
 

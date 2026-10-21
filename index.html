@@ -50,7 +50,7 @@
   <meta name="color-scheme" content="dark light">
   <meta name="robots" content="index,follow">
   <meta name="author" content="時光智造 Timux">
-  <meta name="timux-build" content="homepage-v63-case-handoff-20261015">
+  <meta name="timux-build" content="homepage-v64-case-switcher-20261021">
   <title>時光智造 Timux｜企業 AI 導入顧問與落地團隊</title>
   <meta name="description" content="讓 AI 進入客服、企業知識、現場營運與跨系統流程。時光智造從需求盤點、試點驗證到受控上線，協助企業把 AI 變成真正完成工作的能力。">
   <meta name="keywords" content="企業AI導入,AI顧問,AI Agent,AI智能體,AI客服,企業知識庫,流程自動化,系統整合,時光智造,Timux">
@@ -120,6 +120,8 @@
 <link rel="stylesheet" href="/assets/site-back-to-top.css?v=20261009-v37">
 <link rel="stylesheet" href="/assets/site-mobile-parity.css?v=20261013-v61">
 <script src="/assets/site-mobile-parity.js?v=20261013-v61" defer></script>
+<link rel="stylesheet" href="/assets/site-case-switcher.css?v=20261021-v64">
+<script src="/assets/site-case-switcher.js?v=20261021-v64" defer></script>
 <script src="/assets/site-back-to-top.js?v=20261009-v37" defer></script>
 </head>
 <body>
@@ -273,42 +275,39 @@
       </section>
     </div>
 
-    <section class="section solutions-section" id="solutions">
-      <div class="shell">
-        <div class="section-head solution-heading">
-          <div><p class="eyebrow paper-eyebrow">01 / SOLUTIONS</p><h2>從一段工作，<br>創造改變。</h2><span class="layout-keyline" aria-hidden="true"></span></div>
+    <section class="section solutions-section workflow-cases" id="solutions" aria-labelledby="workflowCasesTitle">
+      <div class="shell case-showcase-shell" data-case-switcher>
+        <header class="case-showcase-head">
+          <div class="case-showcase-copy">
+            <p class="eyebrow">REAL WORK / REAL OUTCOMES</p>
+            <h2 id="workflowCasesTitle">AI 不只回答，<br>也把工作接下去。</h2>
+            <p>從客戶詢問、資料核對，到現場執行與系統任務，一條真實流程完整呈現。</p>
+          </div>
+          <div class="case-switcher-tabs" role="tablist" aria-label="案例情境">
+            <button class="case-switcher-tab is-active" id="case-tab-manufacturing" type="button" role="tab" aria-selected="true" aria-controls="case-panel-manufacturing" tabindex="0" data-case-index="0"><span>01</span><strong>製造業訂單交付</strong></button>
+            <button class="case-switcher-tab" id="case-tab-property" type="button" role="tab" aria-selected="false" aria-controls="case-panel-property" tabindex="-1" data-case-index="1"><span>02</span><strong>商業物業報修</strong></button>
+          </div>
+        </header>
 
-        <a class="layout-section-link" href="#cases">看 AI 如何進入真實工作 ↗</a></div>
-        <div class="solution-grid">
-          <article class="solution-card featured" id="solution-customer">
-            <div class="solution-top"><span>01</span><b>Customer</b></div>
-            <h3>AI 客服</h3>
-            <p>回答、核對、轉接。</p>
-
-            <a href="#contact" data-solution="客服與銷售回應">討論需求 →</a>
-          </article>
-          <article class="solution-card" id="solution-knowledge">
-            <div class="solution-top"><span>02</span><b>Knowledge</b></div>
-            <h3>企業知識</h3>
-            <p>讓正確資料更容易被找到。</p>
-
-            <a href="#contact" data-solution="企業知識與 SOP">討論需求 →</a>
-          </article>
-          <article class="solution-card" id="solution-operations">
-            <div class="solution-top"><span>03</span><b>Operations</b></div>
-            <h3>現場營運</h3>
-            <p>把 LINE 回報變成可追蹤紀錄。</p>
-
-            <a href="#contact" data-solution="現場營運與 LINE 流程">討論需求 →</a>
-          </article>
-          <article class="solution-card" id="solution-automation">
-            <div class="solution-top"><span>04</span><b>Automation</b></div>
-            <h3>流程自動化</h3>
-            <p>讓跨系統任務持續推進。</p>
-
-            <a href="#contact" data-solution="跨系統任務與自動化">討論需求 →</a>
-          </article>
+        <div class="case-switcher-stage" aria-live="polite">
+          <figure class="case-switcher-panel is-active" id="case-panel-manufacturing" role="tabpanel" aria-labelledby="case-tab-manufacturing" aria-hidden="false" data-case-panel="manufacturing">
+            <img src="/assets/generated/home-case-switcher-20261021/manufacturing-order-delivery.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="客服、工程人員、倉庫人員與主管共同處理製造業訂單交付的情境示意">
+            <figcaption><span>業務情境示意</span><strong>客戶詢問 → 規格核對 → 現場備貨 → 人工審批</strong></figcaption>
+          </figure>
+          <figure class="case-switcher-panel" id="case-panel-property" role="tabpanel" aria-labelledby="case-tab-property" aria-hidden="true" data-case-panel="property">
+            <img src="/assets/generated/home-case-switcher-20261021/commercial-property-repair.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="客服、物業主管與現場工程人員共同處理商業空間報修的情境示意">
+            <figcaption><span>業務情境示意</span><strong>客服受理 → SOP 核對 → 現場檢測 → 工單審批</strong></figcaption>
+          </figure>
         </div>
+        <p class="case-swipe-hint"><span aria-hidden="true">↔</span> 左右滑動切換案例</p>
+
+        <div class="case-capability-row" aria-label="四項 AI 工作能力">
+          <article class="case-capability" id="solution-customer"><span class="case-capability-code">IN</span><div><small>客服與銷售</small><h3>回應諮詢</h3><p>理解需求並接續服務。</p></div></article>
+          <article class="case-capability" id="solution-knowledge"><span class="case-capability-code">DATA</span><div><small>企業知識</small><h3>找到依據</h3><p>從核准內容核對資訊。</p></div></article>
+          <article class="case-capability" id="solution-operations"><span class="case-capability-code">RULE</span><div><small>現場營運</small><h3>串起現場</h3><p>讓進度與結果可追蹤。</p></div></article>
+          <article class="case-capability" id="solution-automation"><span class="case-capability-code">HUMAN</span><div><small>系統自動化</small><h3>自動處理／人工審批</h3><p>減少重複，保留關鍵決策。</p></div></article>
+        </div>
+        <div class="case-showcase-foot"><span><b data-case-count>01</b> / 02</span><a href="#cases" data-track="case_open">查看案例流程 →</a></div>
       </div>
     </section>
 

@@ -53,11 +53,13 @@ node --check assets/site-orbit.js
 node --check assets/site-mega-nav.js
 node --check assets/site-mobile-parity.js
 node --check assets/site-about-ab.js
+node --check assets/site-case-switcher.js
 node --check tests/homepage-v4-smoke.mjs
 node --check tests/homepage-v17-motion.mjs
 node --check tests/homepage-en-smoke.mjs
 node --check tests/homepage-v58-mobile-solution-carousel.mjs
 node --check tests/homepage-v59-mobile-manual-carousels.mjs
+node --check tests/homepage-v64-case-switcher.mjs
 node tests/about-ab-test.mjs
 node --check scripts/build-en-home.mjs
 node --check scripts/build-en-about.mjs

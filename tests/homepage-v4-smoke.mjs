@@ -84,7 +84,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v49-mobile-case-carousel-20261012") {
+  if (marker !== "homepage-v64-case-switcher-20261021") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -95,7 +95,7 @@ async function inspect(viewport, name) {
     mobileDisplay: getComputedStyle(document.querySelector('.mobile-nav')).display,
     mobileGroups: document.querySelectorAll('.mobile-nav-panel > details').length
   }));
-  if (navStructure.triggers !== 3 || navStructure.panels !== 3 || navStructure.mobileGroups !== 3) {
+  if (navStructure.triggers !== 4 || navStructure.panels !== 3 || navStructure.mobileGroups !== 3) {
     throw new Error(`${name}: navigation structure invalid ${JSON.stringify(navStructure)}`);
   }
   const internationalLayer = await page.evaluate(() => ({
@@ -108,8 +108,8 @@ async function inspect(viewport, name) {
     caseHeadings: document.querySelectorAll('.case-headline').length,
     heroIndex: document.querySelectorAll('.layout-hero-index>a').length
   }));
-  if (internationalLayer.navEnglish.join('|') !== 'Solutions|Case Studies|AI Adoption|Talk to us' ||
-      internationalLayer.mobileEnglish.join('|') !== 'Solutions|Case Studies|AI Adoption' ||
+  if (internationalLayer.navEnglish.join('|') !== 'Solutions|Case Studies|About Timux|AI Adoption|Talk to us' ||
+      internationalLayer.mobileEnglish.join('|') !== 'Solutions|Case Studies|About Timux|AI Adoption' ||
       internationalLayer.heroScopes !== 0 || internationalLayer.heroProofSteps !== 0 ||
       internationalLayer.sectionSubtitles !== 0 || internationalLayer.caseScenes !== 2 || internationalLayer.caseHeadings !== 2 || internationalLayer.heroIndex !== 3) {
     throw new Error(`${name}: international layer invalid ${JSON.stringify(internationalLayer)}`);
@@ -171,7 +171,7 @@ async function inspect(viewport, name) {
       if (style.display === "none" || style.visibility === "hidden" || rect.width === 0 || rect.height === 0) continue;
       const size = Number.parseFloat(style.fontSize);
       const intentionalEnglishMicrocopy = element.matches('.intl-nav-en,.intl-lang,.intl-lang *,.intl-mobile-summary small,.intl-mobile-lang,.intl-mobile-lang *,.intl-hero-scope span,.intl-hero-proof b,.intl-hero-proof span,.intl-section-en,.intl-case-meta span,.nav-cta .intl-nav-zh');
-      const compactLabel = element.matches('.eyebrow,.layout-hero-index b,.solution-card>a,.adoption-path b,.adoption-path small,.partner-orbit .mono,.case-scene .chapter span,.case-scene .client-mark span,.case-scene .route-key,.case-scene .station em,.case-scene .station h3,.case-scene .station p,.case-scene .verify-note b,.case-scene .verify-note>span,.case-scene .human-icon,.case-scene .handoff-note b,.case-scene .scene-foot *,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps b,.case-scene .editorial-steps i,.model-pie .pie-label *,.contact-form>.fine,.back-to-top span');
+      const compactLabel = element.matches('.eyebrow,.layout-hero-index b,.solution-card>a,.case-capability small,.case-capability-code,.case-swipe-hint,.case-switcher-panel figcaption span,.case-showcase-foot>span,.adoption-path b,.adoption-path small,.partner-orbit .mono,.case-scene .chapter span,.case-scene .client-mark span,.case-scene .route-key,.case-scene .station em,.case-scene .station h3,.case-scene .station p,.case-scene .verify-note b,.case-scene .verify-note>span,.case-scene .human-icon,.case-scene .handoff-note b,.case-scene .scene-foot *,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps b,.case-scene .editorial-steps i,.model-pie .pie-label *,.contact-form>.fine,.back-to-top span');
       if (size < (intentionalEnglishMicrocopy ? 9 : compactLabel ? 10 : 14)) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
     }
     return failures;
@@ -187,7 +187,7 @@ async function inspect(viewport, name) {
     const ids = ["solutions", "adoption", "cases", "method", "roadmap"];
     return {
       order: ids.map((id) => document.querySelector(`#${id}`)?.getBoundingClientRect().top + scrollY),
-      solutionCards: document.querySelectorAll(".solution-grid .solution-card").length,
+      solutionCards: document.querySelectorAll(".case-capability-row .case-capability").length,
       adoptionSteps: document.querySelectorAll(".adoption-path article").length,
       workflowSteps: document.querySelectorAll(".workflow-rail > div").length,
       models: [...document.querySelectorAll(".model-code")].map((element) => element.textContent.trim()),
