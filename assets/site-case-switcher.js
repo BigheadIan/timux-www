@@ -1,4 +1,4 @@
-/* V64: explicit case tabs with optional native touch swiping; no autoplay. */
+/* V65: explicit hero case tabs with optional native touch swiping; no autoplay. */
 (() => {
   const root = document.querySelector('[data-case-switcher]');
   if (!root) return;

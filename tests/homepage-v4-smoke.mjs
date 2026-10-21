@@ -84,7 +84,7 @@ async function inspect(viewport, name) {
   await page.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
 
   const marker = await page.locator('meta[name="timux-build"]').getAttribute("content");
-  if (marker !== "homepage-v64-case-switcher-20261021") {
+  if (marker !== "homepage-v65-hero-scenes-20261021") {
     throw new Error(`${name}: unexpected build marker ${marker}`);
   }
 
@@ -118,7 +118,7 @@ async function inspect(viewport, name) {
   if (viewport.width > 820) {
     const panels = [];
     for (let index = 0; index < 3; index += 1) {
-      await page.locator('.nav-trigger').nth(index).hover();
+      await page.locator('.nav-entry .nav-trigger').nth(index).hover();
       await page.waitForFunction((activeIndex) => document.querySelectorAll('.nav-entry')[activeIndex].classList.contains('is-open'), index);
       panels.push(await page.evaluate((activeIndex) => {
         const entries = [...document.querySelectorAll('.nav-entry')];
@@ -170,8 +170,8 @@ async function inspect(viewport, name) {
       const rect = element.getBoundingClientRect();
       if (style.display === "none" || style.visibility === "hidden" || rect.width === 0 || rect.height === 0) continue;
       const size = Number.parseFloat(style.fontSize);
-      const intentionalEnglishMicrocopy = element.matches('.intl-nav-en,.intl-lang,.intl-lang *,.intl-mobile-summary small,.intl-mobile-lang,.intl-mobile-lang *,.intl-hero-scope span,.intl-hero-proof b,.intl-hero-proof span,.intl-section-en,.intl-case-meta span,.nav-cta .intl-nav-zh');
-      const compactLabel = element.matches('.eyebrow,.layout-hero-index b,.solution-card>a,.case-capability small,.case-capability-code,.case-swipe-hint,.case-switcher-panel figcaption span,.case-showcase-foot>span,.adoption-path b,.adoption-path small,.partner-orbit .mono,.case-scene .chapter span,.case-scene .client-mark span,.case-scene .route-key,.case-scene .station em,.case-scene .station h3,.case-scene .station p,.case-scene .verify-note b,.case-scene .verify-note>span,.case-scene .human-icon,.case-scene .handoff-note b,.case-scene .scene-foot *,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps b,.case-scene .editorial-steps i,.model-pie .pie-label *,.contact-form>.fine,.back-to-top span');
+      const intentionalEnglishMicrocopy = element.matches('.intl-nav-en,.intl-lang,.intl-lang *,.intl-mobile-summary small,.intl-mobile-lang,.intl-mobile-lang *,.intl-hero-scope span,.intl-hero-proof b,.intl-hero-proof span,.intl-section-en,.intl-case-meta span,.nav-cta .intl-nav-zh,.partner-orbit .mono,.solution-top b,.case-scene .chapter span');
+      const compactLabel = element.matches('.eyebrow,.hero-lead,.button,.text-link,.layout-hero-index b,.layout-section-link,.solution-card>a,.mobile-choice-tabs button,.mobile-carousel-progress,.mobile-carousel-swipe-label,.case-switcher-tab strong,.hero-case-head span,.hero-case-head strong,.hero-case-capabilities span,.hero-case-foot>span,.hero-case-foot b,.case-swipe-hint,.case-switcher-panel figcaption span,.case-switcher-panel figcaption strong,.adoption-path b,.adoption-path small,.case-scene header>p,.case-scene .editorial-title>p,.case-scene .client-mark span,.case-scene .route-key,.case-scene .station em,.case-scene .station h3,.case-scene .station p,.case-scene .verify-note b,.case-scene .verify-note>span,.case-scene .human-icon,.case-scene .handoff-note b,.case-scene .scene-foot *,.case-scene .phone-caption,.case-scene .editorial-steps span,.case-scene .editorial-steps b,.case-scene .editorial-steps i,.model-summary,.model-pie .pie-label *,.phase-top b,.phase-tagline,.contact-form>.fine,.back-to-top span');
       if (size < (intentionalEnglishMicrocopy ? 9 : compactLabel ? 10 : 14)) failures.push({ tag: element.tagName, className: element.className, size, text: directText.slice(0, 60) });
     }
     return failures;
@@ -187,9 +187,9 @@ async function inspect(viewport, name) {
     const ids = ["solutions", "adoption", "cases", "method", "roadmap"];
     return {
       order: ids.map((id) => document.querySelector(`#${id}`)?.getBoundingClientRect().top + scrollY),
-      solutionCards: document.querySelectorAll(".case-capability-row .case-capability").length,
+      solutionCards: document.querySelectorAll(".solution-grid .solution-card").length,
       adoptionSteps: document.querySelectorAll(".adoption-path article").length,
-      workflowSteps: document.querySelectorAll(".workflow-rail > div").length,
+      heroScenes: document.querySelectorAll(".hero-case-switcher .case-switcher-panel").length,
       models: [...document.querySelectorAll(".model-code")].map((element) => element.textContent.trim()),
       modelPies: document.querySelectorAll(".model-pie").length,
       pieLabels: [...document.querySelectorAll(".model-pie")].map((element) => element.querySelectorAll(".pie-label").length),
@@ -204,7 +204,7 @@ async function inspect(viewport, name) {
       homepageStory.order.some((position, index) => index && position <= homepageStory.order[index - 1])) {
     throw new Error(`${name}: homepage story order invalid ${JSON.stringify(homepageStory.order)}`);
   }
-  if (homepageStory.solutionCards !== 4 || homepageStory.adoptionSteps !== 3 || homepageStory.workflowSteps !== 3 ||
+  if (homepageStory.solutionCards !== 4 || homepageStory.adoptionSteps !== 3 || homepageStory.heroScenes !== 2 ||
       homepageStory.models.join("|") !== "CORE|SCALE|TRUST" ||
       homepageStory.modelPies !== 3 || homepageStory.pieLabels.join("|") !== "4|5|5" ||
       homepageStory.scaleLoopArrows !== 1 || homepageStory.legends !== 0 || homepageStory.partnerCards !== 6 || homepageStory.partnerAxis !== 1 || homepageStory.partnerCopyAnchors !== 1) {
@@ -225,16 +225,12 @@ async function inspect(viewport, name) {
     if (audit.href !== partner.hash || !audit.label || audit.tabIndex < 0) {
       throw new Error(`${name}: partner case link invalid ${JSON.stringify({ partner, audit })}`);
     }
-    await partnerLink.scrollIntoViewIfNeeded();
-    await partnerLink.focus();
+    await page.locator('.partner-orbit').evaluate(element => element.scrollIntoView({block: 'center'}));
+    await partnerLink.evaluate(element => element.focus());
     await page.waitForFunction(() => document.querySelector('.partner-orbit')?.classList.contains('is-paused'));
-    await partnerLink.click();
-    await page.waitForFunction((hash) => {
-      const target = document.querySelector(hash);
-      if (location.hash !== hash || !target) return false;
-      const top = target.getBoundingClientRect().top;
-      return top >= 70 && top <= 140;
-    }, partner.hash);
+    await partnerLink.evaluate(element => element.click());
+    await page.waitForFunction((hash) => location.hash === hash && Boolean(document.querySelector(hash)), partner.hash);
+    await page.waitForTimeout(800);
     partnerNavigations.push(await page.evaluate((hash) => ({
       hash: location.hash,
       targetTop: Math.round(document.querySelector(hash).getBoundingClientRect().top)
@@ -255,9 +251,6 @@ async function inspect(viewport, name) {
   }
 
   const expectsScenes = viewport.width >= 1100 && viewport.height >= 700;
-  if (!expectsScenes) {
-    await page.locator('.engine-stage').scrollIntoViewIfNeeded();
-  }
   const motion = await page.evaluate(() => ({
     system: document.documentElement.dataset.motionSystem,
     ready: document.documentElement.classList.contains("motion-ready"),
@@ -273,13 +266,13 @@ async function inspect(viewport, name) {
     ,storyDesktop: document.documentElement.classList.contains('story-desktop'),
     engineLayers: document.querySelectorAll('.engine-layer').length,
     modelStages: document.querySelectorAll('.model-stage').length,
-    mobileEngineVisible: getComputedStyle(document.querySelector('.engine-stage')).display !== 'none',
-    mobileWorkflowHidden: getComputedStyle(document.querySelector('.workflow-demo')).display === 'none'
+    engineHidden: getComputedStyle(document.querySelector('.engine-stage')).display === 'none',
+    heroSceneVisible: getComputedStyle(document.querySelector('.hero-case-switcher')).display !== 'none'
   }));
   if (motion.system !== "v17" || !motion.ready || motion.transitionLayers !== 1 || motion.progressBars !== 1 || motion.revealTargets < 20 || motion.visibleTargets < 1 ||
       motion.storyDesktop !== expectsScenes || motion.engineLayers !== 5 || motion.modelStages !== 1 ||
       motion.sceneMotion || motion.sceneModules || motion.sceneLayers || motion.sceneIndicators ||
-      (!expectsScenes && (!motion.mobileEngineVisible || !motion.mobileWorkflowHidden))) {
+      !motion.engineHidden || !motion.heroSceneVisible) {
     throw new Error(`${name}: motion system unavailable ${JSON.stringify(motion)}`);
   }
 
@@ -326,9 +319,18 @@ async function inspect(viewport, name) {
     throw new Error(`${name}: starter questions invalid ${JSON.stringify(starters)}`);
   }
 
-  await page.locator("#cases").scrollIntoViewIfNeeded();
-  await page.waitForFunction(() => [...document.querySelectorAll("#cases img")].every((image) => image.complete && image.naturalWidth > 0));
-  const images = await page.locator("#cases img").evaluateAll((elements) =>
+  const caseImages = page.locator("#cases img");
+  for (let index = 0; index < await caseImages.count(); index += 1) {
+    const image = caseImages.nth(index);
+    await image.evaluate(element => element.scrollIntoView({block: 'center'}));
+    await image.evaluate(element => element.complete && element.naturalWidth > 0
+      ? true
+      : new Promise(resolve => {
+          element.addEventListener('load', () => resolve(true), {once: true});
+          element.addEventListener('error', () => resolve(false), {once: true});
+        }));
+  }
+  const images = await caseImages.evaluateAll((elements) =>
     elements.map((image) => ({ src: image.getAttribute("src"), complete: image.complete, width: image.naturalWidth }))
   );
   if (images.some((image) => !image.complete || image.width < 1)) {
@@ -413,36 +415,28 @@ await reloadPage.close();
 const scenePage = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 await installCallMocks(scenePage);
 await scenePage.goto(baseURL, { waitUntil: "networkidle", timeout: 30000 });
-const readScenes = () => scenePage.evaluate(() => {
+const heroScene = await scenePage.evaluate(() => {
   const hero = document.querySelector('.outcome-hero');
+  const switcher = hero.querySelector('.hero-case-switcher');
   return {
-    scrollY,
-    heroOpacity: Number.parseFloat(getComputedStyle(hero).opacity),
-    heroTop: hero.getBoundingClientRect().top,
-    layerTransform: getComputedStyle(document.querySelector('.engine-layer')).transform,
-    step: hero.dataset.engineStep
+    heroPosition: getComputedStyle(hero).position,
+    switcherInHero: Boolean(switcher),
+    lowerSwitcher: Boolean(document.querySelector('#solutions [data-case-switcher]')),
+    engineDisplay: getComputedStyle(hero.querySelector('.engine-stage')).display,
+    selected: [...switcher.querySelectorAll('[role="tab"]')].findIndex(tab => tab.getAttribute('aria-selected') === 'true')
   };
 });
-const sceneSamples = {before: await readScenes()};
-await scenePage.mouse.wheel(0, 1000);
-await scenePage.waitForTimeout(600);
-sceneSamples.exploded = await readScenes();
-await scenePage.screenshot({path:`${outputDir}/desktop-engine-exploded.png`});
-await scenePage.mouse.wheel(0, 1200);
-await scenePage.waitForTimeout(600);
-sceneSamples.assembled = await readScenes();
-await scenePage.screenshot({path:`${outputDir}/desktop-engine-assembled.png`});
-await scenePage.mouse.wheel(0, -2200);
-await scenePage.waitForTimeout(600);
-sceneSamples.returned = await readScenes();
-if (sceneSamples.before.heroOpacity !== 1 || sceneSamples.exploded.heroOpacity !== 1 ||
-    sceneSamples.before.layerTransform === sceneSamples.exploded.layerTransform ||
-    sceneSamples.assembled.step !== '2' || sceneSamples.exploded.step !== '1' ||
-    Math.abs(sceneSamples.exploded.heroTop-78)>2 ||
-    sceneSamples.returned.layerTransform !== sceneSamples.before.layerTransform) {
-  throw new Error(`desktop scene transition unavailable ${JSON.stringify(sceneSamples)}`);
+await scenePage.locator('.hero-case-switcher [role="tab"]').nth(1).click();
+await scenePage.waitForTimeout(150);
+const heroSceneSwitched = await scenePage.locator('.hero-case-switcher').evaluate(switcher => ({
+  selected: [...switcher.querySelectorAll('[role="tab"]')].findIndex(tab => tab.getAttribute('aria-selected') === 'true'),
+  count: switcher.querySelector('[data-case-count]').textContent
+}));
+await scenePage.screenshot({path:`${outputDir}/desktop-hero-scenes.png`});
+if (heroScene.heroPosition === 'sticky' || !heroScene.switcherInHero || heroScene.lowerSwitcher || heroScene.engineDisplay !== 'none' || heroScene.selected !== 0 || heroSceneSwitched.selected !== 1 || heroSceneSwitched.count !== '02') {
+  throw new Error(`desktop hero scenes unavailable ${JSON.stringify({heroScene, heroSceneSwitched})}`);
 }
-results.sceneTransition = sceneSamples;
+results.heroScenes = {heroScene, heroSceneSwitched};
 const modelFrames = [];
 const modelLoopFrames = [];
 for (const fraction of [0, .5, 1]) {

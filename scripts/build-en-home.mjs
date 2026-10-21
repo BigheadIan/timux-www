@@ -7,6 +7,10 @@ let html = await readFile(resolve(root, 'index.html'), 'utf8');
 html = html.replaceAll('data-language-link=""', 'data-language-link');
 
 const translations = [
+  ['四項 AI 能力的真實工作情境', 'Real-work scenarios across four AI capabilities'],
+  ['一段工作，四項能力共同完成', 'One workflow, completed by four connected capabilities'],
+  ['首頁情境案例', 'Homepage scenario cases'],
+  ['左右滑動切換', 'Swipe to switch'],
   ['AI 不只回答，<br>也把工作接下去。', 'AI does more than answer.<br>It carries work forward.'],
   ['從客戶詢問、資料核對，到現場執行與系統任務，一條真實流程完整呈現。', 'From customer requests and source checks to field execution and system tasks, see one complete workflow.'],
   ['客服、工程人員、倉庫人員與主管共同處理製造業訂單交付的情境示意', 'Illustrative manufacturing order-delivery scenario with service, engineering, warehouse, and management teams'],

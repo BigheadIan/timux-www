@@ -9,7 +9,7 @@ const output = process.env.HOMEPAGE_QA_OUTPUT || 'output/playwright/homepage-v59
 fs.mkdirSync(output, {recursive: true});
 
 const modules = [
-  {name: 'engine', section: '.engine-track', surface: '[data-mobile-carousel="engine"]', count: 5},
+  {name: 'solutions', section: '#solutions', surface: '[data-mobile-carousel="solutions"]', count: 4},
   {name: 'adoption', section: '#adoption', surface: '[data-mobile-carousel="adoption"]', count: 3},
   {name: 'southeast', section: '#case-southeast', surface: '[data-mobile-carousel="southeast"]', count: 3},
   {name: 'mj', section: '#case-mj', surface: '[data-mobile-carousel="mj"]', count: 3},
@@ -63,7 +63,7 @@ for (const path of ['', 'en/']) {
       })
     }), modules);
 
-    const expectedMarker = 'homepage-v64-case-switcher-20261021';
+    const expectedMarker = 'homepage-v65-hero-scenes-20261021';
     if (audit.marker !== expectedMarker || audit.pageOverflow > 1) throw Error(`page shell regression ${path} ${JSON.stringify({viewport, audit})}`);
     for (const state of audit.modules) {
       if (state.display !== 'flex' || state.overflowX !== 'auto' || !state.snap.includes('x') || state.itemCount !== state.expected || state.visibleCount !== state.expected || state.cardWidth >= state.surfaceWidth - 18 || state.nextPeek < 20 || state.sticky || state.progressDisplay === 'none' || state.dotCount !== state.expected || state.activeDot !== 0 || state.selected !== 0 || state.scrollLeft !== 0) {
