@@ -51,9 +51,9 @@
   html.mobile-layout-v43 .outcome-hero{position:relative!important;top:auto!important;height:auto!important;min-height:0!important;padding:28px 0 22px!important;overflow:clip!important}
   html.mobile-layout-v43 .outcome-hero .engine-stage{display:none!important}
   .hero-case-switcher{width:100%;box-sizing:border-box;margin-top:18px;padding:9px;border-radius:20px}
-  .hero-case-head{padding:1px 2px 9px}
+  .hero-case-head{display:block;padding:1px 2px 9px}
   .hero-case-head span{font-size:10px;letter-spacing:.13em}
-  .hero-case-head strong{font-size:10px}
+  .hero-case-head strong{display:block;margin-top:5px;font-size:10px}
   .case-switcher-tabs{gap:5px;margin-bottom:7px;padding:3px;border-radius:12px}
   .case-switcher-tab{gap:7px;min-height:48px;padding:7px 8px;border-radius:9px}
   .case-switcher-tab span{font-size:15px}
