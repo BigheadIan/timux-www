@@ -1,4 +1,4 @@
-/* V65: explicit hero case tabs with optional native touch swiping; no autoplay. */
+/* V66: borderless cinematic hero with explicit tabs and native touch swiping; no autoplay. */
 (() => {
   const root = document.querySelector('[data-case-switcher]');
   if (!root) return;
@@ -9,7 +9,7 @@
   const count = root.querySelector('[data-case-count]');
   const phone = matchMedia('(max-width: 820px)');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  let activeIndex = 0;
+  let activeIndex = Math.max(0, panels.findIndex(panel => panel.classList.contains('is-active')));
   let scrollFrame = 0;
 
   function updateState(index, { move = false, focus = false, track = false } = {}) {
@@ -83,5 +83,5 @@
   };
   phone.addEventListener('change', syncLayout);
   addEventListener('resize', syncLayout, { passive: true });
-  updateState(0);
+  updateState(activeIndex, { move: phone.matches });
 })();
