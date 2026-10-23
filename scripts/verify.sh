@@ -60,6 +60,7 @@ node --check tests/homepage-en-smoke.mjs
 node --check tests/homepage-v58-mobile-solution-carousel.mjs
 node --check tests/homepage-v59-mobile-manual-carousels.mjs
 node --check tests/homepage-v65-hero-scenes.mjs
+node --check tests/homepage-v70-image-loading.mjs
 node tests/about-ab-test.mjs
 node --check scripts/build-en-home.mjs
 node --check scripts/build-en-about.mjs
