@@ -66,7 +66,7 @@ for (const entry of matrix) {
     : 'manufacturing-order-delivery-1600.webp';
   const heroLimit = mobile ? 70_000 : 130_000;
   if (
-    hero.marker !== 'homepage-v70-responsive-images-20261023' ||
+    hero.marker !== 'homepage-v72-critical-path-20261023' ||
     !hero.currentSrc.endsWith(expectedHeroSuffix) ||
     !hero.matchedPreloads.some(url => url.endsWith(expectedHeroSuffix)) ||
     hero.encodedBodySize <= 0 ||
@@ -74,6 +74,16 @@ for (const entry of matrix) {
     hero.overflow > 1
   ) {
     throw new Error(`hero image regression ${entry.path || '/'} ${JSON.stringify({ viewport: entry.viewport, hero })}`);
+  }
+
+  const deferredBeforeInteraction = await page.evaluate(() => ({
+    secondary: performance.getEntriesByType('resource').some(entry => entry.name.includes('commercial-property-repair')),
+    megaMenu: performance.getEntriesByType('resource').some(entry => entry.name.includes('southeast-ai-cs-normal.png')),
+    googleFonts: performance.getEntriesByType('resource').some(entry => entry.name.includes('fonts.googleapis.com')),
+    earlyMobileClass: innerWidth > 820 || document.documentElement.classList.contains('mobile-layout-v43')
+  }));
+  if (deferredBeforeInteraction.secondary || deferredBeforeInteraction.megaMenu || deferredBeforeInteraction.googleFonts || !deferredBeforeInteraction.earlyMobileClass) {
+    throw new Error(`critical path regression ${entry.path || '/'} ${JSON.stringify({ viewport: entry.viewport, deferredBeforeInteraction })}`);
   }
 
   await page.locator('.case-switcher-tab').nth(1).click();

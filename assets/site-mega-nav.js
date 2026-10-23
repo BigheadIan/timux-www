@@ -38,6 +38,10 @@
     closeAll(entry);
     const trigger = entry.querySelector('.nav-trigger');
     const panel = entry.querySelector('.mega-panel');
+    panel.querySelectorAll('img[data-src]').forEach((image) => {
+      image.src = image.dataset.src;
+      delete image.dataset.src;
+    });
     entry.classList.add('is-open');
     trigger.setAttribute('aria-expanded', 'true');
     panel.setAttribute('aria-hidden', 'false');

@@ -197,33 +197,6 @@
   addEventListener('resize', paintProgress, {passive: true});
   paintProgress();
 
-  const transitionLayer = document.createElement('div');
-  transitionLayer.className = 'page-transition';
-  transitionLayer.setAttribute('aria-hidden', 'true');
-  transitionLayer.append(document.createElement('span'));
-  document.body.append(transitionLayer);
-  if (!reducedMotion.matches && sessionStorage.getItem('timux-page-transition') === '1') {
-    sessionStorage.removeItem('timux-page-transition');
-    transitionLayer.classList.add('is-entering');
-    setTimeout(() => transitionLayer.classList.remove('is-entering'), 980);
-  }
-
-  document.addEventListener('click', event => {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || reducedMotion.matches) return;
-    const link = event.target.closest('a[href]');
-    if (!link || link.hasAttribute('download') || link.target === '_blank' || link.dataset.noTransition !== undefined) return;
-    const href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
-    const target = new URL(link.href, location.href);
-    if (target.origin !== location.origin) return;
-    if (target.pathname === location.pathname && target.search === location.search && target.hash) return;
-    event.preventDefault();
-    sessionStorage.setItem('timux-page-transition', '1');
-    transitionLayer.classList.remove('is-entering');
-    transitionLayer.classList.add('is-leaving');
-    setTimeout(() => location.assign(target.href), 500);
-  });
-
   const groups = [
     ['.workflow-demo', 'right'],
     ['.trust-copy', 'left'],
