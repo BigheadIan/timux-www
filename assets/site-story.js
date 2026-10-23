@@ -77,7 +77,7 @@
     container.before(svg);
     return {root: svg, ink: svg.querySelector('.route-ink'), head: svg.querySelector('.route-head')};
   }
-  const adoptionRoute = addRoute(adoption);
+  const adoptionRoute = adoption ? addRoute(adoption) : null;
   const phaseRoute = addRoute(phases);
   const caseCards = [...document.querySelectorAll('.case-card')];
   const cases = caseCards.map(card => {
@@ -117,7 +117,7 @@
   const captionBody = caption.querySelector('p');
   const captionMeter = caption.querySelector('.engine-meter i');
   const layerParts = layers.map(layer => ({layer, title:layer.querySelector('b'), detail:layer.querySelector('p')}));
-  const routePairs = [[adoption,adoptionRoute],[phases,phaseRoute]].map(([container,route]) => ({
+  const routePairs = [[adoption,adoptionRoute],[phases,phaseRoute]].filter(([container,route]) => container && route).map(([container,route]) => ({
     container,
     route,
     cards:[...container.querySelectorAll(':scope > article')],
@@ -144,7 +144,7 @@
   let enabled = false, frame = 0, modelIndex = -1, heroIndex = -1;
   let targetScrollY = scrollY, currentScrollY = scrollY, lastFrameTime = 0;
   const measurements = new Map();
-  const tracked = [heroTrack,solutions,adoption,...cases.map(c=>c.track),modelTrack,models,phases];
+  const tracked = [heroTrack,solutions,adoption,...cases.map(c=>c.track),modelTrack,models,phases].filter(Boolean);
   function measure() {
     tracked.forEach(el => {const r=el.getBoundingClientRect();measurements.set(el,{top:r.top+scrollY,height:r.height});});
   }
@@ -294,7 +294,7 @@
     root.classList.toggle('story-mobile-route',!enabled&&!reduced.matches);
     if (!enabled) {
       document.querySelectorAll('.ai-decision,.audit-panel').forEach(panel => panel.style.removeProperty('clip-path'));
-      [adoptionRoute,phaseRoute].forEach(route => {
+      [adoptionRoute,phaseRoute].filter(Boolean).forEach(route => {
         route.ink.style.strokeDashoffset=reduced.matches?'0':'1';
         route.head.setAttribute('cx',reduced.matches?'990':'10');
       });
@@ -302,7 +302,7 @@
     targetScrollY=currentScrollY=scrollY; lastFrameTime=0;
     measure(); requestPaint();
   }
-  const mobileRoutes=[[adoption,adoptionRoute],[phases,phaseRoute]];
+  const mobileRoutes=[[adoption,adoptionRoute],[phases,phaseRoute]].filter(([container,route])=>container&&route);
   mobileRoutes.forEach(([container])=>[...container.querySelectorAll(':scope > article')].forEach((card,i)=>card.style.setProperty('--route-order',String(i))));
   const mobileRouteObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
     if(!entry.isIntersecting||desktop.matches||reduced.matches)return;

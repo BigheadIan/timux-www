@@ -1,0 +1,210 @@
+/* V71: approved HOW WE WORK preview A — one real task across three adoption steps. */
+.adoption-scene-section{
+  border-block:1px solid #e7e4ee;
+  background:
+    radial-gradient(circle at 82% 8%,rgba(116,91,233,.1),transparent 30%),
+    linear-gradient(155deg,#fbfbfd 0%,#f3f2f8 100%);
+}
+.adoption-scene-section>.shell{display:block!important}
+.adoption-scene-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(420px,580px);
+  align-items:end;
+  gap:64px;
+  margin-bottom:26px;
+}
+.adoption-scene-head h2{margin:13px 0 0;font-size:clamp(38px,3.7vw,58px);line-height:1.14;letter-spacing:-.05em}
+.adoption-scene-head>p{max-width:580px;margin:0 0 5px;color:#696b78;font-size:16px;line-height:1.85;text-align:right}
+.adoption-scene-stage{
+  position:relative;
+  width:100%;
+  aspect-ratio:8/3;
+  min-height:430px;
+  overflow:hidden;
+  border-radius:30px;
+  color:#fff;
+  background:#11131c;
+  box-shadow:0 30px 80px rgba(40,34,61,.14);
+}
+.adoption-scene-picture,.adoption-scene-picture img{display:block;width:100%;height:100%}
+.adoption-scene-picture img{max-width:none;object-fit:cover;object-position:center top}
+.adoption-scene-stage::after{
+  position:absolute;
+  z-index:1;
+  inset:0;
+  content:"";
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent 36%,rgba(8,10,16,.98) 100%);
+}
+.adoption-scene-case{
+  position:absolute;
+  z-index:3;
+  top:20px;
+  left:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:999px;
+  color:#f9fafc;
+  background:rgba(15,17,27,.74);
+  backdrop-filter:blur(12px);
+  font-size:12px;
+  font-weight:700;
+}
+.adoption-scene-case i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#74ead5;
+  box-shadow:0 0 12px #74ead5;
+}
+.adoption-scene-steps{
+  position:absolute;
+  z-index:3;
+  right:16px;
+  bottom:16px;
+  left:16px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.adoption-scene-step{
+  position:relative;
+  min-height:162px;
+  padding:17px 18px 15px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:18px;
+  color:#fff;
+  background:rgba(15,17,27,.88);
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(14px);
+}
+.adoption-scene-step::after{
+  position:absolute;
+  top:-1px;
+  right:-1px;
+  left:-1px;
+  height:3px;
+  border-radius:18px 18px 0 0;
+  content:"";
+  background:#6ee3d1;
+}
+.adoption-scene-step:nth-child(2)::after{background:#8876f3}
+.adoption-scene-step:nth-child(3)::after{background:#b197ff}
+.adoption-scene-step-top{display:flex;align-items:center;justify-content:space-between;color:#c9cbd4;font:700 10px/1 Manrope,sans-serif;letter-spacing:.14em}
+.adoption-scene-step-top b{color:#fff;font-size:22px;font-weight:600;letter-spacing:0}
+.adoption-scene-step h3{margin:10px 0 0;font-size:19px;line-height:1.25}
+.adoption-scene-step strong{display:block;margin-top:7px;color:#87f0df;font-size:12px;line-height:1.35}
+.adoption-scene-step:nth-child(2) strong{color:#bdb4ff}
+.adoption-scene-step:nth-child(3) strong{color:#d2c5ff}
+.adoption-scene-step p{margin:5px 0 0;color:#d7d9e2;font-size:11px;line-height:1.55}
+.adoption-scene-actions{display:flex;align-items:center;justify-content:center;gap:28px;margin-top:20px}
+.adoption-scene-actions .text-link{margin:0}
+.adoption-scene-swipe{display:none}
+
+@media(min-width:1100px) and (max-width:1399px){
+  .adoption-scene-head{grid-template-columns:minmax(0,.9fr) minmax(380px,1.1fr);gap:34px}
+  .adoption-scene-head h2{font-size:44px}
+  .adoption-scene-head>p{font-size:15px}
+  .adoption-scene-stage{min-height:400px}
+  .adoption-scene-step{min-height:154px;padding:15px 16px 13px}
+  .adoption-scene-step h3{font-size:18px}
+}
+
+@media(max-width:1099px){
+  .adoption-scene-section{padding:58px 0!important}
+  .adoption-scene-head{grid-template-columns:1fr;gap:13px;margin-bottom:24px}
+  .adoption-scene-head h2{font-size:42px}
+  .adoption-scene-head>p{max-width:680px;margin:0;text-align:left}
+  .adoption-scene-stage{aspect-ratio:auto;min-height:0;overflow:visible;border-radius:0;background:transparent;box-shadow:none}
+  .adoption-scene-stage::after{display:none}
+  .adoption-scene-picture{height:330px;overflow:hidden;border-radius:24px;box-shadow:0 22px 55px rgba(40,34,61,.15)}
+  .adoption-scene-picture img{object-position:center top}
+  .adoption-scene-case{top:18px;left:18px}
+  .adoption-scene-steps{position:relative;right:auto;bottom:auto;left:auto;margin-top:14px}
+  .adoption-scene-step{min-height:158px}
+}
+
+@media(max-width:820px){
+  .adoption-scene-section{padding:46px 0!important}
+  .adoption-scene-head{margin-bottom:20px}
+  .adoption-scene-head h2{font-size:clamp(34px,10vw,42px)}
+  .adoption-scene-head>p{font-size:14px;line-height:1.75}
+  .adoption-scene-picture{display:none}
+  .adoption-scene-case{
+    position:relative;
+    top:auto;
+    left:auto;
+    width:max-content;
+    max-width:100%;
+    margin-bottom:12px;
+    color:#413963;
+    border-color:#dcd5f3;
+    background:#eeeafa;
+    backdrop-filter:none;
+    white-space:normal;
+  }
+  .adoption-scene-steps{
+    display:flex;
+    gap:12px;
+    margin:0 calc(var(--phone-gutter) * -1);
+    padding:0 var(--phone-gutter) 8px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .adoption-scene-steps::-webkit-scrollbar{display:none}
+  .adoption-scene-step{
+    flex:0 0 min(82vw,330px);
+    min-height:370px;
+    padding:0 20px 20px;
+    border:1px solid #dedbe8;
+    border-radius:20px;
+    color:#171923;
+    background:#fff;
+    box-shadow:0 14px 34px rgba(41,31,69,.09);
+    backdrop-filter:none;
+    scroll-snap-align:center;
+  }
+  .adoption-scene-step::before{
+    display:block;
+    height:188px;
+    margin:0 -20px 18px;
+    border-radius:19px 19px 0 0;
+    content:"";
+    background-image:
+      linear-gradient(0deg,rgba(9,11,17,.45),transparent 55%),
+      url('/assets/generated/how-we-work-20261023/ai-customer-service-journey-900.webp');
+    background-repeat:no-repeat;
+    background-size:auto 100%;
+    background-position:left top;
+  }
+  .adoption-scene-step:nth-child(2)::before{background-position:center top}
+  .adoption-scene-step:nth-child(3)::before{background-position:right top}
+  .adoption-scene-step::after{right:0;left:0;border-radius:20px 20px 0 0}
+  .adoption-scene-step-top{color:#6d7080}
+  .adoption-scene-step-top b{color:#272934}
+  .adoption-scene-step h3{font-size:22px}
+  .adoption-scene-step strong{font-size:12px;color:#397f73}
+  .adoption-scene-step:nth-child(2) strong{color:#6958c4}
+  .adoption-scene-step:nth-child(3) strong{color:#735ca9}
+  .adoption-scene-step p{font-size:13px;color:#626674}
+  .adoption-scene-swipe{display:flex;align-items:center;justify-content:center;gap:12px;margin:7px 0 0;color:#6c6f7c;font-size:12px;letter-spacing:.04em}
+  .adoption-scene-swipe span{color:#5d4ec4;font-size:16px}
+  .adoption-scene-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+  .adoption-scene-actions .button{justify-content:center;min-height:46px}
+  .adoption-scene-actions .text-link{text-align:center;font-size:13px}
+}
+
+@media(max-width:390px){
+  .adoption-scene-step{flex-basis:82vw;min-height:354px}
+  .adoption-scene-step::before{height:172px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .adoption-scene-steps{scroll-behavior:auto}
+}
