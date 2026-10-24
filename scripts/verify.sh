@@ -62,7 +62,10 @@ node --check tests/homepage-v59-mobile-manual-carousels.mjs
 node --check tests/homepage-v65-hero-scenes.mjs
 node --check tests/homepage-v70-image-loading.mjs
 node --check tests/homepage-v72-critical-path.mjs
+node --check tests/homepage-v73-critical-css.mjs
 node tests/about-ab-test.mjs
+node --check scripts/extract-home-critical-v73.mjs
+node --check scripts/build-home-critical-v73.mjs
 node --check scripts/build-en-home.mjs
 node --check scripts/build-en-about.mjs
 git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js assets/site-about-ab.css assets/site-about-ab.js docs tests scripts
