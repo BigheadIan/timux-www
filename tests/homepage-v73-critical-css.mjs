@@ -32,11 +32,11 @@ const legacyCss = [
   'site-adoption-scene.css'
 ];
 
-const browser = await playwright.chromium.launch({ headless: true });
 const results = [];
 
-try {
-  for (const profile of profiles) {
+for (const profile of profiles) {
+  const browser = await playwright.chromium.launch({ headless: true });
+  try {
     const context = await browser.newContext({
       viewport: profile.viewport,
       isMobile: profile.mobile,
@@ -46,6 +46,7 @@ try {
     const page = await context.newPage();
     const cdp = await context.newCDPSession(page);
     await cdp.send('Network.enable');
+    await cdp.send('Network.clearBrowserCache');
     await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
     await cdp.send('Network.emulateNetworkConditions', {
       offline: false,
@@ -96,7 +97,8 @@ try {
     const metrics = await page.evaluate((legacyNames) => {
       const resources = performance.getEntriesByType('resource');
       const hero = document.querySelector('.case-switcher-panel.is-active img');
-      const heroResource = resources.find(entry => entry.name === hero?.currentSrc);
+      const heroPath = hero?.currentSrc ? new URL(hero.currentSrc).pathname : '';
+      const heroResource = resources.find(entry => heroPath && new URL(entry.name).pathname === heroPath);
       const fullCss = resources.find(entry => entry.name.includes('site-home-full-v73.css'));
       return {
         marker: document.querySelector('meta[name="timux-build"]')?.content,
@@ -137,9 +139,9 @@ try {
 
     results.push({ ...profile, firstPaintWallMs, ...metrics, consoleErrors: errors });
     await context.close();
+  } finally {
+    await browser.close();
   }
-} finally {
-  await browser.close();
 }
 
 fs.writeFileSync(`${output}/results.json`, `${JSON.stringify(results, null, 2)}\n`);
