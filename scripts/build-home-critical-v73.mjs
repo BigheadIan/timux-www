@@ -78,8 +78,8 @@ const runtime = `  <!-- V73_CRITICAL_START -->
       };
     })();
   </script>
-  <link id="timux-home-full-v73" rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261024-v73" media="print" onload="window.__timuxActivateFullStyles(this)" onerror="window.__timuxFullStylesFailed()">
-  <noscript><link rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261024-v73"></noscript>
+  <link id="timux-home-full-v73" rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261024-v74" media="print" onload="window.__timuxActivateFullStyles(this)" onerror="window.__timuxFullStylesFailed()">
+  <noscript><link rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261024-v74"></noscript>
   <!-- V73_CRITICAL_END -->`;
 
 const existingV73 = /  <!-- V73_CRITICAL_START -->[\s\S]*?  <!-- V73_CRITICAL_END -->/;
@@ -93,7 +93,8 @@ for (const homepagePath of homepagePaths) {
 
   html = html
     .replace(/<script src="\/assets\/site-conversion\.js[^>]*><\/script><script src="\/assets\/site-about-ab\.js[^>]*><\/script>/, '')
-    .replaceAll('homepage-v72-critical-path-20261023', 'homepage-v73-critical-css-20261024');
+    .replaceAll('homepage-v72-critical-path-20261023', 'homepage-v74-scene-copy-alignment-20261024')
+    .replaceAll('homepage-v73-critical-css-20261024', 'homepage-v74-scene-copy-alignment-20261024');
   await writeFile(homepagePath, html);
   console.log(`Updated ${homepagePath}`);
 }

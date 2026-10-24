@@ -213,7 +213,16 @@ html.home-refresh.story-desktop .outcome-hero .hero-grid{position:relative;displ
     scroll-snap-align:start;
     scroll-snap-stop:always;
   }
-  .case-switcher-panel img{height:100%;object-position:56% 50%;filter:saturate(.78) brightness(.67) contrast(1.08)}
+  .case-switcher-panel picture{
+    position:absolute;
+    top:clamp(288px,38svh,320px);
+    right:0;
+    left:0;
+    display:block;
+    height:clamp(224px,30svh,258px);
+    overflow:hidden;
+  }
+  .case-switcher-panel img{height:100%;object-position:center 50%;filter:saturate(.78) brightness(.67) contrast(1.08)}
   .case-switcher-panel figcaption{
     top:auto;
     right:var(--phone-gutter);

@@ -63,6 +63,7 @@ node --check tests/homepage-v65-hero-scenes.mjs
 node --check tests/homepage-v70-image-loading.mjs
 node --check tests/homepage-v72-critical-path.mjs
 node --check tests/homepage-v73-critical-css.mjs
+node --check tests/homepage-v74-scene-copy.mjs
 node tests/about-ab-test.mjs
 node --check scripts/extract-home-critical-v73.mjs
 node --check scripts/build-home-critical-v73.mjs

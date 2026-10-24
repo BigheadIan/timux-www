@@ -121,7 +121,7 @@ for (const profile of profiles) {
     }, legacyCss);
 
     if (
-      metrics.marker !== 'homepage-v73-critical-css-20261024' ||
+      !['homepage-v73-critical-css-20261024', 'homepage-v74-scene-copy-alignment-20261024'].includes(metrics.marker) ||
       metrics.fcp > maxFcp || metrics.cls > 0.05 || metrics.overflow > 1 ||
       !metrics.fullStylesReady || !metrics.fullScriptsReady || metrics.deferredScriptCount !== 9 ||
       !metrics.fullCssResponseEnd || metrics.fullCssRenderBlocking !== 'non-blocking' ||
