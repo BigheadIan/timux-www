@@ -24,7 +24,7 @@ for name in pages:
  s=(root/name).read_text();d=Document();d.feed(s);documents[name]=d
  expected_h1 = 2 if name in ['about/index.html','en/about/index.html'] else 1
  assert d.h1==expected_h1,(name,'h1 count')
- expected_lang = 'en' if name == 'en/index.html' else 'zh-Hant'
+ expected_lang = 'en' if name.startswith('en/') else 'zh-Hant'
  assert f'lang="{expected_lang}"' in s,(name,'language')
  for forbidden in ['All systems operational','Policy coverage','待批准','MapleHome','SoFun']:
   assert forbidden not in s,(name,forbidden)
@@ -70,3 +70,5 @@ node --check scripts/build-home-critical-v73.mjs
 node --check scripts/build-en-home.mjs
 node --check scripts/build-en-about.mjs
 git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js assets/site-about-ab.css assets/site-about-ab.js docs tests scripts
+
+python3 scripts/verify-seo.py

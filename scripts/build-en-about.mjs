@@ -101,6 +101,13 @@ html = html
   .replace('<div class="intl-mobile-lang" role="group" aria-label="Language switch"><a class="is-active" href="/en/about/" lang="zh-Hant" hreflang="zh-Hant" aria-current="page">中文</a><i></i><a href="/en/about/" lang="en" hreflang="en">ENGLISH</a></div>', '<div class="intl-mobile-lang" role="group" aria-label="Language switch"><a href="/about/" lang="zh-Hant" hreflang="zh-Hant">中文</a><i></i><a class="is-active" href="/en/about/" lang="en" hreflang="en" aria-current="page">ENGLISH</a></div>')
   .replace('<a class="brand" href="/">', '<a class="brand" href="/en/">');
 
+// Global URL translation above must not translate reciprocal language targets.
+html = html
+  .replace('hreflang="zh-Hant" href="https://www.timux.site/en/about/"', 'hreflang="zh-Hant" href="https://www.timux.site/about/"')
+  .replace('hreflang="x-default" href="https://www.timux.site/en/about/"', 'hreflang="x-default" href="https://www.timux.site/about/"')
+  .replace('property="og:locale" content="zh_TW"', 'property="og:locale" content="en_US"')
+  .replace('property="og:locale:alternate" content="en_US"', 'property="og:locale:alternate" content="zh_TW"');
+
 await mkdir(resolve(root, 'en/about'), {recursive: true});
 await writeFile(resolve(root, 'en/about/index.html'), html);
 console.log('Generated en/about/index.html');

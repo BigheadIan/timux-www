@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.timux.site/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.timux.site/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.timux.site/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.timux.site/" />
+  </url>
+  <url>
+    <loc>https://www.timux.site/en/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.timux.site/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.timux.site/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.timux.site/" />
+  </url>
+  <url>
+    <loc>https://www.timux.site/about/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.timux.site/about/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.timux.site/en/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.timux.site/about/" />
+  </url>
+  <url>
+    <loc>https://www.timux.site/en/about/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.timux.site/about/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.timux.site/en/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.timux.site/about/" />
+  </url>
+  <url>
+    <loc>https://www.timux.site/method/</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/demo/</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/demo/customer-service/</loc>
+  </url>
+</urlset>

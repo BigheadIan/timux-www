@@ -1,0 +1,44 @@
+[
+  {
+    "path": "/",
+    "file": "index.html",
+    "language": "zh-Hant",
+    "translationGroup": "home"
+  },
+  {
+    "path": "/en/",
+    "file": "en/index.html",
+    "language": "en",
+    "translationGroup": "home"
+  },
+  {
+    "path": "/about/",
+    "file": "about/index.html",
+    "language": "zh-Hant",
+    "translationGroup": "about"
+  },
+  {
+    "path": "/en/about/",
+    "file": "en/about/index.html",
+    "language": "en",
+    "translationGroup": "about"
+  },
+  {
+    "path": "/method/",
+    "file": "method/index.html",
+    "language": "zh-Hant",
+    "translationGroup": null
+  },
+  {
+    "path": "/demo/",
+    "file": "demo/index.html",
+    "language": "zh-Hant",
+    "translationGroup": null
+  },
+  {
+    "path": "/demo/customer-service/",
+    "file": "demo/customer-service/index.html",
+    "language": "zh-Hant",
+    "translationGroup": null
+  }
+]
