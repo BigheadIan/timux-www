@@ -1,4 +1,26 @@
 User-agent: *
-Disallow:
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /og-generator.html
+Disallow: /temp/
+Disallow: /openclaw-builder/
+Disallow: /share/ai-cs-docs/
+Disallow: /share/ai-mentor-0328.html
+Disallow: /share/ai-mentor-day1-script.html
+Disallow: /share/ai-mentor-day2.html
+Disallow: /share/ai-project-consultant-method.html
+Disallow: /share/csu-lobster-proposal.html
+Disallow: /share/homepage-v3-preview/
+Disallow: /share/knowledge-graph.html
+Disallow: /share/krtc-employee-wiki.html
+Disallow: /share/lobsterai-poster.html
+Disallow: /share/openclaw-claude-bridge-guide.html
+Disallow: /share/poster-0328.html
+Disallow: /share/slides-assets/ai-team-architecture.html
+Allow: /
 
 Sitemap: https://www.timux.site/sitemap.xml

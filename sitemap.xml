@@ -33,4 +33,55 @@
   <url>
     <loc>https://www.timux.site/demo/customer-service/</loc>
   </url>
+  <url>
+    <loc>https://www.timux.site/cases/sofun-fde/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.timux.site/cases/sofun-fde/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.timux.site/en/cases/sofun-fde/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.timux.site/cases/sofun-fde/" />
+  </url>
+  <url>
+    <loc>https://www.timux.site/en/cases/sofun-fde/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.timux.site/cases/sofun-fde/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.timux.site/en/cases/sofun-fde/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.timux.site/cases/sofun-fde/" />
+  </url>
+  <url>
+    <loc>https://www.timux.site/ai-customer-service.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/gallery.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/property-management.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/ai-daily-report-system.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/ai-mentor-day1.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/ai-mentor-slides.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/ai-prompt-guide.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/ai-sycophancy-guide.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/china-ai-comparison.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/codex-lazy-thinking.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/context-engineering.html</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/</loc>
+  </url>
+  <url>
+    <loc>https://www.timux.site/share/lobsterai-course.html</loc>
+  </url>
 </urlset>

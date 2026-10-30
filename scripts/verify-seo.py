@@ -56,7 +56,9 @@ def content(file, path):
     return local.decode()
 
 
-EXCLUDED = ['og-generator.html', 'temp/logo-concepts.html', 'share/homepage-v3-preview/index.html']
+EXCLUDED = ['og-generator.html', 'temp/logo-concepts.html', 'share/homepage-v3-preview/index.html'] + [
+    page['file'] for page in json.loads((ROOT / 'scripts/seo-excluded-pages.json').read_text())
+]
 pages = json.loads((ROOT / 'scripts/seo-pages.json').read_text())
 assert len({p['path'] for p in pages}) == len(pages), 'duplicate URLs'
 spec = importlib.util.spec_from_file_location('sitemap_builder', ROOT / 'scripts/build-sitemap.py')
@@ -68,7 +70,9 @@ urls = xml.findall('s:url', NS)
 expected = {ORIGIN + p['path'] for p in pages}
 assert {u.find('s:loc', NS).text for u in urls} == expected
 assert len(urls) == len(pages), 'duplicate sitemap entries'
-assert all('?' not in u and '#' not in u and '/share/' not in u and '/temp/' not in u for u in expected)
+assert all('?' not in u and '#' not in u and '/temp/' not in u for u in expected)
+assert not ({ORIGIN + ('/' + f.removesuffix('index.html') if f.endswith('/index.html') else '/' + f)
+             for f in EXCLUDED} & expected), 'excluded pages must not enter sitemap'
 robots = content('robots.txt', '/robots.txt')
 assert 'Sitemap: ' + ORIGIN + '/sitemap.xml' in robots
 parser = RobotFileParser()
@@ -83,7 +87,7 @@ for p in pages:
     for key in ['description', 'og:title', 'og:description', 'og:image', 'twitter:card']:
         assert head.metas.get(key), (p['file'], key)
     assert head.metas.get('og:url') == url
-    for agent in ['Googlebot', 'Bingbot', 'OAI-SearchBot']:
+    for agent in ['Googlebot', 'Bingbot', 'OAI-SearchBot', 'GPTBot']:
         assert parser.can_fetch(agent, url), (agent, url)
     group = p['translationGroup']
     if group:
@@ -100,4 +104,5 @@ for file in EXCLUDED:
     head = Head(content(file, path))
     assert 'noindex' in head.metas.get('robots', '').lower(), file
     assert parser.can_fetch('Googlebot', ORIGIN + path), 'noindex must remain crawlable'
+    assert not parser.can_fetch('GPTBot', ORIGIN + path), ('GPTBot must not crawl excluded content', file)
 print('PASS preview/tool exclusions; sitemap boundaries; reciprocal translations')

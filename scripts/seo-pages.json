@@ -40,5 +40,108 @@
     "file": "demo/customer-service/index.html",
     "language": "zh-Hant",
     "translationGroup": null
+  },
+  {
+    "path": "/cases/sofun-fde/",
+    "file": "cases/sofun-fde/index.html",
+    "language": "zh-Hant",
+    "translationGroup": "sofun-fde"
+  },
+  {
+    "path": "/en/cases/sofun-fde/",
+    "file": "en/cases/sofun-fde/index.html",
+    "language": "en",
+    "translationGroup": "sofun-fde"
+  },
+  {
+    "path": "/ai-customer-service.html",
+    "file": "ai-customer-service.html",
+    "language": "zh-TW",
+    "translationGroup": null,
+    "description": "了解時光智造 AI 智慧客服的核心模組、導入流程與多產業應用情境。"
+  },
+  {
+    "path": "/gallery.html",
+    "file": "gallery.html",
+    "language": "zh-Hant",
+    "translationGroup": null,
+    "description": "時光智造公開活動相簿與 AI 創業分享紀錄。"
+  },
+  {
+    "path": "/property-management.html",
+    "file": "property-management.html",
+    "language": "zh-TW",
+    "translationGroup": null,
+    "description": "智慧物業管理系統架構示例，涵蓋門鎖、燈控、電梯與營運後台的整合流程。"
+  },
+  {
+    "path": "/share/ai-daily-report-system.html",
+    "file": "share/ai-daily-report-system.html",
+    "language": "zh-CN",
+    "translationGroup": null,
+    "description": "企业微信 AI 日报系统原型：员工提交、AI 汇总、管理看板与文件库的完整流程。"
+  },
+  {
+    "path": "/share/ai-mentor-day1.html",
+    "file": "share/ai-mentor-day1.html",
+    "language": "zh-CN",
+    "translationGroup": null,
+    "description": "从台湾到武汉的 AI 创业分享，讨论两岸产业观察、执行方法与真实应用。"
+  },
+  {
+    "path": "/share/ai-mentor-slides.html",
+    "file": "share/ai-mentor-slides.html",
+    "language": "zh-CN",
+    "translationGroup": null,
+    "description": "AI 商业应用实战分享，涵盖内容工作台、Agent 团队与重复工作自动化。"
+  },
+  {
+    "path": "/share/ai-prompt-guide.html",
+    "file": "share/ai-prompt-guide.html",
+    "language": "zh-Hant",
+    "translationGroup": null,
+    "description": "基於 PRISM 論文實證整理的 AI Prompt 使用指南與 TCO+S 實用框架。"
+  },
+  {
+    "path": "/share/ai-sycophancy-guide.html",
+    "file": "share/ai-sycophancy-guide.html",
+    "language": "zh-Hant",
+    "translationGroup": null,
+    "description": "理解 AI 迎合使用者的原因，並用三個方法取得更真實、可檢驗的回答。"
+  },
+  {
+    "path": "/share/china-ai-comparison.html",
+    "file": "share/china-ai-comparison.html",
+    "language": "zh-Hant",
+    "translationGroup": null,
+    "description": "2026 年 3 月中國大陸主流 AI 模型、API 價格與使用情境比較。"
+  },
+  {
+    "path": "/share/codex-lazy-thinking.html",
+    "file": "share/codex-lazy-thinking.html",
+    "language": "zh-CN",
+    "translationGroup": null,
+    "description": "用 Codex 懒人思维把重复工作整理成可复用流程，而不是持续追逐新工具。"
+  },
+  {
+    "path": "/share/context-engineering.html",
+    "file": "share/context-engineering.html",
+    "language": "zh-Hant",
+    "translationGroup": null,
+    "description": "Context Engineering 深度研究：快取、選取、壓縮與隔離的 Agent 效率實踐。"
+  },
+  {
+    "path": "/share/",
+    "file": "share/index.html",
+    "language": "zh-Hant",
+    "translationGroup": null,
+    "description": "時光智造公開分享資源，包含 AI 課程、指南、研究與實戰內容。"
+  },
+  {
+    "path": "/share/lobsterai-course.html",
+    "file": "share/lobsterai-course.html",
+    "language": "zh-CN",
+    "translationGroup": null,
+    "description": "LobsterAI 入门培训课程，涵盖安装、模型配置、Agent、Skill 与远程使用。"
   }
 ]

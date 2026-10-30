@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Timux 與 Sofun.AI FDE 合作</title>
+  <desc id="desc">兩個品牌共同連接需求探索、驗證、受控執行與聯合驗收</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#12251f"/><stop offset="1" stop-color="#0b0e13"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#90ead4"/><stop offset="1" stop-color="#d7b954"/></linearGradient>
+  </defs>
+  <rect width="1200" height="760" rx="40" fill="url(#bg)"/>
+  <circle cx="1040" cy="90" r="230" fill="#4f9f8d" opacity=".12"/>
+  <text x="86" y="132" fill="#91e4d1" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="5">ENTERPRISE AI DELIVERY</text>
+  <text x="86" y="244" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="800">Timux × Sofun.AI</text>
+  <text x="86" y="306" fill="#c9d2ce" font-family="Arial,sans-serif" font-size="30">FDE · 從真實工作到可驗收執行</text>
+  <path d="M110 470H1090" stroke="url(#line)" stroke-width="8" stroke-linecap="round"/>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g transform="translate(150 470)"><circle r="34" fill="#90ead4"/><text y="9" font-size="25" font-weight="800">1</text><text y="83" fill="#fff" font-size="22">選定工作</text></g>
+    <g transform="translate(450 470)"><circle r="34" fill="#90ead4"/><text y="9" font-size="25" font-weight="800">2</text><text y="83" fill="#fff" font-size="22">資料驗證</text></g>
+    <g transform="translate(750 470)"><circle r="34" fill="#d7d56b"/><text y="9" font-size="25" font-weight="800">3</text><text y="83" fill="#fff" font-size="22">受控執行</text></g>
+    <g transform="translate(1050 470)"><circle r="34" fill="#d7b954"/><text y="9" font-size="25" font-weight="800">4</text><text y="83" fill="#fff" font-size="22">聯合驗收</text></g>
+  </g>
+  <text x="86" y="692" fill="#88938f" font-family="Arial,sans-serif" font-size="20">CORE · SCALE · TRUST</text>
+</svg>

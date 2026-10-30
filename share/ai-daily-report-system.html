@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index,follow">
   <title>企业微信 AI 日报系统 - 原型</title>
   <style>
     :root {
@@ -172,6 +173,17 @@
       .section-title { align-items:start; flex-direction:column; }
     }
   </style>
+  <meta name="description" content="企业微信 AI 日报系统原型：员工提交、AI 汇总、管理看板与文件库的完整流程。">
+  <link rel="canonical" href="https://www.timux.site/share/ai-daily-report-system.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.timux.site/share/ai-daily-report-system.html">
+  <meta property="og:title" content="企业微信 AI 日报系统 - 原型">
+  <meta property="og:description" content="企业微信 AI 日报系统原型：员工提交、AI 汇总、管理看板与文件库的完整流程。">
+  <meta property="og:image" content="https://www.timux.site/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="企业微信 AI 日报系统 - 原型">
+  <meta name="twitter:description" content="企业微信 AI 日报系统原型：员工提交、AI 汇总、管理看板与文件库的完整流程。">
+  <meta name="twitter:image" content="https://www.timux.site/images/og-image.png">
 </head>
 <body>
   <div class="hero">
@@ -193,7 +205,7 @@
           <div class="phone-head"><span>员工填报</span><span>企业微信</span></div>
           <form class="phone-body" id="reportForm">
             <label>员工姓名
-              <input class="input" id="employeeName" value="霏霏" placeholder="自动读取企业微信姓名" />
+              <input class="input" id="employeeName" value="示例员工" placeholder="自动读取企业微信姓名" />
             </label>
             <label>所属部门
               <select id="department">
@@ -497,7 +509,7 @@
         row: ["霏霏", "运营部", "未交", "-", "-"],
         metric: [9, 3, 4],
         ai: [
-          ["todo", "提醒建议", "霏霏今日尚未提交日报，建议在企业微信发送一次温和提醒。"],
+          ["todo", "提醒建议", "示例员工今日尚未提交日报，建议在企业微信发送一次温和提醒。"],
           ["", "老板视角", "未交人数增加为 3 人，当前不需要逐篇查看，只需要关注未交名单。"],
         ],
       },

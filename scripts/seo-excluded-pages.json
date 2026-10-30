@@ -1,0 +1,17 @@
+[
+  {"file":"openclaw-builder/index.html","reason":"client-side token validation and commercial access logic require security review"},
+  {"file":"openclaw-builder/installer-v2.html","reason":"installation and credential-handling flow requires security review"},
+  {"file":"openclaw-builder/installer.html","reason":"installation and credential-handling flow requires security review"},
+  {"file":"share/ai-cs-docs/index.html","reason":"screenshots contain names, phone numbers and IP addresses"},
+  {"file":"share/ai-mentor-0328.html","reason":"personal contact QR code"},
+  {"file":"share/ai-mentor-day1-script.html","reason":"speaker script and internal stage directions"},
+  {"file":"share/ai-mentor-day2.html","reason":"personal contact QR code"},
+  {"file":"share/ai-project-consultant-method.html","reason":"internal SOP and customer-specific working material"},
+  {"file":"share/csu-lobster-proposal.html","reason":"customer-specific proposal material"},
+  {"file":"share/knowledge-graph.html","reason":"internal project and source-file graph"},
+  {"file":"share/krtc-employee-wiki.html","reason":"customer-specific proposal material"},
+  {"file":"share/lobsterai-poster.html","reason":"group QR code"},
+  {"file":"share/openclaw-claude-bridge-guide.html","reason":"internal architecture and configuration details"},
+  {"file":"share/poster-0328.html","reason":"group QR code"},
+  {"file":"share/slides-assets/ai-team-architecture.html","reason":"internal team and agent operating structure"}
+]

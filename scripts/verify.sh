@@ -69,6 +69,7 @@ node --check scripts/extract-home-critical-v73.mjs
 node --check scripts/build-home-critical-v73.mjs
 node --check scripts/build-en-home.mjs
 node --check scripts/build-en-about.mjs
+node --check scripts/apply-seo-publication.mjs
 git diff --check -- index.html en/index.html method demo assets/site-base.css assets/site-conversion.css assets/site-conversion.js assets/site-mobile-parity.css assets/site-mobile-parity.js assets/site-about-ab.css assets/site-about-ab.js docs tests scripts
 
 python3 scripts/verify-seo.py

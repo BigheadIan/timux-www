@@ -94,11 +94,19 @@
       {
         "@type": "Organization",
         "@id": "https://www.timux.site/#organization",
-        "name": "時光智造 Timux",
+        "name": "時光智造科技",
+        "alternateName": "Timux",
         "url": "https://www.timux.site/",
         "logo": "https://www.timux.site/assets/logo-icon.png",
         "description": "企業 AI 導入顧問與落地團隊，從業務痛點、資料與流程出發，協助企業建立可驗證、可治理、可持續營運的 AI 能力。",
         "email": "service@timux.site",
+        "areaServed": [
+          {"@type": "City", "name": "台北"},
+          {"@type": "City", "name": "高雄"},
+          {"@type": "City", "name": "武漢"},
+          {"@type": "City", "name": "上海"},
+          {"@type": "Country", "name": "馬來西亞"}
+        ],
         "knowsAbout": [
           "企業 AI 導入",
           "AI Agent",
@@ -425,7 +433,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4z"></path></svg>
                   </button>
                 </form>
-              </div><div class="agent-shortcuts"><a href="/demo/">案例體驗</a><a href="/method/">90 天導入方法</a><a href="#contact">找 Ian 討論</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>帶一個真實問題，<br>開始討論。</h2><p>告訴我們想改善哪段工作。</p><p>合作範圍與費用，事前共同確認。</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">直接寄信給 Ian →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">想改善哪段工作？</label><input id="workflow" name="workflow" maxlength="160" placeholder="例如：跨部門交接、客服或文件查找" required=""><label for="context">最近遇到什麼情況？</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="簡單描述一個案例即可，請勿填入個人或敏感資料。"></textarea><button class="button dark" type="submit">整理我的討論摘要 ↓</button><p class="fine">內容只在此頁整理，不會自動送出。你可以修改後再寄信。</p><div id="draftResult" hidden=""><label for="summary">確認或修改你的摘要</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">開啟 Email 草稿 ↗</a><button type="button" class="button outline" id="copyDraft">複製摘要</button></div><p class="fine">開啟草稿後，請在信箱完成寄送；此頁不代表詢問已送達。</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/"><img src="/assets/logo-icon-display.webp" width="128" height="128" alt="" loading="lazy" decoding="async"><strong>時光智造 Timux</strong></a><span>智造交給 AI，時光留給所愛。</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux Technology</span></div></footer>  <script>
+              </div><div class="agent-shortcuts"><a href="/demo/">案例體驗</a><a href="/method/">90 天導入方法</a><a href="#contact">找 Ian 討論</a></div></div></div></section><section class="section contact-section" id="contact"><div class="shell contact-grid"><div><p class="eyebrow">START A CONVERSATION</p><h2>帶一個真實問題，<br>開始討論。</h2><p>告訴我們想改善哪段工作。</p><p>合作範圍與費用，事前共同確認。</p><a href="mailto:service@timux.site" data-track="contact_click" data-method="email">直接寄信給 Ian →</a><p class="fine">service@timux.site</p></div><form id="contactDraft" class="contact-form"><label for="workflow">想改善哪段工作？</label><input id="workflow" name="workflow" maxlength="160" placeholder="例如：跨部門交接、客服或文件查找" required=""><label for="context">最近遇到什麼情況？</label><textarea id="context" name="context" maxlength="1600" rows="4" placeholder="簡單描述一個案例即可，請勿填入個人或敏感資料。"></textarea><button class="button dark" type="submit">整理我的討論摘要 ↓</button><p class="fine">內容只在此頁整理，不會自動送出。你可以修改後再寄信。</p><div id="draftResult" hidden=""><label for="summary">確認或修改你的摘要</label><textarea id="summary" rows="7" maxlength="3000"></textarea><div class="draft-actions"><a id="emailDraft" class="button dark" href="mailto:service@timux.site" data-track="contact_click" data-method="email_draft">開啟 Email 草稿 ↗</a><button type="button" class="button outline" id="copyDraft">複製摘要</button></div><p class="fine">開啟草稿後，請在信箱完成寄送；此頁不代表詢問已送達。</p><p id="copyStatus" role="status"></p></div></form></div></section></main><footer><div class="shell footer-inner"><a class="brand" href="/"><img src="/assets/logo-icon-display.webp" width="128" height="128" alt="" loading="lazy" decoding="async"><strong>時光智造 Timux</strong></a><span>智造交給 AI，時光留給所愛。</span><a href="mailto:service@timux.site">service@timux.site</a><span>© 2026 Timux</span></div></footer>  <script>
     (() => {
       const apiBase = "https://digitalhuman.timux.site";
       const endpoint = `${apiBase}/api/digital-human/website-chat`;
