@@ -99,7 +99,7 @@
   const agentForm = document.getElementById('agentForm');
   if (agentForm) agentForm.addEventListener('submit', () => track('agent_interaction', {method: 'typed_question'}));
   const form = document.getElementById('contactDraft');
-  if (form) {
+  if (form && form.dataset.leadForm !== 'v1') {
     const workflowInput = document.getElementById('workflow');
     const summary = document.getElementById('summary');
     const email = document.getElementById('emailDraft');

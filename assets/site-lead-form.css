@@ -1,0 +1,17 @@
+/* Persisted lead form — Email required, all business context optional. */
+html.home-refresh .contact-form[data-lead-form="v1"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px;padding:28px}
+html.home-refresh .contact-form[data-lead-form="v1"] .form-field{min-width:0}
+html.home-refresh .contact-form[data-lead-form="v1"] .form-field-wide,html.home-refresh .contact-form[data-lead-form="v1"]>button,html.home-refresh .contact-form[data-lead-form="v1"] .form-note,html.home-refresh .contact-form[data-lead-form="v1"] .form-status,html.home-refresh .contact-form[data-lead-form="v1"] .lead-result{grid-column:1/-1}
+html.home-refresh .contact-form[data-lead-form="v1"] label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;font-size:14px}
+html.home-refresh .contact-form[data-lead-form="v1"] label small{color:#777b89;font-size:12px;font-weight:500}
+html.home-refresh .contact-form[data-lead-form="v1"] .form-field-required label span{color:#5b43b2;background:#eeeafd;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:750}
+html.home-refresh .contact-form[data-lead-form="v1"] input,html.home-refresh .contact-form[data-lead-form="v1"] textarea{margin:0;padding:13px 14px}
+html.home-refresh .contact-form[data-lead-form="v1"]>button{justify-self:start;margin-top:2px}
+html.home-refresh .contact-form[data-lead-form="v1"] .form-note{margin:0!important;font-size:12px!important}
+html.home-refresh .contact-form[data-lead-form="v1"] .form-status{min-height:1.5em;margin:0;color:#a33434;font-size:13px}
+html.home-refresh .contact-form[data-lead-form="v1"] .lead-result{padding:18px 20px;border:1px solid #89cdbd;border-radius:12px;background:#effaf7;color:#173e36}
+html.home-refresh .contact-form[data-lead-form="v1"] .lead-result strong{font-size:17px}
+html.home-refresh .contact-form[data-lead-form="v1"] .lead-result p{margin:6px 0 0;font-size:14px;line-height:1.65}
+html.home-refresh .contact-form[data-lead-form="v1"] .lead-result b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+html.home-refresh .contact-form[data-lead-form="v1"] .form-trap{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+@media(max-width:820px){html.home-refresh .contact-form[data-lead-form="v1"]{grid-template-columns:1fr;gap:15px;padding:20px 18px}html.home-refresh .contact-form[data-lead-form="v1"] .form-field-wide,html.home-refresh .contact-form[data-lead-form="v1"]>button,html.home-refresh .contact-form[data-lead-form="v1"] .form-note,html.home-refresh .contact-form[data-lead-form="v1"] .form-status,html.home-refresh .contact-form[data-lead-form="v1"] .lead-result{grid-column:1}html.home-refresh .contact-form[data-lead-form="v1"]>button{width:100%}}
