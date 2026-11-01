@@ -13,7 +13,7 @@
     phonePlaceholder: 'A contact number', workflow: 'Which workflow would you like to improve?',
     workflowPlaceholder: 'For example: cross-team handoffs, customer service, or document search',
     context: 'What has been happening recently?', contextPlaceholder: 'Briefly describe one case. Do not enter personal or sensitive information.',
-    submit: 'Send inquiry →', sending: 'Sending…', note: 'Email is required; all other fields are optional. We only use this information to respond to this inquiry.',
+    submit: 'Send inquiry →', sending: 'Sending…', sent: 'Sent ✓', note: 'Email is required; all other fields are optional. We only use this information to respond to this inquiry.',
     successTitle: 'We received your inquiry', successBody: 'A consultant will reply to the Email you provided. Keep this reference:',
     error: 'We could not send the form right now. Please retry, or email service@timux.site.', invalid: 'Enter a valid Email address.',
   } : {
@@ -21,7 +21,7 @@
     namePlaceholder: '怎麼稱呼你', companyPlaceholder: '公司或團隊名稱', phonePlaceholder: '方便聯絡的電話',
     workflow: '想改善哪段工作？', workflowPlaceholder: '例如：跨部門交接、客服或文件查找',
     context: '最近遇到什麼情況？', contextPlaceholder: '簡單描述一個案例即可，請勿填入個人或敏感資料。',
-    submit: '送出諮詢需求 →', sending: '送出中…', note: 'Email 為必填，其餘皆可選填。資料只用於回覆本次需求。',
+    submit: '送出諮詢需求 →', sending: '送出中…', sent: '已送出 ✓', note: 'Email 為必填，其餘皆可選填。資料只用於回覆本次需求。',
     successTitle: '已收到你的需求', successBody: '顧問會透過你留下的 Email 回覆。請保留收件編號：',
     error: '目前無法送出，請稍後重試，或直接寄信至 service@timux.site。', invalid: '請填寫有效的 Email。',
   };
@@ -103,6 +103,7 @@
       document.getElementById('leadReceipt').textContent = data.submissionId;
       result.hidden = false;
       status.textContent = '';
+      button.textContent = copy.sent;
       form.querySelectorAll('input, textarea, button').forEach(control => { control.disabled = true; });
       window.dispatchEvent(new CustomEvent('timux:lead-submitted', { detail: { submissionId: data.submissionId, source: payload.source } }));
       result.focus?.();
