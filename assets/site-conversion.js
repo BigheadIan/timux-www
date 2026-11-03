@@ -118,7 +118,7 @@
         setTimeout(() => workflowInput.focus({preventScroll: true}), 450);
       });
     });
-    const updateEmail = () => { email.href = 'mailto:service@timux.site?subject=' + encodeURIComponent(english ? 'Enterprise AI adoption discussion' : '企業 AI 導入需求討論') + '&body=' + encodeURIComponent(summary.value); };
+    const updateEmail = () => { email.href = 'mailto:Timux@timux.cn?subject=' + encodeURIComponent(english ? 'Enterprise AI adoption discussion' : '企業 AI 導入需求討論') + '&body=' + encodeURIComponent(summary.value); };
     form.addEventListener('submit', event => {
       event.preventDefault();
       const workflow = workflowInput.value.trim();
