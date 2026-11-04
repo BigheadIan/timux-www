@@ -26,7 +26,7 @@ for name in pages:
  assert d.h1==expected_h1,(name,'h1 count')
  expected_lang = 'en' if name.startswith('en/') else 'zh-Hant'
  assert f'lang="{expected_lang}"' in s,(name,'language')
- for forbidden in ['All systems operational','Policy coverage','待批准','MapleHome','SoFun']:
+ for forbidden in ['All systems operational','Policy coverage','待批准','SoFun','SOFUN.AI','索方智慧']:
   assert forbidden not in s,(name,forbidden)
  for body in re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S):
   if not body.strip() or body.lstrip().startswith('{'):continue

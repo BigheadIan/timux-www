@@ -17,7 +17,8 @@ const cssFiles = [
   'site-mobile-parity.css',
   'site-case-switcher.css',
   'site-solutions-hub.css',
-  'site-adoption-scene.css'
+  'site-adoption-scene.css',
+  'site-outcomes.css'
 ];
 
 const deferredScripts = [
@@ -28,7 +29,8 @@ const deferredScripts = [
   '/assets/site-mobile-parity.js?v=20261013-v61',
   '/assets/site-case-switcher.js?v=20261023-v72',
   '/assets/site-back-to-top.js?v=20261009-v37',
-  '/assets/site-conversion.js?v=20261023-v72',
+  '/assets/site-lead-form.js?v=20261101-v2',
+  '/assets/site-conversion.js?v=20261101-v1',
   '/assets/site-about-ab.js?v=20261015-ab1'
 ];
 
@@ -78,8 +80,8 @@ const runtime = `  <!-- V73_CRITICAL_START -->
       };
     })();
   </script>
-  <link id="timux-home-full-v73" rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261024-v74" media="print" onload="window.__timuxActivateFullStyles(this)" onerror="window.__timuxFullStylesFailed()">
-  <noscript><link rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261024-v74"></noscript>
+  <link id="timux-home-full-v73" rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261104-v76" media="print" onload="window.__timuxActivateFullStyles(this)" onerror="window.__timuxFullStylesFailed()">
+  <noscript><link rel="stylesheet" href="/assets/site-home-full-v73.css?v=20261104-v76"></noscript>
   <!-- V73_CRITICAL_END -->`;
 
 const existingV73 = /  <!-- V73_CRITICAL_START -->[\s\S]*?  <!-- V73_CRITICAL_END -->/;
@@ -94,7 +96,7 @@ for (const homepagePath of homepagePaths) {
   html = html
     .replace(/<script src="\/assets\/site-conversion\.js[^>]*><\/script><script src="\/assets\/site-about-ab\.js[^>]*><\/script>/, '')
     .replaceAll('homepage-v72-critical-path-20261023', 'homepage-v74-scene-copy-alignment-20261024')
-    .replaceAll('homepage-v73-critical-css-20261024', 'homepage-v74-scene-copy-alignment-20261024');
+    .replace(/<meta name="timux-build" content="[^"]+">/, '<meta name="timux-build" content="homepage-v76-real-outcomes-20261104">');
   await writeFile(homepagePath, html);
   console.log(`Updated ${homepagePath}`);
 }

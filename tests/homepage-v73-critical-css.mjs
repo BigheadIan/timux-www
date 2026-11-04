@@ -29,7 +29,8 @@ const legacyCss = [
   'site-mobile-parity.css',
   'site-case-switcher.css',
   'site-solutions-hub.css',
-  'site-adoption-scene.css'
+  'site-adoption-scene.css',
+  'site-outcomes.css'
 ];
 
 const results = [];
@@ -121,9 +122,9 @@ for (const profile of profiles) {
     }, legacyCss);
 
     if (
-      !['homepage-v73-critical-css-20261024', 'homepage-v74-scene-copy-alignment-20261024'].includes(metrics.marker) ||
+      !['homepage-v73-critical-css-20261024', 'homepage-v74-scene-copy-alignment-20261024', 'homepage-v76-real-outcomes-20261104'].includes(metrics.marker) ||
       metrics.fcp > maxFcp || metrics.cls > 0.05 || metrics.overflow > 1 ||
-      !metrics.fullStylesReady || !metrics.fullScriptsReady || metrics.deferredScriptCount !== 9 ||
+      !metrics.fullStylesReady || !metrics.fullScriptsReady || metrics.deferredScriptCount !== 10 ||
       !metrics.fullCssResponseEnd || metrics.fullCssRenderBlocking !== 'non-blocking' ||
       !metrics.heroResponseEnd || !metrics.heroWidth || metrics.legacyCssRequested ||
       metrics.googleFontsRequested || metrics.transitionLayerPresent || errors.length
