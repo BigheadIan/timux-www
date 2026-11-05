@@ -156,7 +156,7 @@
   const solutionCards = solutionGrid ? [...solutionGrid.querySelectorAll(':scope > article')] : [];
   const solutionTabs = solutionCards.length ? makeTabs(
     solutionCards,
-    solutionCards.map((_, index) => String(index + 1).padStart(2, '0')),
+    solutionCards.map((card, index) => (english ? ['Service', 'Knowledge', 'Field work', 'Automation'] : ['AI 客服', '企業知識', '現場營運', '流程自動化'])[index]),
     'mobile-solution-tabs'
   ) : null;
   if (solutionTabs && solutionGrid) {

@@ -44,6 +44,8 @@ for name,d in documents.items():
    other=Document();other.feed(target.read_text());assert unquote(u.fragment) in other.ids,(name,'missing anchor',ref)
  print('PASS HTML, scripts, assets, links:',name)
 PY
+node --check assets/site-home-v77.js
+node --check tests/homepage-v77-conversion.mjs
 node --check assets/site-back-to-top.js
 node --check assets/site-conversion.js
 node --check assets/site-story.js

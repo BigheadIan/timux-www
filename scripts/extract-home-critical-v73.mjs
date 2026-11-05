@@ -20,7 +20,9 @@ const cssFiles = [
   'site-mobile-parity.css',
   'site-case-switcher.css',
   'site-solutions-hub.css',
-  'site-adoption-scene.css'
+  'site-adoption-scene.css',
+  'site-outcomes.css',
+  'site-home-v77.css'
 ];
 
 const blockingStyles = cssFiles
