@@ -106,3 +106,4 @@ html.home-refresh #solutions .solution-workflow li::before{position:static;inset
  html.home-refresh #solutions .solution-scene{position:sticky;top:100px}
  html.home-refresh #solutions .solution-card .solution-pain,html.home-refresh #solutions .solution-card .solution-description{min-height:0}
 }
+@media(min-width:821px){html[lang="en"] .case-switcher-panel figcaption{top:160px}}
